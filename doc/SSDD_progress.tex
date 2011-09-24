@@ -3,6 +3,7 @@
 \usepackage{fullpage}
 \usepackage{color}
 \usepackage[english]{babel}
+\usepackage{appendix}
 \newcommand{\HRule}{\rule{5cm}{0.1mm}}
 \begin{document}
 \begin{center}
@@ -18,7 +19,7 @@
 
 % Title
 { \LARGE \bfseries Idaho Department of Health and Welfare}\\[0.4cm]
-{ \huge \bfseries Cost and Budget Management System}\\[1.0cm]
+{ \huge \bfseries Time, Accounting, and Reporting System}\\[1.0cm]
 { \normalsize \emph{ prepared for}}\\[0.5cm]
 { \normalsize Don Moreaux}\\[0.5cm]
 \HRule \\[3cm]
@@ -44,14 +45,13 @@ Greg Donohoe\\
 \end{flushright}
 \end{minipage}
 
-\vfill
-
 % Bottom of the page
 {\large \today}
 
 \end{center}
 \pagebreak
-\tableofcontents
+
+
 \pagebreak
 \section{\bfseries{Introduction}}
 This section of this document should introduce this document and its
@@ -101,9 +101,88 @@ Sections 5 provides traceability information connecting the original specificati
 (referenced above) to the architectural components and design entities identified in this document.\\
 \\
 Section 6 and beyond are appendices including original information and communications used to create this document.
+\section{\bfseries{Software Requirements, Constraints, and User Characteristics}}
+\subsection{Software Requirements}
+ 
+Users with the proper permissions must be able to manually enter PCA codes in a form that meets DHW standards.
 
+Users with proper permissions must be able to manually tie work effort(s) to valid PCA.
 
+The system must provide a mechanism for time bounding PCA codes - with the ability to "deactivate" a code prematurely and an open "end" date.
 
+Must maintain an audit trail (history of changes - people, projects, and PCAs).
 
+The system must provide a mechanism for preventing time to be allocated to expired PCA codes.
 
-\end{document}
+The system must allow multiple PCA to be assigned to a work effort, over the life of the effort/project.
+
+Must be able to assign one or more PCA codes to work effort (split percent allocation across multiple PCAs which can change during life of work effort)
+
+Must allow work to be assigned to other entities outside DHW
+
+Must allow work to be associated with multiple divisions or the enterprise.
+
+The system shall track date specific vendor and employee/contractor information
+
+The system shall allow for some description of work or project to be entered and attached.
+
+The system shall be consistent with I-Time data
+
+The system shall provide a means to replicate last week's assignments (repeating tasks can auto fill)
+
+The system must have a method that allows staff to create work effort, and self-assign
+
+Must be able to track work effort for resources, depending upon their assignment, that are either cost allocated or not cost allocated.
+
+Must be able to break time out by time codes for work efforts, such as Vacation, Sick, LWOP, (match I-Time data since this is the system of record)
+
+Users shall have the ability to close tasks and activities on their timesheet, and reopen if needed.
+
+The system shall provide some mechanism (configurable dropdown) for  grouping of business, program, and function of work.
+
+Audit trail data shall include the information that was updated, modified/deleted, date created, and by whom for each item determined to be auditable.
+
+Data for staff and projects shall include the ability to store links and attachments
+
+The system must allow for future time entry
+
+Must prevent work efforts to exist in the system unless they are tied to a PCA code.
+
+All data for reporting shall be extracted via external source (EDW. Excel, etc.).
+
+Must allow users to create a view of their I-Time timesheet. 
+Reports must be real-time, reliable, and accurate. Includes exports to csv, Excel. 
+Must have a sort and group function that allows work effort to be grouped by application, division, manager, etc.
+
+The system must allow a user the ability to create a custom view of the data.
+
+Must allow users to easily size windows.
+
+Must be able to limit view of information presented to user to what is pertinant to that user's role.
+
+The system shall provide search/find functionality to locate work efforts, with minimal amount of navigation (task actions less than clicks/pages/dialogs)
+
+Must authenticate to Active Directory
+
+Must have a role-based permissions security.
+
+The system shall allow for automated closure of time periods for PCA and work efforts, with administrator ability to manually reopen and close for edit and approval.
+
+The system must allow each user the ability to navigate easily by logic/functional areas, ie. Staff demographics, projects, work items/areas, time entry, etc.
+
+Must automatically display current week when entering timesheet data.
+
+Must have notifications (via email, context) triggered by certain events such as timesheet submittal, approvals, PCA expiration. 
+
+Users with permissions, must have the abiltiy to approve TARS weekly submittals.
+
+\section{Software Architecture} 
+Filler
+\section{Design Descriptions}
+Fill
+\section{Tracability Information}
+Hello
+\section{Appendix A: Use Cases} 
+Still to be filled.
+
+\end{document} 

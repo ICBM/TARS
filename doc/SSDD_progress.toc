@@ -1,0 +1,34 @@
+\select@language {english}
+\contentsline {section}{\numberline {1}\bfseries {Introduction}}{4}
+\contentsline {subsection}{\numberline {1.1}\bfseries {Identification}}{4}
+\contentsline {subsection}{\numberline {1.2}\bfseries {Document Purpose, Scope, and Intended Audience}}{4}
+\contentsline {subsubsection}{\numberline {1.2.1}Document Purpose}{4}
+\contentsline {subsubsection}{\numberline {1.2.2}Document Scope and/or Context}{4}
+\contentsline {subsubsection}{\numberline {1.2.3}Intended Audience for Document}{4}
+\contentsline {subsection}{\numberline {1.3}\bfseries {Software Purpose, Scope, and Intended Users}}{4}
+\contentsline {subsubsection}{\numberline {1.3.1}Software Purpose}{4}
+\contentsline {subsubsection}{\numberline {1.3.2}Software Context}{4}
+\contentsline {subsubsection}{\numberline {1.3.3}Intended Users for the Software}{4}
+\contentsline {subsection}{\numberline {1.4}\bfseries {Definitions, Acronyms, and Abbreviations}}{4}
+\contentsline {subsection}{\numberline {1.5}\bfseries {Document Overview}}{4}
+\contentsline {section}{\numberline {2}\bfseries {Software Requirements, Constraints, and User Characteristics}}{6}
+\contentsline {subsection}{\numberline {2.1}Software Requirements}{6}
+\contentsline {subsubsection}{\numberline {2.1.1}Users with the proper permissions must be able to manually enter PCA codes in a form that meets DHW standards. }{6}
+\contentsline {subsubsection}{\numberline {2.1.2}Users with proper permissions must be able to manually tie work effort(s) to valid PCA. }{6}
+\contentsline {subsubsection}{\numberline {2.1.3}The system must provide a mechanism for time bounding PCA codes - with the ability to "deactivate" a code prematurely and an open "end" date. }{6}
+\contentsline {subsubsection}{\numberline {2.1.4}Must maintain an audit trail (history of changes - people, projects, and PCAs). }{6}
+\contentsline {subsubsection}{\numberline {2.1.5}The system must provide a mechanism for preventing time to be allocated to expired PCA codes. }{6}
+\contentsline {subsubsection}{\numberline {2.1.6}The system must allow multiple PCA to be assigned to a work effort, over the life of the effort/project. }{6}
+\contentsline {subsubsection}{\numberline {2.1.7}Must be able to assign one or more PCA codes to work effort (split \% allocation across multiple PCAs which can change during life of work effort) }{6}
+\contentsline {subsubsection}{\numberline {2.1.8}Must allow work to be assigned to other entities outside DHW }{6}
+\contentsline {subsubsection}{\numberline {2.1.9}Must allow work to be associated with multiple divisions or the enterprise. }{6}
+\contentsline {subsubsection}{\numberline {2.1.10}The system shall track date specific vendor and employee/contractor information }{6}
+\contentsline {subsubsection}{\numberline {2.1.11}The system shall allow for some description of work or project to be entered and attached. }{6}
+\contentsline {subsubsection}{\numberline {2.1.12}The system shall be consistent with I-Time data }{6}
+\contentsline {subsubsection}{\numberline {2.1.13}The system shall provide a means to replicate last week's assignments (repeating tasks can auto fill) }{6}
+\contentsline {subsubsection}{\numberline {2.1.14}The system must have a method that allows staff to create work effort, and self-assign }{6}
+\contentsline {subsubsection}{\numberline {2.1.15}Must be able to track work effort for resources, depending upon their assignment, that are either cost allocated or not cost allocated. }{6}
+\contentsline {subsubsection}{\numberline {2.1.16}Must be able to break time out by time codes for work efforts, such as Vacation, Sick, LWOP, (match I-Time data since this is the system of record) }{6}
+\contentsline {subsubsection}{\numberline {2.1.17}Users shall have the ability to close tasks and activities on their timesheet, and reopen if needed. }{6}
+\contentsline {subsubsection}{\numberline {2.1.18}The system shall provide some mechanism (configurable dropdown) for grouping of business, program, and function of work. }{6}
+\contentsline {subsubsection}{\numberline {2.1.19}Audit trail data shall include the info
