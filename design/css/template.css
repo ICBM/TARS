@@ -1,0 +1,167 @@
+/*
+general, page wide default settings
+*/
+
+html {
+	background: #313131;
+	background-position: left top;
+	background-repeat: repeat-x;
+	padding: 0px;
+	margin: 0px;
+	font-family: 'Trebuchet MS';
+	font-size: 11pt;
+	color: black;
+}
+
+body {
+	background-image: url('../images/background_tall.png');
+	background-color: white;
+	background-position: left top;
+	background-repeat: repeat-x;
+	width: 100%;
+	padding: 0px;
+	margin: 0px;
+}
+
+.container{
+	display:block;
+	margin: auto;
+	width: 1024px;
+	height: auto;
+	min-height: 900px;
+	background-position: left top;
+	background-repeat: repeat-x;
+	position: relative;
+}
+
+/*
+specific divs for content seperation
+*/
+
+#top {
+	width: 1024px;
+	height: 60px;
+	background-image: url('../images/right2.png');
+	background-position: right top;
+	background-repeat: repeat-y;
+	position: relative;
+}
+
+#top img#logo{
+	position: absolute;
+	left:0px;
+	top:0px;
+}
+
+#middle{
+	width: 100%;
+	margin: auto;
+	clear: both;
+	background-image: url('../images/right2.png');
+	background-position: right top;
+	background-repeat: repeat-y;
+	padding-right: 55px;
+	padding-bottom: 50px;
+	min-height: 800px;
+	padding-top: 6px;
+}
+
+.middle_floater {
+	width: 100%;
+	margin: auto;
+	clear: both;
+	background-image: url('../images/right2.png');
+	background-position: right top;
+	background-repeat: repeat-y;
+	padding-right: 55px;
+	height: 27px;
+	
+}
+/*
+left: 244, middle: , right:
+*/
+.middle_floater img.notch {
+	margin-left: 260px;
+}
+
+#middle img#switch_img {
+	margin: auto;
+	border: 4px solid #a0a0a0;
+	width: 575px;
+	margin-left: 187px;
+}
+
+#bottom{
+	background-color: white;
+	width: 100%;
+	min-height: 600px;
+	background-image: url('../images/right2.png');
+	background-position: right top;
+	background-repeat: repeat-y;
+	padding-right: 55px;
+}
+
+#footer{
+	width: 100%;
+	background: #313131;
+	
+	background-repeat: repeat-x;
+	background-position: left top;
+	padding-bottom: 150px;
+	color: white;
+	padding-top: 5px;
+	font-size: 10pt;
+	position: relative;
+}
+/*
+Div classes
+*/
+div.summary {
+	width: 700px;
+	margin-right: 10px;
+}
+
+div.float_top{
+	float: right;
+	width: 20px;
+	height: 34px;
+	background-color: #313131;
+}
+
+div.spreader{
+	height: 60px;
+	vertical-align: center;
+	width: 100%;
+}
+
+table.nav{
+	position: absolute; 
+	right: 80px;
+	top: 5px;
+	border-spacing: 0px;
+	border-collapse: collapse;
+	margin: 0px;
+	padding: 0px;
+	font-family: 'Arimo', serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: 700;
+	text-decoration: none;
+	text-transform: none;
+	letter-spacing: 0.1em;
+	word-spacing: 0em;
+	line-height: 1.2;
+	text-align: right;
+	color: white;
+}
+
+table.nav td {
+	height: 50px;
+	
+}
+
+table.nav td.spacer{
+	width: 10px;
+	text-align: center;
+}
+
