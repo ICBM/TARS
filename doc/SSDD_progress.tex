@@ -189,47 +189,112 @@ Hello
 \section{Appendix A: Use Cases} 
 Still to be filled.
 
-Login.
-1. Click the "Login" button
-2. Enter username and password
-3. Hit Enter or click "Submit"
-4. System authenticates and redirects to home page.
+\paragraph{Login}
+\begin{enumerate}
+\item Click the "Login" button
+\item Enter username and password
+\item Hit Enter or click "Submit"
+\item System authenticates and redirects to home page.
+\end{enumerate}
 
-Adding new PCA code.
-1. Select "Add PCA"
-2. System loads PCA form
-3. Fill in form, including time bounds for the PCA code
-4. Press "Submit"
-5. System updates tables and redirects to new PCA display page
+\paragraph{Adding new PCA code.}
+\begin{enumerate}
+\item Select "Add PCA"
+\item System loads PCA form
+\item Fill in form, including time bounds for the PCA code
+\item Press "Submit"
+\item System updates tables and redirects to new PCA display page
+\end{enumerate}
 
-Deactivating PCA code
-1. Select desired PCA code
-2. System loads PCA display page
-3. Click deactivate
-4. Confirm deactivation.
-5. System updates tables and locks PCA code.
+\paragraph{Deactivating PCA code}
+\begin{enumerate}
+\item Select desired PCA code
+\item System loads PCA display page
+\item Click deactivate
+\item Confirm deactivation.
+\item System updates tables and locks PCA code.
+\end{enumerate}
 
-Adding Work Effort
-1. Select "Add Work Effort"
-2. System loads Work Effort form
-3. Fill in form
-4. Associate desired PCA code or codes, if multiple PCA codes are chosen a percentage of work effort may be set for each
-5. Associate entity or entities
-6. Click "Submit"
-7. System updates tables and redirects
+\paragraph{Adding Work Effort}
+\begin{enumerate}
+\item Select "Add Work Effort"
+\item System loads Work Effort form
+\item Fill in form
+\item Associate desired PCA code or codes, if multiple PCA codes are chosen a percentage of work effort may be set for each
+\item Associate entity or entities
+\item Click "Submit"
+\item System updates tables and redirects
+\end{enumerate}
 
-Add Employee/Contactor Info
-1. Select "Add Employee/Contactor"
-2. System Loads Add Entity form
-3. Fill in data
-4. Click Submit
-5 System Updates table and redirects
+\paragraph{Add Employee/Contactor Info}
+\begin{enumerate}
+\item Select "Add Employee/Contactor"
+\item System Loads Add Entity form
+\item Fill in data
+\item Click Submit
+\item System Updates table and redirects
+\end{enumerate}
 
-Edit/Update Employee/Contractor Data
-1. Select desired entity
-2. System pulls data from database and loads Entity Form
-3. Edit/Update as desired
-4. Click "Update"
-5. System updates table and redirects.
+\paragraph{Edit/Update Employee/Contractor Data}
+\begin{enumerate}
+\item Select desired entity
+\item System pulls data from database and loads Entity Form
+\item Edit/Update as desired
+\item Click "Update"
+\item System updates table and redirects.
+\end{enumerate}
+
+\paragraph{The system must allow for future time entry}
+\begin{enumerate}
+\item Select ``Add Work Effort''
+\item Fill in form, making sure to add the effort to the correct date.
+\item Click ``Submit''
+\end{enumerate}
+
+\paragraph{All data for reporting shall be extracted via external source (EDW. Excel, etc.).}
+\begin{enumerate}
+\item Under a given PCA code or work effort, select ``Get Data Report''.
+\item The system will then generate a copy of the data in EDW or Excel format.
+\item User saves the copy at a destination of their choosing.
+\end{enumerate}
+
+\paragraph{Must allow users to create a view of their I-Time timesheet.}
+\begin{enumerate}
+\item User logs in.
+\item On the user's personal page, select ``Get I-Time Report''.
+\item The system will then generate a copy of the data for viewing.
+\end{enumerate}
+
+\paragraph{Must have a sort and group function that allows work effort to be grouped by application, division, manager, etc.}
+\begin{enumerate}
+\item User logs in.
+\item User selects ``My Work Efforts''
+\item System generates list of all work efforts related.
+\item User selects to sort by name, application, etc.
+\item System sorts and redisplays work efforts in the proper order.
+\end{enumerate}
+
+\paragraph{The system must allow a user the ability to create a custom view of the data.}
+\begin{enumerate}
+\item User selects a PCA code or Work Effort code
+\item User selects ``Get Data Report''.
+\item User enters custom settings and hits ``Select''.
+\item System generates report.
+\end{enumerate}
+
+\paragraph{Must allow users to easily size windows}
+\begin{enumerate}
+\item User resizes browser, which will resize the web interface.
+\end{enumerate}
+
+\paragraph{The system shall provide search/find functionality to locate work efforts, with minimal amount of navigation (task actions<=4 clicks/pages/dialogs)}
+\begin{enumerate}
+\item User logs in.
+\item User navigates to a work effort by...
+\begin{itemize}
+  \item Clicking on a link in the ``My Recent Work'' bar.
+  \item Entering a Work Effort code or PCA code in the Search bar on the top.
+    \end{itemize}
+\end{enumerate}
 
 \end{document} 
