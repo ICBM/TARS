@@ -68,9 +68,6 @@ This document's sole purpose is to outline the scope of Idaho TARS. This outline
 \item Detailed Design Information.
 \item Locations of Other Project Resources.
 \end{itemize}
-\subsubsection{Document Scope and/or Context}
-
-
 \subsubsection{Intended Audience for Document}
 Though the TARS is to be fully prototyped by the end of 2011, it will not be completed. With that being the case, this document is aimed at any future developers or users of Idaho TARS. 
 
@@ -116,21 +113,27 @@ Microsoft's Internet Information Services server is a modular, intuitive server 
 TARS will be developed using all these technologies, as well as the IIS7 MVC application. The MVC application will be described in detail in the next section.
 
 \subsection{Model-View-Controller}
-Most of the heavy-lifting for TARS will be present in the display and interaction with large amounts of data. This problem is what the Model-View-Controller design pattern was created for. The idea is that each word in the acronym: Model, View, and Controller each handle a different aspect of the display process.
+Most of the heavy-lifting for TARS will be present in the display and interaction with large amounts of data. This problem is what the Model-View-Controller design pattern was created for. The idea is that each word in the acronym: Model, View, and Controller each handle a different aspect of the display process.\\
+\\
+Advantage of Model-View-Controller architecture:
+\begin{itemize}
+\item Separates the user interface from the logic used in the database.
+\item Allows for independant development, testing, and maintenance of these seperate parts of the application.
+\end{itemize}
 \subsubsection{Controller}
-
+A Controller receives input from the user and converts it to instructions for the Model and View components.
 \subsubsection{Model}
-
+The Model manages database queries and assembles data for use elsewhere in the MVC.
 \subsubsection{View}
-
+View renders the data received from the Model into a viewable web page.
 \subsection{MySQL Database}
-Since TARS is being developed for IIS7, our databases will be in MySQL format. Any queries made by the MVC will be carried out by the \"Model\" controller. 
-
+Since TARS is being developed for IIS7, our databases will be in MySQL format. Any queries made by the MVC will be carried out by the "Model" controller. \\
+\includegraphics[scale=0.8]{../design/images/mvc.png}
 \subsection{Active Directory}
 The IDHW uses Microsoft Active Directory for their user authentification. With that infrastructure already in place, it is logical to use the same for Idaho TARS. 
 
 \subsection{Security}
-While Idaho TARS will be used internally, there is still a security risk. The system may not be dealing with any highly confidential info, but TARS will have access to government resources like the IDHW Active Directory and I-Time interfaces. To prevent easy exploitation of the TARS databases, all queries to the database will be centralized in Model. This will will not only make the team's code more readable, but also make it more secure. Centralized queries allow us to easily implement a strong security stance. Namely, all input from anywhere on the browser will be treated as \"tainted.\" This tainted input will not be used for any queries on the MySQL database until it has been cleansed.
+While Idaho TARS will be used internally, there is still a security risk. The system may not be dealing with any highly confidential info, but TARS will have access to government resources like the IDHW Active Directory and I-Time interfaces. To prevent easy exploitation of the TARS databases, all queries to the database will be centralized in Model. This will will not only make the team's code more readable, but also make it more secure. Centralized queries allow us to easily adopt a strong security stance. Namely, all input from anywhere on the browser will be treated as ``tainted.'' This tainted input will not be used for any queries on the MySQL database until it has been cleansed.
 
 
 \subsection{Browser Interface}
@@ -148,9 +151,9 @@ To be filled in as classes are stubbed out.
 \subsection{MySQL Database Schema and Interface Description}
 As mentioned above in the Software Architecture section, TARS will use a MySQL database to store all interactions other than User Info. Before outlining the Database Schema, it would be wise to fully describe the thought process of the development team.\\
 \\
-Stripped down to its most base parts, TARS is simply a database interface through which users can log and retrieve hours to and from work efforts. These \"Work Efforts\" are simply general projects that can have hours of contractor/non-contractor work added to their totals. For instance, there might be a Work Effort that is assigned its own unique ID and whos description is \"Document the latest changes to the TARS SDD.\" Any employees who wish to log their hours will find the Work Effort's ID, add their hours along with other relevant data, and submit their entire worksheet for approval. \\
+Stripped down to its most base parts, TARS is simply a database interface through which users can log and retrieve hours to and from work efforts. These ``Work Efforts'' are simply general projects that can have hours of contractor/non-contractor work added to their totals. For instance, there might be a Work Effort that is assigned its own unique ID and whos description is ``Document the latest changes to the TARS SDD.'' Any employees who wish to log their hours will find the Work Effort's ID, add their hours along with other relevant data, and submit their entire worksheet for approval. \\
 \\
-The Work Effort to \"Document the latest changes to the TARS SDD.\" now has hours logged on it and waiting for approval. A user with the correct Active Directory permissions can now go check the status of the Work Effort, and approve any pending hours waiting on it. The development team has chosen to add all hours, approved or not, to the Work Effort's database table. A simple boolean present as a column in the table will ensure that filtering by approved/unapprooved will be a simple task.\\
+The Work Effort to ``Document the latest changes to the TARS SDD.'' now has hours logged on it and waiting for approval. A user with the correct Active Directory permissions can now go check the status of the Work Effort, and approve any pending hours waiting on it. The development team has chosen to add all hours, approved or not, to the Work Effort's database table. A simple boolean present as a column in the table will ensure that filtering by approved/unapprooved will be a simple task.\\
 \\
 Unfortunately, the process is not done. Now that a Work Effort has hours charged to it, how can the accounting department charge these expenses? The simple answer is, they can't yet. To provide that functionality, PCA Codes must be assigned. This introduces another database table, as one PCA Code may have multiple Work Effort associations; just as one Work Effort may be associated with multiple PCA Codes.\\
 \\
