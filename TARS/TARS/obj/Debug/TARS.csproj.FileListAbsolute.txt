@@ -1,0 +1,7 @@
+C:\inetpub\wwwroot\TARS\TARS\bin\TARS.dll
+C:\inetpub\wwwroot\TARS\TARS\bin\TARS.pdb
+C:\inetpub\wwwroot\TARS\TARS\bin\EntityFramework.dll
+C:\inetpub\wwwroot\TARS\TARS\bin\EntityFramework.xml
+C:\inetpub\wwwroot\TARS\TARS\obj\Debug\ResolveAssemblyReference.cache
+C:\inetpub\wwwroot\TARS\TARS\obj\Debug\TARS.dll
+C:\inetpub\wwwroot\TARS\TARS\obj\Debug\TARS.pdb
