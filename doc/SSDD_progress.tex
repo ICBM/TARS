@@ -126,14 +126,14 @@ A Controller receives input from the user and converts it to instructions for th
 The Model manages database queries and assembles data for use elsewhere in the MVC.
 \subsubsection{View}
 View renders the data received from the Model into a viewable web page.
-\subsection{MySQL Database}
-Since TARS is being developed for IIS7, our databases will be in MySQL format. Any queries made by the MVC will be carried out by the "Model" controller. \\
+\subsection{SQL2008 Database}
+Since TARS is being developed for IIS7, our databases will be in SQL2008 format. Any queries made by the MVC will be carried out by the "Model" component of the MVC. \\
 \includegraphics[scale=0.8]{../design/images/mvc.png}
 \subsection{Active Directory}
 The IDHW uses Microsoft Active Directory for their user authentification. With that infrastructure already in place, it is logical to use the same for Idaho TARS. 
 
 \subsection{Security}
-While Idaho TARS will be used internally, there is still a security risk. The system may not be dealing with any highly confidential info, but TARS will have access to government resources like the IDHW Active Directory and I-Time interfaces. To prevent easy exploitation of the TARS databases, all queries to the database will be centralized in Model. This will will not only make the team's code more readable, but also make it more secure. Centralized queries allow us to easily adopt a strong security stance. Namely, all input from anywhere on the browser will be treated as ``tainted.'' This tainted input will not be used for any queries on the MySQL database until it has been cleansed.
+While Idaho TARS will be used internally, there is still a security risk. The system may not be dealing with any highly confidential info, but TARS will have access to government resources like the IDHW Active Directory and I-Time interfaces. To prevent easy exploitation of the TARS databases, all queries to the database will be centralized in Model. This will will not only make the team's code more readable, but also make it more secure. Centralized queries allow us to easily adopt a strong security stance. Namely, all input from anywhere on the browser will be treated as ``tainted.'' This tainted input will not be used for any queries on the SQL2008 database until it has been cleansed.
 
 
 \subsection{Browser Interface}
@@ -148,10 +148,10 @@ Though it is probably already indicated by the server architecture, the developm
 \section{Design Descriptions}
 \subsection{Model-View-Controller Modules}
 To be filled in as classes are stubbed out.
-\subsection{MySQL Database Schema and Interface Description}
-As mentioned above in the Software Architecture section, TARS will use a MySQL database to store all interactions other than User Info. Before outlining the Database Schema, it would be wise to fully describe the thought process of the development team.\\
+\subsection{SQL2008 Database Schema and Interface Description}
+As mentioned above in the Software Architecture section, TARS will use a SQL2008 database to store all interactions other than User Info. Before outlining the Database Schema, it would be wise to fully describe the thought process of the development team.\\
 \\
-Stripped down to its most base parts, TARS is simply a database interface through which users can log and retrieve hours to and from work efforts. These ``Work Efforts'' are simply general projects that can have hours of contractor/non-contractor work added to their totals. For instance, there might be a Work Effort that is assigned its own unique ID and whos description is ``Document the latest changes to the TARS SDD.'' Any employees who wish to log their hours will find the Work Effort's ID, add their hours along with other relevant data, and submit their entire worksheet for approval. \\
+Stripped down to its most base parts, TARS is simply a database interface through which users can log and retrieve hours to and from work efforts. These ``Work Efforts'' are simply general projects that can have hours of contractor/non-contractor work added to their totals. For instance, there might be a Work Effort that is assigned its own unique ID and whos description is ``Document the latest changes to the TARS SDD.'' Any employees who wish to log their hours will find the Work Effort's ID, add their hours along with other relevant data, and submit their entire timesheet for approval. \\
 \\
 The Work Effort to ``Document the latest changes to the TARS SDD.'' now has hours logged on it and waiting for approval. A user with the correct Active Directory permissions can now go check the status of the Work Effort, and approve any pending hours waiting on it. The development team has chosen to add all hours, approved or not, to the Work Effort's database table. A simple boolean present as a column in the table will ensure that filtering by approved/unapprooved will be a simple task.\\
 \\
@@ -185,6 +185,7 @@ More might be required here.
 \item Fill in form, including time bounds for the PCA code
 \item Press "Submit"
 \item System updates tables and redirects to new PCA display page
+\item A request to the financial department will be automatically dispatched. PCA codes are not actually generated by TARS.
 \end{enumerate}
 
 \paragraph{Deactivating PCA code}
@@ -205,15 +206,6 @@ More might be required here.
 \item Associate entity or entities
 \item Click "Submit"
 \item System updates tables and redirects
-\end{enumerate}
-
-\paragraph{Add Employee/Contactor Info}
-\begin{enumerate}
-\item Select "Add Employee/Contractor"
-\item System Loads Add Entity form
-\item Fill in data
-\item Click Submit
-\item System Updates table and redirects
 \end{enumerate}
 
 \paragraph{Edit/Update Employee/Contractor Data}
