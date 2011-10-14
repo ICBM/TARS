@@ -53,7 +53,7 @@ Greg Donohoe\\
 
 \end{center}
 \pagebreak
-
+\tableofcontents
 
 \pagebreak
 \section{\bfseries{Introduction}}
@@ -82,7 +82,17 @@ The Idaho Department of Health and Welfare currently is utilizing a resource cal
 Intended Users of Idaho TARS are the staff and employees of the Idaho Department of Health and Welfare as well as their contractors.
 
 \subsection{\bfseries{Definitions, Acronyms, and Abbreviations}}
-A Table should go here. 
+This table will expand dramatically when documenting the MVC modules.
+\begin{center}
+\begin{tabular}{| l | p{10cm} |}
+\hline
+MVC & Model View Controller. A design pattern used for content focused websites. \\ \hline
+TARS & Time, Accounting, and Reporting System. \\ \hline
+PCA Code & Position Classification Allocation Code. \\ \hline
+SQL & Structured Query Language. Used for input and retrieval of data from a SQL database.\\
+\hline
+\end{tabular}
+\end{center}
 
 \subsection{\bfseries{Document Overview}}
 Section 2 describes software constraints imposed by the operation environment, system requirements, and user characteristics. After this it will identify the system stakeholders and list/describe their concerns.  \\
@@ -101,6 +111,7 @@ Sections 5 provides traceability information connecting the original specificati
 Section 6 and beyond are appendices including original information and communications used to create this document.
 \section{\bfseries{Software Requirements, Constraints, and User Characteristics}}
 %\input{requirements_doc.tex}
+Check the requirements\_summary.docx for an extensive list of requirements.
 \section{Software Architecture}
 \subsection{Server Architecture - Microsoft Internet Information Services 7} 
 Microsoft's Internet Information Services server is a modular, intuitive server application. Since the IDHW uses Windows Server for most of their infrastructure, Idaho TARS will do the same. New considerations must now be applied, however. IIS7, being a Microsoft product, uses Microsoft development software. Namely:
