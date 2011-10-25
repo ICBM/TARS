@@ -22,5 +22,26 @@ namespace TARS.Controllers
             ViewBag.code = code;
             return View();
         }
+
+        public virtual ActionResult creatWorkEffort()
+        {
+        }
+
+        public virtual ActionResult viewWorkEffort()
+        {
+        }
+
+        public virtual ActionResult approveHours()
+        {
+        }
+
+        public virtual ActionResult editWorkEfforts()
+        {
+        }
+
+        public virtual ActionResult viewHistory()
+        {
+        }
+
     }
 }

@@ -23,5 +23,16 @@ namespace TARS.Controllers
             return View();
         }
 
+        public virtual ActionResult viewHours()
+        {
+        }
+
+        public virtual ActionResult storeFile()
+        {
+        }
+
+        public virtual ActionResult viewHistory()
+        {
+        }
     }
 }

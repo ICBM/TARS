@@ -12,3 +12,8 @@ C:\Users\Brett\Desktop\TARS\TARS\TARS\bin\TARS.pdb
 C:\Users\Brett\Desktop\TARS\TARS\TARS\bin\EntityFramework.dll
 C:\Users\Brett\Desktop\TARS\TARS\TARS\bin\EntityFramework.xml
 C:\Users\Brett\Desktop\TARS\TARS\TARS\obj\Debug\TARS.pdb
+C:\Senior_Design\ICBM\TARS\TARS\bin\TARS.dll
+C:\Senior_Design\ICBM\TARS\TARS\bin\TARS.pdb
+C:\Senior_Design\ICBM\TARS\TARS\obj\Debug\ResolveAssemblyReference.cache
+C:\Senior_Design\ICBM\TARS\TARS\obj\Debug\TARS.dll
+C:\Senior_Design\ICBM\TARS\TARS\obj\Debug\TARS.pdb

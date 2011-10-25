@@ -20,5 +20,17 @@ namespace TARS.Controllers
             ViewBag.name = name;
             return View();
         }
+
+        public virtual ActionResult addPCA()
+        {
+        }
+
+        public virtual ActionResult viewPCA()
+        {
+        }
+
+        public virtual ActionResult editPCA()
+        {
+        }
     }
 }
