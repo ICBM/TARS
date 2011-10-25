@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2011.5.14)  26 SEP 2011 22:46
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2011.5.14)  11 OCT 2011 13:05
 entering extended mode
  %&-line parsing enabled.
 **SSDD_progress.tex
@@ -82,81 +82,160 @@ Package: appendix 2009/09/02 v1.2b extra appendix facilities
 \c@@pps=\count89
 \c@@ppsavesec=\count90
 \c@@ppsaveapp=\count91
+)
+(/usr/share/texmf-texlive/tex/latex/tools/tabularx.sty
+Package: tabularx 1999/01/07 v2.07 `tabularx' package (DPC)
+
+(/usr/share/texmf-texlive/tex/latex/tools/array.sty
+Package: array 2008/09/09 v2.4c Tabular extension package (FMi)
+\col@sep=\dimen106
+\extrarowheight=\dimen107
+\NC@list=\toks15
+\extratabsurround=\skip44
+\backup@length=\skip45
+)
+\TX@col@width=\dimen108
+\TX@old@table=\dimen109
+\TX@old@col=\dimen110
+\TX@target=\dimen111
+\TX@delta=\dimen112
+\TX@cols=\count92
+\TX@ftn=\toks16
 ) (./SSDD_progress.aux)
 \openout1 = `SSDD_progress.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
- (/usr/share/texmf-texlive/tex/context/base/supp-pdf.mkii
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+
+(/usr/share/texmf-texlive/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count92
-\scratchdimen=\dimen106
+\scratchcounter=\count93
+\scratchdimen=\dimen113
 \scratchbox=\box26
-\nofMPsegments=\count93
-\nofMParguments=\count94
-\everyMPshowfont=\toks15
-\MPscratchCnt=\count95
-\MPscratchDim=\dimen107
-\MPnumerator=\count96
-\everyMPtoPDFconversion=\toks16
+\nofMPsegments=\count94
+\nofMParguments=\count95
+\everyMPshowfont=\toks17
+\MPscratchCnt=\count96
+\MPscratchDim=\dimen114
+\MPnumerator=\count97
+\everyMPtoPDFconversion=\toks18
 )
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 36.
+(Font)              <7> on input line 39.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 36.
+(Font)              <5> on input line 39.
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-Missing character: There is no Â in font cmr10!
-Missing character: There is no § in font cmr10!
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 66.
 
-Underfull \hbox (badness 10000) in paragraph at lines 94--108
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 94--108
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 94--108
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 94--108
-
- []
-
-[2] [3] [4] [5]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 295.
-
- (/usr/share/texmf-texlive/tex/latex/base/omscmr.fd
+(/usr/share/texmf-texlive/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 295.
- [6]
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 66.
+
+Underfull \hbox (badness 10000) in paragraph at lines 88--102
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 88--102
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 88--102
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 88--102
+
+ []
+
+[2]
+Underfull \hbox (badness 10000) in paragraph at lines 116--119
+
+ []
+
+[3] <../design/images/mvc.png, id=19, 490.83376pt x 343.2825pt>
+File: ../design/images/mvc.png Graphic file (type png)
+
+<use ../design/images/mvc.png> [4 <../design/images/mvc.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 152--164
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 152--164
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 152--164
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 152--164
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 152--164
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 152--164
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 152--164
+
+ []
+
+[5] <../design/images/class_diagram_1.png, id=28, 1248.42882pt x 542.73354pt>
+File: ../design/images/class_diagram_1.png Graphic file (type png)
+
+<use ../design/images/class_diagram_1.png>
+Overfull \hbox (29.60767pt too wide) in paragraph at lines 165--166
+[] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 167--170
+
+ []
+
+
+Overfull \hbox (43.76273pt too wide) in paragraph at lines 167--170
+\OT1/cmr/m/n/10 quire-ments changelog is avail-able at: https://github.com/ICBM
+/TARS/blob/master/doc/requirements[]summary.docx 
+ []
+
+[6 <../design/images/class_diagram_1.png (PNG copy)>] [7] [8]
 (./SSDD_progress.aux) ) 
 Here is how much of TeX's memory you used:
- 1391 strings out of 495061
- 17560 string characters out of 1182621
- 72602 words of memory out of 3000000
- 4596 multiletter control sequences out of 15000+50000
+ 1492 strings out of 495061
+ 18946 string characters out of 1182621
+ 74231 words of memory out of 3000000
+ 4687 multiletter control sequences out of 15000+50000
  7665 words of font info for 27 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
- 25i,5n,19p,434b,241s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 25i,5n,19p,714b,241s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm
 /cmbx10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx12.pfb
 ></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/sha
@@ -165,9 +244,9 @@ live/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-texlive/fonts/t
 ype1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/public
 /amsfonts/cm/cmti10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/c
 m/cmti12.pfb>
-Output written on SSDD_progress.pdf (6 pages, 124310 bytes).
+Output written on SSDD_progress.pdf (8 pages, 152976 bytes).
 PDF statistics:
- 53 PDF objects out of 1000 (max. 8388607)
+ 65 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 11 words of extra memory for PDF output out of 10000 (max. 10000000)
 
