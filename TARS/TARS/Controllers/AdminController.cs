@@ -23,14 +23,17 @@ namespace TARS.Controllers
 
         public virtual ActionResult addPCA()
         {
+            return null;
         }
 
         public virtual ActionResult viewPCA()
         {
+            return null;
         }
 
         public virtual ActionResult editPCA()
         {
+            return null;
         }
     }
 }

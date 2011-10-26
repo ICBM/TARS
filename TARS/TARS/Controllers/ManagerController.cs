@@ -25,22 +25,27 @@ namespace TARS.Controllers
 
         public virtual ActionResult creatWorkEffort()
         {
+            return null;
         }
 
         public virtual ActionResult viewWorkEffort()
         {
+            return null;
         }
 
         public virtual ActionResult approveHours()
         {
+            return null;
         }
 
         public virtual ActionResult editWorkEfforts()
         {
+            return null;
         }
 
         public virtual ActionResult viewHistory()
         {
+            return null;
         }
 
     }

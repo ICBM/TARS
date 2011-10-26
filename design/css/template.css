@@ -3,35 +3,47 @@ general, page wide default settings
 */
 
 html {
-	background: #313131;
+	background: white;
 	background-position: left top;
 	background-repeat: repeat-x;
 	padding: 0px;
 	margin: 0px;
-	font-family: 'Trebuchet MS';
+	font-family: 'Verdana';
 	font-size: 11pt;
-	color: black;
+	
+	margin-top: 0px;
+	color: #444444
 }
-
+/*background-image: url('../images/background_tall.png');*/
 body {
-	background-image: url('../images/background_tall.png');
+	background-image: url('../images/background_large.png');
 	background-color: white;
 	background-position: left top;
 	background-repeat: repeat-x;
 	width: 100%;
 	padding: 0px;
 	margin: 0px;
+	border: 0px;
+	margin-top: 0px;
+	border-bottom: 1px solid #767676;
 }
 
 .container{
+	background-image: url('../images/background_large.png');
+	background-color: white;
+	background-position: left top;
+	background-repeat: repeat-x;
 	display:block;
 	margin: auto;
-	width: 1024px;
-	height: auto;
+	width: 1014px;
 	min-height: 900px;
 	background-position: left top;
 	background-repeat: repeat-x;
 	position: relative;
+
+	padding-left: 5px;
+	padding-right: 5px;
+
 }
 
 /*
@@ -39,72 +51,30 @@ specific divs for content seperation
 */
 
 #top {
-	width: 1024px;
-	height: 60px;
-	background-image: url('../images/right2.png');
-	background-position: right top;
-	background-repeat: repeat-y;
+	width: 100%;
+	height: 100px;
+	display: block;
+	position: relative;
+
+}
+
+#navLinks {
+	width: 100%;
+	height: 50px;
+	display: block;
 	position: relative;
 }
 
 #top img#logo{
 	position: absolute;
 	left:0px;
-	top:0px;
+	top:15px;
 }
 
-#middle{
-	width: 100%;
-	margin: auto;
-	clear: both;
-	background-image: url('../images/right2.png');
-	background-position: right top;
-	background-repeat: repeat-y;
-	padding-right: 55px;
-	padding-bottom: 50px;
-	min-height: 800px;
-	padding-top: 6px;
-}
-
-.middle_floater {
-	width: 100%;
-	margin: auto;
-	clear: both;
-	background-image: url('../images/right2.png');
-	background-position: right top;
-	background-repeat: repeat-y;
-	padding-right: 55px;
-	height: 27px;
-	
-}
 /*
-left: 244, middle: , right:
-*/
-.middle_floater img.notch {
-	margin-left: 260px;
-}
-
-#middle img#switch_img {
-	margin: auto;
-	border: 4px solid #a0a0a0;
-	width: 575px;
-	margin-left: 187px;
-}
-
-#bottom{
-	background-color: white;
-	width: 100%;
-	min-height: 600px;
-	background-image: url('../images/right2.png');
-	background-position: right top;
-	background-repeat: repeat-y;
-	padding-right: 55px;
-}
 
 #footer{
 	width: 100%;
-	background: #313131;
-	
 	background-repeat: repeat-x;
 	background-position: left top;
 	padding-bottom: 150px;
@@ -116,50 +86,51 @@ left: 244, middle: , right:
 /*
 Div classes
 */
-div.summary {
-	width: 700px;
-	margin-right: 10px;
+
+table.priviligeNav{
+
 }
 
-div.float_top{
-	float: right;
-	width: 20px;
-	height: 34px;
-	background-color: #313131;
-}
 
-div.spreader{
-	height: 60px;
-	vertical-align: center;
-	width: 100%;
-}
 
 table.nav{
 	position: absolute; 
-	right: 80px;
-	top: 5px;
-	border-spacing: 0px;
+	right: -5px;
+	top: 10px;
+	height: 40px;
+
 	border-collapse: collapse;
 	margin: 0px;
 	padding: 0px;
-	font-family: 'Arimo', serif;
-	font-size: 12px;
-	font-style: normal;
-	font-weight: 700;
-	text-decoration: none;
-	text-transform: none;
-	letter-spacing: 0.1em;
-	word-spacing: 0em;
-	line-height: 1.2;
-	text-align: right;
+
+	font-size: 12pt;
+	text-align: center;
 	color: white;
 }
 
 table.nav td {
-	height: 50px;
-	
+	min-width: 90px;
+
+	height: 60px;
+	padding-left:: 10px;
+	background-image: url('../images/nav_link.png');
+	background-position: center;
+	background-repeat: no-repeat;
 }
 
+table.nav td:hover {
+	min-width: 90px;
+
+	height: 60px;
+	padding-left:: 10px;
+	background-image: url('../images/nav_link_hover.png');
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+/*
+	background-image: url('../images/privilege_background.png');
+*/
 table.nav td.spacer{
 	width: 10px;
 	text-align: center;
