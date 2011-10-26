@@ -29,7 +29,7 @@ body {
 }
 
 .container{
-	background-image: url('../images/background_large.png');
+	background-image: url('../images/background_large_link_higher.png');
 	background-color: white;
 	background-position: left top;
 	background-repeat: repeat-x;
@@ -60,7 +60,7 @@ specific divs for content seperation
 
 #navLinks {
 	width: 100%;
-	height: 50px;
+	height: 30px;
 	display: block;
 	position: relative;
 }
@@ -87,45 +87,71 @@ specific divs for content seperation
 Div classes
 */
 
-table.priviligeNav{
+table.contextMenu{
+	position: absolute; 
+	left: 20px;
+	top: -27px;
+	height: 30px;
+	
+	border-collapse: collapse;
 
+
+	font-size: 8pt;
+	text-align: center;
+	color: white;
 }
 
+table.contextMenu td {
+	height: 29px;
+	width: 100px;
 
+	vertical-align: top;
+	padding-top: 6px;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+table.contextMenu td:hover {
+	height: 29px;
+	width: 100px;
+
+	background-image: url('../images/context_menu_hover.png');
+	vertical-align: top;
+	padding-top: 6px;
+	background-position: center;
+	background-repeat: no-repeat;
+}
 
 table.nav{
 	position: absolute; 
 	right: -5px;
-	top: 10px;
-	height: 40px;
+	top: 4px;
 
 	border-collapse: collapse;
 	margin: 0px;
 	padding: 0px;
 
-	font-size: 12pt;
+	font-size: 10pt;
 	text-align: center;
 	color: white;
 }
 
 table.nav td {
-	min-width: 90px;
-
-	height: 60px;
-	padding-left:: 10px;
-	background-image: url('../images/nav_link.png');
+	height: 90px;
+	padding-left: 10px;
+	padding-right: 10px;
+	
 	background-position: center;
-	background-repeat: no-repeat;
+	background-repeat: repeat-x;
 }
 
 table.nav td:hover {
-	min-width: 90px;
-
-	height: 60px;
-	padding-left:: 10px;
-	background-image: url('../images/nav_link_hover.png');
+	height: 90px;
+	padding-left: 10px;
+	padding-right: 10px;
+	background-image: url('../images/nav_link_hover_higher.png');
 	background-position: center;
-	background-repeat: no-repeat;
+	background-repeat: repeat-x;
 }
 
 /*
