@@ -21,19 +21,5 @@ namespace TARS.Controllers
             return View();
         }
 
-        public virtual ActionResult addPCA()
-        {
-            return null;
-        }
-
-        public virtual ActionResult viewPCA()
-        {
-            return null;
-        }
-
-        public virtual ActionResult editPCA()
-        {
-            return null;
-        }
     }
 }
