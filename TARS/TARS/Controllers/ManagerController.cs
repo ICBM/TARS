@@ -19,19 +19,17 @@ namespace TARS.Controllers
         // GET: /Manager/addPCA
         public virtual ActionResult addPCA(int code)
         {
-            ViewBag.code = code;
             //fetch data from Form
             //send data to model
             //call appropriate view
-            return View();
+            return null;
         }
 
-        public virtual ActionResult viewPCA()
+        public virtual ActionResult viewPCA(int code)
         {
-            //fetch data from Form
+            ViewBag.code = code;
             //request data from model
-            //send data to appropriate view
-            return null;
+            return View();
         }
 
         public virtual ActionResult editPCA()
@@ -42,20 +40,20 @@ namespace TARS.Controllers
             return null;
         }
 
-        public virtual ActionResult creatWorkEffort()
-        {
-            //fetch data from Form
-            //send data to model
-            //call appropriate view
-            return null;
-        }
-
-        public virtual ActionResult viewWorkEffort()
+        public virtual ActionResult createWorkEffort()
         {
             //fetch data from Form
             //request data from model
             //send data to appropriate view
             return null;
+            
+        }
+
+        public virtual ActionResult viewWorkEffort(string name)
+        {
+            ViewBag.name = name;
+            //request data from model
+            return View();
         }
 
         public virtual ActionResult editWorkEfforts()
@@ -74,7 +72,7 @@ namespace TARS.Controllers
             return null;
         }
 
-        public virtual ActionResult viewHistory()
+        public override ActionResult viewHistory()
         {
             //fetch data from Form
             //request data from model
