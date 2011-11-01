@@ -9,7 +9,7 @@ html {
 	padding: 0px;
 	margin: 0px;
 	font-family: 'Verdana';
-	font-size: 11pt;
+	font-size: 12px;
 	
 	margin-top: 0px;
 	color: #444444
@@ -90,35 +90,35 @@ Div classes
 table.contextMenu{
 	position: absolute; 
 	left: 20px;
-	top: -27px;
+	top: -26px;
 	height: 30px;
 	
 	border-collapse: collapse;
+padding-top: 5px;
 
-
-	font-size: 8pt;
+	font-size: 11px;
 	text-align: center;
 	color: white;
 }
 
 table.contextMenu td {
-	height: 29px;
+	height: 30px;
 	width: 100px;
-
+	
 	vertical-align: top;
-	padding-top: 6px;
-	background-position: center;
+	padding-top: 5px;
+	background-position: top;
 	background-repeat: no-repeat;
 }
 
 table.contextMenu td:hover {
-	height: 29px;
+	height: 30px;
 	width: 100px;
 
 	background-image: url('../images/context_menu_hover.png');
 	vertical-align: top;
-	padding-top: 6px;
-	background-position: center;
+	padding-top: 5px;
+	background-position: top;
 	background-repeat: no-repeat;
 }
 
