@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TARS.Models;
 
 namespace TARS.Controllers
 {
     public class ManagerController : UserController
     {
+        protected PCA_CodeDBContext db = new PCA_CodeDBContext();
         //
         // GET: /Manager/
         public override ActionResult Index() //Overridden from User/Index, which was virtual.
@@ -27,6 +31,8 @@ namespace TARS.Controllers
 
         public virtual ActionResult viewPCA(int code)
         {
+            PCA_Code pca = db.PCA_CodeList.Find(code);
+            ViewBag.model = pca;
             ViewBag.code = code;
             //request data from model
             return View();
