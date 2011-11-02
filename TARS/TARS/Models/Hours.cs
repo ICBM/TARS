@@ -11,8 +11,8 @@ namespace TARS.Models
     public class Hours
     {
         public int ID { get; set; } //DB iterator?
-        public int PCA { get; set; }
-        public int WE { get; set; }
+        public int pca { get; set; }
+        public int we { get; set; }
         public int hours { get; set; }
         public string hoursType { get; set; }
         public bool approved { get; set; }

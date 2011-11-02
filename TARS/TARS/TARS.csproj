@@ -66,7 +66,6 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManagerController.cs" />
-    <Compile Include="Controllers\PCAController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -76,8 +75,8 @@
     <Compile Include="Models\History.cs" />
     <Compile Include="Models\Hours.cs" />
     <Compile Include="Models\PCA_WE.cs" />
-    <Compile Include="Models\PCA_Code.cs" />
-    <Compile Include="Models\Work_Effort.cs" />
+    <Compile Include="Models\PcaCode.cs" />
+    <Compile Include="Models\WorkEffort.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -183,19 +182,16 @@
     <Content Include="Views\Manager\viewWorkEffort.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\PCA\Index.cshtml" />
+    <Content Include="Views\Manager\searchPCA.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\PCA\Details.cshtml" />
+    <Content Include="Views\Manager\deletePCA.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\PCA\Create.cshtml" />
+    <Content Include="Views\Manager\editPCA.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\PCA\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\PCA\Delete.cshtml" />
+    <Content Include="Views\Manager\addPCA.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -8,20 +8,19 @@ using System.Data.Entity;
 
 namespace TARS.Models
 {
-    public class History
+    public class WorkEffort
     {
         public int ID { get; set; } //DB iterator?
-        public int pca { get; set; }
-        public int we { get; set; }
+        public int code { get; set; }
+        public DateTime startDate { get; set; }
+        public DateTime endDate { get; set; }
         public string creator { get; set; }
-        public DateTime timestamp { get; set; }
-        public int hours { get; set; }
-        public string hoursType { get; set; }
         public string description { get; set; }
+        public string files { get; set; }
     }
 
-    public class HistoryDBContext : DbContext
+    public class WorkEffortDBContext : DbContext
     {
-        public DbSet<History> HistoryList { get; set; }
+        public DbSet<WorkEffort> WorkEffortList { get; set; }
     }
 }
