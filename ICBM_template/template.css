@@ -1,0 +1,168 @@
+
+/*
+	Base containers. Text align should be justify on CSS3 platforms.
+*/
+html {
+	font-family: "Lucida Grand", Helvetica, sans-serif;
+	padding: 0px;
+	margin: 0px;
+	font-size: 11pt;
+	text-align: justify;
+	color: #424242;
+}
+
+ul {
+	list-style-image: url('images/bullet.png');
+}
+
+ul.arrow {
+	list-style-image: url('images/li_bullet.png');
+}
+
+body {
+	padding: 0px;
+	margin: 0px;
+	border-bottom: 1px solid #dddddd;
+}
+
+.container{
+	display:block;
+	margin: auto;
+	width: 1024px;
+	height: auto;
+	min-height: 900px;
+	background-position: left top;
+	background-repeat: repeat-x;
+	position: relative;
+	padding: 0px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 30px;
+	
+	border-left: 1px solid #dddddd;
+	border-right: 1px solid #dddddd;
+}
+/*
+	General Use
+*/
+
+a {
+	color: #b33700;
+}
+
+td.right {
+	text-align: right;
+}
+
+h1 {
+	font-family: 'Andada', serif;
+	font-weight: 400; 
+	color: #404040;
+}
+
+h2 {
+	font-family: 'Terminal Dosis', sans-serif;
+	font-weight: 400;
+	color: #b33700;
+}
+
+.right {
+	width: 700px;
+	padding: 10px;
+	float: right;
+	display: block;
+	border: 1px solid #dddddd;
+	margin-top: 10px;
+	clear: both;
+}
+
+.left {
+	width: 700px;
+	padding: 10px;
+	float: left;
+	display: block;
+	border: 1px solid #dddddd;
+		margin-top: 10px;
+			clear: both;
+}
+
+img.rightimg{
+	float: right;
+	margin: 10px;
+	margin-top: 0px;
+	
+}
+
+img.leftimg {
+	float: left;
+	margin: 10px;
+	margin-top: 0px;
+}
+
+
+/*
+	Stuff relating solely to the title at the top of the page
+*/
+
+.top {
+	width: 100%;
+	margin: 0px;
+	position: relative;
+	min-height: 60px;
+}
+
+.top table {
+	width: 100%;
+}
+
+.top th{
+	font-family: 'Terminal Dosis', sans-serif;
+	font-weight: 400; 
+	color: #404040;
+	font-size: 30pt;
+}
+
+
+.top td.small {
+	font-size: 9pt;
+}
+
+/*
+	Floater
+*/
+.which {
+	position: absolute;
+	left: 5px;
+	bottom: 0px;
+}
+
+
+/*
+	Navigation
+*/
+
+.nav {
+	width: 100%;
+	margin: 0px;
+	position: relative;
+	min-height: 60px;
+}
+
+.nav table {
+	font-family: 'Terminal Dosis', sans-serif;
+	font-weight: 400;
+	color: #707070;
+	font-size: 14pt;
+	width: 100%;
+	text-align: center;
+}
+
+.nav a {
+	color: #707070;
+	text-decoration: none;
+}
+
+.nav a:hover {
+	text-decoration: underline;
+	color: #b33700;
+}
