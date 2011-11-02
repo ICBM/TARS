@@ -158,7 +158,55 @@ Though it is probably already indicated by the server architecture, the developm
 \end{itemize}
 \section{Design Descriptions}
 \subsection{Model-View-Controller Modules}
-To be filled in as classes are stubbed out.
+\subsubsection{Global Scripts and Config Files}
+
+\subsubsection{Controllers}
+These controllers do not yet have a finalized set of associated functions and variables. When that is complete a description will reside here.
+\begin{itemize}
+\item HomeController
+\item UserController
+\item ManagerController
+\item AdminController
+\end{itemize}
+The home controller our default page in the case that a user is not logged in. It provides the entry point. \\
+\\
+UserController inherits from the default MVC Controller class as well as providing basic functionality for a normal user.\\
+\\
+ManagerController inherits from UserController, but adds a couple more abilities that managers need as per the requirements specification.\\
+\\
+AdminController inherits from ManagerController, inheriting all functionality as well as providing any and all administrative functions that are needed by TARS admin. Having these inherited privileges ensures that forced permission traversals will be almost impossible.\\ 
+\begin{verbatim}
+Home Controller --
+
+User Controller
+ -> ManagerController
+  -> AdminController
+
+\end{verbatim}
+\subsubsection{Models}
+\begin{itemize}
+\item AccountModels (provided by IIS7 MVC)
+\item History
+\item Hours
+\item PcaCode
+\item PCAWE
+\item WorkEffort
+\end{itemize}
+These items do not inherit from the default Model class. In addition, each class has an associated DbContext class in the same file. Example:
+\begin{verbatim}
+public class PCA_CodeDBContext : DbContext
+{
+   public DbSet<PcaCode> PCA_CodeList { get; set; }
+}
+\end{verbatim}
+These connections are not conventional classes or objects. To indicate this, their naming conventions are slightly more verbose. 
+\subsubsection{Views}
+\begin{itemize}
+\item Every controller has an associated View. Located in their respective folders. Manager example:
+\begin{verbatim}
+Views/Manager/___.cshtml
+\end{verbatim}
+\end{itemize}
 \subsection{SQL2008 Database Schema and Interface Description}
 As mentioned above in the Software Architecture section, TARS will use a SQL2008 database to store all interactions other than User Info. Before outlining the Database Schema, it would be wise to fully describe the thought process of the development team.\\
 \\
@@ -170,10 +218,28 @@ Unfortunately, the process is not done. Now that a Work Effort has hours charged
 \\
 One final note about the Work Efforts and PCA Codes is needed. The requirements state that they both must be time-bounded, capable of early expiration, and renewable. \\
 \\
-Through discussion of the above situations and processes, the development team settled on the following database schema. These are no final by any means, as rarely does a design get finalized before development has commenced.\\
+Through discussion of the above situations and processes, the development team settled on the following database schema. These are no final by any means, as a design is rarely finalized before development has commenced.\\
 \\
+Addendum for 11/1/2011. The stakeholders introduced the concept of ``tasks.'' There will be a default set of tasks for every work effort, but members of the ``administrator'' Active Directory group will have the ability to add or remove these ``tasks'' from a given work effort. Instead of having a separate ``tasks'' table for each work effort, the TARS team members are simply going to store the list of tasks in a comma separated string; using string manipulation to retrieve the list.
+
 \subsubsection{TARS Database Schema}
 \includegraphics[scale=0.4]{../design/images/class_diagram_1.png}
+
+
+
+\subsection{Naming Conventions}
+All defined classes and objects will use capitalized camelcase, with their first letter a capital as well.\\
+\\
+Local Variables and instances of classes will use camelcase also, neglecting the capitalization of their first letter.
+\begin{verbatim}
+class Manager : Controller
+{
+    public int id;
+    public bool approved = FALSE;
+    public string hoursType;
+}
+\end{verbatim}
+
 \section{Tracability Information}
 All effort on the project may be tracked via the project GitHub repository: github.com/ICBM/TARS\\
 \\
