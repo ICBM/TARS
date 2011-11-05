@@ -1,5 +1,4 @@
 #!/bin/bash
-
 rm *.toc
 rm *.out
 rm *.aux
