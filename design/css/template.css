@@ -10,7 +10,7 @@ html {
 	margin: 0px;
 	font-family: 'Verdana';
 	font-size: 12px;
-	
+
 	margin-top: 0px;
 	color: #444444
 }
@@ -139,13 +139,10 @@ table.contextMenu td:hover {
 table.nav{
 	position: absolute; 
 	right: -5px;
-
-
 	border-collapse: collapse;
 	margin: 0px;
 	padding: 0px;
-
-	font-size: 10pt;
+	font-size: 12px;
 	text-align: center;
 	color: white;
 }
@@ -154,7 +151,6 @@ table.nav td {
 	height: 30px;
 	padding-left: 10px;
 	padding-right: 10px;
-	
 	background-position: center;
 	background-repeat: repeat-x;
 }
@@ -166,6 +162,7 @@ table.nav td:hover {
 	background-image: url('../images/nav_link_hover_higher.png');
 	background-position: center;
 	background-repeat: repeat-x;
+	color: #c82425;
 }
 
 /*
@@ -174,5 +171,18 @@ table.nav td:hover {
 table.nav td.spacer{
 	width: 10px;
 	text-align: center;
+}
+
+
+table.update {
+	position: absolute;
+	right: 5px;
+	top: 50px;
+	height: 50px;	
+	color: white;
+	width: 200px;
+	font-size: 11px;
+	font-family: Trebuchet MS;
+	
 }
 
