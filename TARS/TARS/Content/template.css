@@ -1,0 +1,188 @@
+﻿/*
+general, page wide default settings
+*/
+
+html {
+	background: white;
+	background-position: left top;
+	background-repeat: repeat-x;
+	padding: 0px;
+	margin: 0px;
+	font-family: 'Verdana';
+	font-size: 12px;
+
+	margin-top: 0px;
+	color: #444444
+}
+/*background-image: url('themes/base/images/background_tall.png');*/
+body {
+	background-image: url('themes/base/images/background_large.png');
+	background-color: white;
+	background-position: left top;
+	background-repeat: repeat-x;
+	width: 100%;
+	padding: 0px;
+	margin: 0px;
+	border: 0px;
+	margin-top: 0px;
+	border-bottom: 1px solid #767676;
+}
+
+.container{
+	background-image: url('themes/base/images/background_large_link_higher.png');
+	background-color: white;
+	background-position: left top;
+	background-repeat: repeat-x;
+	display:block;
+	margin: auto;
+	width: 1014px;
+	min-height: 900px;
+	background-position: left top;
+	background-repeat: repeat-x;
+	position: relative;
+
+	padding-left: 5px;
+	padding-right: 5px;
+
+}
+
+/*
+specific divs for content seperation
+*/
+
+#top {
+	width: 100%;
+	height: 100px;
+	display: block;
+	position: relative;
+	font-family: Tahoma;
+}
+
+#navLinks {
+	width: 100%;
+	height: 30px;
+	display: block;
+	position: relative;
+}
+
+#top img#logo{
+	position: absolute;
+	left:0px;
+	top:5px;
+}
+
+#contents {
+	width: 1004px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+	left: -5px;
+	border-left: 1px solid #e4e4e4;
+	border-right: 1px solid #e4e4e4;
+	position: relative;
+	min-height: 900px;
+	display: block;
+}
+
+/*
+
+#footer{
+	width: 100%;
+	background-repeat: repeat-x;
+	background-position: left top;
+	padding-bottom: 150px;
+	color: white;
+	padding-top: 5px;
+	font-size: 10pt;
+	position: relative;
+}
+/*
+Div classes
+*/
+
+table.contextMenu{
+	position: absolute; 
+	left: 20px;
+	top: 74px;
+	height: 30px;
+	
+	border-collapse: collapse;
+	padding-top: 5px;
+
+	font-size: 11px;
+	text-align: center;
+	color: white;
+}
+
+table.contextMenu td {
+	height: 30px;
+	padding-left: 10px; 
+	padding-right: 15px;
+	vertical-align: top;
+	padding-top: 5px;
+	background-position: top;
+	background-repeat: no-repeat;
+}
+
+table.contextMenu td:hover {
+	height: 30px;
+	
+	padding-left: 10px; 
+	padding-right: 15px;
+	background-image: url('themes/base/images/context_menu_hover.png');
+	vertical-align: top;
+	padding-top: 5px;
+	background-position: top center;
+	background-repeat: no-repeat;
+}
+
+table.nav{
+	position: absolute; 
+	right: -5px;
+	border-collapse: collapse;
+	margin: 0px;
+	padding: 0px;
+	font-size: 12px;
+	text-align: center;
+	color: white;
+}
+
+table.nav td {
+	height: 30px;
+	padding-left: 10px;
+	padding-right: 10px;
+	background-position: center;
+	background-repeat: repeat-x;
+}
+
+table.nav td:hover {
+	height:30px;
+	padding-left: 10px;
+	padding-right: 10px;
+	background-image: url('themes/base/images/nav_link_hover_higher.png');
+	background-position: center;
+	background-repeat: repeat-x;
+	color: #c82425;
+}
+
+/*
+	background-image: url('../images/privilege_background.png');
+*/
+table.nav td.spacer{
+	width: 10px;
+	text-align: center;
+}
+
+
+table.update {
+	position: absolute;
+	right: 5px;
+	top: 50px;
+	height: 50px;	
+	color: white;
+	width: 200px;
+	font-size: 11px;
+	font-family: Trebuchet MS;
+	
+}
+
