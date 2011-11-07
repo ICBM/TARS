@@ -12,6 +12,7 @@ namespace TARS.Controllers
     public class ManagerController : UserController
     {
         protected PcaCodeDBContext db = new PcaCodeDBContext();
+
         //
         // GET: /Manager/
         public override ActionResult Index() //Overridden from User/Index, which was virtual.
