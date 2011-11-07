@@ -1,9 +1,45 @@
-﻿@{
+﻿@model TARS.Models.WorkEffort
+
+@{
     ViewBag.Title = "viewWorkEffort";
 }
 
-<h2>viewWorkEffort</h2>
+<h2>Details</h2>
 
-<p>This is in Views/Manager/viewWorkEffort.cshtml</p>
+<fieldset>
+    <legend>PcaCode</legend>
 
-Work Effort is @ViewBag.name
+    <div class="display-label">code</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.code)
+    </div>
+
+    <div class="display-label">startDate</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.startDate)
+    </div>
+
+    <div class="display-label">endDate</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.endDate)
+    </div>
+
+    <div class="display-label">creator</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.creator)
+    </div>
+
+    <div class="display-label">description</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.description)
+    </div>
+
+    <div class="display-label">files</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.files)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "editWorkEffort/", new { id=Model.ID }) |
+    @Html.ActionLink("Back to List", "searchWorkEffort/")
+</p>

@@ -1,7 +1,7 @@
-﻿@model TARS.Models.PcaCode
+﻿@model TARS.Models.WorkEffort
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "DeleteWorkEffort";
 }
 
 <h2>Delete</h2>
@@ -43,6 +43,6 @@
 @using (Html.BeginForm()) {
     <p>
         <input type="submit" value="Delete" /> | 
-        @Html.ActionLink("Back to List", "searchPCA/")
+        @Html.ActionLink("Back to List", "searchWorkEffort/")
     </p>
 }
