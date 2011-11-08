@@ -23,5 +23,11 @@ namespace TARS.Models
     public class PcaCodeDBContext : DbContext
     {
         public DbSet<PcaCode> PcaCodeList { get; set; }
+
+        public int SaveChanges()
+        {
+            //call our code here
+            return base.SaveChanges();
+        }
     }
 }
