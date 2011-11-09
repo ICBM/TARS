@@ -22,5 +22,11 @@ namespace TARS.Models
     public class WorkEffortDBContext : DbContext
     {
         public DbSet<WorkEffort> WorkEffortList { get; set; }
+
+        public int SaveChanges()
+        {
+            //call our code here
+            return base.SaveChanges();
+        }
     }
 }

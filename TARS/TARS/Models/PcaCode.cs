@@ -9,8 +9,7 @@ using System.Data.Entity;
 namespace TARS.Models
 {
     public class PcaCode
-    {
-      
+    {    
         public int ID { get; set; } //DB iterator?
         public int code { get; set; }
         public DateTime startDate { get; set; }
