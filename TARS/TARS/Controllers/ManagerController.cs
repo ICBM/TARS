@@ -11,7 +11,9 @@ namespace TARS.Controllers
 {
     public class ManagerController : UserController
     {
-        protected PcaCodeDBContext db = new PcaCodeDBContext();
+        protected PcaCodeDBContext PcaDB = new PcaCodeDBContext();
+        protected WorkEffortDBContext WorkEffortDB = new WorkEffortDBContext();
+
         //
         // GET: /Manager/
         public override ActionResult Index() //Overridden from User/Index, which was virtual.
@@ -33,8 +35,8 @@ namespace TARS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.PcaCodeList.Add(pcacode);
-                db.SaveChanges();
+                PcaDB.PcaCodeList.Add(pcacode);
+                PcaDB.SaveChanges();
                 return RedirectToAction("searchPCA/");
             }
             return View(pcacode);
@@ -45,7 +47,7 @@ namespace TARS.Controllers
         //  - Shows a list of all PCA codes.
         public virtual ActionResult searchPCA( )
         {
-            return View(db.PcaCodeList.ToList());
+            return View(PcaDB.PcaCodeList.ToList());
         }
 
         //
@@ -53,7 +55,7 @@ namespace TARS.Controllers
         //  - Shows detailed information for a single PCA code.
         public virtual ActionResult viewPCA( int id )
         {
-            PcaCode pcacode = db.PcaCodeList.Find( id );
+            PcaCode pcacode = PcaDB.PcaCodeList.Find( id );
             return View(pcacode);
         }
 
@@ -62,7 +64,7 @@ namespace TARS.Controllers
         //  - Edits a specific PCA code.
         public virtual ActionResult editPCA( int id )
         {
-            PcaCode pcacode = db.PcaCodeList.Find(id);
+            PcaCode pcacode = PcaDB.PcaCodeList.Find(id);
             return View(pcacode);
         }
 
@@ -73,8 +75,8 @@ namespace TARS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(pcacode).State = EntityState.Modified;
-                db.SaveChanges();
+                PcaDB.Entry(pcacode).State = EntityState.Modified;
+                PcaDB.SaveChanges();
                 return RedirectToAction("searchPCA/");
             }
             return View(pcacode);
@@ -84,7 +86,7 @@ namespace TARS.Controllers
         // GET: /Manager/deletePCA/5
         public virtual ActionResult deletePCA(int id)
         {
-            PcaCode pcacode = db.PcaCodeList.Find(id);
+            PcaCode pcacode = PcaDB.PcaCodeList.Find(id);
             return View(pcacode);
         }
 
@@ -93,15 +95,15 @@ namespace TARS.Controllers
         [HttpPost, ActionName("deletePCA")] //This action MUST match the above delete function.
         public virtual ActionResult confirmedDeletePCA(int id)
         {
-            PcaCode pcacode = db.PcaCodeList.Find(id);
-            db.PcaCodeList.Remove(pcacode);
-            db.SaveChanges();
+            PcaCode pcacode = PcaDB.PcaCodeList.Find(id);
+            PcaDB.PcaCodeList.Remove(pcacode);
+            PcaDB.SaveChanges();
             return RedirectToAction("searchPCA/");
         }
                 //This was attached to delete; not sure what this is yet, but it doesn't explode!
                 protected override void Dispose(bool disposing)
                 {
-                    db.Dispose();
+                    PcaDB.Dispose();
                     base.Dispose(disposing);
                 }
 
@@ -113,29 +115,102 @@ namespace TARS.Controllers
 
 
 
-        public virtual ActionResult createWorkEffort()
-        {
-            //fetch data from Form
-            //request data from model
-            //send data to appropriate view
-            return null;
-            
-        }
 
-        public virtual ActionResult viewWorkEffort(string name)
+        //
+        // GET: /Manager/addWorkEffort
+        public virtual ActionResult addWorkEffort()
         {
-            ViewBag.name = name;
-            //request data from model
             return View();
         }
 
-        public virtual ActionResult editWorkEfforts()
+        //
+        // POST: /Manager/addWorkEffort
+        [HttpPost]
+        public virtual ActionResult addWorkEffort(WorkEffort workeffort)
         {
-            //fetch data from Form
-            //request data from model
-            //call appropriate view
-            return null;
+            if (ModelState.IsValid)
+            {
+                WorkEffortDB.WorkEffortList.Add(workeffort);
+                WorkEffortDB.SaveChanges();
+                return RedirectToAction("searchWorkEffort/");
+            }
+            return View(workeffort);
         }
+
+        //
+        // GET: /Manager/searchWorkEffort
+        //  - Shows a list of all WorkEffort codes.
+        public virtual ActionResult searchWorkEffort()
+        {
+            return View(WorkEffortDB.WorkEffortList.ToList());
+        }
+
+        //
+        // GET: /Manager/viewWorkEffort/5
+        //  - Shows detailed information for a single WorkEffort code.
+        public virtual ActionResult viewWorkEffort(int id)
+        {
+            WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
+            return View(workeffort);
+        }
+
+        //
+        // GET: /Manager/editWorkEffort/5
+        //  - Edits a specific WorkEffort code.
+        public virtual ActionResult editWorkEffort(int id)
+        {
+            WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
+            return View(workeffort);
+        }
+
+        //
+        // POST: /Manager/editWorkEffort/5
+        [HttpPost]
+        public virtual ActionResult editWorkEffort(WorkEffort workeffort)
+        {
+            if (ModelState.IsValid)
+            {
+                WorkEffortDB.Entry(workeffort).State = EntityState.Modified;
+                WorkEffortDB.SaveChanges();
+                return RedirectToAction("searchWorkEffort/");
+            }
+            return View(workeffort);
+        }
+
+        //
+        // GET: /Manager/deleteWorkEffort/5
+        public virtual ActionResult deleteWorkEffort(int id)
+        {
+            WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
+            return View(workeffort);
+        }
+
+        //
+        // POST: /Manager/deleteWorkEffort/5
+        [HttpPost, ActionName("deleteWorkEffort")] //This action MUST match the above delete function.
+        public virtual ActionResult confirmedDeleteWorkEffort(int id)
+        {
+            WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
+            WorkEffortDB.WorkEffortList.Remove(workeffort);
+            WorkEffortDB.SaveChanges();
+            return RedirectToAction("searchWorkEffort/");
+        }
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         public virtual ActionResult approveHours()
         {

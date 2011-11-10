@@ -63,7 +63,7 @@ This Software Design Document pertains to the Idaho Department of Health and Wel
 \subsubsection{Document Purpose}
 This document's sole purpose is to outline the scope of Idaho TARS. This outline includes, but is not limited to:
 \begin{itemize}
-\item Development decisions and their reasoning.
+\item Development Decisions and Rationale.
 \item Architectural Specifications.
 \item Detailed Design Information.
 \item Locations of Other Project Resources.
@@ -73,7 +73,7 @@ Though the TARS is to be fully prototyped by the end of 2011, it will not be com
 
 \subsection{\bfseries{Software Purpose, Scope, and Intended Users}}
 \subsubsection{Software Purpose}
-Idaho TARS is intended to provide time and resource tracking for contractor/non-contractor work efforts within the Idaho Department of Welfare. Work efforts must be added to time-bounded project PCA codes and approved by users with sufficient privileges. Project summaries, cost totals, and other information will then be available within the TARS.     
+Idaho TARS is intended to provide time and resource tracking for contractor/non-contractor work efforts within the Idaho Department of Welfare. Work efforts must be added to time-bounded project PCA codes and approved by users with sufficient privileges. Project summaries, cost totals,user logs, and other information will then be available within TARS.     
 
 \subsubsection{Software Scope/Context}
 The Idaho Department of Health and Welfare currently is utilizing a resource called Mariner for project management. The IDHW's needs, however, are significantly less than the capabilities that Mariner provides. Portfolio and Resource Management, Planning, and other features of Mariner are being paid for, but being left unused. This is where the creation of the Time, Accounting, and Reporting System is merited. 
@@ -89,7 +89,11 @@ This table will expand dramatically when documenting the MVC modules.
 MVC & Model View Controller. A design pattern used for content focused websites. \\ \hline
 TARS & Time, Accounting, and Reporting System. \\ \hline
 PCA Code & Position Classification Allocation Code. \\ \hline
-SQL & Structured Query Language. Used for input and retrieval of data from a SQL database.\\
+SQL & Structured Query Language. Used for input and retrieval of data from a SQL database.\\ \hline
+IDHW & Idaho Deparment of Health and Welfare \\ \hline
+Work Effort & A project. Has one or more assigned PCA Codes and a list of associated work tasks.\\ \hline
+MVC & Model-View-Controller.\\ \hline
+Database Connection String & A formatted line of text that contains all location information for a SQL database. \\
 \hline
 \end{tabular}
 \end{center}
@@ -114,17 +118,17 @@ Section 6 and beyond are appendices including original information and communica
 Check the requirements\_summary.docx for an extensive list of requirements.
 \section{Software Architecture}
 \subsection{Server Architecture - Microsoft Internet Information Services 7} 
-Microsoft's Internet Information Services server is a modular, intuitive server application. Since the IDHW uses Windows Server for most of their infrastructure, Idaho TARS will do the same. New considerations must now be applied, however. IIS7, being a Microsoft product, uses Microsoft development software. Namely:
+One of the IDHW's requirements for the this project is the use of Windows Server infrastructure. In this case the TARS development team will use Microsoft IIS7. Microsoft's Internet Information Services server is a modular, intuitive server application. New considerations must now be applied, however. IIS7, being a Microsoft product, uses Microsoft development software. Namely:
 \begin{itemize}
 \item C\# 
 \item ASP.NET
 \item Visual Basic/VB.NET
 \item .NET Development Framework
 \end{itemize} 
-TARS will be developed using all these technologies, as well as the IIS7 MVC application. The MVC application will be described in detail in the next section.
+TARS will be developed using all these technologies, as well as the IIS7 Model-View-Controller application. The MVC application will be described in detail in the next section.
 
 \subsection{Model-View-Controller}
-Most of the heavy-lifting for TARS will be present in the display and interaction with large amounts of data. This problem is what the Model-View-Controller design pattern was created for. The idea is that each word in the acronym: Model, View, and Controller each handle a different aspect of the display process.\\
+Most of the heavy-lifting for TARS will be present in the display and interaction with large amounts of data. This problem is what the Model-View-Controller design pattern was created for. The idea is that each word in the acronym: Model, View, and Controller each represent a component that handles a different aspect of the display process.\\
 \\
 Advantage of Model-View-Controller architecture:
 \begin{itemize}
@@ -132,19 +136,23 @@ Advantage of Model-View-Controller architecture:
 \item Allows for independant development, testing, and maintenance of these seperate parts of the application.
 \end{itemize}
 \subsubsection{Controller}
-A Controller receives input from the user and converts it to instructions for the Model and View components.
+A Controller receives input from the user and converts it to instructions for the Model and View components. Most MVC's use the first argument after the website URL as the controller call. In our case:\\
+\begin{verbatim}
+http://idahotars.com/home
+\end{verbatim}
+Will load the ``home'' controller.
 \subsubsection{Model}
 The Model manages database queries and assembles data for use elsewhere in the MVC.
 \subsubsection{View}
 View renders the data received from the Model into a viewable web page.
 \subsection{SQL2008 Database}
-Since TARS is being developed for IIS7, our databases will be in SQL2008 format. Any queries made by the MVC will be carried out by the "Model" component of the MVC. \\
+Though IIS can utilize any format of SQL Database, the IDHW requires that TARS use SQL2008. Any queries made by the MVC will be carried out by the "Model" component of the MVC. \\
 \includegraphics[scale=0.8]{../design/images/mvc.png}
 \subsection{Active Directory}
-The IDHW uses Microsoft Active Directory for their user authentification. With that infrastructure already in place, it is logical to use the same for Idaho TARS. 
+The IDHW uses Microsoft Active Directory for their user authentification. With that infrastructure already in place, it is logical to use the same for Idaho TARS. To authenticate users of TARS, there will be three new Active Directory groups added: TARSAdmin, TARSManager, and TARSUser. If a given user is part of any of these three groups, they will be allowed access to TARS based upon their group.
 
 \subsection{Security}
-While Idaho TARS will be used internally, there is still a security risk. The system may not be dealing with any highly confidential info, but TARS will have access to government resources like the IDHW Active Directory and I-Time interfaces. To prevent easy exploitation of the TARS databases, all queries to the database will be centralized in Model. This will will not only make the team's code more readable, but also make it more secure. Centralized queries allow us to easily adopt a strong security stance. Namely, all input from anywhere on the browser will be treated as ``tainted.'' This tainted input will not be used for any queries on the SQL2008 database until it has been cleansed.
+While Idaho TARS will be used internally, there is still a security risk. The system may not be dealing with any highly confidential info, but TARS will have access to government resources like the IDHW Active Directory and I-Time interfaces. To prevent easy exploitation of the TARS databases, all queries to the database will be centralized in Model. This will will not only make the team's code simpler, but also make it more secure. Centralized queries allow us to easily adopt a strong security stance. Namely, all input from anywhere on the browser will be treated as ``tainted.'' This tainted input will not be used for any queries on the SQL2008 database until it has been filtered.
 
 
 \subsection{Browser Interface}
@@ -155,13 +163,14 @@ Though it is probably already indicated by the server architecture, the developm
 \item Mozilla Firefox
 \item Internet Explorer 7 and up
 \item Safari
+\item Compliant with W3C standards
 \end{itemize}
 \section{Design Descriptions}
 \subsection{Model-View-Controller Modules}
 \subsubsection{Global Scripts and Config Files}
 
 \subsubsection{Controllers}
-These controllers do not yet have a finalized set of associated functions and variables. When that is complete a description will reside here.
+These controllers do not yet have a finalized set of associated functions and variables. When these are complete a full description will reside here.
 \begin{itemize}
 \item HomeController
 \item UserController
@@ -176,7 +185,8 @@ ManagerController inherits from UserController, but adds a couple more abilities
 \\
 AdminController inherits from ManagerController, inheriting all functionality as well as providing any and all administrative functions that are needed by TARS admin. Having these inherited privileges ensures that forced permission traversals will be almost impossible.\\ 
 \begin{verbatim}
-Home Controller --
+Home Controller //Default controller called when visited TARS 
+                //for the first time or when not logged in.
 
 User Controller
  -> ManagerController
@@ -199,7 +209,7 @@ public class PCA_CodeDBContext : DbContext
    public DbSet<PcaCode> PCA_CodeList { get; set; }
 }
 \end{verbatim}
-These connections are not conventional classes or objects. To indicate this, their naming conventions are slightly more verbose. 
+These connections are not conventional classes or objects. To indicate this, their naming conventions are slightly more verbose. A DbContext creates a new context instance that utilizes an existing Database Connection String (located inside web.config) to create a connection to a SQL Database.
 \subsubsection{Views}
 \begin{itemize}
 \item Every controller has an associated View. Located in their respective folders. Manager example:
@@ -208,11 +218,11 @@ Views/Manager/___.cshtml
 \end{verbatim}
 \end{itemize}
 \subsection{SQL2008 Database Schema and Interface Description}
-As mentioned above in the Software Architecture section, TARS will use a SQL2008 database to store all interactions other than User Info. Before outlining the Database Schema, it would be wise to fully describe the thought process of the development team.\\
+As mentioned above in the Software Architecture section, TARS will use a SQL2008 database to store all interactions other than User Info (handled by Active Directory). Before outlining the Database Schema, it would be wise to fully describe the thought process of the development team.\\
 \\
 Stripped down to its most base parts, TARS is simply a database interface through which users can log and retrieve hours to and from work efforts. These ``Work Efforts'' are simply general projects that can have hours of contractor/non-contractor work added to their totals. For instance, there might be a Work Effort that is assigned its own unique ID and whos description is ``Document the latest changes to the TARS SDD.'' Any employees who wish to log their hours will find the Work Effort's ID, add their hours along with other relevant data, and submit their entire timesheet for approval. \\
 \\
-The Work Effort to ``Document the latest changes to the TARS SDD.'' now has hours logged on it and waiting for approval. A user with the correct Active Directory permissions can now go check the status of the Work Effort, and approve any pending hours waiting on it. The development team has chosen to add all hours, approved or not, to the Work Effort's database table. A simple boolean present as a column in the table will ensure that filtering by approved/unapprooved will be a simple task.\\
+The Work Effort to ``Document the latest changes to the TARS SDD.'' now has hours logged on it and waiting for approval. A user with the correct Active Directory permissions (part of group TARSManager or TARSAdmin) can now go check the status of the Work Effort, and approve any pending hours waiting on it. The development team has chosen to add all hours, approved or not, to the Work Effort's database table. A simple boolean present as a column in the table will ensure that filtering by approved/unapprooved will be a simple task.\\
 \\
 Unfortunately, the process is not done. Now that a Work Effort has hours charged to it, how can the accounting department charge these expenses? The simple answer is, they can't yet. To provide that functionality, PCA Codes must be assigned. This introduces another database table, as one PCA Code may have multiple Work Effort associations; just as one Work Effort may be associated with multiple PCA Codes.\\
 \\
@@ -220,7 +230,7 @@ One final note about the Work Efforts and PCA Codes is needed. The requirements 
 \\
 Through discussion of the above situations and processes, the development team settled on the following database schema. These are no final by any means, as a design is rarely finalized before development has commenced.\\
 \\
-Addendum for 11/1/2011. The stakeholders introduced the concept of ``tasks.'' There will be a default set of tasks for every work effort, but members of the ``administrator'' Active Directory group will have the ability to add or remove these ``tasks'' from a given work effort. Instead of having a separate ``tasks'' table for each work effort, the TARS team members are simply going to store the list of tasks in a comma separated string; using string manipulation to retrieve the list.
+Addendum for 11/1/2011. The stakeholders introduced the concept of ``tasks.'' There will be a default set of tasks for every work effort, but members of the ``administrator'' Active Directory group will have the ability to add or remove these ``tasks'' from a given work effort. Instead of having a separate ``tasks'' table for each work effort, the TARS team members will simply store the list of tasks in a comma separated string; using string manipulation to retrieve, edit, and read the list.
 
 \subsubsection{TARS Database Schema}
 \includegraphics[scale=0.4]{../design/images/class_diagram_1.png}
@@ -243,7 +253,9 @@ class Manager : Controller
 \section{Tracability Information}
 All effort on the project may be tracked via the project GitHub repository: github.com/ICBM/TARS\\
 \\
-Client requirements changes will be handled via email. Current progress on requirements as well as the requirements changelog is available at: https://github.com/ICBM/TARS/blob/master/doc/requirements\_summary.docx
+The project website resides at: http://seniordesign.engr.uidaho.edu/2011-2012/CostManagement/\\
+\\ 
+Client requirements changes will be handled via email. Current progress on requirements as well as the requirements changelog is available at: github.com/ICBM/TARS/blob/master/doc/requirements\_summary.docx\\
 \section{Appendix A: Use Cases} 
 More might be required here.
 

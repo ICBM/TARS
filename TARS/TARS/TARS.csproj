@@ -76,10 +76,28 @@
     <Compile Include="Models\Hours.cs" />
     <Compile Include="Models\PCA_WE.cs" />
     <Compile Include="Models\PcaCode.cs" />
+    <Compile Include="Models\Task.cs" />
     <Compile Include="Models\WorkEffort.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\template.css" />
+    <Content Include="Content\themes\base\images\background_large.png" />
+    <Content Include="Content\themes\base\images\background_large_link.png" />
+    <Content Include="Content\themes\base\images\background_large_link_higher.png" />
+    <Content Include="Content\themes\base\images\background_short.png" />
+    <Content Include="Content\themes\base\images\background_short_solid.png" />
+    <Content Include="Content\themes\base\images\background_tall.png" />
+    <Content Include="Content\themes\base\images\Class Diagram 1.png" />
+    <Content Include="Content\themes\base\images\class_diagram_1.png" />
+    <Content Include="Content\themes\base\images\context_menu_hover.png" />
+    <Content Include="Content\themes\base\images\logo.png" />
+    <Content Include="Content\themes\base\images\mvc.png" />
+    <Content Include="Content\themes\base\images\nav_arrow.png" />
+    <Content Include="Content\themes\base\images\nav_link.png" />
+    <Content Include="Content\themes\base\images\nav_link_hover.png" />
+    <Content Include="Content\themes\base\images\nav_link_hover_higher.png" />
+    <Content Include="Content\themes\base\images\privilege_background.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -93,6 +111,12 @@
     <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\images\version1.png" />
+    <Content Include="Content\themes\base\images\version2.png" />
+    <Content Include="Content\themes\base\images\version3.png" />
+    <Content Include="Content\themes\base\images\version4.png" />
+    <Content Include="Content\themes\base\images\version5.png" />
+    <Content Include="Content\themes\base\images\version6.png" />
     <Content Include="Content\themes\base\jquery.ui.accordion.css" />
     <Content Include="Content\themes\base\jquery.ui.all.css" />
     <Content Include="Content\themes\base\jquery.ui.autocomplete.css" />
@@ -118,7 +142,9 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\modernizr-1.7.js" />
     <Content Include="Scripts\modernizr-1.7.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -193,6 +219,16 @@
   <ItemGroup>
     <Content Include="Views\Manager\addPCA.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\themes\base\images\Class Diagram 1.dia" />
+    <None Include="Content\themes\base\images\Class Diagram 1.dia~" />
+    <None Include="Content\themes\base\images\logo.psd" />
+    <None Include="Content\themes\base\images\mvc.dia" />
+    <Content Include="Views\Manager\addWorkEffort.cshtml" />
+    <Content Include="Views\Manager\searchWorkEffort.cshtml" />
+    <Content Include="Views\Manager\editWorkEffort.cshtml" />
+    <Content Include="Views\Manager\deleteWorkEffort.cshtml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -208,12 +244,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>51281</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
+          <IISUrl>http://localhost/TARS</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -10,7 +10,8 @@ namespace TARS.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "Welcome to ASP.NET MVC!";
+            ViewBag.Update = "This is another ViewBag item";
+            ViewBag.Message = "Welcome to TARS MVC Home controller";
             return View();
         }
 

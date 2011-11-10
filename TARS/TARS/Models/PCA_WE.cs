@@ -18,5 +18,11 @@ namespace TARS.Models
     public class PCA_WEDBContext : DbContext
     {
         public DbSet<PCA_WE> PCA_WEList { get; set; }
+
+        public int SaveChanges()
+        {
+            //call our code here
+            return base.SaveChanges();
+        }
     }
 }
