@@ -34,10 +34,31 @@
 				</tr>
 			</table>
 		</div>
-		<h2>Project Concepts</h2><br>
+		<h2>Project Concepts</h2>
+		<h1>
+			IIS7
+		</h1>
+		<h1>
+			LDAP Authentification
+		</h1>
+		TARS will eventually authenticate users by utilizing Active Directory. At this time, the TARS development team does not have access to a copy of Windows Server 2008. With that being the case, Active Directory services are unavailable to test development progress. To alleviate this problem, TARS will instead authenticate to LDAP servers in general, rather than Active Directory specifically. <br>
 		<br>
+		For development of TARS, the TARS team will utilize Apache Directory Server; a LDAP server built using Java. On user login, TARS will authenticate the inputted username and password using the LDAP server. If an entry that matches existson the LDAP server, the user will be logged in (cookie stored in cache). <br>
+		<img src="images/ldap.png">
+		<h1>
+			IIS7 Model-View-Controller Interaction
+		</h1>
+		In some MVC implementations, the Model component actually provides database interaction (SQL queries, data management, etc). The IIS7 MVC, however, does not. Instead, it uses its Model Components as data objects that have fields corresponding to columns in the SQL database table schemas. <br>
 		<br>
-		Concept Documents, Database Schema, and design ideas will reside here.
+		To store and retrieve data, the TARS MVC will generally follow this pattern:<br>
+		<img src="images/erd_flow.png">
+		<ol>
+			<li>A Controller Action is called, creating a corresponding View as well as DbContext.</li>
+			<li>The DbContext is given a Model filled with relevent information.</li>
+			<li>The DbContext carries out its task. Returns to the Controller.
+			<li>If the View was retrieving from the database rather than using user input for database input, it will return to the Controller and fill its relevant fields with data from the DbContext.
+		</ol>
+		<br>
 		<div class = "which">
 			<h2>../concepts</h2>
 		</div>
