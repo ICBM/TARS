@@ -1,0 +1,14 @@
+digraph G {
+	bgcolor=transparent;
+	edge [arrowsize=1, color=black];
+	controller [shape=oval, label="Controller", width=.2, height=.2];
+	model	   [shape=oval, label="Model"];
+	view	   [shape=box, label="View"];
+
+	controller -> model
+	controller -> view
+	view -> controller
+	view -> model
+	model -> view
+	model -> controller	
+}

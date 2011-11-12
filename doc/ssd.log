@@ -1,0 +1,331 @@
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2011.9.6)  11 NOV 2011 22:21
+entering extended mode
+ %&-line parsing enabled.
+**ssd.tex
+(./ssd.tex
+LaTeX2e <2009/09/24>
+Babel <v3.8l> and hyphenation patterns for english, usenglishmax, dumylang, noh
+yphenation, loaded.
+(/usr/share/texmf-texlive/tex/latex/base/article.cls
+Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
+(/usr/share/texmf-texlive/tex/latex/base/size10.clo
+File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/share/texmf-texlive/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-texlive/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/share/texmf-texlive/tex/latex/graphics/graphics.sty
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-texlive/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/etc/texmf/tex/latex/config/graphics.cfg
+File: graphics.cfg 2009/08/28 v1.8 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: pdftex.def on input line 91.
+
+(/usr/share/texmf-texlive/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2009/08/25 v0.04m Graphics/color for pdfTeX
+\Gread@gobject=\count87
+))
+\Gin@req@height=\dimen103
+\Gin@req@width=\dimen104
+)
+(/usr/share/texmf-texlive/tex/latex/preprint/fullpage.sty
+Package: fullpage 1999/02/23 1.1 (PWD)
+\FP@margin=\skip43
+)
+(/usr/share/texmf-texlive/tex/latex/graphics/color.sty
+Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
+
+(/etc/texmf/tex/latex/config/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package color Info: Driver file: pdftex.def on input line 130.
+)
+(/usr/share/texmf-texlive/tex/generic/babel/babel.sty
+Package: babel 2008/07/06 v3.8l The Babel package
+
+(/usr/share/texmf-texlive/tex/generic/babel/english.ldf
+Language: english 2005/03/30 v3.3o English support from the babel system
+
+(/usr/share/texmf-texlive/tex/generic/babel/babel.def
+File: babel.def 2008/07/06 v3.8l Babel common definitions
+\babel@savecnt=\count88
+\U@D=\dimen105
+)
+\l@british = a dialect from \language\l@english 
+\l@UKenglish = a dialect from \language\l@english 
+\l@canadian = a dialect from \language\l@american 
+\l@australian = a dialect from \language\l@british 
+\l@newzealand = a dialect from \language\l@british 
+))
+(/usr/share/texmf-texlive/tex/latex/appendix/appendix.sty
+Package: appendix 2009/09/02 v1.2b extra appendix facilities
+\c@@pps=\count89
+\c@@ppsavesec=\count90
+\c@@ppsaveapp=\count91
+)
+(/usr/share/texmf-texlive/tex/latex/tools/tabularx.sty
+Package: tabularx 1999/01/07 v2.07 `tabularx' package (DPC)
+
+(/usr/share/texmf-texlive/tex/latex/tools/array.sty
+Package: array 2008/09/09 v2.4c Tabular extension package (FMi)
+\col@sep=\dimen106
+\extrarowheight=\dimen107
+\NC@list=\toks15
+\extratabsurround=\skip44
+\backup@length=\skip45
+)
+\TX@col@width=\dimen108
+\TX@old@table=\dimen109
+\TX@old@col=\dimen110
+\TX@target=\dimen111
+\TX@delta=\dimen112
+\TX@cols=\count92
+\TX@ftn=\toks16
+) (./ssd.aux)
+\openout1 = `ssd.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+
+(/usr/share/texmf-texlive/tex/context/base/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count93
+\scratchdimen=\dimen113
+\scratchbox=\box26
+\nofMPsegments=\count94
+\nofMParguments=\count95
+\everyMPshowfont=\toks17
+\MPscratchCnt=\count96
+\MPscratchDim=\dimen114
+\MPnumerator=\count97
+\everyMPtoPDFconversion=\toks18
+)
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 39.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 39.
+ [1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./ssd.toc)
+\tf@toc=\write3
+\openout3 = `ssd.toc'.
+
+ [2]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 66.
+
+(/usr/share/texmf-texlive/tex/latex/base/omscmr.fd
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 66.
+ [3]
+Underfull \hbox (badness 10000) in paragraph at lines 102--116
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 102--116
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 102--116
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 102--116
+
+ []
+
+[4]
+Underfull \hbox (badness 10000) in paragraph at lines 131--134
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 139--140
+
+ []
+
+<../design/images/mvc.png, id=22, 490.83376pt x 343.2825pt>
+File: ../design/images/mvc.png Graphic file (type png)
+
+<use ../design/images/mvc.png> [5] [6 <../design/images/mvc.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 180--187
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 180--187
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 180--187
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 180--187
+
+ []
+
+[7]
+Underfull \hbox (badness 10000) in paragraph at lines 221--234
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 221--234
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 221--234
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 221--234
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 221--234
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 221--234
+
+ []
+
+[8] <../design/images/class_diagram_1.png, id=39, 1248.42882pt x 542.73354pt>
+File: ../design/images/class_diagram_1.png Graphic file (type png)
+
+<use ../design/images/class_diagram_1.png>
+Overfull \hbox (29.60767pt too wide) in paragraph at lines 236--237
+[] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 241--244
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 254--259
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 254--259
+
+ []
+
+
+Overfull \hbox (8.4293pt too wide) in paragraph at lines 254--259
+\OT1/cmr/m/n/10 quire-ments changelog is avail-able at: github.com/ICBM/TARS/bl
+ob/master/doc/requirements[]summary.docx 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 254--259
+
+ []
+
+[9 <../design/images/class_diagram_1.png (PNG copy)>] [10] [11]
+Underfull \hbox (badness 10000) in paragraph at lines 363--384
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 363--384
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 363--384
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 363--384
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 363--384
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 363--384
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 363--384
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 363--384
+
+ []
+
+[12] (./ssd.aux) ) 
+Here is how much of TeX's memory you used:
+ 1499 strings out of 495061
+ 18914 string characters out of 1182622
+ 75231 words of memory out of 3000000
+ 4689 multiletter control sequences out of 15000+50000
+ 8132 words of font info for 29 fonts, out of 3000000 for 9000
+ 28 hyphenation exceptions out of 8191
+ 25i,8n,19p,700b,241s stack positions out of 5000i,500n,10000p,200000b,50000s
+</usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx
+10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx12.pfb></us
+r/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/share/te
+xmf-texlive/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-texlive/
+fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-texlive/fonts/type1/
+public/amsfonts/cm/cmr9.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfon
+ts/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti1
+0.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr
+/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on ssd.pdf (12 pages, 200728 bytes).
+PDF statistics:
+ 85 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+
