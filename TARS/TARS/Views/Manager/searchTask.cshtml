@@ -1,0 +1,39 @@
+﻿@model IEnumerable<TARS.Models.Task>
+
+@{
+    ViewBag.Title = "searchTask";
+}
+
+<h2>searchPCA</h2>
+
+<p>
+    @Html.ActionLink("Create New", "addTask")
+</p>
+<table>
+    <tr>
+        <th>
+            Work Effort
+        </th>
+        <th>
+            Title
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.WE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.title)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "editTask", new { id=item.ID }) |
+            @Html.ActionLink("Details", "viewTask", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "deleteTask", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>
