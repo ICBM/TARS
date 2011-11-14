@@ -14,11 +14,12 @@ namespace TARS.Models
         //public int pca { get; set; }
         public int we { get; set; }
         public int task { get; set; }
-        public float hours { get; set; }
+        public double hours { get; set; }
         public string hoursType { get; set; } //Earnings code || Might be ignored and dealt with by PCA!
         public bool approved { get; set; }
         public DateTime timestamp { get; set; }
         public string description { get; set; } //User input
+        public string creator { get; set; }
     }
 
     public class HoursDBContext : DbContext
