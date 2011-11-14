@@ -5,24 +5,28 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
+using System.Text;
+using System.Collections;
+using System.DirectoryServices;
+
+using TARS.Helpers;
 using TARS.Models;
 
 namespace TARS.Controllers
 {
     public class AccountController : Controller
     {
-
         //
         // GET: /Account/LogOn
-
         public ActionResult LogOn()
         {
+            LDAPConnection ld = new LDAPConnection();
+            ld.establishConnection();
             return View();
         }
 
         //
         // POST: /Account/LogOn
-
         [HttpPost]
         public ActionResult LogOn(LogOnModel model, string returnUrl)
         {

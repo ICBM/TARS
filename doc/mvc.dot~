@@ -1,0 +1,21 @@
+digraph G {
+	compound=true;
+	ranksep=0.75;
+	label="MVC";
+	node [shape=plaintext, fontsize=16];
+	bgcolor=white;
+	edge [arrowsize=1, color=black];
+	_0x1814450 [shape=oval, label="50"];
+	_0x1814480 [shape=oval, label="0"];
+	_0x18144e0 [shape=oval, label="-10"];
+	_0x1814510 [shape=oval, label="20"];
+	_0x18144b0 [shape=oval, label="100"];
+	_0x1814540 [shape=oval, label="120"];
+	_0x1814570 [shape=oval, label="130"];
+	_0x1814450 -> _0x1814480 [color=blue];
+	_0x1814450 -> _0x18144b0 [color=red];
+	_0x1814480 -> _0x18144e0 [color=blue];
+	_0x1814480 -> _0x1814510 [color=red];
+	_0x18144b0 -> _0x1814540 [color=red];
+	_0x1814540 -> _0x1814570 [color=red];
+}

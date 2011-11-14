@@ -1,0 +1,12 @@
+diagram {
+	A [label="tars.com/Manager/addWorkEffort"];
+	B [label="addWorkEffort View\nreturned"];
+	C [label="controller calls\n_Layout"];
+	D [label="combined Views"];
+	span_width = 110;
+	
+	A -> B [label="page requested"];
+	A -> C ;
+	B -> D [label="combine views"];
+	C -> D ;
+}
