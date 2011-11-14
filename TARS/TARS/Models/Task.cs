@@ -7,8 +7,6 @@ using System.Web;
 using System.Data.Entity;
 using System.Web.Mvc;
 
-using System.Data.Entity;
-
 namespace TARS.Models
 {
     public class Task
