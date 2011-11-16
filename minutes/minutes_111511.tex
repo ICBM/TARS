@@ -1,0 +1,35 @@
+\documentclass{article}
+\begin{document}
+\title{ICBM Meeting with client via phone conference}
+\date{2:30pm November 15, 2011}
+\maketitle
+
+\section{Attendance}
+\begin{itemize}
+\item Scott Beddall
+\item Brett Hitchcock
+\item Chaylo Laurino
+\item Alex Nilson
+\item Stakeholders
+\end{itemize}
+
+\section{Login system}
+\begin{itemize}
+\item We aren't able to use Active Directory - it's only for Windows Server 2008
+\item We're trying to use LDAP authentication instead
+	\begin{itemize}
+	\item Scott using Apache Directory Service
+	\item Able to do queries and access the database normally, but can't make it work in C\#
+	\item Client suggested using a packet sniffer to find the problem
+	\item System should be easy to port to DHW's Active Directory system - well commented and modular
+	\end{itemize}
+\end{itemize}
+
+\section{Etc.}
+\begin{itemize}
+\item Unable to write to Active Directory, so we're going to need another table for task/user assignment
+\item Possible future meeting with security team to iron out LDAP/AD specifics
+\item No meeting next week due to Thanksgiving.
+\end{itemize}
+
+\end{document}

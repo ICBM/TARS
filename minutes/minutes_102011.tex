@@ -1,0 +1,60 @@
+\documentclass{article}
+\begin{document}
+\title{ICBM Meeting with whiteboard}
+\date{12:30pm October 20, 2011}
+\maketitle
+
+\section{Attendance}
+\begin{itemize}
+\item Scott Beddall
+\item Brett Hitchcock
+\item Chaylo Laurino
+\item Alex Nilson
+\end{itemize}
+
+\section{Website layout}
+\begin{itemize}
+\item First screen will be the "home" screen
+	\begin{itemize}
+	\item Welcome message
+	\item Updates/system announcements
+	\item Login
+	\end{itemize}
+\item When logged in top bar will have logo on the left, userid and other info on the right
+\item When not logged in top bat will have logo on the left and login button on the right
+\item After logging in, user will be taken to the user, manager, or admin page depending on their  role in the user database
+\end{itemize}
+
+\section{Controllers}
+\begin{itemize}
+\item User controller
+	\begin{itemize}
+	\item addHours function for adding hours to a work effort
+	\item viewHours function for viewing their hours
+	\item storeFile function for attaching files to work efforts
+	\item viewHistory to view what they've been doing
+	\end{itemize}
+\item Manager controller
+	\begin{itemize}
+	\item Subclass of user, so it inherits all user functions
+	\item createWorkEffort function for adding a new work effort to the database
+	\item viewWorkEffort for viewing work efforts
+	\item approveHours for approving hours that have been attached to a work effort
+	\item editWorkEffort for making changes to a work effort in the database
+	\item viewHistory modified to allow managers to view the history of any user
+	\end{itemize}
+\item Admin controller
+	\begin{itemize}
+	\item addPCA for adding new PCA codes to the database
+	\item viewPCA for viewing PCA codes
+	\item editPCA for modifying PCA codes
+	\end{itemize}
+\end{itemize}
+
+\section{Questions for customer}
+\begin{itemize}
+\item What's the difference between managers and admins?
+\item What do permissions do?
+\end{itemize}
+
+\end{document}
