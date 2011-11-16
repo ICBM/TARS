@@ -20,8 +20,8 @@ namespace TARS.Controllers
         // GET: /Account/LogOn
         public ActionResult LogOn()
         {
-            LDAPConnection ld = new LDAPConnection();
-            ld.establishConnection();
+           // LDAPConnection ld = new LDAPConnection();
+            //ld.establishConnection();
             return View();
         }
 
