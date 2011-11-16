@@ -14,15 +14,20 @@
     <fieldset>
         <legend>addHours</legend>
 
-        <input data-val="true" data-val-number="The field we must be a number." data-val-required="The we field is required." id="we" name="we" type="hidden" value="@ViewBag.WorkEffortID" />
-
-        <!--List of tasks in a dropdown, perhaps?-->
         <div class="editor-label">
-            @Html.LabelFor(model => model.task)
+            @Html.LabelFor(model => model.pca)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.task)
-            @Html.ValidationMessageFor(model => model.task)
+            @Html.EditorFor(model => model.pca)
+            @Html.ValidationMessageFor(model => model.pca)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.we)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.we)
+            @Html.ValidationMessageFor(model => model.we)
         </div>
 
         <div class="editor-label">
@@ -31,14 +36,6 @@
         <div class="editor-field">
             @Html.EditorFor(model => model.hours)
             @Html.ValidationMessageFor(model => model.hours)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.hoursType)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.hoursType)
-            @Html.ValidationMessageFor(model => model.hoursType)
         </div>
 
         <div class="editor-label">
@@ -63,15 +60,6 @@
         <div class="editor-field">
             @Html.EditorFor(model => model.description)
             @Html.ValidationMessageFor(model => model.description)
-        </div>
-
-        <!--Will want to replace this creator field with a hidden field when usernames work -->
-        <div class="editor-label">
-            @Html.LabelFor(model => model.creator)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.creator)
-            @Html.ValidationMessageFor(model => model.creator)
         </div>
 
         <p>
