@@ -11,7 +11,8 @@ namespace TARS.Controllers
 {
     public class UserController : Controller
     {
-        protected WorkEffortDBContext db = new WorkEffortDBContext();
+        protected WorkEffortDBContext WorkEffortdb = new WorkEffortDBContext();
+        protected HoursDBContext Hoursdb = new HoursDBContext();
 
         //
         // GET: /User/
@@ -22,39 +23,58 @@ namespace TARS.Controllers
 
         //
         // GET: /User/addHours
-        public virtual ActionResult addHours()
+        public virtual ActionResult addHours(int id)
         {
+            ViewBag.WorkEffortID = id;
             return View();
         }
 
         //
         // POST: /User/addHours
         [HttpPost]
-        public virtual ActionResult addHours(Hours hours)
+        public virtual ActionResult addHours(Hours newhours)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                Hoursdb.HoursList.Add(newhours);
+                Hoursdb.SaveChanges();
+                return RedirectToAction("searchWorkEffort/");
+            }
+            return View(newhours);
         }
 
         //
         // GET: /User/searchWorkEffort
         public virtual ActionResult searchWorkEffort()
         {
-            return View(db.WorkEffortList.ToList());
+            return View(WorkEffortdb.WorkEffortList.ToList());
         }
 
         //
         // GET: /User/viewWorkEffort
-        public virtual ActionResult viewWorkEffort(int  id)
+        public virtual ActionResult viewWorkEffort(int id = 0)
         {
-            WorkEffort workeffort = db.WorkEffortList.Find(id);
+            WorkEffort workeffort = WorkEffortdb.WorkEffortList.Find(id);
+            if (workeffort == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.WorkEffortID = workeffort.ID;
             return View(workeffort);
         }
 
         //
         // GET: /User/viewHours
-        public virtual ActionResult viewHours()
+        public virtual ActionResult viewHours(string user = "")
         {
-            return null;
+            var search = from m in Hoursdb.HoursList
+                         select m;
+            if (!String.IsNullOrEmpty(user))
+            {
+                search = search.Where(s => s.creator.Contains(user));
+            }
+
+            return View(search);
         }
 
         //
