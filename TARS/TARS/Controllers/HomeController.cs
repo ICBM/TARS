@@ -18,7 +18,7 @@ namespace TARS.Controllers
 
             LDAPConnection test = new LDAPConnection();
 
-            ViewBag.ldap = test.requestUser("admin", "secret");
+            ViewBag.ldap = test.requestUser("Scott Beddall", "pass");
 
             return View();
         }

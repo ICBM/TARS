@@ -17,7 +17,7 @@ namespace TARS.Helpers
         private static string pw = "secret";
         private static string domain = "tars.com"; //built for local server. change to whatever is relevent
         private static string port = ":10389"; //default port for ActiveDirectory LDAP is 389. ApacheDS uses 10389
-        private static string targetOU = "OU=system,DC=example,DC=com"; //default
+        private static string targetOU = "O=system,DC=example,DC=com"; //default
 
         private NetworkCredential credential; //one credential to go with the one connection; built using user + pw + domain
         private LdapDirectoryIdentifier identifier; //built using domain + port
@@ -52,7 +52,7 @@ namespace TARS.Helpers
         public bool requestUser(string user, string password)
         {
             string ldapSearchFilters = "(objectClass=*)"; //required. else we get a compilation error and explode
-            dn = "cn=" + user + "ou=users,ou=system";
+            dn = "cn=" + user + ",ou=users,o=tars";
 
             //connection = new LdapConnection(identifier); //start up our connection
 
@@ -68,10 +68,10 @@ namespace TARS.Helpers
 
                 System.Diagnostics.Debug.WriteLine("LdapConnection is created successfully.");
                
-                /*SearchRequest searchRequest = new SearchRequest
+                SearchRequest searchRequest = new SearchRequest
                                                 (dn,
                                                   ldapSearchFilters,
-                                                  System.DirectoryServices.Protocols.SearchScope.OneLevel,
+                                                  System.DirectoryServices.Protocols.SearchScope.Subtree,
                                                   null);
 
                 // cast the returned directory response as a SearchResponse object
@@ -84,12 +84,12 @@ namespace TARS.Helpers
                 // enumerate the entries in the search response
                 foreach (SearchResultEntry entry in searchResponse.Entries)
                 {
-                    Console.WriteLine("{0}:{1}",
+                    System.Diagnostics.Debug.WriteLine("{0}:{1}",
                         searchResponse.Entries.IndexOf(entry),
                         entry.DistinguishedName);
                 }
            
-            */
+            
             }
             catch (Exception e)
             {
@@ -100,6 +100,7 @@ namespace TARS.Helpers
             }
 
 
+            connection.Dispose();
             return true;
         }
 
