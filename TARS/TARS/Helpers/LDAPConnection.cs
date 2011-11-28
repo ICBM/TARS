@@ -11,10 +11,13 @@ namespace TARS.Helpers
     public class LDAPConnection
     {
         private int exists = 0; //if the user exists, this will be 1. ensures that requestUser() is called before requestRole()  
-        private static string user = "admin"; //we'll re-use these within the class. make it easily modifiable for the users who come after us
-        private static string pw = "password";
-        private static string domain = "localhost"; //built for local server. change to whatever is relevent
+        //this standard of uid=admin,ou=system IS EXTREMELY IMPORTANT. Not having this when we try to Bind() will throw "Syntax Error" exceptions
+        //would have been nice if someone told me that before I spent WAY too much time on Google trying to figure this out
+        private static string user = "uid=admin,ou=system"; //we'll re-use these within the class. make it easily modifiable for the users who come after us
+        private static string pw = "secret";
+        private static string domain = "tars.com"; //built for local server. change to whatever is relevent
         private static string port = ":10389"; //default port for ActiveDirectory LDAP is 389. ApacheDS uses 10389
+        private static string targetOU = "OU=system,DC=example,DC=com"; //default
 
         private NetworkCredential credential; //one credential to go with the one connection; built using user + pw + domain
         private LdapDirectoryIdentifier identifier; //built using domain + port
@@ -26,7 +29,7 @@ namespace TARS.Helpers
         public LDAPConnection()
         {
             //connection = new LdapConnection(domain);
-            credential = new NetworkCredential(user, pw, domain);
+            credential = new NetworkCredential(user, pw);
             identifier = new LdapDirectoryIdentifier(domain + port);
 
         }
@@ -40,8 +43,8 @@ namespace TARS.Helpers
             port = specifiedPort;
 
             //connection = new LdapConnection(domain);
-            credential = new NetworkCredential(user, pw, domain);
-            identifier = new LdapDirectoryIdentifier(domain + port);
+            credential = new NetworkCredential(user, pw, domain); //extremely important, must follow this exact pattern to work with apacheDS
+            identifier = new LdapDirectoryIdentifier(domain + port, true, false);
 
         }
 
@@ -51,11 +54,21 @@ namespace TARS.Helpers
             string ldapSearchFilters = "(objectClass=*)"; //required. else we get a compilation error and explode
             dn = "cn=" + user + "ou=users,ou=system";
 
-            connection = new LdapConnection(identifier); //start up our connection
+            //connection = new LdapConnection(identifier); //start up our connection
 
             try
             {
-                SearchRequest searchRequest = new SearchRequest
+
+                connection = new LdapConnection(identifier, credential); //start up our connection
+                
+                connection.Credential = credential; //not sure if this is necessary, not changing it
+                connection.AuthType = AuthType.Basic; //absolutely necessary, otherwise we can't Bind()
+                connection.SessionOptions.ProtocolVersion = 3; //also necessary, some wonky version problems
+                connection.Bind(); //actually bind to the server so we can make some queries!
+
+                System.Diagnostics.Debug.WriteLine("LdapConnection is created successfully.");
+               
+                /*SearchRequest searchRequest = new SearchRequest
                                                 (dn,
                                                   ldapSearchFilters,
                                                   System.DirectoryServices.Protocols.SearchScope.OneLevel,
@@ -75,12 +88,14 @@ namespace TARS.Helpers
                         searchResponse.Entries.IndexOf(entry),
                         entry.DistinguishedName);
                 }
+           
+            */
             }
             catch (Exception e)
             {
 
-                System.Diagnostics.Debug.WriteLine("\nUnexpected exception occured:\n\t{0}: {1}",
-                                   e.GetType().Name, e.Message);
+                System.Diagnostics.Debug.WriteLine("\nUnexpected exception occured:\n\t{0}: {1}: {2}",
+                                   e.GetType().Name, e.Message, e.ToString());
                 return false;
             }
 
