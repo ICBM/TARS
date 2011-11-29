@@ -39,8 +39,10 @@ namespace TARS.Controllers
             }
 
             ViewBag.taskList = resultTasks;
-
-            return View(searchHours);
+            //if (searchHours != null)
+            {
+                return View(searchHours);
+            }
         }
 
         //
