@@ -52,7 +52,7 @@ namespace TARS.Helpers
         public bool requestUser(string user, string password)
         {
             string ldapSearchFilters = "(objectClass=*)"; //required. else we get a compilation error and explode
-            dn = "cn=" + user + ",ou=users,o=tars";
+            dn = "cn=Scott Beddall"+",ou=users,o=tars";
 
             //connection = new LdapConnection(identifier); //start up our connection
 
@@ -84,19 +84,20 @@ namespace TARS.Helpers
                 // enumerate the entries in the search response
                 foreach (SearchResultEntry entry in searchResponse.Entries)
                 {
-                    System.Diagnostics.Debug.WriteLine("{0}:{1}",
+                    System.Diagnostics.Debug.WriteLine("{0}:{1}:{2}",
                         searchResponse.Entries.IndexOf(entry),
-                        entry.DistinguishedName);
+                        entry.DistinguishedName, entry.ToString());
                 }
            
             
             }
             catch (Exception e)
             {
-
-                System.Diagnostics.Debug.WriteLine("\nUnexpected exception occured:\n\t{0}: {1}: {2}",
+                System.Diagnostics.Debug.WriteLine("\nGeneral Exception Occurred. Handling. :\n\t{0}: {1}: {2}",
                                    e.GetType().Name, e.Message, e.ToString());
-                return false;
+
+                //handle it!
+                return handleException(e);
             }
 
 
@@ -115,13 +116,32 @@ namespace TARS.Helpers
             else return "None";
         }
 
+        public bool handleException(Exception e)
+        {
+            string message = e.GetType().Name;
+            string noSuchUser = "The object does not exist";
+            string ldapException = "LdapException";
+
+            if (message.IndexOf(noSuchUser) != -1)
+            {
+                System.Diagnostics.Debug.WriteLine("\nThat username does not exist! :: {0}", e.GetType().Name);
+                //add error to viewbag?
+                return false;
+            }
+            else if (message.IndexOf(ldapException) != -1)
+            {
+                System.Diagnostics.Debug.WriteLine("\nCould not contact LDAP DSA :: {0}", e.GetType().Name);
+                //add error to viewbag?
+                return false;
+            }
+            return false;
+        }
 
         public string[] requestTasks(string user)
         {
 
             return null;
         }
-
 
 
 
