@@ -1,10 +1,102 @@
-﻿@{
+﻿@model IEnumerable<TARS.Models.Hours>
+
+@{
     ViewBag.Title = "Index";
 }
 
 <h2>Index</h2>
 
 <p>This is in Views/User/Index.cshtml</p>
+
+
+<h3>Hours list</h3>
+<table>
+    <tr>
+        <th>
+            we
+        </th>
+        <th>
+            task
+        </th>
+        <th>
+            hours
+        </th>
+        <th>
+            hoursType
+        </th>
+        <th>
+            approved
+        </th>
+        <th>
+            timestamp
+        </th>
+        <th>
+            description
+        </th>
+        <th>
+            creator
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.we)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.task)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.hours)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.hoursType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.approved)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.timestamp)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.creator)
+        </td>
+    </tr>
+}
+</table>
+<h3>Task list</h3>
+<table>
+    <tr>
+        <th>
+            ID
+        </th>
+        <th>
+            WE
+        </th>
+        <th>
+            title
+        </th>
+    </tr>
+
+@foreach (var item in ViewBag.taskList) {
+    <tr>
+        <td>
+            @item.ID
+        </td>
+        <td>
+            @item.WE
+        </td>
+        <td>
+            @item.title
+        </td>
+    </tr>
+}
+</table>
+<br /><br /><br />
 
 <p>
     <a href="../searchWorkEffort/">searchWorkEffort( )</a><br />

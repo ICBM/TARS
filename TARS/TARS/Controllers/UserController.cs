@@ -11,14 +11,36 @@ namespace TARS.Controllers
 {
     public class UserController : Controller
     {
-        protected WorkEffortDBContext WorkEffortdb = new WorkEffortDBContext();
-        protected HoursDBContext Hoursdb = new HoursDBContext();
+        protected WorkEffortDBContext WorkEffortDB = new WorkEffortDBContext();
+        protected HoursDBContext HoursDB = new HoursDBContext();
+        protected TaskDBContext TaskDB = new TaskDBContext();
 
         //
         // GET: /User/
         public virtual ActionResult Index()
         {
-            return View();
+            string user = "username"; //Need to swap this out
+            var searchHours = from m in HoursDB.HoursList
+                         select m;
+            List<Task> resultTasks = new List<Task>();
+            if (!String.IsNullOrEmpty(user))
+            {
+
+                searchHours = searchHours.Where(s => s.creator.Contains(user));
+            }
+            foreach (var item in searchHours)
+            {
+                //searchTasks.Where(s => s.ID.Equals(1));
+                var searchTasks = from m in TaskDB.TaskList
+                                  where m.ID == item.task
+                                  select m;
+                resultTasks.AddRange(searchTasks);
+
+            }
+
+            ViewBag.taskList = resultTasks;
+
+            return View(searchHours);
         }
 
         //
@@ -36,8 +58,8 @@ namespace TARS.Controllers
         {
             if (ModelState.IsValid)
             {
-                Hoursdb.HoursList.Add(newhours);
-                Hoursdb.SaveChanges();
+                HoursDB.HoursList.Add(newhours);
+                HoursDB.SaveChanges();
                 return RedirectToAction("searchWorkEffort/");
             }
             return View(newhours);
@@ -47,14 +69,14 @@ namespace TARS.Controllers
         // GET: /User/searchWorkEffort
         public virtual ActionResult searchWorkEffort()
         {
-            return View(WorkEffortdb.WorkEffortList.ToList());
+            return View(WorkEffortDB.WorkEffortList.ToList());
         }
 
         //
         // GET: /User/viewWorkEffort
         public virtual ActionResult viewWorkEffort(int id = 0)
         {
-            WorkEffort workeffort = WorkEffortdb.WorkEffortList.Find(id);
+            WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
             if (workeffort == null)
             {
                 return HttpNotFound();
@@ -67,7 +89,7 @@ namespace TARS.Controllers
         // GET: /User/viewHours
         public virtual ActionResult viewHours(string user = "")
         {
-            var search = from m in Hoursdb.HoursList
+            var search = from m in HoursDB.HoursList
                          select m;
             if (!String.IsNullOrEmpty(user))
             {
