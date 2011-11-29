@@ -244,6 +244,10 @@
     <Content Include="Views\User\viewHours.cshtml" />
     <Content Include="Views\User\searchWorkEffort.cshtml" />
     <Content Include="Views\User\viewWorkEffort.cshtml" />
+    <Content Include="Views\Test\TestViews.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

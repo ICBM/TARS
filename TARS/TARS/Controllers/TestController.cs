@@ -32,5 +32,34 @@ namespace TARS.Controllers
             ViewBag.number = number;
             return View();
         }
+
+        public ActionResult TestViews()
+        {
+            var user = new UserController();
+            ViewBag.userIndex              = user.Index()              != null;
+            ViewBag.userAddHours           = user.addHours( 0 )        != null;
+            ViewBag.userSearchWorkEffort   = user.searchWorkEffort()   != null;
+            ViewBag.userViewWorkEffort     = user.viewWorkEffort()     != null;
+            ViewBag.userViewHours          = user.viewHours()          != null;
+            ViewBag.userViewHistory        = user.viewHistory()        != null;
+
+            var manager = new ManagerController();
+            ViewBag.managerIndex               = manager.Index()               != null;
+            ViewBag.managerAddPCA              = manager.addPCA()              != null;
+            ViewBag.managerSearchPCA           = manager.searchPCA()           != null;
+            ViewBag.managerViewPCA             = manager.viewPCA(0)            != null;
+            ViewBag.managerEditPCA             = manager.editPCA(0)            != null;
+            ViewBag.managerDeletePCA           = manager.deletePCA(0)          != null;
+            ViewBag.managerAddWorkEffort       = manager.addWorkEffort()       != null;
+            ViewBag.managerSearchWorkEffort    = manager.searchWorkEffort()    != null;
+            ViewBag.managerViewWorkEffort      = manager.viewWorkEffort(0)     != null;
+            ViewBag.managerEditWorkEffort      = manager.editWorkEffort(0)     != null;
+            ViewBag.managerDeleteWorkEffort    = manager.deleteWorkEffort(0)   != null;
+
+            var admin = new AdminController();
+            ViewBag.adminAddManager            = admin.addManager("")          != null;
+
+            return View();
+        }
     }
 }
