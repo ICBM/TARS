@@ -19,7 +19,8 @@ namespace TARS.Controllers
         // GET: /User/
         public virtual ActionResult Index()
         {
-            string user = "username"; //Need to swap this out
+            //string user = "username"; //Need to swap this out
+            string user = User.Identity.Name;
             var searchHours = from m in HoursDB.HoursList
                          select m;
             List<Task> resultTasks = new List<Task>();
