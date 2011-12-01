@@ -86,18 +86,21 @@
         </th>
     </tr>
 
-@foreach (var item in ViewBag.taskList)
+@if (ViewBag.taskList != null)
 {
-    <tr>
-        <td>
-            @item.ID
-        </td>
-        <td>
-            @item.WE
-        </td>
-        <td>
-            @item.title
-        </td>
-    </tr>
+    @foreach (var item in ViewBag.taskList)
+    {
+        <tr>
+            <td>
+                @item.ID
+            </td>
+            <td>
+                @item.WE
+            </td>
+            <td>
+                @item.title
+            </td>
+        </tr>
+    }
 }
 </table>
