@@ -245,7 +245,7 @@
     <Content Include="Views\User\searchWorkEffort.cshtml" />
     <Content Include="Views\User\viewWorkEffort.cshtml" />
     <Content Include="Views\Test\TestViews.cshtml" />
-    <Content Include="Views\User\viewTimesheet.cshtml" />
+    <Content Include="Views\Shared\viewTimesheet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
