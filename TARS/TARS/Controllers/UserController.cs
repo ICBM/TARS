@@ -20,7 +20,15 @@ namespace TARS.Controllers
         public virtual ActionResult Index()
         {
             //string user = "username"; //Need to swap this out
-            string user = User.Identity.Name;
+            string user;
+            if(User != null)
+            {
+                user = User.Identity.Name;
+            }
+            else
+            {
+                user = "";
+            }
             var searchHours = from m in HoursDB.HoursList
                          select m;
             List<Task> resultTasks = new List<Task>();
