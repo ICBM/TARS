@@ -41,7 +41,7 @@
             @Html.EditorFor(model => model.hoursType)
             @Html.ValidationMessageFor(model => model.hoursType)
         </div>
-
+        <!--Will want to hide from users and default to false-->
         <div class="editor-label">
             @Html.LabelFor(model => model.approved)
         </div>
@@ -49,7 +49,7 @@
             @Html.EditorFor(model => model.approved)
             @Html.ValidationMessageFor(model => model.approved)
         </div>
-
+        <!-- will want to replace with an automatically generated time-->
         <div class="editor-label">
             @Html.LabelFor(model => model.timestamp)
         </div>
