@@ -25,8 +25,38 @@
 				</table>
 				<table class="contextMenu">
 					<tr>
-						<td><a href="User/">View Timesheet</a></TD>
-						<td>Locate Work Effort</td>
+						<td>
+                        <!-- IF LDAP connection says we're a User -->
+                        @if (true)
+                        {
+                            <a href="/TARS/User/viewTimesheet">View Timesheet</a>
+                        }
+                        <!-- IF LDAP connection says we're a Manager -->
+                        @if (false)
+                        {
+                            <a href="/TARS/Manager/viewTimesheet">View Timesheet</a>
+                        }<!-- IF LDAP connection says we're a Admin -->
+                        @if (false)
+                        {
+                            <a href="/TARS/Admin/viewTimesheet">View Timesheet</a>
+                        }
+                        </TD>
+                        <td>
+                        <!-- IF LDAP connection says we're a User -->
+                        @if (true)
+                        {
+                            <a href="/TARS/User/searchWorkEffort">Locate Work Effort</a>
+                        }
+                        <!-- IF LDAP connection says we're a Manager -->
+                        @if (false)
+                        {
+                            <a href="/TARS/Manager/searchWorkEffort">Locate Work Effort</a>
+                        }<!-- IF LDAP connection says we're a Admin -->
+                        @if (false)
+                        {
+                            <a href="/TARS/Admin/searchWorkEffort">Locate Work Effort</a>
+                        }
+                        </td>
 					</tr>
 				</table>
 				<table class="update">
