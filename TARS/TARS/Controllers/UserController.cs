@@ -19,39 +19,7 @@ namespace TARS.Controllers
         // GET: /User/
         public virtual ActionResult Index()
         {
-            //string user = "username"; //Need to swap this out
-            string user;
-            if(User != null)
-            {
-                user = User.Identity.Name;
-            }
-            else
-            {
-                user = "";
-            }
-            var searchHours = from m in HoursDB.HoursList
-                         select m;
-            List<Task> resultTasks = new List<Task>();
-            if (!String.IsNullOrEmpty(user))
-            {
-
-                searchHours = searchHours.Where(s => s.creator.Contains(user));
-            }
-            foreach (var item in searchHours)
-            {
-                //searchTasks.Where(s => s.ID.Equals(1));
-                var searchTasks = from m in TaskDB.TaskList
-                                  where m.ID == item.task
-                                  select m;
-                resultTasks.AddRange(searchTasks);
-
-            }
-
-            ViewBag.taskList = resultTasks;
-            //if (searchHours != null)
-            {
-                return View(searchHours);
-            }
+            return Redirect("/TARS/User/viewTimesheet/");
         }
 
         //
