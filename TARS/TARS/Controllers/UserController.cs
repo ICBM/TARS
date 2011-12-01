@@ -126,7 +126,15 @@ namespace TARS.Controllers
         public virtual ActionResult viewTimesheet()
         {
 
-            string user = User.Identity.Name;
+            string user;
+            if (User != null)
+            {
+                user = User.Identity.Name;
+            }
+            else
+            {
+                user = "";
+            }
             var searchHours = from m in HoursDB.HoursList
                               select m;
             List<Task> resultTasks = new List<Task>();
