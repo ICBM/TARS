@@ -144,15 +144,17 @@ namespace TARS.Controllers
         //
         // GET: /Manager/searchWorkEffort
         //  - Shows a list of all WorkEffort codes.
+        
         public override ActionResult searchWorkEffort()
         {
             return View(WorkEffortDB.WorkEffortList.ToList());
         }
-
+        
+          
         //
         // GET: /Manager/viewWorkEffort/5
         //  - Shows detailed information for a single WorkEffort code.
-        public virtual ActionResult viewWorkEffort(int id)
+        public override ActionResult viewWorkEffort(int id)
         {
             WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
             return View(workeffort);

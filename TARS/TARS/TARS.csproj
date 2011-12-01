@@ -190,7 +190,7 @@
     <Content Include="Views\Test\Parameters.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\User\addHours.cshtml" />
+    <Content Include="Views\Shared\addHours.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\User\Index.cshtml" />

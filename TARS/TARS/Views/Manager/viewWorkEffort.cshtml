@@ -40,6 +40,7 @@
     </div>
 </fieldset>
 <p>
+    @Html.ActionLink("Add Hours", "addHours", new { id=Model.ID })  
     @Html.ActionLink("Edit", "editWorkEffort/", new { id=Model.ID }) |
     @Html.ActionLink("Back to List", "searchWorkEffort/")
 </p>

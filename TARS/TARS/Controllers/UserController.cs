@@ -39,7 +39,7 @@ namespace TARS.Controllers
             {
                 HoursDB.HoursList.Add(newhours);
                 HoursDB.SaveChanges();
-                return RedirectToAction("searchWorkEffort/");
+                return RedirectToAction("viewTimesheet/");
             }
             return View(newhours);
         }
