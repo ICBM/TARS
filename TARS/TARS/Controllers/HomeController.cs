@@ -11,7 +11,6 @@ namespace TARS.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Update = "This is another ViewBag item";
             ViewBag.Message = "Welcome to TARS MVC Home controller";
 
 
