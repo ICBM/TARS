@@ -20,7 +20,7 @@
 						<td>Administration</TD>
 						<td>Managerial</td>
 						<td>User Panel</td>
-						<td>Logout</td>
+						<td>@Html.Partial("_LogOnPartial")</td>
 					</tr>
 				</table>
 				<table class="contextMenu">
@@ -61,20 +61,21 @@
 				</table>
 				<table class="update">
 					<tr>
-						<td><i>Current Pay Period: </i></td><td><b><font color="ff0000">10/31 - 11/5</font></b></td>
+						<td><i>Current Pay Period: </i></td><td><b><font color="ff0000">11/27 - 12/3</font></b></td>
 					</tr>
+                    
 					<tr>
-						<td><i>TimeSheet Status:</i></td><td><font color="green"><b>Approved</b></font></td>
+						<td><!--<i>TimeSheet Status:</i></td><td><font color="green"><b>Approved</b></font>--> </td>
 					</tr>
 				</table>
 			</div>
 
 			<div id = "contents">
-               <ul id="menu">
+               <!--<ul id="menu">
                     <li>@Html.Partial("_LogOnPartial")</li>
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
-                </ul>
+                </ul>-->
 				@RenderBody()
 			</div>
 		</div>

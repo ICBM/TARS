@@ -46,6 +46,35 @@ body {
 
 }
 
+table 
+{
+    padding-left: 5px;
+    border: 0px;
+}
+
+table.timesheet
+{
+    border: 1px solid grey;
+    padding: 2px;
+}
+
+table.timesheet td 
+{
+    padding: 5px; 
+}
+
+a 
+{
+    color: #c82425;    
+    text-decoration: underline;
+}
+
+a:hover
+{
+    color: blue;   
+}
+
+
 /*
 specific divs for content seperation
 */
@@ -136,6 +165,18 @@ table.contextMenu td:hover {
 	background-repeat: no-repeat;
 }
 
+table.contextMenu a 
+{
+    color: White;
+    text-decoration: none;
+}
+
+table.contextMenu a:hover 
+{
+    color: #c82425;
+    text-decoration: underline;
+}
+
 table.nav{
 	position: absolute; 
 	right: -5px;
@@ -165,12 +206,33 @@ table.nav td:hover {
 	color: #c82425;
 }
 
+table.nav a 
+{
+    color: White;
+    text-decoration: none;
+}
+
+table.nav a:hover 
+{
+    color: #c82425;
+    text-decoration: underline;
+}
+
+
 /*
 	background-image: url('../images/privilege_background.png');
 */
 table.nav td.spacer{
 	width: 10px;
 	text-align: center;
+}
+
+table.nav a{
+    
+}
+
+table.nav a:hover{
+    
 }
 
 
