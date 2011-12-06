@@ -73,8 +73,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Authentication.cs" />
     <Compile Include="Helpers\LDAPConnection.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\TARSUser.cs" />
     <Compile Include="Models\History.cs" />
     <Compile Include="Models\Hours.cs" />
     <Compile Include="Models\PCA_WE.cs" />

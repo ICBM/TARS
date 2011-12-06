@@ -20,6 +20,7 @@ namespace TARS.Controllers
         // GET: /Account/LogOn
         public ActionResult LogOn()
         {
+            
            // LDAPConnection ld = new LDAPConnection();
             //ld.establishConnection();
             return View();
@@ -31,10 +32,14 @@ namespace TARS.Controllers
         public ActionResult LogOn(LogOnModel model, string returnUrl)
         {
             LDAPConnection check = new LDAPConnection();
+
             if (ModelState.IsValid)
             {
                 if (check.requestUser(model.UserName, model.Password))
                 {
+                    TARSUserDBContext TARSUserDB = new TARSUserDBContext();
+                    TARSUserDB.TARSUserList.Find(model.UserName);
+                                        
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
                         && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
@@ -71,6 +76,7 @@ namespace TARS.Controllers
 
         public ActionResult Register()
         {
+            
             return View();
         }
 
@@ -85,9 +91,16 @@ namespace TARS.Controllers
                 // Attempt to register the user
                 MembershipCreateStatus createStatus;
                 Membership.CreateUser(model.UserName, model.Password, model.Email, null, null, true, null, out createStatus);
-
+                
                 if (createStatus == MembershipCreateStatus.Success)
                 {
+                    TARSUser newuser = new TARSUser();
+                    newuser.un = model.UserName;
+                    newuser.permission = 1;
+                    TARSUserDBContext user = new TARSUserDBContext();
+                    user.TARSUserList.Add(newuser);
+                    user.SaveChanges();
+
                     FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
                     return RedirectToAction("Index", "Home");
                 }

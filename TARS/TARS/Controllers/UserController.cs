@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TARS.Models;
+using TARS.Helpers;
 
 namespace TARS.Controllers
 {
@@ -14,12 +15,23 @@ namespace TARS.Controllers
         protected WorkEffortDBContext WorkEffortDB = new WorkEffortDBContext();
         protected HoursDBContext HoursDB = new HoursDBContext();
         protected TaskDBContext TaskDB = new TaskDBContext();
+        protected TARSUserDBContext TARSUserDB = new TARSUserDBContext();
 
         //
         // GET: /User/
         public virtual ActionResult Index()
         {
-            return Redirect("/TARS/User/viewTimesheet/");
+
+
+            //}
+                /*TARSUser newuser = new TARSUser(); //   
+            newuser.un = "Test";               //Get this stuff from Active Directory + Current login
+            newuser.permission = 1;            //
+            var x = TARSUserDB.TARSUserList.Find( 0 );
+            if (x == null)*/
+                return Redirect("/TARS/User/viewTimesheet/");
+            //else
+            //    return null;
         }
 
         //
@@ -93,7 +105,6 @@ namespace TARS.Controllers
         }
         public virtual ActionResult viewTimesheet()
         {
-
             string user;
             if (User != null)
             {

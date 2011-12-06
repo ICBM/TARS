@@ -49,6 +49,7 @@ namespace TARS.Helpers
         }
 
         //if this returns true, go ahead and add the model.user to the cookie for login
+        // - password is currently not used
         public bool requestUser(string user, string password)
         {
             string ldapSearchFilters = "(objectClass=*)"; //required. else we get a compilation error and explode
