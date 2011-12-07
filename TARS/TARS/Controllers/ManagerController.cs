@@ -22,14 +22,30 @@ namespace TARS.Controllers
         // GET: /Manager/
         public override ActionResult Index() //Overridden from User/Index, which was virtual.
         {
-            return View();
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                return View();
+            }
+            else
+            {
+                return View("error");
+            }
         }
 
         //
         // GET: /Manager/addPCA
         public virtual ActionResult addPCA()
         {
-            return View();
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                return View();
+            }
+            else
+            {
+                return View("error");
+            } 
         }
 
         //
@@ -37,13 +53,21 @@ namespace TARS.Controllers
         [HttpPost]
         public virtual ActionResult addPCA(PcaCode pcacode)
         {
-            if (ModelState.IsValid)
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
-                PcaDB.PcaCodeList.Add(pcacode);
-                PcaDB.SaveChanges();
-                return RedirectToAction("searchPCA/");
+                if (ModelState.IsValid)
+                {
+                    PcaDB.PcaCodeList.Add(pcacode);
+                    PcaDB.SaveChanges();
+                    return RedirectToAction("searchPCA/");
+                }
+                return View(pcacode);
             }
-            return View(pcacode);
+            else
+            {
+                return View("error");
+            }
         }
 
         //
@@ -51,7 +75,15 @@ namespace TARS.Controllers
         //  - Shows a list of all PCA codes.
         public virtual ActionResult searchPCA( )
         {
-            return View(PcaDB.PcaCodeList.ToList());
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                return View(PcaDB.PcaCodeList.ToList());
+            }
+            else
+            {
+                return View("error");
+            } 
         }
 
         //
@@ -59,8 +91,16 @@ namespace TARS.Controllers
         //  - Shows detailed information for a single PCA code.
         public virtual ActionResult viewPCA( int id )
         {
-            PcaCode pcacode = PcaDB.PcaCodeList.Find( id );
-            return View(pcacode);
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                PcaCode pcacode = PcaDB.PcaCodeList.Find(id);
+                return View(pcacode);
+            }
+            else
+            {
+                return View("error");
+            }
         }
 
         // 
@@ -68,8 +108,16 @@ namespace TARS.Controllers
         //  - Edits a specific PCA code.
         public virtual ActionResult editPCA( int id )
         {
-            PcaCode pcacode = PcaDB.PcaCodeList.Find(id);
-            return View(pcacode);
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                PcaCode pcacode = PcaDB.PcaCodeList.Find(id);
+                return View(pcacode);
+            }
+            else
+            {
+                return View("error");
+            } 
         }
 
         //
@@ -77,21 +125,38 @@ namespace TARS.Controllers
         [HttpPost]
         public virtual ActionResult editPCA(PcaCode pcacode)
         {
-            if (ModelState.IsValid)
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
-                PcaDB.Entry(pcacode).State = EntityState.Modified;
-                PcaDB.SaveChanges();
-                return RedirectToAction("searchPCA/");
+                if (ModelState.IsValid)
+                {
+                    PcaDB.Entry(pcacode).State = EntityState.Modified;
+                    PcaDB.SaveChanges();
+                    return RedirectToAction("searchPCA/");
+                }
+                return View(pcacode);
             }
-            return View(pcacode);
+            else
+            {
+                return View("error");
+            }
         }
 
         //
         // GET: /Manager/deletePCA/5
         public virtual ActionResult deletePCA(int id)
         {
-            PcaCode pcacode = PcaDB.PcaCodeList.Find(id);
-            return View(pcacode);
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                PcaCode pcacode = PcaDB.PcaCodeList.Find(id);
+                return View(pcacode);
+            }
+            else
+            {
+                return View("error");
+            }
+            
         }
 
         //
@@ -99,17 +164,26 @@ namespace TARS.Controllers
         [HttpPost, ActionName("deletePCA")] //This action MUST match the above delete function.
         public virtual ActionResult confirmedDeletePCA(int id)
         {
-            PcaCode pcacode = PcaDB.PcaCodeList.Find(id);
-            PcaDB.PcaCodeList.Remove(pcacode);
-            PcaDB.SaveChanges();
-            return RedirectToAction("searchPCA/");
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                PcaCode pcacode = PcaDB.PcaCodeList.Find(id);
+                PcaDB.PcaCodeList.Remove(pcacode);
+                PcaDB.SaveChanges();
+                return RedirectToAction("searchPCA/");
+            }
+            else
+            {
+                return View("error");
+            }
         }
-                //This was attached to delete; not sure what this is yet, but it doesn't explode!
-                protected override void Dispose(bool disposing)
-                {
-                    PcaDB.Dispose();
-                    base.Dispose(disposing);
-                }
+                
+        //This was attached to delete; not sure what this is yet, but it doesn't explode!
+        protected override void Dispose(bool disposing)
+        {
+            PcaDB.Dispose();
+            base.Dispose(disposing);
+        }
 
 
 
@@ -124,7 +198,15 @@ namespace TARS.Controllers
         // GET: /Manager/addWorkEffort
         public virtual ActionResult addWorkEffort()
         {
-            return View();
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                return View();
+            }
+            else
+            {
+                return View("error");
+            }
         }
 
         //
@@ -132,13 +214,21 @@ namespace TARS.Controllers
         [HttpPost]
         public virtual ActionResult addWorkEffort(WorkEffort workeffort)
         {
-            if (ModelState.IsValid)
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
-                WorkEffortDB.WorkEffortList.Add(workeffort);
-                WorkEffortDB.SaveChanges();
-                return RedirectToAction("searchWorkEffort/");
+                if (ModelState.IsValid)
+                {
+                    WorkEffortDB.WorkEffortList.Add(workeffort);
+                    WorkEffortDB.SaveChanges();
+                    return RedirectToAction("searchWorkEffort/");
+                }
+                return View(workeffort);
             }
-            return View(workeffort);
+            else
+            {
+                return View("error");
+            }
         }
 
         //
@@ -147,7 +237,15 @@ namespace TARS.Controllers
         
         public override ActionResult searchWorkEffort()
         {
-            return View(WorkEffortDB.WorkEffortList.ToList());
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                return View(WorkEffortDB.WorkEffortList.ToList());
+            }
+            else
+            {
+                return View("error");
+            } 
         }
         
           
@@ -156,8 +254,16 @@ namespace TARS.Controllers
         //  - Shows detailed information for a single WorkEffort code.
         public override ActionResult viewWorkEffort(int id)
         {
-            WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
-            return View(workeffort);
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
+                return View(workeffort);
+            }
+            else
+            {
+                return View("error");
+            } 
         }
 
         //
@@ -165,8 +271,16 @@ namespace TARS.Controllers
         //  - Edits a specific WorkEffort code.
         public virtual ActionResult editWorkEffort(int id)
         {
-            WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
-            return View(workeffort);
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
+                return View(workeffort);
+            }
+            else
+            {
+                return View("error");
+            } 
         }
 
         //
@@ -174,21 +288,37 @@ namespace TARS.Controllers
         [HttpPost]
         public virtual ActionResult editWorkEffort(WorkEffort workeffort)
         {
-            if (ModelState.IsValid)
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
-                WorkEffortDB.Entry(workeffort).State = EntityState.Modified;
-                WorkEffortDB.SaveChanges();
-                return RedirectToAction("searchWorkEffort/");
+                if (ModelState.IsValid)
+                {
+                    WorkEffortDB.Entry(workeffort).State = EntityState.Modified;
+                    WorkEffortDB.SaveChanges();
+                    return RedirectToAction("searchWorkEffort/");
+                }
+                return View(workeffort);
             }
-            return View(workeffort);
+            else
+            {
+                return View("error");
+            }
         }
 
         //
         // GET: /Manager/deleteWorkEffort/5
         public virtual ActionResult deleteWorkEffort(int id)
         {
-            WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
-            return View(workeffort);
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
+                return View(workeffort);
+            }
+            else
+            {
+                return View("error");
+            } 
         }
 
         //
@@ -196,10 +326,18 @@ namespace TARS.Controllers
         [HttpPost, ActionName("deleteWorkEffort")] //This action MUST match the above delete function.
         public virtual ActionResult confirmedDeleteWorkEffort(int id)
         {
-            WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
-            WorkEffortDB.WorkEffortList.Remove(workeffort);
-            WorkEffortDB.SaveChanges();
-            return RedirectToAction("searchWorkEffort/");
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
+                WorkEffortDB.WorkEffortList.Remove(workeffort);
+                WorkEffortDB.SaveChanges();
+                return RedirectToAction("searchWorkEffort/");
+            }
+            else
+            {
+                return View("error");
+            } 
         }
 
 
@@ -214,7 +352,15 @@ namespace TARS.Controllers
         // GET: /Manager/addTask
         public virtual ActionResult addTask()
         {
-            return View();
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                return View();
+            }
+            else
+            {
+                return View("error");
+            } 
         }
 
         //
@@ -222,13 +368,21 @@ namespace TARS.Controllers
         [HttpPost]
         public virtual ActionResult addTask(Task task)
         {
-            if (ModelState.IsValid)
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
-                TaskDB.TaskList.Add(task);
-                TaskDB.SaveChanges();
-                return RedirectToAction("searchTask/");
+                if (ModelState.IsValid)
+                {
+                    TaskDB.TaskList.Add(task);
+                    TaskDB.SaveChanges();
+                    return RedirectToAction("searchTask/");
+                }
+                return View(task);
             }
-            return View(task);
+            else
+            {
+                return View("error");
+            } 
         }
 
         //
@@ -236,7 +390,15 @@ namespace TARS.Controllers
         //  - Shows a list of all Task codes.
         public virtual ActionResult searchTask()
         {
-            return View(TaskDB.TaskList.ToList());
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                return View(TaskDB.TaskList.ToList());
+            }
+            else
+            {
+                return View("error");
+            } 
         }
 
         //
@@ -244,8 +406,16 @@ namespace TARS.Controllers
         //  - Shows detailed information for a single Task code.
         public virtual ActionResult viewTask(int id)
         {
-            Task task = TaskDB.TaskList.Find(id);
-            return View(task);
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                Task task = TaskDB.TaskList.Find(id);
+                return View(task);
+            }
+            else
+            {
+                return View("error");
+            } 
         }
 
         //
@@ -253,8 +423,16 @@ namespace TARS.Controllers
         //  - Edits a specific Task code.
         public virtual ActionResult editTask(int id)
         {
-            Task task = TaskDB.TaskList.Find(id);
-            return View(task);
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                Task task = TaskDB.TaskList.Find(id);
+                return View(task);
+            }
+            else
+            {
+                return View("error");
+            } 
         }
 
         //
@@ -262,21 +440,37 @@ namespace TARS.Controllers
         [HttpPost]
         public virtual ActionResult editTask(Task task)
         {
-            if (ModelState.IsValid)
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
-                TaskDB.Entry(task).State = EntityState.Modified;
-                TaskDB.SaveChanges();
-                return RedirectToAction("searchTask/");
+                if (ModelState.IsValid)
+                {
+                    TaskDB.Entry(task).State = EntityState.Modified;
+                    TaskDB.SaveChanges();
+                    return RedirectToAction("searchTask/");
+                }
+                return View(task);
             }
-            return View(task);
+            else
+            {
+                return View("error");
+            } 
         }
 
         //
         // GET: /Manager/deleteTask/5
         public virtual ActionResult deleteTask(int id)
         {
-            Task task = TaskDB.TaskList.Find(id);
-            return View(task);
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                Task task = TaskDB.TaskList.Find(id);
+                return View(task);
+            }
+            else
+            {
+                return View("error");
+            } 
         }
 
         //
@@ -284,10 +478,18 @@ namespace TARS.Controllers
         [HttpPost, ActionName("deleteTask")] //This action MUST match the above delete function.
         public virtual ActionResult confirmedDeleteTask(int id)
         {
-            Task task = TaskDB.TaskList.Find(id);
-            TaskDB.TaskList.Remove(task);
-            TaskDB.SaveChanges();
-            return RedirectToAction("searchTask/");
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                Task task = TaskDB.TaskList.Find(id);
+                TaskDB.TaskList.Remove(task);
+                TaskDB.SaveChanges();
+                return RedirectToAction("searchTask/");
+            }
+            else
+            {
+                return View("error");
+            } 
         }
         //******************************************************************
 
@@ -299,7 +501,15 @@ namespace TARS.Controllers
         // GET: /Manager/addPCA_WE
         public virtual ActionResult addPCA_WE()
         {
-            return View();
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                return View();
+            }
+            else
+            {
+                return View("error");
+            } 
         }
 
         //
@@ -307,13 +517,21 @@ namespace TARS.Controllers
         [HttpPost]
         public virtual ActionResult addPCA_WE(PCA_WE pca_we)
         {
-            if (ModelState.IsValid)
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
-                PCA_WEDB.PCA_WEList.Add(pca_we);
-                PCA_WEDB.SaveChanges();
-                return RedirectToAction("searchPCA_WE/");
+                if (ModelState.IsValid)
+                {
+                    PCA_WEDB.PCA_WEList.Add(pca_we);
+                    PCA_WEDB.SaveChanges();
+                    return RedirectToAction("searchPCA_WE/");
+                }
+                return View(pca_we);
             }
-            return View(pca_we);
+            else
+            {
+                return View("error");
+            } 
         }
 
         //
@@ -321,7 +539,15 @@ namespace TARS.Controllers
         //  - Shows a list of all PCA_WE codes.
         public virtual ActionResult searchPCA_WE()
         {
-            return View(PCA_WEDB.PCA_WEList.ToList());
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                return View(PCA_WEDB.PCA_WEList.ToList());
+            }
+            else
+            {
+                return View("error");
+            } 
         }
 
         //
@@ -329,8 +555,16 @@ namespace TARS.Controllers
         //  - Shows detailed information for a single PCA_WE code.
         public virtual ActionResult viewPCA_WE(int id)
         {
-            PCA_WE pca_we = PCA_WEDB.PCA_WEList.Find(id);
-            return View(pca_we);
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                PCA_WE pca_we = PCA_WEDB.PCA_WEList.Find(id);
+                return View(pca_we);
+            }
+            else
+            {
+                return View("error");
+            } 
         }
 
         //
@@ -338,8 +572,16 @@ namespace TARS.Controllers
         //  - Edits a specific PCA_WE code.
         public virtual ActionResult editPCA_WE(int id)
         {
-            PCA_WE pca_we = PCA_WEDB.PCA_WEList.Find(id);
-            return View(pca_we);
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                PCA_WE pca_we = PCA_WEDB.PCA_WEList.Find(id);
+                return View(pca_we);
+            }
+            else
+            {
+                return View("error");
+            } 
         }
 
         //
@@ -347,21 +589,37 @@ namespace TARS.Controllers
         [HttpPost]
         public virtual ActionResult editPCA_WE(PCA_WE pca_we)
         {
-            if (ModelState.IsValid)
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
-                PCA_WEDB.Entry(pca_we).State = EntityState.Modified;
-                PCA_WEDB.SaveChanges();
-                return RedirectToAction("searchPCA_WE/");
+                if (ModelState.IsValid)
+                {
+                    PCA_WEDB.Entry(pca_we).State = EntityState.Modified;
+                    PCA_WEDB.SaveChanges();
+                    return RedirectToAction("searchPCA_WE/");
+                }
+                return View(pca_we);
             }
-            return View(pca_we);
+            else
+            {
+                return View("error");
+            } 
         }
 
         //
         // GET: /Manager/deletePCA_WE/5
         public virtual ActionResult deletePCA_WE(int id)
         {
-            PCA_WE pca_we = PCA_WEDB.PCA_WEList.Find(id);
-            return View(pca_we);
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                PCA_WE pca_we = PCA_WEDB.PCA_WEList.Find(id);
+                return View(pca_we);
+            }
+            else
+            {
+                return View("error");
+            } 
         }
 
         //
@@ -369,10 +627,18 @@ namespace TARS.Controllers
         [HttpPost, ActionName("deletePCA_WE")] //This action MUST match the above delete function.
         public virtual ActionResult confirmedDeletePCA_WE(int id)
         {
-            PCA_WE pca_we = PCA_WEDB.PCA_WEList.Find(id);
-            PCA_WEDB.PCA_WEList.Remove(pca_we);
-            PCA_WEDB.SaveChanges();
-            return RedirectToAction("searchPCA_WE/");
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                PCA_WE pca_we = PCA_WEDB.PCA_WEList.Find(id);
+                PCA_WEDB.PCA_WEList.Remove(pca_we);
+                PCA_WEDB.SaveChanges();
+                return RedirectToAction("searchPCA_WE/");
+            }
+            else
+            {
+                return View("error");
+            } 
         }
         //******************************************************************
 
@@ -380,18 +646,34 @@ namespace TARS.Controllers
 
         public virtual ActionResult approveHours()
         {
-            //fetch data from Form
-            //send data to model
-            //call appropriate view
-            return null;
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                //fetch data from Form
+                //send data to model
+                //call appropriate view
+                return null;
+            }
+            else
+            {
+                return View("error");
+            }
         }
 
         public override ActionResult viewHistory()
         {
-            //fetch data from Form
-            //request data from model
-            //send data to appropriate view
-            return null;
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                //fetch data from Form
+                //request data from model
+                //send data to appropriate view
+                return null;
+            }
+            else
+            {
+                return View("error");
+            }
         }
 
     }
