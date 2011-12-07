@@ -21,25 +21,30 @@ namespace TARS.Controllers
         // GET: /User/
         public virtual ActionResult Index()
         {
-
-
-            //}
-                /*TARSUser newuser = new TARSUser(); //   
-            newuser.un = "Test";               //Get this stuff from Active Directory + Current login
-            newuser.permission = 1;            //
-            var x = TARSUserDB.TARSUserList.Find( 0 );
-            if (x == null)*/
+            Authentication auth = new Authentication();
+            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth )
+            {
                 return Redirect("/TARS/User/viewTimesheet/");
-            //else
-            //    return null;
+            }
+            else
+            {
+                return View("error");
+            }
         }
-
         //
         // GET: /User/addHours
         public virtual ActionResult addHours(int id)
         {
-            ViewBag.WorkEffortID = id;
-            return View();
+            Authentication auth = new Authentication();
+            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+            {
+                ViewBag.WorkEffortID = id;
+                return View();
+            }
+            else
+            {
+                return View("error");
+            }
         }
 
         //
@@ -47,96 +52,154 @@ namespace TARS.Controllers
         [HttpPost]
         public virtual ActionResult addHours(Hours newhours)
         {
-            if (ModelState.IsValid)
+            Authentication auth = new Authentication();
+            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
-                HoursDB.HoursList.Add(newhours);
-                HoursDB.SaveChanges();
-                return RedirectToAction("viewTimesheet/");
+                if (ModelState.IsValid)
+                {
+                    HoursDB.HoursList.Add(newhours);
+                    HoursDB.SaveChanges();
+                    return RedirectToAction("viewTimesheet/");
+                }
+                return View(newhours);
             }
-            return View(newhours);
+            else
+            {
+                return View("error");
+            }
         }
 
         //
         // GET: /User/searchWorkEffort
         public virtual ActionResult searchWorkEffort()
         {
-            return View(WorkEffortDB.WorkEffortList.ToList());
+            Authentication auth = new Authentication();
+            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+            {
+                return View(WorkEffortDB.WorkEffortList.ToList());
+            }
+            else
+            {
+                return View("error");
+            }
         }
 
         //
         // GET: /User/viewWorkEffort
         public virtual ActionResult viewWorkEffort(int id = 0)
         {
-            WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
-            if (workeffort == null)
+            Authentication auth = new Authentication();
+            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
-                return HttpNotFound();
+                WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
+                if (workeffort == null)
+                {
+                    return HttpNotFound();
+                }
+                ViewBag.WorkEffortID = workeffort.ID;
+                return View(workeffort);
             }
-            ViewBag.WorkEffortID = workeffort.ID;
-            return View(workeffort);
+            else
+            {
+                return View("error");
+            }
         }
 
         //
         // GET: /User/viewHours
         public virtual ActionResult viewHours(string user = "")
         {
-            var search = from m in HoursDB.HoursList
-                         select m;
-            if (!String.IsNullOrEmpty(user))
+            Authentication auth = new Authentication();
+            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
-                search = search.Where(s => s.creator.Contains(user));
-            }
+                var search = from m in HoursDB.HoursList
+                             select m;
+                if (!String.IsNullOrEmpty(user))
+                {
+                    search = search.Where(s => s.creator.Contains(user));
+                }
 
-            return View(search);
+                return View(search);
+            }
+            else
+            {
+                return View("error");
+            } 
         }
 
         //
         // GET: /User/storeFile
         public virtual ActionResult storeFile()
         {
-            return null;
+            Authentication auth = new Authentication();
+            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+            {
+                return null;
+            }
+            else
+            {
+                return View("error");
+            }
         }
 
         //
         // GET: /User/viewHistory
         public virtual ActionResult viewHistory()
         {
-            return null;
-        }
-        public virtual ActionResult viewTimesheet()
-        {
-            string user;
-            if (User != null)
+            Authentication auth = new Authentication();
+            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
-                user = User.Identity.Name;
+                return null;
             }
             else
             {
-                user = "";
+                return View("error");
             }
-            var searchHours = from m in HoursDB.HoursList
-                              select m;
-            List<Task> resultTasks = new List<Task>();
-            if (!String.IsNullOrEmpty(user))
-            {
+        }
 
-                searchHours = searchHours.Where(s => s.creator.Contains(user));
-            }
-            foreach (var item in searchHours)
+        public virtual ActionResult viewTimesheet()
+        {
+            Authentication auth = new Authentication();
+            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
-                //searchTasks.Where(s => s.ID.Equals(1));
-                var searchTasks = from m in TaskDB.TaskList
-                                  where m.ID == item.task
+                string user;
+                if (User != null)
+                {
+                    user = User.Identity.Name;
+                }
+                else
+                {
+                    user = "";
+                }
+                var searchHours = from m in HoursDB.HoursList
                                   select m;
-                resultTasks.AddRange(searchTasks);
+                List<Task> resultTasks = new List<Task>();
+                if (!String.IsNullOrEmpty(user))
+                {
 
+                    searchHours = searchHours.Where(s => s.creator.Contains(user));
+                }
+                foreach (var item in searchHours)
+                {
+                    //searchTasks.Where(s => s.ID.Equals(1));
+                    var searchTasks = from m in TaskDB.TaskList
+                                      where m.ID == item.task
+                                      select m;
+                    resultTasks.AddRange(searchTasks);
+
+                }
+
+                ViewBag.taskList = resultTasks;
+                //if (searchHours != null)
+                {
+                    return View(searchHours);
+                }
             }
-
-            ViewBag.taskList = resultTasks;
-            //if (searchHours != null)
+            else
             {
-                return View(searchHours);
+                return View("error");
             }
+            
         }
     }
 }
