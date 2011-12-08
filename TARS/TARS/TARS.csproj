@@ -249,6 +249,7 @@
     <Content Include="Views\Test\TestViews.cshtml" />
     <Content Include="Views\Shared\viewTimesheet.cshtml" />
     <Content Include="Views\User\viewTimesheet2.cshtml" />
+    <Content Include="Views\Manager\approveHours.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
