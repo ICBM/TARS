@@ -1,10 +1,13 @@
 \documentclass[letterpaper]{article}
 \usepackage{graphicx}
 \usepackage{fullpage}
+\usepackage{float}
+\usepackage{graphics}
 \usepackage{color}
 \usepackage[english]{babel}
 \usepackage{appendix}
 \usepackage{tabularx}
+\usepackage{wrapfig}
 
 
 \newcommand{\HRule}{\rule{5cm}{0.1mm}}
@@ -327,7 +330,45 @@ The Requirements Summary is a combination of the Client Requirement Document and
 \\
 The final deliverable is the TARS GitHub Repository.  It has been the primary location for all collaborative work.  It is an open source repository as the client desired to make the source code open-source.  Maintaining private collaborators costs twelve dollars a month and will need to be transferred to the new team as soon as they take up the project.\\
 \\
+\pagebreak
 \subsection{Prototype Deliverable Detail: Visual Studio Solution Architecture}
+
+{
+\begin{wrapfigure}{r}{0.33\textwidth}
+\includegraphics[scale=0.9]{project_organization.png}
+\end{wrapfigure}
+\paragraph{}
+At the topmost level of TARS are a variety of folders as well as configuration information for the project as a whole.
+\paragraph{Web.config} contains all configuration information for the webpage. The primary use of it so far has been to add Connection Strings to allow for database connection.
+\paragraph{Content folder} contains the CSS data for the website.
+\paragraph{Controllers folder} contains all Controllers for the project, which are described above.
+\paragraph{Helpers folder} contains all helper classes under the namespace TARS.Helpers. Included thus far are the Authentication and LDAPConnection classes.
+\paragraph{Models folder} contains all model classes, which are described above.
+\paragraph{Views folder} contains all relevant views, which are organized into 
+\\subfolders according to the Controller they belong to. The exception to
+\\this is the Shared folder, where a controller will look for a view if it
+\\is not found in its own specified folder. This is very useful for views 
+\\that are spread unchanged between permission classes, such as 
+\\viewTimesheet. As well, it should be noted that \_Layout provides the
+\\default layout for ALL pages.
+}
+\pagebreak
+\paragraph{}
+So, for the server to generate a sample page to the user (let's say webroot/Manager/viewWorkEffort?id=1), it will follow this general process:
+\begin{itemize}
+\item Open the appropriate controller, in this case Manager. The server will only call the constructor when it is first created, not on every new page load.
+\item Check the Manager controller for a public function called viewWorkEffort. If this function were not found, it would check under the User controller, since Manager inherits from User.
+\item In this case, Manager has viewWorkEffort overridden from User to enable Edits, so it will load this function and check for proper arguments. 
+\item The function declaration is expecting an \emph{int id}, which we have passed. So now, the function will load.
+\item In the function body, the function will make an Authentication class and check to make sure the user logged in actually is a Manager or Admin. If not, it will redirect the User to an error or login page.
+\item To obtain information about Work Effort \# 1, the function will create an empty WorkEffort class and fill it from WorkEffortDBContext.WorkEffortList.Find(1); Behind the scenes, WorkEffortDBContext is connecting to a server according to the connection string in Web.config, and looking for a table called dbo.WorkEfforts.
+\item At this point, any other information can be passed to the View by adding it to ViewBag. EX: ViewBag.newitem = ``Hello.'';  //Runtime type checking on this.
+\item The View now has all needed information from the Model and ViewBag, so output everything in the View and display to the user.
+\end{itemize}
+\begin{centering}
+\includegraphics[scale=0.4]{erd_flow.png}
+\end{centering}
+\pagebreak
 
 
 \subsection{GitHub Locations of Importantance}

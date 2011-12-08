@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2011.12.6)  7 DEC 2011 22:44
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2011.12.1)  8 DEC 2011 02:28
 entering extended mode
  %&-line parsing enabled.
 **ssd.tex
@@ -42,7 +42,7 @@ File: graphics.cfg 2009/08/28 v1.8 graphics configuration of TeX Live
 Package graphics Info: Driver file: pdftex.def on input line 91.
 
 (/usr/share/texmf-texlive/tex/latex/pdftex-def/pdftex.def
-File: pdftex.def 2010/03/12 v0.04p Graphics/color for pdfTeX
+File: pdftex.def 2009/08/25 v0.04m Graphics/color for pdfTeX
 \Gread@gobject=\count87
 ))
 \Gin@req@height=\dimen103
@@ -51,6 +51,14 @@ File: pdftex.def 2010/03/12 v0.04p Graphics/color for pdfTeX
 (/usr/share/texmf-texlive/tex/latex/preprint/fullpage.sty
 Package: fullpage 1999/02/23 1.1 (PWD)
 \FP@margin=\skip43
+)
+(/usr/share/texmf-texlive/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count88
+\float@exts=\toks15
+\float@box=\box26
+\@float@everytoks=\toks16
+\@floatcapt=\box27
 )
 (/usr/share/texmf-texlive/tex/latex/graphics/color.sty
 Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
@@ -68,7 +76,7 @@ Language: english 2005/03/30 v3.3o English support from the babel system
 
 (/usr/share/texmf-texlive/tex/generic/babel/babel.def
 File: babel.def 2008/07/06 v3.8l Babel common definitions
-\babel@savecnt=\count88
+\babel@savecnt=\count89
 \U@D=\dimen105
 )
 \l@british = a dialect from \language\l@english 
@@ -79,9 +87,9 @@ File: babel.def 2008/07/06 v3.8l Babel common definitions
 ))
 (/usr/share/texmf-texlive/tex/latex/appendix/appendix.sty
 Package: appendix 2009/09/02 v1.2b extra appendix facilities
-\c@@pps=\count89
-\c@@ppsavesec=\count90
-\c@@ppsaveapp=\count91
+\c@@pps=\count90
+\c@@ppsavesec=\count91
+\c@@ppsaveapp=\count92
 )
 (/usr/share/texmf-texlive/tex/latex/tools/tabularx.sty
 Package: tabularx 1999/01/07 v2.07 `tabularx' package (DPC)
@@ -90,7 +98,7 @@ Package: tabularx 1999/01/07 v2.07 `tabularx' package (DPC)
 Package: array 2008/09/09 v2.4c Tabular extension package (FMi)
 \col@sep=\dimen106
 \extrarowheight=\dimen107
-\NC@list=\toks15
+\NC@list=\toks17
 \extratabsurround=\skip44
 \backup@length=\skip45
 )
@@ -99,41 +107,49 @@ Package: array 2008/09/09 v2.4c Tabular extension package (FMi)
 \TX@old@col=\dimen110
 \TX@target=\dimen111
 \TX@delta=\dimen112
-\TX@cols=\count92
-\TX@ftn=\toks16
+\TX@cols=\count93
+\TX@ftn=\toks18
+)
+(/usr/share/texmf-texlive/tex/latex/wrapfig/wrapfig.sty
+\wrapoverhang=\dimen113
+\WF@size=\dimen114
+\c@WF@wrappedlines=\count94
+\WF@box=\box28
+\WF@everypar=\toks19
+Package: wrapfig 2003/01/31  v 3.6
 ) (./ssd.aux)
 \openout1 = `ssd.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
 
 (/usr/share/texmf-texlive/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count93
-\scratchdimen=\dimen113
-\scratchbox=\box26
-\nofMPsegments=\count94
-\nofMParguments=\count95
-\everyMPshowfont=\toks17
-\MPscratchCnt=\count96
-\MPscratchDim=\dimen114
-\MPnumerator=\count97
-\everyMPtoPDFconversion=\toks18
+\scratchcounter=\count95
+\scratchdimen=\dimen115
+\scratchbox=\box29
+\nofMPsegments=\count96
+\nofMParguments=\count97
+\everyMPshowfont=\toks20
+\MPscratchCnt=\count98
+\MPscratchDim=\dimen116
+\MPnumerator=\count99
+\everyMPtoPDFconversion=\toks21
 )
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 42.
+(Font)              <7> on input line 45.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 42.
+(Font)              <5> on input line 45.
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./ssd.toc)
@@ -141,283 +157,500 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 \openout3 = `ssd.toc'.
 
  [2]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 69.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 72.
 
 (/usr/share/texmf-texlive/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 69.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 72.
  [3]
-Underfull \hbox (badness 10000) in paragraph at lines 107--121
+Underfull \hbox (badness 10000) in paragraph at lines 115--131
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 107--121
+Underfull \hbox (badness 10000) in paragraph at lines 115--131
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 107--121
+Underfull \hbox (badness 10000) in paragraph at lines 115--131
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 107--121
+Underfull \hbox (badness 10000) in paragraph at lines 115--131
+
+ []
+
+(./requirements_list.tex
+Underfull \hbox (badness 10000) in paragraph at lines 8--10
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 8--10
 
  []
 
 [4]
-Underfull \hbox (badness 10000) in paragraph at lines 138--141
+Underfull \hbox (badness 10000) in paragraph at lines 13--14
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 146--147
+Underfull \hbox (badness 10000) in paragraph at lines 15--18
 
  []
 
-<../design/images/mvc.png, id=23, 490.83376pt x 343.2825pt>
-File: ../design/images/mvc.png Graphic file (type png)
 
-<use ../design/images/mvc.png>
-Underfull \hbox (badness 10000) in paragraph at lines 166--169
+Underfull \hbox (badness 10000) in paragraph at lines 23--24
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 29--31
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 40--41
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 48--51
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 56--57
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
 
  []
 
 [5]
-Underfull \hbox (badness 10000) in paragraph at lines 170--175
+Underfull \hbox (badness 10000) in paragraph at lines 72--73
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 170--175
+Underfull \hbox (badness 10000) in paragraph at lines 82--85
 
  []
 
 
-Overfull \hbox (49.99045pt too wide) in paragraph at lines 179--179
-[]\OT1/cmtt/m/n/10 boolean requestUser(string user, string password); //returns
- true if the user/password combo exists[] 
- []
-
-[6 <../design/images/mvc.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 199--207
+Underfull \hbox (badness 10000) in paragraph at lines 100--101
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 199--207
+Underfull \hbox (badness 10000) in paragraph at lines 110--111
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 199--207
+Underfull \hbox (badness 10000) in paragraph at lines 120--121
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 130--131
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 140--141
+
+ []
+
+[6]
+Underfull \hbox (badness 10000) in paragraph at lines 150--151
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 160--161
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 170--171
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 180--181
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 190--191
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 200--201
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 210--211
 
  []
 
 [7]
-Underfull \hbox (badness 10000) in paragraph at lines 217--226
+Underfull \hbox (badness 10000) in paragraph at lines 220--221
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 217--226
+Underfull \hbox (badness 10000) in paragraph at lines 230--231
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 217--226
+Underfull \hbox (badness 10000) in paragraph at lines 240--241
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 217--226
+Underfull \hbox (badness 10000) in paragraph at lines 250--251
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 217--226
+Underfull \hbox (badness 10000) in paragraph at lines 260--261
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 270--271
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 280--281
 
  []
 
 [8]
-Underfull \hbox (badness 10000) in paragraph at lines 262--277
+Underfull \hbox (badness 10000) in paragraph at lines 290--291
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 262--277
+Underfull \hbox (badness 10000) in paragraph at lines 300--301
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 262--277
+Underfull \hbox (badness 10000) in paragraph at lines 310--311
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 262--277
+Underfull \hbox (badness 10000) in paragraph at lines 320--321
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 262--277
+Underfull \hbox (badness 10000) in paragraph at lines 330--331
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 262--277
+Underfull \hbox (badness 10000) in paragraph at lines 340--341
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 262--277
+Underfull \hbox (badness 10000) in paragraph at lines 350--351
 
  []
 
-<../design/images/class_diagram_1.png, id=40, 1248.42882pt x 542.73354pt>
+[9])
+Underfull \hbox (badness 10000) in paragraph at lines 148--150
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 148--150
+
+ []
+
+<../design/images/mvc.png, id=40, 490.83376pt x 343.2825pt>
+File: ../design/images/mvc.png Graphic file (type png)
+
+<use ../design/images/mvc.png>
+Underfull \hbox (badness 10000) in paragraph at lines 151--154
+
+ []
+
+[10 <../design/images/mvc.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 159--160
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 179--181
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 179--181
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 182--187
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 182--187
+
+ []
+
+[11]
+Overfull \hbox (49.99045pt too wide) in paragraph at lines 191--191
+[]\OT1/cmtt/m/n/10 boolean requestUser(string user, string password); //returns
+ true if the user/password combo exists[] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 195--198
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 213--221
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 213--221
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 213--221
+
+ []
+
+[12]
+Underfull \hbox (badness 10000) in paragraph at lines 231--240
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 231--240
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 231--240
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 231--240
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 231--240
+
+ []
+
+[13]
+Underfull \hbox (badness 10000) in paragraph at lines 276--291
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 276--291
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 276--291
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 276--291
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 276--291
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 276--291
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 276--291
+
+ []
+
+[14] <../design/images/class_diagram_1.png, id=60, 1248.42882pt x 542.73354pt>
 File: ../design/images/class_diagram_1.png Graphic file (type png)
 
 <use ../design/images/class_diagram_1.png>
-Overfull \hbox (29.60767pt too wide) in paragraph at lines 279--280
+Overfull \hbox (29.60767pt too wide) in paragraph at lines 293--294
 [] 
  []
 
-[9]
-Underfull \hbox (badness 10000) in paragraph at lines 281--284
+
+Underfull \hbox (badness 10000) in paragraph at lines 295--298
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 294--299
+Underfull \hbox (badness 10000) in paragraph at lines 308--313
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 294--299
+Underfull \hbox (badness 10000) in paragraph at lines 308--313
 
  []
 
 
-Overfull \hbox (8.4293pt too wide) in paragraph at lines 294--299
+Overfull \hbox (8.4293pt too wide) in paragraph at lines 308--313
 \OT1/cmr/m/n/10 quire-ments changelog is avail-able at: github.com/ICBM/TARS/bl
 ob/master/doc/requirements[]summary.docx 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 294--299
+Underfull \hbox (badness 10000) in paragraph at lines 308--313
+
+ []
+
+[15 <../design/images/class_diagram_1.png (PNG copy)>]
+Underfull \hbox (badness 10000) in paragraph at lines 317--334
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 303--319
+Underfull \hbox (badness 10000) in paragraph at lines 317--334
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 303--319
+Underfull \hbox (badness 10000) in paragraph at lines 317--334
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 303--319
+Underfull \hbox (badness 10000) in paragraph at lines 317--334
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 303--319
+Underfull \hbox (badness 10000) in paragraph at lines 317--334
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 303--319
+Underfull \hbox (badness 10000) in paragraph at lines 317--334
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 303--319
+Underfull \hbox (badness 10000) in paragraph at lines 317--334
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 303--319
+Underfull \hbox (badness 10000) in paragraph at lines 317--334
+
+ []
+
+[16] <project_organization.png, id=67, 185.94469pt x 639.13782pt>
+File: project_organization.png Graphic file (type png)
+
+<use project_organization.png>
+Overfull \hbox (12.32864pt too wide) in paragraph at lines 338--339
+[][] 
+ []
+
+[17 <./project_organization.png>]
+<erd_flow.png, id=72, 1132.23pt x 814.04124pt>
+File: erd_flow.png Graphic file (type png)
+ <use erd_flow.png> [18 <./erd_flow.png>] [19] [20] [21]
+Underfull \hbox (badness 10000) in paragraph at lines 541--562
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 303--319
+Underfull \hbox (badness 10000) in paragraph at lines 541--562
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 303--319
-
- []
-
-[10 <../design/images/class_diagram_1.png (PNG copy)>] [11] [12] [13] [14]
-Underfull \hbox (badness 10000) in paragraph at lines 491--512
+Underfull \hbox (badness 10000) in paragraph at lines 541--562
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 491--512
+Underfull \hbox (badness 10000) in paragraph at lines 541--562
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 491--512
+Underfull \hbox (badness 10000) in paragraph at lines 541--562
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 491--512
+Underfull \hbox (badness 10000) in paragraph at lines 541--562
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 491--512
+Underfull \hbox (badness 10000) in paragraph at lines 541--562
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 491--512
+Underfull \hbox (badness 10000) in paragraph at lines 541--562
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 491--512
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 491--512
-
- []
-
-[15] (./ssd.aux) ) 
+[22] [23] (./ssd.aux) ) 
 Here is how much of TeX's memory you used:
- 1504 strings out of 495061
- 18986 string characters out of 1182621
- 76500 words of memory out of 3000000
- 4693 multiletter control sequences out of 15000+50000
+ 1635 strings out of 495061
+ 20740 string characters out of 1182621
+ 80055 words of memory out of 3000000
+ 4811 multiletter control sequences out of 15000+50000
  8477 words of font info for 30 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
- 25i,8n,19p,709b,241s stack positions out of 5000i,500n,10000p,200000b,50000s
-</usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx
-10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx12.pfb></us
-r/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/share/te
-xmf-texlive/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-texlive/
-fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-texlive/fonts/type1/
-public/amsfonts/cm/cmr9.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfon
-ts/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti1
-0.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr
-/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/share/texmf
--texlive/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on ssd.pdf (15 pages, 219119 bytes).
+ 25i,8n,19p,629b,249s stack positions out of 5000i,500n,10000p,200000b,50000s
+</usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm
+/cmbx10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx12.pfb
+></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/sha
+re/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-te
+xlive/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-texlive/fonts/
+type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-texlive/fonts/type1/public
+/amsfonts/cm/cmr9.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/
+cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+</usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share
+/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/share/texmf-texli
+ve/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on ssd.pdf (23 pages, 387418 bytes).
 PDF statistics:
- 99 PDF objects out of 1000 (max. 8388607)
+ 132 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 21 words of extra memory for PDF output out of 10000 (max. 10000000)
 
