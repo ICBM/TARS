@@ -649,10 +649,22 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
-                //fetch data from Form
-                //send data to model
-                //call appropriate view
-                return null;
+                return View(HoursDB.HoursList.ToList());
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+        [HttpPost]
+        public virtual ActionResult approveHours(List<Hours> hours)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                HoursDB.SaveChanges();
+                return View();
             }
             else
             {
