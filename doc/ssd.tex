@@ -1,10 +1,13 @@
 \documentclass[letterpaper]{article}
 \usepackage{graphicx}
 \usepackage{fullpage}
+\usepackage{float}
+\usepackage{graphics}
 \usepackage{color}
 \usepackage[english]{babel}
 \usepackage{appendix}
 \usepackage{tabularx}
+\usepackage{wrapfig}
 
 
 \newcommand{\HRule}{\rule{5cm}{0.1mm}}
@@ -21,8 +24,9 @@
 
 
 % Title
-{ \LARGE \bfseries Idaho Department of Health and Welfare}\\[0.4cm]
-{ \huge \bfseries Time, Accounting, and Reporting System}\\[1.0cm]
+%{ \LARGE \bfseries Idaho Department of Health and Welfare}\\[0.4cm]
+%{ \huge \bfseries Time, Accounting, and Reporting System}\\[1.0cm]
+{ \includegraphics[scale=0.45]{logo_huge_inverse.png} }\\[2.0cm]
 { \normalsize \emph{ prepared for}}\\[0.5cm]
 { \normalsize Don Moreaux}\\
 { \normalsize Marj Sanderson}\\[0.5cm]
@@ -100,6 +104,11 @@ LDAP & Lightweight Directory Access Protocol. A protocol used for interface with
 DSA & Directory Service Agent. A server that specifically listens for queries via LDAP. \\ \hline
 Active Directory & Microsoft Directory Services \\ \hline
 Apache Directory Services & Open source LDAP alternative to Active Directory. Highly stripped down. \\ \hline
+Task & An individual part of a Work-Effort \\ \hline
+I-Time & Idaho Time - The system by which hours are actually submitted to the Idaho Government \\ \hline
+Earnings Codes & Code describing a unit of work. VAC = Vacation. Etc.\\ \hline
+IIS & Internet Information Services - Microsoft Server Infrastructure \\ \hline
+.NET & Proprietary Microsoft Framework. \\ \hline
 \end{tabular}
 \end{center}
 
@@ -114,14 +123,16 @@ view.\\
 Section 4 provides detailed design descriptions for every component
 defined in the architectural view(s). \\
 \\
-Sections 5 provides traceability information connecting the original specifications
+Section 5 provides traceability information connecting the original specifications
 (referenced above) to the architectural components and design entities identified in this document.\\
 \\
-Section 6 and beyond are appendices including original information and communications used to create this document.
+Section 6 is a complete overview of project deliverables as well as providing an overview of the Visual Studio Solution that makes up the TARS prototype.
+\\
+Sections 7 and beyond are appendices including original information and communications used to create this document.
 
 \section{\bfseries{Software Requirements, Constraints, and User Characteristics}}
-%\input{requirements_doc.tex}
-Check the requirements\_summary.docx for an extensive list of requirements.
+The following is a compiled list of TARS requirements. Below each individual requirement is a short comment as well as a status of that requirement as of 12/7/2011.
+\input{requirements_list.tex}
 \section{Software Architecture}
 \subsection{Server Architecture - Microsoft Internet Information Services 7} 
 One of the IDHW's requirements for the this project is the use of Windows Server infrastructure. In this case the TARS development team will use Microsoft IIS7. Microsoft's Internet Information Services server is a modular, intuitive server application. New considerations must now be applied, however. IIS7, being a Microsoft product, uses Microsoft development software. Namely:
@@ -136,6 +147,9 @@ TARS will be developed using all these technologies, as well as the IIS7 Model-V
 
 \subsection{Model-View-Controller}
 Most of the heavy-lifting for TARS will be present in the display and interaction with large amounts of data. This problem is what the Model-View-Controller design pattern was created for. The idea is that each word in the acronym: Model, View, and Controller each represent a component that handles a different aspect of the display process.\\
+\\
+
+\includegraphics[scale=0.6]{../design/images/mvc.png}\\
 \\
 Advantage of Model-View-Controller architecture:
 \begin{itemize}
@@ -165,7 +179,6 @@ Views render the data received from the Models into viewable web pages.
 \subsection{SQL2008 Database}
 Though IIS can utilize any format of SQL Database, the IDHW requires that TARS use SQL2008. Any queries made by the MVC will be carried out by the "Model" component of the MVC. \\
 \\
-\includegraphics[scale=0.8]{../design/images/mvc.png}
 \subsection{Active Directory}
 The IDHW uses Microsoft Active Directory for their user authentification. With that infrastructure already in place, it is logical to use the same for Idaho TARS. To authenticate users of TARS, there will be three new Active Directory groups added: TARSAdmin, TARSManager, and TARSUser. If a given user is part of any of these three groups, they will be allowed access to TARS based upon their group. \\
 \\
@@ -180,7 +193,9 @@ string requestRole(string user); //returns which group a user is part of
 All these functions create an LDAP connection, query the DSA, and close the connection. The user of this helper class need not ever understand what is going on under the hood to use it correctly. 
 
 \subsection{Security}
-While Idaho TARS will be used internally, there is still a security risk. The system may not be dealing with any highly confidential info, but TARS will have access to government resources like the IDHW Active Directory and I-Time interfaces. To prevent easy exploitation of the TARS databases, all queries to the database will be centralized in Model. This will will not only make the team's code simpler, but also make it more secure. Centralized queries allow us to easily adopt a strong security stance. In addition, TARS uses DbContexts for database interaction. With that being the case, no SQL is ever directly executed from TARS. This significantly reduces the risk of SQL Injection attacks.
+While Idaho TARS will be used internally, there is still a security risk. The system may not be dealing with any highly confidential info, but TARS will have access to government resources like the IDHW Active Directory and I-Time interfaces.\\
+\\
+To prevent easy exploitation of the TARS databases, all queries to the database will be centralized in Model. This will will not only make the team's code simpler, but also make it more secure. Centralized queries allow us to easily adopt a strong security stance. In addition, TARS uses DbContexts for database interaction. With that being the case, no SQL is ever directly executed from TARS. This significantly reduces the risk of SQL Injection attacks.
 
 
 \subsection{Browser Interface}
@@ -240,7 +255,7 @@ User Controller
 \item PcaCode
 \item PCAWE
 \item WorkEffort
-\item User
+\item TARSUser
 \end{itemize}
 These items do not inherit from the default Model class. In addition, each class has an associated DbContext class in the same file. Example:
 \begin{verbatim}
@@ -273,10 +288,13 @@ In addition, for each of these Models, there is also a modification to their par
 \\
 Addendum for 11/1/2011. The stakeholders introduced the concept of ``tasks.'' There will be a default set of tasks for every work effort, but members of the ``administrator'' Active Directory group will have the ability to add or remove these ``tasks'' from a given work effort. While the development team at one point believed it possible to create Tasks functionality without another database table, the belief was quickly proven infeasible. With that being the case, a new table was added.\\
 \\
-Addendum as of 11/23/2011. The TARS development team has learned that while the Active Directory DSA will service user/password requests, TARS will be unable to push any changes to the Directory. With that being the case, the development team quickly deduced that yet another database table would be needed. Namely, the ``User'' table. This table will store unique userids as well as any web and role configuration information that may be needed by TARS in the future. For now, the development team is simply using it to store Role information. Later on, the configuration storage will be utilized by the next team.
+Addendum as of 11/23/2011. The TARS development team has learned that while the Active Directory DSA will service user/password requests, TARS will be unable to push any changes to the Directory. With that being the case, the development team quickly deduced that yet another database table would be needed. Namely, the ``TARSUser'' table. This table will store unique userids as well as any web and role configuration information that may be needed by TARS in the future. For now, the development team is simply using it to store Role information. Later on, the configuration storage will be utilized by the next team.
 
 \subsubsection{TARS Database Schema}
-\includegraphics[scale=0.4]{../design/images/class_diagram_1.png}
+%\includegraphics[scale=0.4]{../design/images/class_diagram_1.png}
+\begin{centering}
+\includegraphics[scale=0.64]{schema.png}
+\end{centering}
 \subsection{Naming Conventions}
 All defined classes and objects will use capitalized camelcase, with their first letter a capital as well.\\
 \\
@@ -304,21 +322,57 @@ At the end of the first semester the TARS team turned over the following deliver
 \\
 This Design Document contains all of the conceptual and technical designs for this project.  It also includes various Client restrictions on software and platform for the project.  For further details please read the document.\\
 \\
-The Client Requirement Documents outline the Client's desired functionality of the system.  It is broken down into 6 parts: PCA, Data, Reporting, View, Security, Navigation, and Workflow.  This document was provided to us by the Client.  It has been updated several times as requirements have been added or altered.\\
+The Client Requirement Documents outline the Client's desired functionality of the system.  It is broken down into six parts: PCA, Data, Reporting, View, Security, Navigation, and Workflow.  This document was provided to us by the Client.  It has been updated several times as requirements have been added or altered.\\
 \\
-All of the Minutes of our meetings with our clients as also been added.  They show the changes in the requirements over time and contain clarifications to questions we or the client may have had during the course of the project.\\
+All of the Minutes of our meetings with our clients as also been added.  They show the changes in the requirements over time and contain clarifications to questions the client may have had during the course of the project.\\
 \\
-Extensive trial and error was involved in setting up our machines to be viable development platforms based on the restrictions laid out by the Client.  To prevent our successors from having to deal with the same problems we dealt with we have created several tutorials to help smooth the process for them.\\
+Extensive trial and error was involved in setting up our machines to be viable development platforms based on the restrictions laid out by the Client.  To prevent the next team from having to deal with the same problems already dealt with, the TARS development team has created several tutorials to help smooth the process.\\
 \\
-We have managed to produce a functioning prototype.  It includes all the primary models and controllers but has only rudimentary views and testing.  The source code has been provided as has a Microsoft Visual Studio build.  The full details concerning the functional state of the prototype in relation to the full project requirements are laid out in the Requirements Summary document.\\
+A functioning prototype has also been produced.  It includes all the primary models and controllers but has only rudimentary views and testing.  The source code has been provided as has a Microsoft Visual Studio solution.  The full details concerning the functional state of the prototype in relation to the full project requirements are laid out in the Requirements Summary document as well as the Requirements section of this document.\\
 \\
 The Requirements Summary is a combination of the Client Requirement Document and a full summary of our prototypes functionality.  It explains in detail the current status of every requirement.\\
 \\
-The final deliverable we have is our GitHub Repository.  It has been the primary location for our collaborative work.  It is an open source repository as the client desired us to make the source code public.  It costs 12 dollars a month and will need to be transferred to the new team as soon as they take up the project.\\
+The final deliverable is the TARS GitHub Repository.  It has been the primary location for all collaborative work.  It is an open source repository as the client desired to make the source code open-source.  Maintaining private collaborators costs twelve dollars a month and will need to be transferred to the new team as soon as they take up the project.\\
 \\
-\subsection{Prototype Deliverable Detail: Current Project Status}
+\pagebreak
+\subsection{Prototype Deliverable Detail: Visual Studio Solution Architecture}
 
-\subsubsection{Project Architecture}
+{
+\begin{wrapfigure}{r}{0.33\textwidth}
+\includegraphics[scale=0.9]{project_organization.png}
+\end{wrapfigure}
+\paragraph{}
+At the topmost level of TARS are a variety of folders as well as configuration information for the project as a whole.
+\paragraph{Web.config} contains all configuration information for the webpage. The primary use of it so far has been to add Connection Strings to allow for database connection.
+\paragraph{Content folder} contains the CSS data for the website.
+\paragraph{Controllers folder} contains all Controllers for the project, which are described above.
+\paragraph{Helpers folder} contains all helper classes under the namespace TARS.Helpers. Included thus far are the Authentication and LDAPConnection classes.
+\paragraph{Models folder} contains all model classes, which are described above.
+\paragraph{Views folder} contains all relevant views, which are organized into 
+\\subfolders according to the Controller they belong to. The exception to
+\\this is the Shared folder, where a controller will look for a view if it
+\\is not found in its own specified folder. This is very useful for views 
+\\that are spread unchanged between permission classes, such as 
+\\viewTimesheet. As well, it should be noted that \_Layout provides the
+\\default layout for ALL pages.
+}
+\pagebreak
+\paragraph{}
+So, for the server to generate a sample page to the user (let's say webroot/Manager/viewWorkEffort?id=1), it will follow this general process:
+\begin{itemize}
+\item Open the appropriate controller, in this case Manager. The server will only call the constructor when it is first created, not on every new page load.
+\item Check the Manager controller for a public function called viewWorkEffort. If this function were not found, it would check under the User controller, since Manager inherits from User.
+\item In this case, Manager has viewWorkEffort overridden from User to enable Edits, so it will load this function and check for proper arguments. 
+\item The function declaration is expecting an \emph{int id}, which we have passed. So now, the function will load.
+\item In the function body, the function will make an Authentication class and check to make sure the user logged in actually is a Manager or Admin. If not, it will redirect the User to an error or login page.
+\item To obtain information about Work Effort \# 1, the function will create an empty WorkEffort class and fill it from WorkEffortDBContext.WorkEffortList.Find(1); Behind the scenes, WorkEffortDBContext is connecting to a server according to the connection string in Web.config, and looking for a table called dbo.WorkEfforts.
+\item At this point, any other information can be passed to the View by adding it to ViewBag. EX: ViewBag.newitem = ``Hello.'';  //Runtime type checking on this.
+\item The View now has all needed information from the Model and ViewBag, so output everything in the View and display to the user.
+\end{itemize}
+\begin{centering}
+\includegraphics[scale=0.4]{erd_flow.png}
+\end{centering}
+\pagebreak
 
 
 \subsection{GitHub Locations of Importantance}
