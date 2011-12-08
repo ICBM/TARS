@@ -17,6 +17,7 @@ namespace TARS.Models
         public string creator { get; set; }
         public string description { get; set; }
         public string files { get; set; }
+        public bool active { get; set; }
     }
 
     public class WorkEffortDBContext : DbContext
