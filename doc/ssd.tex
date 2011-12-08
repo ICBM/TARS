@@ -290,7 +290,10 @@ Addendum for 11/1/2011. The stakeholders introduced the concept of ``tasks.'' Th
 Addendum as of 11/23/2011. The TARS development team has learned that while the Active Directory DSA will service user/password requests, TARS will be unable to push any changes to the Directory. With that being the case, the development team quickly deduced that yet another database table would be needed. Namely, the ``TARSUser'' table. This table will store unique userids as well as any web and role configuration information that may be needed by TARS in the future. For now, the development team is simply using it to store Role information. Later on, the configuration storage will be utilized by the next team.
 
 \subsubsection{TARS Database Schema}
-\includegraphics[scale=0.4]{../design/images/class_diagram_1.png}
+%\includegraphics[scale=0.4]{../design/images/class_diagram_1.png}
+\begin{centering}
+\includegraphics[scale=0.64]{schema.png}
+\end{centering}
 \subsection{Naming Conventions}
 All defined classes and objects will use capitalized camelcase, with their first letter a capital as well.\\
 \\
