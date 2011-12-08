@@ -19,6 +19,7 @@ namespace TARS.Controllers
         
         //
         // GET: /User/
+        //Index view, redirects to viewTimesheet function
         public virtual ActionResult Index()
         {
             Authentication auth = new Authentication();
@@ -33,6 +34,7 @@ namespace TARS.Controllers
         }
         //
         // GET: /User/addHours
+        //Function to add hours to a workeffort with index id
         public virtual ActionResult addHours(int id)
         {
             Authentication auth = new Authentication();
@@ -49,6 +51,7 @@ namespace TARS.Controllers
 
         //
         // POST: /User/addHours
+        //Takes filled form and adds it to database
         [HttpPost]
         public virtual ActionResult addHours(Hours newhours)
         {
@@ -71,6 +74,7 @@ namespace TARS.Controllers
 
         //
         // GET: /User/searchWorkEffort
+        //Lists out all workefforts in the database
         public virtual ActionResult searchWorkEffort()
         {
             Authentication auth = new Authentication();
@@ -86,6 +90,7 @@ namespace TARS.Controllers
 
         //
         // GET: /User/viewWorkEffort
+        //View the details of a workeffort
         public virtual ActionResult viewWorkEffort(int id = 0)
         {
             Authentication auth = new Authentication();
@@ -107,6 +112,8 @@ namespace TARS.Controllers
 
         //
         // GET: /User/viewHours
+        //Look at a user's submitted hours.
+        //Can take a string as an argument with ?user="userName" in the URL right now
         public virtual ActionResult viewHours(string user = "")
         {
             Authentication auth = new Authentication();
@@ -129,6 +136,7 @@ namespace TARS.Controllers
 
         //
         // GET: /User/storeFile
+        //Unimplemented
         public virtual ActionResult storeFile()
         {
             Authentication auth = new Authentication();
@@ -144,6 +152,7 @@ namespace TARS.Controllers
 
         //
         // GET: /User/viewHistory
+        //Unimplemented
         public virtual ActionResult viewHistory()
         {
             Authentication auth = new Authentication();
@@ -157,6 +166,9 @@ namespace TARS.Controllers
             }
         }
 
+        //
+        // GET: /User/viewTimesheet
+        //Gets a list of the current user's hours and associated tasks
         public virtual ActionResult viewTimesheet()
         {
             Authentication auth = new Authentication();
