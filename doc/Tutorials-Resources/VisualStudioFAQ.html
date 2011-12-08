@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <title>Visual Studio Configuration FAQ</title>
+  </head>
+
+
+  <body>
+    <h1>
+      Visual Studio Common Configuration Problems
+    </h1>
+   
+
+    <h3>Q: I can't even open the project!</h3>
+    A: You need to launch Visual Studio Web Developer in <b>Administrator</b> mode.<br>
+    
+
+     <h3>Q:I have a valid.net class included, but it's not recognizing!</h3>
+     A: You probably need to add a reference to the project. Screenshot progression for adding System.DirectoryServices.Protocols: <br>
+     <a href="addreference.png">Step 1</a><br>
+     <a href="systemdirectoryservicesprotocols.png">Step 2</a><br>
+     
+    <!--Template-->
+    <h3>Q:I want my IIS7 server to be hosting the launched TARS project from Visual Studio. How do I do this?</h3>
+    <p>
+    A: Right click on the TARS project in the Visual Studio Solution Explorer. Click properties. See screenshot for the correct config. <br>
+    <a href="required_settings.png">Screenshot</a><br>
+    The first time you click launch, it will ask if you want to create a virtual directory. Say yes.
+    <br>
+    </p>
+  </body>
+</html>
