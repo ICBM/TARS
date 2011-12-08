@@ -1,7 +1,7 @@
 USE [icbmdb]
 GO
 
-/****** Object:  Table [dbo].[WorkEfforts]    Script Date: 11/14/2011 01:35:54 ******/
+/****** Object:  Table [dbo].[WorkEfforts]    Script Date: 12/07/2011 19:37:56 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[WorkEfforts]') AND type in (N'U'))
 DROP TABLE [dbo].[WorkEfforts]
 GO
@@ -9,7 +9,7 @@ GO
 USE [icbmdb]
 GO
 
-/****** Object:  Table [dbo].[WorkEfforts]    Script Date: 11/14/2011 01:35:54 ******/
+/****** Object:  Table [dbo].[WorkEfforts]    Script Date: 12/07/2011 19:37:56 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -24,6 +24,7 @@ CREATE TABLE [dbo].[WorkEfforts](
 	[creator] [nchar](10) NULL,
 	[description] [nchar](10) NULL,
 	[files] [nchar](10) NULL,
+	[active] [bit] NULL,
  CONSTRAINT [PK_WorkEfforts] PRIMARY KEY CLUSTERED 
 (
 	[ID] ASC
