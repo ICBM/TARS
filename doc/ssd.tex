@@ -24,7 +24,10 @@
 { \LARGE \bfseries Idaho Department of Health and Welfare}\\[0.4cm]
 { \huge \bfseries Time, Accounting, and Reporting System}\\[1.0cm]
 { \normalsize \emph{ prepared for}}\\[0.5cm]
-{ \normalsize Don Moreaux}\\[0.5cm]
+{ \normalsize Don Moreaux}\\
+{ \normalsize Marj Sanderson}\\[0.5cm]
+{ \small \emph{and}}\\[0.5cm]
+{ \normalsize The Idaho Department of Health and Welfare}\\[0.5cm]
 \HRule \\[3cm]
 
 % Authors and supervisors
@@ -58,7 +61,7 @@ Greg Donohoe\\
 \pagebreak
 \section{\bfseries{Introduction}}
 \subsection{\bfseries{Identification}}
-This Software Design Document pertains to the Idaho Department of Health and Welfare Time, Accounting, and Reporting System. Project development for Fall Semester, 2011 is executed by Scott Beddall, Brett Hitchcock, Chaylo Laurino, and Alex Nilson. The advisor for the project from the University of Idaho is Gregory Donohoe. Our project sponsor and primary client from the Idaho Department of Health and Welfare is Don Moroeux. 
+This Software Design Document pertains to the Idaho Department of Health and Welfare Time, Accounting, and Reporting System. Project development for Fall Semester, 2011 is executed by Scott Beddall, Brett Hitchcock, Chaylo Laurino, and Alex Nilson. The advisor for the project from the University of Idaho is Gregory Donohoe. The project sponsor and primary client from the Idaho Department of Health and Welfare is Don Moroeux. 
 \subsection{\bfseries{Document Purpose, Scope, and Intended Audience}}
 \subsubsection{Document Purpose}
 This document's sole purpose is to outline the scope of Idaho TARS. This outline includes, but is not limited to:
@@ -67,34 +70,36 @@ This document's sole purpose is to outline the scope of Idaho TARS. This outline
 \item Architectural Specifications.
 \item Detailed Design Information.
 \item Locations of Other Project Resources.
+\item Complete Details Regarding Project Deliverables
 \end{itemize}
 \subsubsection{Intended Audience for Document}
 Though the TARS is to be fully prototyped by the end of 2011, it will not be completed. With that being the case, this document is aimed at any future developers or users of Idaho TARS. 
 
 \subsection{\bfseries{Software Purpose, Scope, and Intended Users}}
 \subsubsection{Software Purpose}
-Idaho TARS is intended to provide time and resource tracking for contractor/non-contractor work efforts within the Idaho Department of Welfare. Work efforts must be added to time-bounded project PCA codes and approved by users with sufficient privileges. Project summaries, cost totals,user logs, and other information will then be available within TARS.     
+Idaho TARS is intended to provide time and resource tracking for contractor/non-contractor work efforts within the Idaho Department of Welfare. Work efforts must be added to time-bounded project PCA codes and approved by users with sufficient privileges. Project summaries, cost totals, user logs, and other information will then be available within TARS to authorized users. These users will be authenticated by an Active Directory interface.     
 
 \subsubsection{Software Scope/Context}
-The Idaho Department of Health and Welfare currently is utilizing a resource called Mariner for project management. The IDHW's needs, however, are significantly less than the capabilities that Mariner provides. Portfolio and Resource Management, Planning, and other features of Mariner are being paid for, but being left unused. This is where the creation of the Time, Accounting, and Reporting System is merited. 
+The Idaho Department of Health and Welfare is currently utilizing a resource called Mariner for time management and accounting. The IDHW's needs, however, are significantly less than the capabilities that Mariner provides. Portfolio and Resource Management, Planning, and other features of Mariner are being paid for, but left unused. The under-utilization of Mariner, coupled with fact that the IDHW would prefer an open-source solution that meets their specific needs and workflow, motivated Don Moroaux to bring the TARS project to the University of Idaho. 
 
 \subsubsection{Intended Users for the Software}
-Intended Users of Idaho TARS are the staff and employees of the Idaho Department of Health and Welfare as well as their contractors.
+Intended Users of Idaho TARS are the staff and employees of the Idaho Department of Health and Welfare as well as its contractors.
 
 \subsection{\bfseries{Definitions, Acronyms, and Abbreviations}}
-This table will expand dramatically when documenting the MVC modules.
 \begin{center}
 \begin{tabular}{| l | p{10cm} |}
 \hline
-MVC & Model View Controller. A design pattern used for content focused websites. \\ \hline
+MVC & Model View Controller. A design pattern used for content focused websites. Provides security through modularity, ease of maintenence, and a clear architecture.\\ \hline
 TARS & Time, Accounting, and Reporting System. \\ \hline
 PCA Code & Position Classification Allocation Code. \\ \hline
 SQL & Structured Query Language. Used for input and retrieval of data from a SQL database.\\ \hline
 IDHW & Idaho Deparment of Health and Welfare \\ \hline
 Work Effort & A project. Has one or more assigned PCA Codes and a list of associated work tasks.\\ \hline
-MVC & Model-View-Controller.\\ \hline
-Database Connection String & A formatted line of text that contains all location information for a SQL database. \\
-\hline
+Connection String & A formatted line of text that contains all relevant connection information for a remote resource. (server, dsa) \\ \hline
+LDAP & Lightweight Directory Access Protocol. A protocol used for interface with distributed directory services. (Active Directory, Apache Directory Server) \\ \hline  
+DSA & Directory Service Agent. A server that specifically listens for queries via LDAP. \\ \hline
+Active Directory & Microsoft Directory Services \\ \hline
+Apache Directory Services & Open source LDAP alternative to Active Directory. Highly stripped down. \\ \hline
 \end{tabular}
 \end{center}
 
@@ -113,6 +118,7 @@ Sections 5 provides traceability information connecting the original specificati
 (referenced above) to the architectural components and design entities identified in this document.\\
 \\
 Section 6 and beyond are appendices including original information and communications used to create this document.
+
 \section{\bfseries{Software Requirements, Constraints, and User Characteristics}}
 %\input{requirements_doc.tex}
 Check the requirements\_summary.docx for an extensive list of requirements.
@@ -124,8 +130,9 @@ One of the IDHW's requirements for the this project is the use of Windows Server
 \item ASP.NET
 \item Visual Basic/VB.NET
 \item .NET Development Framework
+\item Active Directory Services
 \end{itemize} 
-TARS will be developed using all these technologies, as well as the IIS7 Model-View-Controller application. The MVC application will be described in detail in the next section.
+TARS will be developed using all these technologies, as well as the IIS7 Model-View-Controller application. The MVC application will be described in detail in the next section. 
 
 \subsection{Model-View-Controller}
 Most of the heavy-lifting for TARS will be present in the display and interaction with large amounts of data. This problem is what the Model-View-Controller design pattern was created for. The idea is that each word in the acronym: Model, View, and Controller each represent a component that handles a different aspect of the display process.\\
@@ -140,19 +147,40 @@ A Controller receives input from the user and converts it to instructions for th
 \begin{verbatim}
 http://idahotars.com/home
 \end{verbatim}
-Will load the ``home'' controller.
+Will load the ``home'' controller default function (Index). The second entry in the url after the controller selection will select the specific function in the controller. Any subsequent entries will then make up arguments to the specific function.\\
+Load the viewTimeSheet function in the user controller:
+\begin{verbatim}
+   idahotars.com/user/viewTimeSheet 
+\end{verbatim}
+Load the viewTimeSheet function in the user controller with arguments 10 and 20:
+\begin{verbatim}
+   idahotars.com/user/viewTimeSheet/10/20
+\end{verbatim}
+This configuration can be viewed or modified in ``global.aspx.''  
+
 \subsubsection{Model}
-The Model manages database queries and assembles data for use elsewhere in the MVC.
+The Model manages database queries and assembles data for use elsewhere in the MVC. However, in the MVC3.0 extension specific to IIS7, there is a slight oddity when it comes to the Model component. That is, the Model doesn't actually execute any of the database interaction. Instead, the Models are used specifically as database table schemas, giving TARS a way to know what the remote tables look like. The actual interaction is carried out by Database Contexts. (DbContext class)
 \subsubsection{View}
-View renders the data received from the Model into a viewable web page.
+Views render the data received from the Models into viewable web pages.
 \subsection{SQL2008 Database}
 Though IIS can utilize any format of SQL Database, the IDHW requires that TARS use SQL2008. Any queries made by the MVC will be carried out by the "Model" component of the MVC. \\
+\\
 \includegraphics[scale=0.8]{../design/images/mvc.png}
 \subsection{Active Directory}
-The IDHW uses Microsoft Active Directory for their user authentification. With that infrastructure already in place, it is logical to use the same for Idaho TARS. To authenticate users of TARS, there will be three new Active Directory groups added: TARSAdmin, TARSManager, and TARSUser. If a given user is part of any of these three groups, they will be allowed access to TARS based upon their group.
+The IDHW uses Microsoft Active Directory for their user authentification. With that infrastructure already in place, it is logical to use the same for Idaho TARS. To authenticate users of TARS, there will be three new Active Directory groups added: TARSAdmin, TARSManager, and TARSUser. If a given user is part of any of these three groups, they will be allowed access to TARS based upon their group. \\
+\\
+To provide this functionality, the TARS development team wrote a helper class that can be used when an Active Directory connection is needed. This ``LDAPConnection'' class can be invoked within any controller, so long as ``TARS.Helpers.LDAPConnection'' is referenced.\\
+\\
+Primary functions for now are:
+\begin{verbatim}
+LDAPConnection() //constructor, initiates variables needed for a connection
+boolean requestUser(string user, string password); //returns true if the user/password combo exists
+string requestRole(string user); //returns which group a user is part of
+\end{verbatim}
+All these functions create an LDAP connection, query the DSA, and close the connection. The user of this helper class need not ever understand what is going on under the hood to use it correctly. 
 
 \subsection{Security}
-While Idaho TARS will be used internally, there is still a security risk. The system may not be dealing with any highly confidential info, but TARS will have access to government resources like the IDHW Active Directory and I-Time interfaces. To prevent easy exploitation of the TARS databases, all queries to the database will be centralized in Model. This will will not only make the team's code simpler, but also make it more secure. Centralized queries allow us to easily adopt a strong security stance. Namely, all input from anywhere on the browser will be treated as ``tainted.'' This tainted input will not be used for any queries on the SQL2008 database until it has been filtered.
+While Idaho TARS will be used internally, there is still a security risk. The system may not be dealing with any highly confidential info, but TARS will have access to government resources like the IDHW Active Directory and I-Time interfaces. To prevent easy exploitation of the TARS databases, all queries to the database will be centralized in Model. This will will not only make the team's code simpler, but also make it more secure. Centralized queries allow us to easily adopt a strong security stance. In addition, TARS uses DbContexts for database interaction. With that being the case, no SQL is ever directly executed from TARS. This significantly reduces the risk of SQL Injection attacks.
 
 
 \subsection{Browser Interface}
@@ -177,7 +205,7 @@ These controllers do not yet have a finalized set of associated functions and va
 \item ManagerController
 \item AdminController
 \end{itemize}
-The home controller our default page in the case that a user is not logged in. It provides the entry point. \\
+The home controller is the default page in the case that a user is not logged in. It also provides the entry point to TARS when a controller is not specified. \\
 \\
 UserController inherits from the default MVC Controller class as well as providing basic functionality for a normal user.\\
 \\
@@ -201,6 +229,7 @@ User Controller
 \item PcaCode
 \item PCAWE
 \item WorkEffort
+\item User
 \end{itemize}
 These items do not inherit from the default Model class. In addition, each class has an associated DbContext class in the same file. Example:
 \begin{verbatim}
@@ -214,7 +243,7 @@ These connections are not conventional classes or objects. To indicate this, the
 \begin{itemize}
 \item Every controller has an associated View. Located in their respective folders. Manager example:
 \begin{verbatim}
-Views/Manager/___.cshtml
+Views/Manager/___.cshtml where ___ is a view associated with a given function within the model
 \end{verbatim}
 \end{itemize}
 \subsection{SQL2008 Database Schema and Interface Description}
@@ -222,15 +251,17 @@ As mentioned above in the Software Architecture section, TARS will use a SQL2008
 \\
 Stripped down to its most base parts, TARS is simply a database interface through which users can log and retrieve hours to and from work efforts. These ``Work Efforts'' are simply general projects that can have hours of contractor/non-contractor work added to their totals. For instance, there might be a Work Effort that is assigned its own unique ID and whos description is ``Document the latest changes to the TARS SDD.'' Any employees who wish to log their hours will find the Work Effort's ID, add their hours along with other relevant data, and submit their entire timesheet for approval. \\
 \\
-The Work Effort to ``Document the latest changes to the TARS SDD.'' now has hours logged on it and waiting for approval. A user with the correct Active Directory permissions (part of group TARSManager or TARSAdmin) can now go check the status of the Work Effort, and approve any pending hours waiting on it. The development team has chosen to add all hours, approved or not, to the Work Effort's database table. A simple boolean present as a column in the table will ensure that filtering by approved/unapprooved will be a simple task.\\
+The Work Effort to ``Document the latest changes to the TARS SDD.'' now has hours logged on it and waiting for approval. A user with the correct Active Directory permissions (part of group TARSManager or TARSAdmin) can now go check the status of the Work Effort, and approve any pending hours waiting on it. The development team has chosen to add all hours, approved or not, to the Work Effort's database table. A simple boolean present as a column in the table will ensure that filtering by approved/un-approved will be a simple task.\\
 \\
 Unfortunately, the process is not done. Now that a Work Effort has hours charged to it, how can the accounting department charge these expenses? The simple answer is, they can't yet. To provide that functionality, PCA Codes must be assigned. This introduces another database table, as one PCA Code may have multiple Work Effort associations; just as one Work Effort may be associated with multiple PCA Codes.\\
 \\
 One final note about the Work Efforts and PCA Codes is needed. The requirements state that they both must be time-bounded, capable of early expiration, and renewable. \\
 \\
-Through discussion of the above situations and processes, the development team settled on the following database schema. These are no final by any means, as a design is rarely finalized before development has commenced.\\
+In addition, for each of these Models, there is also a modification to their paramaterized DbContexts. That is, DB.saveChanges() is overwritten to save a new entry in the History table before calling super.saveChanges(). \\
 \\
-Addendum for 11/1/2011. The stakeholders introduced the concept of ``tasks.'' There will be a default set of tasks for every work effort, but members of the ``administrator'' Active Directory group will have the ability to add or remove these ``tasks'' from a given work effort. Instead of having a separate ``tasks'' table for each work effort, the TARS team members will simply store the list of tasks in a comma separated string; using string manipulation to retrieve, edit, and read the list.
+Addendum for 11/1/2011. The stakeholders introduced the concept of ``tasks.'' There will be a default set of tasks for every work effort, but members of the ``administrator'' Active Directory group will have the ability to add or remove these ``tasks'' from a given work effort. While the development team at one point believed it possible to create Tasks functionality without another database table, the belief was quickly proven infeasible. With that being the case, a new table was added.\\
+\\
+Addendum as of 11/23/2011. The TARS development team has learned that while the Active Directory DSA will service user/password requests, TARS will be unable to push any changes to the Directory. With that being the case, the development team quickly deduced that yet another database table would be needed. Namely, the ``User'' table. This table will store unique userids as well as any web and role configuration information that may be needed by TARS in the future. For now, the development team is simply using it to store Role information. Later on, the configuration storage will be utilized by the next team.
 
 \subsubsection{TARS Database Schema}
 \includegraphics[scale=0.4]{../design/images/class_diagram_1.png}
@@ -256,9 +287,34 @@ All effort on the project may be tracked via the project GitHub repository: gith
 The project website resides at: http://seniordesign.engr.uidaho.edu/2011-2012/CostManagement/\\
 \\ 
 Client requirements changes will be handled via email. Current progress on requirements as well as the requirements changelog is available at: github.com/ICBM/TARS/blob/master/doc/requirements\_summary.docx\\
-\section{Appendix A: Use Cases} 
-More might be required here.
 
+\section{Deliverables}
+
+\subsection{Deliverables Overview}
+At the end of the first semester the TARS team turned over the following deliverables to be passed on to the next semester’s team for completion; This Design Document, Client Requirement Documents, Meeting Minutes, Tutorials, Prototype Source Files, Requirements Summary, and our GitHub Repository.\\
+\\
+This Design Document contains all of the conceptual and technical designs for this project.  It also includes various Client restrictions on software and platform for the project.  For further details please read the document.\\
+\\
+The Client Requirement Documents outline the Client’s desired functionality of the system.  It is broken down into 6 parts: PCA, Data, Reporting, View, Security, Navigation, and Workflow.  This document was provided to us by the Client.  It has been updated several times as requirements have been added or altered.\\
+\\
+All of the Minutes of our meetings with our clients as also been added.  They show the changes in the requirements over time and contain clarifications to questions we or the client may have had during the course of the project.\\
+\\
+Extensive trial and error was involved in setting up our machines to be viable development platforms based on the restrictions laid out by the Client.  To prevent our successors from having to deal with the same problems we dealt with we have created several tutorials to help smooth the process for them.\\
+\\
+We have managed to produce a functioning prototype.  It includes all the primary models and controllers but has only rudimentary views and testing.  The source code has been provided as has a Microsoft Visual Studio build.  The full details concerning the functional state of the prototype in relation to the full project requirements are laid out in the Requirements Summary document.\\
+\\
+The Requirements Summary is a combination of the Client Requirement Document and a full summary of our prototypes functionality.  It explains in detail the current status of every requirement.\\
+\\
+The final deliverable we have is our GitHub Repository.  It has been the primary location for our collaborative work.  It is an open source repository as the client desired us to make the source code public.  It costs 12 dollars a month and will need to be transferred to the new team as soon as they take up the project.\\
+\\
+\subsection{Prototype Deliverable Detail: Current Project Status}
+
+\subsection{Documentation and Tutorial Reference Guide}
+
+\subsection{GitHub Locations of Importantance}
+
+
+\section{Appendix A: Use Cases} 
 \paragraph{Login}
 \begin{enumerate}
 \item Click the "Login" button
@@ -407,24 +463,6 @@ More might be required here.
     \end{itemize}
 \end{enumerate}
 
-\section{Appendix B: Deliverables}
-
-At the end of the first semester the TARS team turned over the following deliverables to be passed on to the next semester’s team for completion; This Design Document, Client Requirement Documents, Meeting Minutes, Tutorials, Prototype Source Files, Requirements Summary, and our GitHub Repository.\\
-\\
-This Design Document contains all of the conceptual and technical designs for this project.  It also includes various Client restrictions on software and platform for the project.  For further details please read the document.\\
-\\
-The Client Requirement Documents outline the Client’s desired functionality of the system.  It is broken down into 6 parts: PCA, Data, Reporting, View, Security, Navigation, and Workflow.  This document was provided to us by the Client.  It has been updated several times as requirements have been added or altered.\\
-\\
-All of the Minutes of our meetings with our clients as also been added.  They show the changes in the requirements over time and contain clarifications to questions we or the client may have had during the course of the project.\\
-\\
-Extensive trial and error was involved in setting up our machines to be viable development platforms based on the restrictions laid out by the Client.  To prevent our successors from having to deal with the same problems we dealt with we have created several tutorials to help smooth the process for them.\\
-\\
-We have managed to produce a functioning prototype.  It includes all the primary models and controllers but has only rudimentary views and testing.  The source code has been provided as has a Microsoft Visual Studio build.  The full details concerning the functional state of the prototype in relation to the full project requirements are laid out in the Requirements Summary document.\\
-\\
-The Requirements Summary is a combination of the Client Requirement Document and a full summary of our prototypes functionality.  It explains in detail the current status of every requirement.\\
-\\
-The final deliverable we have is our GitHub Repository.  It has been the primary location for our collaborative work.  It is an open source repository as the client desired us to make the source code public.  It costs 12 dollars a month and will need to be transferred to the new team as soon as they take up the project.\\
-\\
 
 
 \section{Appendix C: Reference Links}
@@ -449,7 +487,7 @@ Apache Directory Studio (Essential Client for Managing ApacheDS)\\
 Write an LDAP interface in C\#\\
 \small{http://www.youcanlearnseries.com/programming\%20Tips/CSharp/LDAPReader.aspx}\\
 \\
-
+ 
 
 
 \end{document} 
