@@ -16,7 +16,7 @@ namespace TARS.Controllers
         protected HoursDBContext HoursDB = new HoursDBContext();
         protected TaskDBContext TaskDB = new TaskDBContext();
         protected TARSUserDBContext TARSUserDB = new TARSUserDBContext();
-
+        
         //
         // GET: /User/
         public virtual ActionResult Index()

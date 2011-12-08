@@ -23,10 +23,45 @@ namespace TARS.Models
     public class WorkEffortDBContext : DbContext
     {
         public DbSet<WorkEffort> WorkEffortList { get; set; }
+        protected HistoryDBContext HistDB = new HistoryDBContext();
 
         public int SaveChanges()
         {
             //call our code here
+            var hist = new History();
+            ChangeTracker.DetectChanges();
+            var holder = ChangeTracker.Entries<WorkEffort>();
+            foreach (System.Data.Entity.Infrastructure.DbEntityEntry<WorkEffort> entry in holder)
+            {
+                switch (entry.State)
+                {
+                    case System.Data.EntityState.Added:
+                        hist.type = "added";
+                        break;
+                    case System.Data.EntityState.Deleted:
+                        hist.type = "deleted";
+                        break;
+                    case System.Data.EntityState.Modified:
+                        hist.type = "modified";
+                        break;
+                }
+                hist.dbtable = "WorkEfforts";
+                hist.change = "code: " + entry.Property(u => u.code).CurrentValue +
+              "; startDate: " + entry.Property(u => u.startDate).CurrentValue +
+              "; endDate: " + entry.Property(u => u.endDate).CurrentValue +
+              "; creator: " + entry.Property(u => u.creator).CurrentValue +
+              "; description: " + entry.Property(u => u.description).CurrentValue +
+              "; files: " + entry.Property(u => u.files).CurrentValue +
+              "; active: " + entry.Property(u => u.active).CurrentValue;
+            }
+
+            //Doesn't actually get the current user's name.  User.Identity.Name doesn't work here
+            hist.username = "placeholder";
+
+            hist.timestamp = System.DateTime.Now;
+            HistDB.HistoryList.Add(hist);
+            HistDB.SaveChanges();
+
             return base.SaveChanges();
         }
     }
