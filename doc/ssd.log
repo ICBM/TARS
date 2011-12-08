@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2011.12.6)  6 DEC 2011 18:20
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2011.12.6)  7 DEC 2011 22:44
 entering extended mode
  %&-line parsing enabled.
 **ssd.tex
@@ -149,216 +149,254 @@ File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 69.
  [3]
-Underfull \hbox (badness 10000) in paragraph at lines 105--119
+Underfull \hbox (badness 10000) in paragraph at lines 107--121
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 105--119
+Underfull \hbox (badness 10000) in paragraph at lines 107--121
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 105--119
+Underfull \hbox (badness 10000) in paragraph at lines 107--121
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 105--119
+Underfull \hbox (badness 10000) in paragraph at lines 107--121
 
  []
 
 [4]
-Underfull \hbox (badness 10000) in paragraph at lines 134--137
+Underfull \hbox (badness 10000) in paragraph at lines 138--141
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 142--143
+Underfull \hbox (badness 10000) in paragraph at lines 146--147
 
  []
 
 <../design/images/mvc.png, id=23, 490.83376pt x 343.2825pt>
 File: ../design/images/mvc.png Graphic file (type png)
 
-<use ../design/images/mvc.png> [5] [6 <../design/images/mvc.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 183--190
+<use ../design/images/mvc.png>
+Underfull \hbox (badness 10000) in paragraph at lines 166--169
+
+ []
+
+[5]
+Underfull \hbox (badness 10000) in paragraph at lines 170--175
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 183--190
+Underfull \hbox (badness 10000) in paragraph at lines 170--175
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 183--190
+Overfull \hbox (49.99045pt too wide) in paragraph at lines 179--179
+[]\OT1/cmtt/m/n/10 boolean requestUser(string user, string password); //returns
+ true if the user/password combo exists[] 
+ []
+
+[6 <../design/images/mvc.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 199--207
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 183--190
+Underfull \hbox (badness 10000) in paragraph at lines 199--207
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 199--207
 
  []
 
 [7]
-Underfull \hbox (badness 10000) in paragraph at lines 224--239
+Underfull \hbox (badness 10000) in paragraph at lines 217--226
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 224--239
+Underfull \hbox (badness 10000) in paragraph at lines 217--226
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 224--239
+Underfull \hbox (badness 10000) in paragraph at lines 217--226
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 224--239
+Underfull \hbox (badness 10000) in paragraph at lines 217--226
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 224--239
+Underfull \hbox (badness 10000) in paragraph at lines 217--226
+
+ []
+
+[8]
+Underfull \hbox (badness 10000) in paragraph at lines 262--277
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 224--239
+Underfull \hbox (badness 10000) in paragraph at lines 262--277
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 224--239
+Underfull \hbox (badness 10000) in paragraph at lines 262--277
 
  []
 
-[8] <../design/images/class_diagram_1.png, id=40, 1248.42882pt x 542.73354pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 262--277
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 262--277
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 262--277
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 262--277
+
+ []
+
+<../design/images/class_diagram_1.png, id=40, 1248.42882pt x 542.73354pt>
 File: ../design/images/class_diagram_1.png Graphic file (type png)
 
 <use ../design/images/class_diagram_1.png>
-Overfull \hbox (29.60767pt too wide) in paragraph at lines 241--242
+Overfull \hbox (29.60767pt too wide) in paragraph at lines 279--280
 [] 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 246--249
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 259--264
+[9]
+Underfull \hbox (badness 10000) in paragraph at lines 281--284
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 259--264
+Underfull \hbox (badness 10000) in paragraph at lines 294--299
 
  []
 
 
-Overfull \hbox (8.4293pt too wide) in paragraph at lines 259--264
+Underfull \hbox (badness 10000) in paragraph at lines 294--299
+
+ []
+
+
+Overfull \hbox (8.4293pt too wide) in paragraph at lines 294--299
 \OT1/cmr/m/n/10 quire-ments changelog is avail-able at: github.com/ICBM/TARS/bl
 ob/master/doc/requirements[]summary.docx 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 259--264
-
- []
-
-[9 <../design/images/class_diagram_1.png (PNG copy)>]
-Missing character: There is no ’ in font cmr10!
-Missing character: There is no ’ in font cmr10!
-
-Underfull \hbox (badness 10000) in paragraph at lines 268--284
+Underfull \hbox (badness 10000) in paragraph at lines 294--299
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 268--284
+Underfull \hbox (badness 10000) in paragraph at lines 303--319
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 268--284
+Underfull \hbox (badness 10000) in paragraph at lines 303--319
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 268--284
+Underfull \hbox (badness 10000) in paragraph at lines 303--319
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 268--284
+Underfull \hbox (badness 10000) in paragraph at lines 303--319
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 268--284
+Underfull \hbox (badness 10000) in paragraph at lines 303--319
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 268--284
+Underfull \hbox (badness 10000) in paragraph at lines 303--319
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 268--284
+Underfull \hbox (badness 10000) in paragraph at lines 303--319
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 268--284
-
- []
-
-[10] [11] [12] [13]
-Underfull \hbox (badness 10000) in paragraph at lines 446--467
+Underfull \hbox (badness 10000) in paragraph at lines 303--319
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 446--467
+Underfull \hbox (badness 10000) in paragraph at lines 303--319
+
+ []
+
+[10 <../design/images/class_diagram_1.png (PNG copy)>] [11] [12] [13] [14]
+Underfull \hbox (badness 10000) in paragraph at lines 491--512
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 446--467
+Underfull \hbox (badness 10000) in paragraph at lines 491--512
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 446--467
+Underfull \hbox (badness 10000) in paragraph at lines 491--512
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 446--467
+Underfull \hbox (badness 10000) in paragraph at lines 491--512
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 446--467
+Underfull \hbox (badness 10000) in paragraph at lines 491--512
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 446--467
+Underfull \hbox (badness 10000) in paragraph at lines 491--512
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 446--467
+Underfull \hbox (badness 10000) in paragraph at lines 491--512
 
  []
 
-[14] (./ssd.aux) ) 
+
+Underfull \hbox (badness 10000) in paragraph at lines 491--512
+
+ []
+
+[15] (./ssd.aux) ) 
 Here is how much of TeX's memory you used:
  1504 strings out of 495061
  18986 string characters out of 1182621
@@ -366,7 +404,7 @@ Here is how much of TeX's memory you used:
  4693 multiletter control sequences out of 15000+50000
  8477 words of font info for 30 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
- 25i,8n,19p,700b,241s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 25i,8n,19p,709b,241s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx
 10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx12.pfb></us
 r/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/share/te
@@ -377,9 +415,9 @@ ts/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti1
 0.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr
 /share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/share/texmf
 -texlive/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on ssd.pdf (14 pages, 214305 bytes).
+Output written on ssd.pdf (15 pages, 219119 bytes).
 PDF statistics:
- 96 PDF objects out of 1000 (max. 8388607)
+ 99 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 

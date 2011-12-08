@@ -196,6 +196,14 @@ Though it is probably already indicated by the server architecture, the developm
 \section{Design Descriptions}
 \subsection{Model-View-Controller Modules}
 \subsubsection{Global Scripts and Config Files}
+There are two extremely important configuration files within the Visual Studio solution. Unfortunately, two both named ``Web.Config.''\\
+\\
+The first Web.Config is present in projectBase/Views/Web.Config. This config file handles various view configurations that affect TARS visually.\\
+\\
+The second Web.Config is present in projectBase/Web.Config. It handles project level configuration; most importantly including the extremely important database connection strings. \\
+\\
+The third, and by far the most important config file is projectBase/Global.aspx.
+This contains the functions that control routing for the entire MVC. This job includes determining routing to controllers, filtering requests, and registering the initial routes on a default request for idahotars.com.
 
 \subsubsection{Controllers}
 These controllers do not yet have a finalized set of associated functions and variables. When these are complete a full description will reside here.
@@ -204,8 +212,11 @@ These controllers do not yet have a finalized set of associated functions and va
 \item UserController
 \item ManagerController
 \item AdminController
+\item AccountController
 \end{itemize}
 The home controller is the default page in the case that a user is not logged in. It also provides the entry point to TARS when a controller is not specified. \\
+\\
+AccountController provides login functionality. This includes calling the LDAPConnection helper class to authenticate users. AccountController was provided by a base example of an MVC, but is modified to serve the TARS specific needs.\\
 \\
 UserController inherits from the default MVC Controller class as well as providing basic functionality for a normal user.\\
 \\
@@ -243,7 +254,8 @@ These connections are not conventional classes or objects. To indicate this, the
 \begin{itemize}
 \item Every controller has an associated View. Located in their respective folders. Manager example:
 \begin{verbatim}
-Views/Manager/___.cshtml where ___ is a view associated with a given function within the model
+Views/Manager/___.cshtml 
+   ///where ___ is a view associated with a given function within the controller
 \end{verbatim}
 \end{itemize}
 \subsection{SQL2008 Database Schema and Interface Description}
@@ -265,9 +277,6 @@ Addendum as of 11/23/2011. The TARS development team has learned that while the 
 
 \subsubsection{TARS Database Schema}
 \includegraphics[scale=0.4]{../design/images/class_diagram_1.png}
-
-
-
 \subsection{Naming Conventions}
 All defined classes and objects will use capitalized camelcase, with their first letter a capital as well.\\
 \\
@@ -291,11 +300,11 @@ Client requirements changes will be handled via email. Current progress on requi
 \section{Deliverables}
 
 \subsection{Deliverables Overview}
-At the end of the first semester the TARS team turned over the following deliverables to be passed on to the next semester’s team for completion; This Design Document, Client Requirement Documents, Meeting Minutes, Tutorials, Prototype Source Files, Requirements Summary, and our GitHub Repository.\\
+At the end of the first semester the TARS team turned over the following deliverables to be passed on to the next semester's team for completion; This Design Document, Client Requirement Documents, Meeting Minutes, Tutorials, Prototype Source Files, Requirements Summary, and our GitHub Repository. For exact locations, check the ``GitHub Locations of Importantance Section''\\
 \\
 This Design Document contains all of the conceptual and technical designs for this project.  It also includes various Client restrictions on software and platform for the project.  For further details please read the document.\\
 \\
-The Client Requirement Documents outline the Client’s desired functionality of the system.  It is broken down into 6 parts: PCA, Data, Reporting, View, Security, Navigation, and Workflow.  This document was provided to us by the Client.  It has been updated several times as requirements have been added or altered.\\
+The Client Requirement Documents outline the Client's desired functionality of the system.  It is broken down into 6 parts: PCA, Data, Reporting, View, Security, Navigation, and Workflow.  This document was provided to us by the Client.  It has been updated several times as requirements have been added or altered.\\
 \\
 All of the Minutes of our meetings with our clients as also been added.  They show the changes in the requirements over time and contain clarifications to questions we or the client may have had during the course of the project.\\
 \\
@@ -309,9 +318,22 @@ The final deliverable we have is our GitHub Repository.  It has been the primary
 \\
 \subsection{Prototype Deliverable Detail: Current Project Status}
 
-\subsection{Documentation and Tutorial Reference Guide}
+\subsubsection{Project Architecture}
+
 
 \subsection{GitHub Locations of Importantance}
+The root directory is present at github.com/ICBM/TARS
+\begin{itemize}
+  \item SSD: /doc/ssd.tex -- /doc/ssd.pdf
+  \item Meeting Minutes: /minutes
+  \item Tutorials: /doc/Tutorials-Resources/
+  \item Prototype: /TARS
+  \item Requirements Summary: /doc/requirements.docx
+  \item Client Requirements Document: /doc
+  \item Contact Information: /contact\_info.pdf
+  \item SQL Config Dumps: /doc/Tutorials-Resouces/SQL/
+  \item LDAP Config Dumps: /doc/Tutorials-Resouces/LDAP/
+\end{itemize}
 
 
 \section{Appendix A: Use Cases} 
