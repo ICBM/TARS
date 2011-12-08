@@ -1,7 +1,7 @@
 USE [icbmdb]
 GO
 
-/****** Object:  Table [dbo].[PcaCodes]    Script Date: 11/14/2011 01:35:32 ******/
+/****** Object:  Table [dbo].[PcaCodes]    Script Date: 12/07/2011 19:37:46 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[PcaCodes]') AND type in (N'U'))
 DROP TABLE [dbo].[PcaCodes]
 GO
@@ -9,7 +9,7 @@ GO
 USE [icbmdb]
 GO
 
-/****** Object:  Table [dbo].[PcaCodes]    Script Date: 11/14/2011 01:35:32 ******/
+/****** Object:  Table [dbo].[PcaCodes]    Script Date: 12/07/2011 19:37:46 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -27,6 +27,7 @@ CREATE TABLE [dbo].[PcaCodes](
 	[creator] [varchar](50) NULL,
 	[description] [varchar](max) NULL,
 	[files] [varchar](max) NULL,
+	[active] [bit] NULL,
  CONSTRAINT [PK_PcaCodes] PRIMARY KEY CLUSTERED 
 (
 	[ID] ASC
