@@ -1,3 +1,6 @@
+Video tutorial for the most recent installation at http://www.youtube.com/user/hitc8494
+Everything below this is mostly legacy.
+
 VERY GOOD LINK: http://blog.evonet.com.au/post/Setting-up-SQL-Server-2008-for-an-ASPNET-website-on-IIS-70.aspx
 SQLMS: http://www.microsoft.com/download/en/details.aspx?id=7593
 SQLSE: http://www.microsoft.com/download/en/details.aspx?id=1695
