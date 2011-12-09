@@ -17,8 +17,8 @@ namespace TARS.Helpers
 
         protected int permission(Controller c)
         {
-            var authed = c.Request.IsAuthenticated;
-            if (authed)
+            var authed = c.Request.IsAuthenticated; //this completely breaks when used in test controller. the controller being called doesn't have a Request instance.
+            if (authed = true)
             {
                 var username = c.User.Identity.Name; //Grab username from the cookie.
                 using (var context = new TARSUserDBContext())
