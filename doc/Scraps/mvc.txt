@@ -1,0 +1,13 @@
+Model-View-Controller
+
+Software architecture
+
+Advantage of Model-View-Controller architecture:
+-Seperates the user interface from the logic used in the database.
+-Allows for independant development, testing, and maintenance of these seperate parts of the application.
+
+Consists of three parts:
+Model - Manages data and behavior
+View - Renders Model's data as a user interface
+Controller - Receives input from the user and converts it to instructions for the Model and View components
+

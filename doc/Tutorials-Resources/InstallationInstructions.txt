@@ -1,0 +1,36 @@
+VERY GOOD LINK: http://blog.evonet.com.au/post/Setting-up-SQL-Server-2008-for-an-ASPNET-website-on-IIS-70.aspx
+SQLMS: http://www.microsoft.com/download/en/details.aspx?id=7593
+SQLSE: http://www.microsoft.com/download/en/details.aspx?id=1695
+
+How-to install IIS on Windows 7:
+	1. Goto Control Panel -> Turn Windows Features on and off
+	2. Select Internet Information Services and mark all features to install.
+		- Will need Application Development Features (all) and 
+		- Basic HTTP Services(all), at a minimum.
+	3. Browse to http://localhost and you should now see a default page
+		- Located at C:/inetpub/wwwroot/iisstart.html
+	4. Create a file called helloworld.aspx in the web root containing:
+		- <html><%response.write("Hello world")%></html>
+	5. Go to http://localhost/helloworld.aspx. If it displays "Hello world", IIS is working with ASP support.
+
+Installing the SQL server:
+	1. Install SQL Management Studio from http://www.microsoft.com/download/en/details.aspx?id=7593
+		- Go to Installation -> New SQL Server standalone...
+		- On the feature screen, select everything. "Management Tools - Basic" is a MUST.
+		- Continue with default settings.
+	2. Install SQL Server Express from http://www.microsoft.com/download/en/details.aspx?id=1695
+		- Name for server: MSSQLSERVER
+		- On Database Engine Configuration, enter Mixed Mode, with username 'user', password 'pw'.
+	3. Open the SQL Server Configuration Manager (Start->AllPrograms->MS SQL Server 2008->Config)
+		- Select protocols for the server. Enable TCP/IP.
+	4. Open the SQL Server Management Studio. (Start->AllPrograms->MS SQL Server 2008)
+		- Select Databases and add a new one called icbmdb
+		- Go to Security->Logins and add a new one (user, pw)
+		- Follow instructions on the linked webpage to setup a Connection String named MyString.
+	5. Place the aspx.aspx file (in the same folder as this doc) in your web root and navigate to http://localhost/aspx.aspx
+		- If it displays the number 5, it is correctly writing to and reading from your DB. Victory!
+		- If it does not, threaten it with Google-fu.
+	
+
+	
+
