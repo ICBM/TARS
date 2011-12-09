@@ -36,9 +36,6 @@
 		</div>
 		<h2>Project Concepts</h2>
 		<h1>
-			IIS7
-		</h1>
-		<h1>
 			LDAP Authentification
 		</h1>
 		TARS will eventually authenticate users by utilizing Active Directory. At this time, the TARS development team does not have access to a copy of Windows Server 2008. With that being the case, Active Directory services are unavailable to test development progress. To alleviate this problem, TARS will instead authenticate to LDAP servers in general, rather than Active Directory specifically. <br>
@@ -51,7 +48,7 @@
 		In some MVC implementations, the Model component actually provides database interaction (SQL queries, data management, etc). The IIS7 MVC, however, does not. Instead, it uses its Model Components as data objects that have fields corresponding to columns in the SQL database table schemas. <br>
 		<br>
 		To store and retrieve data, the TARS MVC will generally follow this pattern:<br>
-		<img src="images/erd_flow.png">
+		<img src="images/erd_flow.png" width="1000">
 		<ol>
 			<li>A Controller Action is called, creating a corresponding View as well as DbContext.</li>
 			<li>The DbContext is given a Model filled with relevent information.</li>
