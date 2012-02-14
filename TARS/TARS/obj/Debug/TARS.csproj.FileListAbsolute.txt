@@ -31,3 +31,10 @@ C:\Users\Suzzi\Desktop\TARS\TARS\TARS\bin\EntityFramework.xml
 C:\Users\Suzzi\Desktop\TARS\TARS\TARS\obj\Debug\ResolveAssemblyReference.cache
 C:\Users\Suzzi\Desktop\TARS\TARS\TARS\obj\Debug\TARS.dll
 C:\Users\Suzzi\Desktop\TARS\TARS\TARS\obj\Debug\TARS.pdb
+C:\Users\zeke\Documents\CS481_Senior_Design\TARS\TARS\TARS\bin\TARS.dll
+C:\Users\zeke\Documents\CS481_Senior_Design\TARS\TARS\TARS\bin\TARS.pdb
+C:\Users\zeke\Documents\CS481_Senior_Design\TARS\TARS\TARS\bin\EntityFramework.dll
+C:\Users\zeke\Documents\CS481_Senior_Design\TARS\TARS\TARS\bin\EntityFramework.xml
+C:\Users\zeke\Documents\CS481_Senior_Design\TARS\TARS\TARS\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\zeke\Documents\CS481_Senior_Design\TARS\TARS\TARS\obj\Debug\TARS.dll
+C:\Users\zeke\Documents\CS481_Senior_Design\TARS\TARS\TARS\obj\Debug\TARS.pdb
