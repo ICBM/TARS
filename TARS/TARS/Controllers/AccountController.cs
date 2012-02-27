@@ -35,10 +35,13 @@ namespace TARS.Controllers
 
             if (ModelState.IsValid)
             {
-                if (check.requestUser(model.UserName, model.Password))
+/*                if (check.requestUser(model.UserName, model.Password))
                 {
-                    TARSUserDBContext TARSUserDB = new TARSUserDBContext();
-                    TARSUserDB.TARSUserList.Find(model.UserName);
+*/
+model.UserName = "zeke";
+model.RememberMe = false;
+//                    TARSUserDBContext TARSUserDB = new TARSUserDBContext();
+//                    TARSUserDB.TARSUserList.Find(model.UserName);
                                         
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
@@ -53,7 +56,7 @@ namespace TARS.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "The user name or password provided is incorrect.");
+                   ModelState.AddModelError("", "The user name or password provided is incorrect.");
                 }
             }
 

@@ -201,7 +201,7 @@
     <Content Include="Views\Manager\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Manager\viewPCA.cshtml" />
+    <Content Include="Views\Shared\viewPCA.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Admin\Index.cshtml" />
@@ -210,46 +210,42 @@
     <Content Include="Views\Admin\addManager.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Manager\viewWorkEffort.cshtml" />
+    <Content Include="Views\Shared\viewWorkEffort.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Manager\searchPCA.cshtml" />
+    <Content Include="Views\Shared\searchPCA.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Manager\deletePCA.cshtml" />
+    <Content Include="Views\Shared\deletePCA.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Manager\editPCA.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Manager\addPCA.cshtml" />
+    <Content Include="Views\Shared\editPCA.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\themes\base\images\Class Diagram 1.dia" />
     <None Include="Content\themes\base\images\Class Diagram 1.dia~" />
     <None Include="Content\themes\base\images\logo.psd" />
     <None Include="Content\themes\base\images\mvc.dia" />
-    <Content Include="Views\Manager\addWorkEffort.cshtml" />
-    <Content Include="Views\Manager\searchWorkEffort.cshtml" />
-    <Content Include="Views\Manager\editWorkEffort.cshtml" />
-    <Content Include="Views\Manager\deleteWorkEffort.cshtml" />
-    <Content Include="Views\Manager\addTask.cshtml" />
-    <Content Include="Views\Manager\searchTask.cshtml" />
-    <Content Include="Views\Manager\deleteTask.cshtml" />
-    <Content Include="Views\Manager\editTask.cshtml" />
-    <Content Include="Views\Manager\viewTask.cshtml" />
-    <Content Include="Views\Manager\addPCA_WE.cshtml" />
-    <Content Include="Views\Manager\searchPCA_WE.cshtml" />
-    <Content Include="Views\Manager\editPCA_WE.cshtml" />
-    <Content Include="Views\Manager\viewPCA_WE.cshtml" />
-    <Content Include="Views\Manager\deletePCA_WE.cshtml" />
-    <Content Include="Views\User\viewHours.cshtml" />
-    <Content Include="Views\User\searchWorkEffort.cshtml" />
-    <Content Include="Views\User\viewWorkEffort.cshtml" />
+    <Content Include="Views\Shared\addWorkEffort.cshtml" />
+    <Content Include="Views\Shared\searchWorkEffort.cshtml" />
+    <Content Include="Views\Shared\editWorkEffort.cshtml" />
+    <Content Include="Views\Shared\deleteWorkEffort.cshtml" />
+    <Content Include="Views\Shared\addTask.cshtml" />
+    <Content Include="Views\Shared\searchTask.cshtml" />
+    <Content Include="Views\Shared\deleteTask.cshtml" />
+    <Content Include="Views\Shared\editTask.cshtml" />
+    <Content Include="Views\Shared\viewTask.cshtml" />
+    <Content Include="Views\Shared\addPCA_WE.cshtml" />
+    <Content Include="Views\Shared\searchPCA_WE.cshtml" />
+    <Content Include="Views\Shared\editPCA_WE.cshtml" />
+    <Content Include="Views\Shared\viewPCA_WE.cshtml" />
+    <Content Include="Views\Shared\deletePCA_WE.cshtml" />
+    <Content Include="Views\Shared\viewHours.cshtml" />
     <Content Include="Views\Test\TestViews.cshtml" />
     <Content Include="Views\Shared\viewTimesheet.cshtml" />
     <Content Include="Views\User\viewTimesheet2.cshtml" />
-    <Content Include="Views\Manager\approveHours.cshtml" />
+    <Content Include="Views\Shared\approveHours.cshtml" />
+    <Content Include="Views\Shared\addPCA.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
