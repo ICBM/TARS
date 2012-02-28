@@ -35,9 +35,8 @@ namespace TARS.Controllers
 
             if (ModelState.IsValid)
             {
-/*                if (check.requestUser(model.UserName, model.Password))
-                {
-*/
+//                if (check.requestUser(model.UserName, model.Password))
+//                {
 model.UserName = "zeke";
 model.RememberMe = false;
 //                    TARSUserDBContext TARSUserDB = new TARSUserDBContext();
@@ -53,11 +52,12 @@ model.RememberMe = false;
                     {
                         return RedirectToAction("Index", "Home");
                     }
-                }
+/*                }
                 else
                 {
                    ModelState.AddModelError("", "The user name or password provided is incorrect.");
                 }
+*/
             }
 
             // If we got this far, something failed, redisplay form
