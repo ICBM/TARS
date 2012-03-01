@@ -1,15 +1,15 @@
 USE [icbmdb]
 GO
 
-/****** Object:  Table [dbo].[TARSUser]    Script Date: 12/07/2011 23:35:11 ******/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[TARSUser]') AND type in (N'U'))
-DROP TABLE [dbo].[TARSUser]
+/****** Object:  Table [dbo].[TARSUsers]    Script Date: 03/01/2012 00:28:34 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[TARSUsers]') AND type in (N'U'))
+DROP TABLE [dbo].[TARSUsers]
 GO
 
 USE [icbmdb]
 GO
 
-/****** Object:  Table [dbo].[TARSUser]    Script Date: 12/07/2011 23:35:11 ******/
+/****** Object:  Table [dbo].[TARSUsers]    Script Date: 03/01/2012 00:28:34 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -19,10 +19,12 @@ GO
 SET ANSI_PADDING ON
 GO
 
-CREATE TABLE [dbo].[TARSUser](
+CREATE TABLE [dbo].[TARSUsers](
 	[ID] [int] IDENTITY(1,1) NOT NULL,
 	[un] [varchar](50) NULL,
 	[permission] [int] NULL,
+	[costAllocated] [bit] NULL,
+	[contractorStart] [datetime] NULL,
  CONSTRAINT [PK_TARSUser] PRIMARY KEY CLUSTERED 
 (
 	[ID] ASC
