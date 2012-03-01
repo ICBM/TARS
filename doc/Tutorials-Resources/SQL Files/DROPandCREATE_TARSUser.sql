@@ -1,7 +1,7 @@
 USE [icbmdb]
 GO
 
-/****** Object:  Table [dbo].[TARSUsers]    Script Date: 03/01/2012 00:28:34 ******/
+/****** Object:  Table [dbo].[TARSUsers]    Script Date: 03/01/2012 00:37:23 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[TARSUsers]') AND type in (N'U'))
 DROP TABLE [dbo].[TARSUsers]
 GO
@@ -9,7 +9,7 @@ GO
 USE [icbmdb]
 GO
 
-/****** Object:  Table [dbo].[TARSUsers]    Script Date: 03/01/2012 00:28:34 ******/
+/****** Object:  Table [dbo].[TARSUsers]    Script Date: 03/01/2012 00:37:23 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -25,6 +25,7 @@ CREATE TABLE [dbo].[TARSUsers](
 	[permission] [int] NULL,
 	[costAllocated] [bit] NULL,
 	[contractorStart] [datetime] NULL,
+	[contractorName] [varchar](50) NULL,
  CONSTRAINT [PK_TARSUser] PRIMARY KEY CLUSTERED 
 (
 	[ID] ASC
