@@ -23,7 +23,7 @@ CREATE TABLE [dbo].[TARSUsers](
 	[ID] [int] IDENTITY(1,1) NOT NULL,
 	[un] [varchar](50) NULL,
 	[permission] [int] NULL,
-	[costAllocated] [bit] NULL,
+	[costAllocated] [int] NULL,
 	[contractorStart] [datetime] NULL,
 	[contractorName] [varchar](50) NULL,
  CONSTRAINT [PK_TARSUser] PRIMARY KEY CLUSTERED 

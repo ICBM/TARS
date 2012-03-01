@@ -37,12 +37,27 @@ namespace TARS.Controllers
             {
 //                if (check.requestUser(model.UserName, model.Password))
 //                {
-model.UserName = "zeke";
-model.RememberMe = false;
 //                    TARSUserDBContext TARSUserDB = new TARSUserDBContext();
 //                    TARSUserDB.TARSUserList.Find(model.UserName);
-                                        
-                    FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+
+model.UserName = "zeke";
+model.RememberMe = false;
+//If the user is not an IDHW employee, then make sure his/her contractor information is up to date
+/*
+if(model.costAllocated == 0)
+{
+    //non cost-allocated user, so look up what contractor they work for
+    //(NOTE: System.DirectoryServices has a built-in function to make this easy)
+    string contractorNameAD = SomeFindFunction();
+    //Compare Active Directory contractor information with TARSUser table.
+    if(contractorNameAD != model.contractorName)
+    {
+        //Update contractorName and contractorStart in TARSUserDB
+    }
+}
+*/
+
+FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
                         && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
                     {
@@ -52,8 +67,8 @@ model.RememberMe = false;
                     {
                         return RedirectToAction("Index", "Home");
                     }
-/*                }
-                else
+//                }
+/*                else
                 {
                    ModelState.AddModelError("", "The user name or password provided is incorrect.");
                 }

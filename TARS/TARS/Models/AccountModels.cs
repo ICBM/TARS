@@ -40,6 +40,13 @@ namespace TARS.Models
 
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
+
+        //The user isn't prompted for these fields; they will still be used in AccountController 
+        public int costAllocated { get; set; }
+
+        public DateTime contractorStart { get; set; }
+
+        public string contractorName { get; set; }
     }
 
     public class RegisterModel

@@ -16,7 +16,7 @@ namespace TARS.Helpers
         private static string user = "uid=admin,ou=system"; //we'll re-use these within the class. make it easily modifiable for the users who come after us
         private static string pw = "secret";
         private static string domain = "tars.com"; //built for local server. change to whatever is relevent
-        private static string port = ":10389"; //default port for ActiveDirectory LDAP is 389. ApacheDS uses 10389
+        private static string port = ":389"; //default port for ActiveDirectory LDAP is 389. ApacheDS uses 10389
         private static string targetOU = "O=system,DC=example,DC=com"; //default
 
         private NetworkCredential credential; //one credential to go with the one connection; built using user + pw + domain
