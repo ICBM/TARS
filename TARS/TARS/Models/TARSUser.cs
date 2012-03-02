@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.DirectoryServices;
 
 //Necessary for DB calls.
 using System.Data.Entity;
@@ -14,7 +15,7 @@ namespace TARS.Models
         public string un { get; set; } //This might be changed to uid if Active Directory ends up playing nicer with that.
         public int permission { get; set; } //1 User   2 Manager   3 Admin 
         public int costAllocated { get; set; }
-        public string contractorStart { get; set; }
+        public DateTime contractorStart { get; set; }
         public string contractorName { get; set; }       
     }
 
@@ -48,8 +49,8 @@ namespace TARS.Models
               "; task: " + entry.Property(u => u.permission).CurrentValue;
             }
 
-//Doesn't actually get the current user's name.  User.Identity.Name doesn't work here
-hist.username = "placeholder";
+            //Doesn't actually get the current user's name.  User.Identity.Name doesn't work here
+            hist.username = "placeholder";
 
             hist.timestamp = System.DateTime.Now;
             HistDB.HistoryList.Add(hist);

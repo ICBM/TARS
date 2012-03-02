@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -8,6 +9,7 @@ using System.Web.Security;
 using System.Text;
 using System.Collections;
 using System.DirectoryServices;
+using System.DirectoryServices.AccountManagement;
 
 using TARS.Helpers;
 using TARS.Models;
@@ -38,31 +40,16 @@ namespace TARS.Controllers
 //               if (check.requestUser(model.UserName, model.Password))
 //                {
 model.UserName = "zeke";
+model.Password = "password";
 model.RememberMe = false;
-//                    TARSUserDBContext TARSUserDB = new TARSUserDBContext();
+                    TARSUserDBContext TARSUserDB = new TARSUserDBContext();
 //                    TARSUserDB.TARSUserList.Find(model.UserName);
 
-//If the user is not an IDHW employee, then make sure his/her contractor information is up to date
-/*
-if(model.costAllocated != 1)
-{
-    var contractorNameActDir;
-    //Look up what groups the user is a member of
-    using (var context = new PrincipalContext( ContextType.Domain )) 
-    {
-        using (var user = UserPrincipal.FindByIdentity( context, model.UserName ))
-        {
-            var contractorNameActDir = user.GetAuthorizationGroups();
-        }
-    }
-
-    //Compare contractor  in Active Directory with that in TARSUser table.
-    if(contractorNameActDir != model.contractorName)
-    {
-        //Update contractorName and contractorStart in TARSUserDB
-    }
-}
-*/
+                    //If the user is not an IDHW employee, then make sure his/her contractor information is up to date
+                    if (model.costAllocated != 1)
+                    {
+                        CheckContractorChanges(model);
+                    }                
 
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
@@ -193,6 +180,41 @@ if(model.costAllocated != 1)
             return View();
         }
 
+
+        //Function that checks if a contractor has changed employers 
+        //If so, it saves the new employer name and start-date in TARSUsers table
+        public void CheckContractorChanges(LogOnModel model)
+        {
+            int costAllocated = 0;
+/*
+            PrincipalContext context = new PrincipalContext(ContextType.Domain, null, model.UserName, model.Password);
+            UserPrincipal user = UserPrincipal.FindByIdentity(context, model.UserName);
+            PrincipalSearchResult<Principal> groups = user.GetAuthorizationGroups();
+ 
+            foreach (GroupPrincipal group in groups)
+            {
+                costAllocated = String.Compare(group.SamAccountName, "Users");
+                //If not part of "Users" group, then they aren't employed by IDHW
+                if (costAllocated != 1)
+                {
+                    using (var context2 = new TARSUserDBContext())
+                    {
+                        //Query the TARSUser table for the current user
+                        var userInDB = context2.TARSUserList
+                                    .Where(u => u.un == model.UserName)
+                                    .FirstOrDefault();
+                        //Update contractor info in table
+                        userInDB.contractorName = group.Name;
+                        userInDB.contractorStart = System.DateTime.Now;
+                        context2.Entry(userInDB).State = EntityState.Modified;
+                        context2.SaveChanges();
+                    }
+                    break;
+                }
+            }
+*/
+        }                                   
+       
         #region Status Codes
         private static string ErrorCodeToString(MembershipCreateStatus createStatus)
         {
