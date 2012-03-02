@@ -21,7 +21,7 @@ namespace TARS.Controllers
         public ActionResult LogOn()
         {
             
-           // LDAPConnection ld = new LDAPConnection();
+            //LDAPConnection ld = new LDAPConnection();
             //ld.establishConnection();
             return View();
         }
@@ -35,29 +35,36 @@ namespace TARS.Controllers
 
             if (ModelState.IsValid)
             {
-//                if (check.requestUser(model.UserName, model.Password))
+//               if (check.requestUser(model.UserName, model.Password))
 //                {
+model.UserName = "zeke";
+model.RememberMe = false;
 //                    TARSUserDBContext TARSUserDB = new TARSUserDBContext();
 //                    TARSUserDB.TARSUserList.Find(model.UserName);
 
-model.UserName = "zeke";
-model.RememberMe = false;
 //If the user is not an IDHW employee, then make sure his/her contractor information is up to date
 /*
-if(model.costAllocated == 0)
+if(model.costAllocated != 1)
 {
-    //non cost-allocated user, so look up what contractor they work for
-    //(NOTE: System.DirectoryServices has a built-in function to make this easy)
-    string contractorNameAD = SomeFindFunction();
-    //Compare Active Directory contractor information with TARSUser table.
-    if(contractorNameAD != model.contractorName)
+    var contractorNameActDir;
+    //Look up what groups the user is a member of
+    using (var context = new PrincipalContext( ContextType.Domain )) 
+    {
+        using (var user = UserPrincipal.FindByIdentity( context, model.UserName ))
+        {
+            var contractorNameActDir = user.GetAuthorizationGroups();
+        }
+    }
+
+    //Compare contractor  in Active Directory with that in TARSUser table.
+    if(contractorNameActDir != model.contractorName)
     {
         //Update contractorName and contractorStart in TARSUserDB
     }
 }
 */
 
-FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+                    FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
                         && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
                     {

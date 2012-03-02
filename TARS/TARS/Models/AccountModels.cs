@@ -43,9 +43,7 @@ namespace TARS.Models
 
         //The user isn't prompted for these fields; they will still be used in AccountController 
         public int costAllocated { get; set; }
-
-        public DateTime contractorStart { get; set; }
-
+        public string contractorStart { get; set; }
         public string contractorName { get; set; }
     }
 
