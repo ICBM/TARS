@@ -36,9 +36,9 @@
 		</div>
 		<h2>Project Concepts</h2>
 		<h1>
-			IIS7 Model-View-Controller Interaction
+			IIS6 Model-View-Controller Interaction
 		</h1>
-		In some MVC implementations, the Model component actually provides database interaction (SQL queries, data management, etc). The IIS7 MVC, however, does not. Instead, it uses its Model Components as data objects that have fields corresponding to columns in the SQL database table schemas. <br>
+		In some MVC implementations, the Model component actually provides database interaction (SQL queries, data management, etc). The IIS6 MVC, however, does not. Instead, it uses its Model Components as data objects that have fields corresponding to columns in the SQL database table schemas. <br>
 		<br>
 		To store and retrieve data, the TARS MVC will generally follow this pattern:<br>
 		<img src="images/erd_flow.png" width="1000">
@@ -51,9 +51,9 @@
 		<h1>
 			LDAP Authentification
 		</h1>
-		TARS will eventually authenticate users by utilizing Active Directory. At this time, the TARS development team does not have access to a copy of Windows Server 2008. With that being the case, Active Directory services are unavailable to test development progress. To alleviate this problem, TARS will instead authenticate to LDAP servers in general, rather than Active Directory specifically. <br>
+		TARS will authenticate users by utilizing Active Directory. At this time, Active Directory code is commented out until we transfer our code to the Windows 2003 Server. <br>
 		<br>
-		For development of TARS, the TARS team will utilize Apache Directory Server; a LDAP server built using Java. On user login, TARS will authenticate the inputted username and password using the LDAP server. If an entry that matches existson the LDAP server, the user will be logged in (cookie stored in cache). <br>
+		For development of TARS, the first semester TARS team utilized Apache Directory Server; a LDAP server built using Java. The second semester team will be using Windows Server 2003, which has always been the ultimate goal for logins.  Upon login, TARS will authenticate the inputted username and password using the Active Directory. If an entry that matches exists on the server, the user will be logged in (cookie stored in cache). <br>
 		<img src="images/ldap.png">
 
 		<br>
