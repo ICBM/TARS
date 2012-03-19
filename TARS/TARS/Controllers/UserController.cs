@@ -48,6 +48,18 @@ namespace TARS.Controllers
                 return View("error");
             }
         }
+/*        public virtual ActionResult addHours()
+        {
+            Authentication auth = new Authentication();
+            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+            {
+                return View();
+            }
+            else
+            {
+                return View("error");
+            }
+        }*/
 
         //
         // POST: /User/addHours

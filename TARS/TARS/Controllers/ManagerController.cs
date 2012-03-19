@@ -60,7 +60,7 @@ namespace TARS.Controllers
                 {
                     PcaDB.PcaCodeList.Add(pcacode);
                     PcaDB.SaveChanges();
-                    return RedirectToAction("searchPCA/");
+                    return RedirectToAction("maintainPCA/");
                 }
                 return View(pcacode);
             }
@@ -132,7 +132,7 @@ namespace TARS.Controllers
                 {
                     PcaDB.Entry(pcacode).State = EntityState.Modified;
                     PcaDB.SaveChanges();
-                    return RedirectToAction("searchPCA/");
+                    return RedirectToAction("maintainPCA/");
                 }
                 return View(pcacode);
             }
@@ -170,7 +170,74 @@ namespace TARS.Controllers
                 PcaCode pcacode = PcaDB.PcaCodeList.Find(id);
                 PcaDB.PcaCodeList.Remove(pcacode);
                 PcaDB.SaveChanges();
-                return RedirectToAction("searchPCA/");
+                return RedirectToAction("maintainPCA/");
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+        public virtual ActionResult userManagement()
+        {
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                return View(TARSUserDB.TARSUserList.ToList());
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+
+        public virtual ActionResult weManagement()
+        {
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                return View(WorkEffortDB.WorkEffortList.ToList());
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+
+        public virtual ActionResult approveTimesheet(int id)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                string user = "";
+
+                var searchUsers = from n in TARSUserDB.TARSUserList
+                                  where n.ID == id
+                                  select n;
+
+                var searchHours = from m in HoursDB.HoursList
+                                  select m;
+
+                foreach (var item in searchUsers)
+                {
+                    user = item.un;
+                }
+
+                searchHours = searchHours.Where(s => s.creator.Contains(user));
+                List<Task> resultTasks = new List<Task>();
+                foreach (var item in searchHours)
+                {
+                    var searchTasks = from m in TaskDB.TaskList
+                                      where m.ID == item.task
+                                      select m;
+                    resultTasks.AddRange(searchTasks);
+
+                }
+
+                ViewBag.taskList = resultTasks;
+                return View(searchHours);
             }
             else
             {
@@ -221,7 +288,7 @@ namespace TARS.Controllers
                 {
                     WorkEffortDB.WorkEffortList.Add(workeffort);
                     WorkEffortDB.SaveChanges();
-                    return RedirectToAction("searchWorkEffort/");
+                    return RedirectToAction("weManagement");
                 }
                 return View(workeffort);
             }
@@ -295,7 +362,7 @@ namespace TARS.Controllers
                 {
                     WorkEffortDB.Entry(workeffort).State = EntityState.Modified;
                     WorkEffortDB.SaveChanges();
-                    return RedirectToAction("searchWorkEffort/");
+                    return RedirectToAction("weManagement/");
                 }
                 return View(workeffort);
             }
@@ -332,12 +399,25 @@ namespace TARS.Controllers
                 WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
                 WorkEffortDB.WorkEffortList.Remove(workeffort);
                 WorkEffortDB.SaveChanges();
-                return RedirectToAction("searchWorkEffort/");
+                return RedirectToAction("weManagement/");
             }
             else
             {
                 return View("error");
             } 
+        }
+
+        public virtual ActionResult hideWorkEffort(int id)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                return View();
+            }
+            else
+            {
+                return View("error");
+            }
         }
 
 
