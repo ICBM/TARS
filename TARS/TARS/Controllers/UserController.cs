@@ -147,6 +147,41 @@ namespace TARS.Controllers
         }
 
         //
+        // GET: /User/repeatTimesheet
+        //Function to duplicate hours from previous week 
+        public virtual ActionResult repeatTimesheet(string user = "zeke")
+        {
+            Authentication auth = new Authentication();
+            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+            {
+                //Iterate through each entry from previous week and duplicate it for this week
+                var search = from m in HoursDB.HoursList
+                             select m;
+                List<Hours> resultHours = new List<Hours>();
+                if (!String.IsNullOrEmpty(user))
+                {
+                    search = search.Where(s => s.creator.Contains(user));
+                }
+                foreach (var item in search)
+                {
+                    resultHours.Add(item);
+                }
+                foreach (var copiedHours in resultHours)
+                {
+                    copiedHours.timestamp = DateTime.Now;
+                    copiedHours.approved = false;
+                    //add new entry to Hours and History tables
+                    addHours(copiedHours);
+                }
+                return RedirectToAction("viewTimesheet/");
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+        //
         // GET: /User/storeFile
         //Unimplemented
         public virtual ActionResult storeFile()

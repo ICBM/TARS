@@ -14,9 +14,7 @@ namespace TARS.Models
         public int code { get; set; }
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }
-        public string creator { get; set; }
         public string description { get; set; }
-        public string files { get; set; }
         public bool active { get; set; }
     }
 
@@ -49,9 +47,7 @@ namespace TARS.Models
                 hist.change = "code: " + entry.Property(u => u.code).CurrentValue +
               "; startDate: " + entry.Property(u => u.startDate).CurrentValue +
               "; endDate: " + entry.Property(u => u.endDate).CurrentValue +
-              "; creator: " + entry.Property(u => u.creator).CurrentValue +
               "; description: " + entry.Property(u => u.description).CurrentValue +
-              "; files: " + entry.Property(u => u.files).CurrentValue +
               "; active: " + entry.Property(u => u.active).CurrentValue;
             }
 

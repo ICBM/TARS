@@ -14,9 +14,7 @@ namespace TARS.Models
         public int code { get; set; }
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }
-        public string creator { get; set; }
         public string description { get; set; }
-        public string files { get; set; }
         public bool active { get; set; }
     }
 

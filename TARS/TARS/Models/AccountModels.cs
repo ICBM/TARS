@@ -40,7 +40,7 @@ namespace TARS.Models
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
 
-        public int costAllocated;
+        public bool costAllocated;
         public string contractorName;
         public DateTime contractorStart;
     }

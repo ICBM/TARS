@@ -46,7 +46,7 @@ model.RememberMe = false;
 //                    TARSUserDB.TARSUserList.Find(model.UserName);
 
                     //If the user is not an IDHW employee, then make sure his/her contractor information is up to date
-                    if (model.costAllocated != 1)
+                    if (model.costAllocated != true)
                     {
                         CheckContractorChanges(model);
                     }                
@@ -185,8 +185,8 @@ model.RememberMe = false;
         //If so, it saves the new employer name and start-date in TARSUsers table
         public void CheckContractorChanges(LogOnModel model)
         {
-            int costAllocated = 0;
-/*
+/*            int costAllocated = 0;
+
             PrincipalContext context = new PrincipalContext(ContextType.Domain, null, model.UserName, model.Password);
             UserPrincipal user = UserPrincipal.FindByIdentity(context, model.UserName);
             PrincipalSearchResult<Principal> groups = user.GetAuthorizationGroups();

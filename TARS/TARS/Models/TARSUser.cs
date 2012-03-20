@@ -14,7 +14,7 @@ namespace TARS.Models
         public int ID { get; set; } //DB iterator.
         public string un { get; set; } //This might be changed to uid if Active Directory ends up playing nicer with that.
         public int permission { get; set; } //1 User   2 Manager   3 Admin 
-        public int costAllocated { get; set; }
+        public bool costAllocated { get; set; }
         public DateTime contractorStart { get; set; }
         public string contractorName { get; set; }       
     }

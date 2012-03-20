@@ -21,13 +21,7 @@
             endDate
         </th>
         <th>
-            creator
-        </th>
-        <th>
             description
-        </th>
-        <th>
-            files
         </th>
         <th></th>
     </tr>
@@ -44,14 +38,9 @@
             @Html.DisplayFor(modelItem => item.endDate)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.creator)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.description)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.files)
-        </td>
+
         <td>
             @Html.ActionLink("Edit", "editWorkEffort", new { id=item.ID }) |
             @Html.ActionLink("Details", "viewWorkEffort", new { id=item.ID }) |
