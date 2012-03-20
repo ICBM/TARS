@@ -7,8 +7,17 @@
 <h2>viewTimesheet</h2>
 
 <p>This is in Views/Shared/viewTimesheet.cshtml</p>
-@Html.ActionLink("Find a work effort to add hours", "searchWorkeffort")
 
+<div id="menu" style="float:right;">
+<h4>Actions</h4>
+<p>@Html.ActionLink("New Timesheet", "copyTimesheet")</p>
+<p>@Html.ActionLink("Add Hours", "addHours", new { id = 1 })</p>
+<p>@Html.ActionLink("Submit Timesheet", "submitTimesheet")</p>
+<p>@Html.ActionLink("Lookup PCA", "searchPCA")</p>
+<p>@Html.ActionLink("Lookup Work Effort", "searchWorkeffort")</p>
+</div>
+
+<div id="content" style="float:left;">
 <h3>Hours list</h3>
 <table class="timesheet">
     <tr>
@@ -32,9 +41,6 @@
         </th>
         <th>
             description
-        </th>
-        <th>
-            creator
         </th>
         <th></th>
     </tr>
@@ -65,14 +71,9 @@
         <td>
             @Html.DisplayFor(modelItem => item.description)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.creator)
-        </td>
     </tr>
     }
 }
-@Html.ActionLink("Duplicate Previous Week Hours", "repeatTimesheet")
-
 </table>
 <h3>Task list</h3>
 <table class="timesheet">
@@ -106,3 +107,4 @@
     }
 }
 </table>
+</div>
