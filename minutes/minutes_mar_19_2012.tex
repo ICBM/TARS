@@ -1,0 +1,43 @@
+\documentclass{article}
+\begin{document}
+\title{Client Meeting}
+\date{2:30pm March 19, 2012}
+\maketitle
+
+\section{Attendance}
+\begin{itemize}
+\item Zeke Long
+\item Nathan Mazur
+\item Marj Sanderson
+\item Mike
+\item Brad
+\item Julie Grunder
+\item Steve Hill
+\end{itemize}
+
+
+\section{Conversation With Client}
+\begin{itemize}
+\item We will have a prototype on the IDHW server by next week
+\item All notifications (timesheet not approved, etc.) will be via email.
+\begin{itemize}
+	\item If a user's (employee's) time sheet is denied, they will be sent an email asking them to fix it
+	\item Email addresses are in Active Directory
+\end{itemize}
+\item Active Directory has a "company name" field that has employer info in it
+\item Each division of IDHW will have their own unique list of work efforts
+\begin{itemize}
+	\item There is no correlation between division name and PCA codes
+	\item Marj will send us a list of divisions within IDHW so we can populate a database table
+\end{itemize}
+\item Manager or Admin will add work efforts to the system ahead of time
+\item Weekly batch processing clarifications:
+\begin{itemize}
+	\item Their scheduler will call an executable that we provide
+	\item If it comes across an un-approved timesheet, an error will be thrown and a notification will be sent via email
+	\item If timesheet is not approved by Monday morning, the manager/approver will be sent a reminder email
+\end{itemize}
+
+\end{itemize}
+
+\end{document}
