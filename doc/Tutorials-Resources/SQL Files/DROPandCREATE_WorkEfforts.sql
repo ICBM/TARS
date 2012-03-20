@@ -21,9 +21,7 @@ CREATE TABLE [dbo].[WorkEfforts](
 	[code] [int] NULL,
 	[startDate] [datetime] NULL,
 	[endDate] [datetime] NULL,
-	[creator] [nchar](10) NULL,
 	[description] [varchar](50) NULL,
-	[files] [nchar](10) NULL,
 	[active] [bit] NULL,
  CONSTRAINT [PK_WorkEfforts] PRIMARY KEY CLUSTERED 
 (

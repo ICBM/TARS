@@ -24,9 +24,7 @@ CREATE TABLE [dbo].[PcaCodes](
 	[code] [int] NULL,
 	[startDate] [datetime] NULL,
 	[endDate] [datetime] NULL,
-	[creator] [varchar](50) NULL,
 	[description] [varchar](max) NULL,
-	[files] [varchar](max) NULL,
 	[active] [bit] NULL,
  CONSTRAINT [PK_PcaCodes] PRIMARY KEY CLUSTERED 
 (
