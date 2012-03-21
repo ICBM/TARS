@@ -29,18 +29,18 @@ namespace TARS.Models
 
     public static class DateTimeExtensions
     {
-        public static DateTime StartOfWeek(this DateTime dt, DayOfWeek startOfWeek)
+        //method that returns the DateTime of the weekDay provided
+        //example: StartOfWeek(DateTime.Now, Sunday) will return the DateTime of the Sunday of this week
+        public static DateTime StartOfWeek(this DateTime referenceDate, DayOfWeek WeekDay)
         {
-            int diff = dt.DayOfWeek - startOfWeek;
+            int diff = referenceDate.DayOfWeek - WeekDay;
             if (diff < 0)
             {
                 diff += 7;
             }
-
-            return dt.AddDays(-1 * diff).Date;
+            return referenceDate.AddDays(-1 * diff).Date;
         }
     }
-
 
     public class TimesheetDBContext : DbContext
     {
