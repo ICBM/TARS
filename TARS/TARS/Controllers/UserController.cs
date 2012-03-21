@@ -231,9 +231,9 @@ newhours.creator = "zeke";
         }
 
         //
-        // GET: /User/repeatTimesheet
+        // GET: /User/copyTimesheet
         //Function to duplicate hours from previous week 
-        public virtual ActionResult repeatTimesheet(string user = "")
+        public virtual ActionResult copyTimesheet(string user)
         {
 user = "zeke";
             Authentication auth = new Authentication();
@@ -252,7 +252,6 @@ user = "zeke";
                 {
                     previousTimesheet = item;
                 }
-
                 //Iterate through each entry from previous week and duplicate it for this week
                 var search2 = from m in HoursDB.HoursList
                              select m;
@@ -272,7 +271,7 @@ user = "zeke";
                 foreach (var copiedHours in resultHours)
                 {
                     copiedHours.hours = 0;
-                    copiedHours.timestamp = copiedHours.timestamp.AddDays(7);
+                    copiedHours.timestamp = DateTime.Now;
                     copiedHours.approved = false;
                     //add new entry to Hours and History tables
                     addHours(copiedHours);
@@ -325,6 +324,7 @@ user = "zeke";
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
+                DateTime startDay = DateTime.Now.StartOfWeek(DayOfWeek.Sunday);
                 string user;
                 if (User != null)
                 {
@@ -334,17 +334,15 @@ user = "zeke";
                 {
                     user = "";
                 }
+                //select all hours from current timesheet
                 var searchHours = from m in HoursDB.HoursList
+                                  where m.creator.Contains(user)
+                                  where m.timestamp >= startDay
                                   select m;
                 List<Task> resultTasks = new List<Task>();
-                if (!String.IsNullOrEmpty(user))
-                {
-
-                    searchHours = searchHours.Where(s => s.creator.Contains(user));
-                }
                 foreach (var item in searchHours)
                 {
-                    //searchTasks.Where(s => s.ID.Equals(1));
+                    //select task from each Hours entry
                     var searchTasks = from m in TaskDB.TaskList
                                       where m.ID == item.task
                                       select m;
