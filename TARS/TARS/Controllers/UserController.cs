@@ -371,7 +371,7 @@ user = "zeke";
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
-//need to fix this to use logged in user
+//need to fix this to be actual user
 var user = "zeke";
                 Timesheet tmptimesheet = new Timesheet();
                 DateTime startDay = DateTime.Now.StartOfWeek(DayOfWeek.Sunday);
