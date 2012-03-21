@@ -22,7 +22,7 @@ namespace TARS.Helpers
             {
 //                var username = c.User.Identity.Name; //Grab username from the cookie.
 var username = "zeke";
-                using (var context = new TARSUserDBContext())
+                using (var context = TARSUserDB)
                 {
                     var userInDB = context.TARSUserList
                                     .Where(u => u.un == username)

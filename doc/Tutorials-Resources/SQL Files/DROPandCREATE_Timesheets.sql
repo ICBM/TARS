@@ -26,6 +26,7 @@ CREATE TABLE [dbo].[Timesheets](
 	[periodEnd] [datetime] NULL,
 	[approved] [bit] NULL,
 	[locked] [bit] NULL,
+	[submitted] [bit] NULL,
  CONSTRAINT [PK_Timesheets] PRIMARY KEY CLUSTERED 
 (
 	[ID] ASC

@@ -25,12 +25,13 @@ namespace TARS.Models
         public DateTime periodEnd { get; set; }
         public bool approved { get; set; }
         public bool locked { get; set; }   //can be locked with or without being approved
+        public bool submitted { get; set; }
     }
 
     public static class DateTimeExtensions
     {
         //method that returns the DateTime of the weekDay provided
-        //example: StartOfWeek(DateTime.Now, Sunday) will return the DateTime of the Sunday of this week
+        //example: DateTime.Now.StartOfWeek(DayOfWeek.Sunday) will return the DateTime of the Sunday of this week
         public static DateTime StartOfWeek(this DateTime referenceDate, DayOfWeek WeekDay)
         {
             int diff = referenceDate.DayOfWeek - WeekDay;
@@ -72,7 +73,8 @@ namespace TARS.Models
               "; periodStart: " + entry.Property(u => u.periodStart).CurrentValue +
               "; periodEnd: " + entry.Property(u => u.periodEnd).CurrentValue +
               "; approved: " + entry.Property(u => u.approved).CurrentValue +
-              "; locked: " + entry.Property(u => u.locked).CurrentValue;
+              "; locked: " + entry.Property(u => u.locked).CurrentValue +
+              "; submitted: " + entry.Property(u => u.submitted).CurrentValue;
             }
 
             //Doesn't actually get the current user's name.  User.Identity.Name doesn't work here

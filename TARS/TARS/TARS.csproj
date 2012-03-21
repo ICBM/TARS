@@ -65,6 +65,12 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Data\Helpers\Authentication.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="App_Data\Helpers\LDAPConnection.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -74,8 +80,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\Authentication.cs" />
-    <Compile Include="Helpers\LDAPConnection.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Timesheet.cs" />
     <Compile Include="Models\TARSUser.cs" />
@@ -181,9 +185,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
