@@ -325,7 +325,10 @@ user = "zeke";
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
                 DateTime startDay = DateTime.Now.StartOfWeek(DayOfWeek.Sunday);
+                List<Task> resultTasks = new List<Task>();
+                bool submittedFlag = false;
                 string user;
+
                 if (User != null)
                 {
                     user = User.Identity.Name;
@@ -339,7 +342,6 @@ user = "zeke";
                                   where m.creator.Contains(user)
                                   where m.timestamp >= startDay
                                   select m;
-                List<Task> resultTasks = new List<Task>();
                 foreach (var item in searchHours)
                 {
                     //select task from each Hours entry
@@ -348,8 +350,18 @@ user = "zeke";
                                       select m;
                     resultTasks.AddRange(searchTasks);
                 }
+                var searchTimesheet = from m in TimesheetDB.TimesheetList
+                                      where m.worker.Contains(user)
+                                      where m.periodStart <= DateTime.Now
+                                      where m.periodEnd >= DateTime.Now
+                                      select m;
+                foreach (var item in searchTimesheet)
+                {
+                    submittedFlag = item.submitted;
+                }
 
                 ViewBag.taskList = resultTasks;
+                ViewBag.submitted = submittedFlag; 
                 //if (searchHours != null)
                 {
                     return View(searchHours);

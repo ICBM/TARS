@@ -4,7 +4,12 @@
     ViewBag.Title = "viewTimesheet";
 }
 
-<h2>viewTimesheet</h2>
+<h2>viewTimesheet
+@if (ViewBag.submitted)
+{
+    <small><i>(submitted)</i></small> 
+}
+</h2>
 
 <p>This is in Views/Shared/viewTimesheet.cshtml</p>
 
@@ -75,6 +80,7 @@
     }
 }
 </table>
+
 <h3>Task list</h3>
 <table class="timesheet">
     <tr>
