@@ -14,6 +14,7 @@ namespace TARS.Controllers
     {
         protected WorkEffortDBContext WorkEffortDB = new WorkEffortDBContext();
         protected HoursDBContext HoursDB = new HoursDBContext();
+        protected TimesheetDBContext TimesheetDB = new TimesheetDBContext();
         protected TaskDBContext TaskDB = new TaskDBContext();
         protected TARSUserDBContext TARSUserDB = new TARSUserDBContext();
         
@@ -72,6 +73,7 @@ namespace TARS.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    checkForTimesheet(newhours);
                     HoursDB.HoursList.Add(newhours);
                     HoursDB.SaveChanges();
                     return RedirectToAction("viewTimesheet/");
@@ -81,6 +83,79 @@ namespace TARS.Controllers
             else
             {
                 return View("error");
+            }
+        }
+
+        //
+        // GET: /User/CheckForTimesheet
+        //Function to create a new timesheet if one doesn't exist for the period
+        public virtual ActionResult checkForTimesheet(Hours newhours)
+        {
+newhours.creator = "zeke";
+            Authentication auth = new Authentication();
+            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+            {
+                Timesheet resulttimesheet = new Timesheet();
+                Timesheet previoustimesheet = new Timesheet();
+                var search = from m in TimesheetDB.TimesheetList
+                             select m;
+                var search2 = search;   //This will be used if the first search doesn't find a match
+
+                //Find timesheet for the week that corresponds to newhours.timestamp
+                search = search.Where(s => s.worker.Contains(newhours.creator));
+                search = search.Where(s => (s.periodStart <= newhours.timestamp));
+                search = search.Where(s => (s.periodEnd >= newhours.timestamp));
+                foreach (var item in search)
+                {
+                    resulttimesheet = item;
+                }
+                //If there isn't a timesheet for the newhours, then create one
+                if (resulttimesheet.periodStart == null)
+                {
+                    DateTime dayFromPrevPeriod = newhours.timestamp;
+                    dayFromPrevPeriod = dayFromPrevPeriod.AddDays(-7);
+
+                    //Find timesheet for the week before so we can use the end date as the new start date
+                    search2 = search2.Where(s => s.worker.Contains(newhours.creator));
+                    search2 = search2.Where(s => (s.periodStart <= dayFromPrevPeriod));
+                    search2 = search2.Where(s => (s.periodEnd >= dayFromPrevPeriod));
+                    foreach (var item in search2)
+                    {
+                        previoustimesheet = item;
+                    }
+                    //If there isn't a timesheet from the week before, then use 
+                    if (previoustimesheet.periodStart == null)
+                    {
+                        //Set pay period to start on Sunday 12:00am
+                        DateTime startDay = newhours.timestamp.StartOfWeek(DayOfWeek.Sunday);
+                        resulttimesheet.periodStart = startDay;
+                        resulttimesheet.periodEnd = startDay.AddDays(7);
+                    }
+                    else
+                    {
+                        resulttimesheet.periodStart = previoustimesheet.periodEnd;
+                        resulttimesheet.periodEnd = resulttimesheet.periodStart.AddDays(7);
+                    }
+                }
+                else
+                {
+                    //Set pay period to start on Sunday 12:00am
+                    DateTime startDay = newhours.timestamp.StartOfWeek(DayOfWeek.Sunday);
+                    resulttimesheet.periodStart = startDay;
+                    resulttimesheet.periodEnd = startDay.AddDays(7);
+                }
+                resulttimesheet.worker = newhours.creator;
+                resulttimesheet.approved = false;
+                resulttimesheet.locked = false;
+                TimesheetDB.TimesheetList.Add(resulttimesheet);
+                //add timesheet to the database
+                TimesheetDB.SaveChanges();
+
+                return RedirectToAction("viewTimesheet/");
+            }
+            else
+            {
+                return RedirectToAction("viewTimesheet/");
             }
         }
 
@@ -149,26 +224,42 @@ namespace TARS.Controllers
         //
         // GET: /User/repeatTimesheet
         //Function to duplicate hours from previous week 
-        public virtual ActionResult repeatTimesheet(string user = "zeke")
+        public virtual ActionResult repeatTimesheet(string user = "")
         {
+user = "zeke";
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
+                var search = from m in TimesheetDB.TimesheetList
+                              select m;
+                Timesheet previousTimesheet = new Timesheet();
+                DateTime dayFromPrevPeriod = DateTime.Now;
+                dayFromPrevPeriod = dayFromPrevPeriod.AddDays(-7);
+                search = search.Where(s => s.worker.Contains(user));
+                search = search.Where(s => (s.periodStart <= dayFromPrevPeriod));
+                search = search.Where(s => (s.periodEnd >= dayFromPrevPeriod));
+                foreach (var item in search)
+                {
+                    previousTimesheet = item;
+                }
+
                 //Iterate through each entry from previous week and duplicate it for this week
-                var search = from m in HoursDB.HoursList
+                var search2 = from m in HoursDB.HoursList
                              select m;
                 List<Hours> resultHours = new List<Hours>();
                 if (!String.IsNullOrEmpty(user))
                 {
-                    search = search.Where(s => s.creator.Contains(user));
+                    search2 = search2.Where(s => s.creator.Contains(user));
+                    search2 = search2.Where(s => s.timestamp >= previousTimesheet.periodStart);
+                    search2 = search2.Where(s => s.timestamp <= previousTimesheet.periodEnd);
                 }
-                foreach (var item in search)
+                foreach (var item in search2)
                 {
                     resultHours.Add(item);
                 }
                 foreach (var copiedHours in resultHours)
                 {
-                    copiedHours.timestamp = DateTime.Now;
+                    copiedHours.timestamp = copiedHours.timestamp.AddDays(7);
                     copiedHours.approved = false;
                     //add new entry to Hours and History tables
                     addHours(copiedHours);

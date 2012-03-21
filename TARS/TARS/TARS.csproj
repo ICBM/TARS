@@ -77,6 +77,7 @@
     <Compile Include="App_Data\Helpers\Authentication.cs" />
     <Compile Include="App_Data\Helpers\LDAPConnection.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\Timesheet.cs" />
     <Compile Include="Models\TARSUser.cs" />
     <Compile Include="Models\History.cs" />
     <Compile Include="Models\Hours.cs" />
