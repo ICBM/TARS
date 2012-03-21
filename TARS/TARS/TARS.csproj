@@ -250,6 +250,12 @@
     <Content Include="Views\User\viewTimesheet2.cshtml" />
     <Content Include="Views\Shared\approveHours.cshtml" />
     <Content Include="Views\Shared\addPCA.cshtml" />
+    <Content Include="Views\Manager\userManagement.cshtml" />
+    <Content Include="Views\Manager\weManagement.cshtml" />
+    <Content Include="Views\Manager\hideWorkEffort.cshtml" />
+    <Content Include="Views\Manager\approveTimesheet.cshtml">
+      <SubType>Code</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

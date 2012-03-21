@@ -17,9 +17,9 @@
 				<img src="@Url.Content("~/Content/themes/base/images/logo.png")"  id="logo" alt="logo" />
 				<table class="nav">
 					<tr>
-						<td>Administration</TD>
-						<td>Managerial</td>
-						<td>User Panel</td>
+						<td>@Html.ActionLink("Administration", "../Admin/Index/")</TD>
+						<td>@Html.ActionLink("Managerial", "../Manager/Index/")</td>
+						<td>@Html.ActionLink("User Panel", "../User/Index/")</td>
 						<td>@Html.Partial("_LogOnPartial")</td>
 					</tr>
 				</table>
@@ -61,7 +61,8 @@
 				</table>
 				<table class="update">
 					<tr>
-						<td><i>Current Pay Period: </i></td><td><b><font color="ff0000">11/27 - 12/3</font></b></td>
+						<td><i>Current Pay Period: </i></td><td><b><font color="ff0000">
+                        @Html.Action("getPayPeriod", "User")</font></b></td>
 					</tr>
                     
 					<tr>

@@ -395,5 +395,23 @@ var user = "zeke";
                 return View("error");
             }
         }
+
+        // 
+        //Function that returns the current pay period as a string
+        public virtual string getPayPeriod()
+        {
+            Authentication auth = new Authentication();
+            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+            {
+                DateTime startDay = DateTime.Now.StartOfWeek(DayOfWeek.Sunday);
+                DateTime endDay = startDay.AddDays(7);
+                string payPeriod = startDay.ToShortDateString() + " - " + endDay.ToShortDateString();
+                return payPeriod;
+            }
+            else
+            {
+                return "???";
+            }
+        }
     }
 }
