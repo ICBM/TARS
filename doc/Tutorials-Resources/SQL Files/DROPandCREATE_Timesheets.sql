@@ -1,7 +1,7 @@
 USE [icbmdb]
 GO
 
-/****** Object:  Table [dbo].[Timesheets]    Script Date: 03/20/2012 18:58:35 ******/
+/****** Object:  Table [dbo].[Timesheets]    Script Date: 03/21/2012 05:41:25 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Timesheets]') AND type in (N'U'))
 DROP TABLE [dbo].[Timesheets]
 GO
@@ -9,7 +9,7 @@ GO
 USE [icbmdb]
 GO
 
-/****** Object:  Table [dbo].[Timesheets]    Script Date: 03/20/2012 18:58:35 ******/
+/****** Object:  Table [dbo].[Timesheets]    Script Date: 03/21/2012 05:41:25 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -22,8 +22,8 @@ GO
 CREATE TABLE [dbo].[Timesheets](
 	[ID] [int] IDENTITY(1,1) NOT NULL,
 	[worker] [varchar](50) NULL,
-	[periodStart] [datetime] NULL,
-	[periodEnd] [datetime] NULL,
+	[periodStart] [datetime] UNIQUE NOT NULL,
+	[periodEnd] [datetime] UNIQUE NOT NULL,
 	[approved] [bit] NULL,
 	[locked] [bit] NULL,
 	[submitted] [bit] NULL,

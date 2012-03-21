@@ -99,33 +99,33 @@ newhours.creator = "zeke";
             {
                 Timesheet resulttimesheet = new Timesheet();
                 Timesheet previoustimesheet = new Timesheet();
-                var search = from m in TimesheetDB.TimesheetList
-                             select m;
-                var search2 = search;   //This will be used if the first search doesn't find a match
 
-                //Find timesheet for the week that corresponds to newhours.timestamp
-                search = from m in search
-                         where m.worker.Contains(newhours.creator)
-                         where m.periodStart <= newhours.timestamp
-                         where m.periodEnd >= newhours.timestamp
-                         select m;
+                //Check if there is a timesheet for the week that corresponds to newhours.timestamp
+                var search = from m in TimesheetDB.TimesheetList
+                             where m.worker.Contains(newhours.creator)
+                             where m.periodStart <= newhours.timestamp
+                             where m.periodEnd >= newhours.timestamp
+                             select m;
                 foreach (var item in search)
                 {
-                    //this is necessary so the timesheet can be edited
+                    //copy to placeholder timesheet so it can be edited
                     resulttimesheet = item;
                 }
-                //If there isn't a timesheet for the newhours, then create one
+     
+                //if there isn't a timesheet for the pay period, then create one
+                //If there is a timesheet for the current pay period, don't do anything
                 if (resulttimesheet.periodStart == null)
                 {
                     DateTime dayFromPrevPeriod = newhours.timestamp;
                     dayFromPrevPeriod = dayFromPrevPeriod.AddDays(-7);
+                    Timesheet newTimesheet = new Timesheet();
 
                     //Find timesheet for the week before so we can use the end date as the new start date
-                    search2 = from m in search2
-                              where m.worker.Contains(newhours.creator)
-                              where m.periodStart <= dayFromPrevPeriod
-                              where m.periodEnd >= dayFromPrevPeriod
-                              select m;
+                    var search2 = from m in TimesheetDB.TimesheetList
+                                  where m.worker.Contains(newhours.creator)
+                                  where m.periodStart <= dayFromPrevPeriod
+                                  where m.periodEnd >= dayFromPrevPeriod
+                                  select m;
                     foreach (var item in search2)
                     {
                         previoustimesheet = item;
@@ -135,31 +135,23 @@ newhours.creator = "zeke";
                     {
                         //Set pay period to start on Sunday 12:00am
                         DateTime startDay = newhours.timestamp.StartOfWeek(DayOfWeek.Sunday);
-                        resulttimesheet.periodStart = startDay;
-                        resulttimesheet.periodEnd = startDay.AddDays(7);
+                        newTimesheet.periodStart = startDay;
+                        newTimesheet.periodEnd = startDay.AddDays(7);
                     }
                     else
                     {
                         //Set pay period to start where the previous period ended
-                        resulttimesheet.periodStart = previoustimesheet.periodEnd;
-                        resulttimesheet.periodEnd = resulttimesheet.periodStart.AddDays(7);
+                        newTimesheet.periodStart = previoustimesheet.periodEnd;
+                        newTimesheet.periodEnd = newTimesheet.periodStart.AddDays(7);
                     }
+                    newTimesheet.worker = newhours.creator;
+                    newTimesheet.approved = false;
+                    newTimesheet.locked = false;
+                    newTimesheet.submitted = false;
+                    //add timesheet and save to the database
+                    TimesheetDB.TimesheetList.Add(newTimesheet);
+                    TimesheetDB.SaveChanges();
                 }
-                else
-                {
-                    //Set pay period to start on Sunday 12:00am
-                    DateTime startDay = newhours.timestamp.StartOfWeek(DayOfWeek.Sunday);
-                    resulttimesheet.periodStart = startDay;
-                    resulttimesheet.periodEnd = startDay.AddDays(7);
-                }
-                resulttimesheet.worker = newhours.creator;
-                resulttimesheet.approved = false;
-                resulttimesheet.locked = false;
-                resulttimesheet.submitted = false;
-                //add timesheet and save to the database
-                TimesheetDB.TimesheetList.Add(resulttimesheet);
-                TimesheetDB.SaveChanges();
-
                 return RedirectToAction("viewTimesheet/");
             }
             else
@@ -242,7 +234,9 @@ user = "zeke";
                 Timesheet previousTimesheet = new Timesheet();
                 DateTime dayFromPrevPeriod = DateTime.Now;
                 dayFromPrevPeriod = dayFromPrevPeriod.AddDays(-7);
+                List<Hours> resultHours = new List<Hours>();
 
+                //Select the timesheet from the previous pay period if it exists
                 var search = from m in TimesheetDB.TimesheetList
                              where m.worker.Contains(user)
                              where m.periodStart <= dayFromPrevPeriod
@@ -254,16 +248,10 @@ user = "zeke";
                 }
                 //Iterate through each entry from previous week and duplicate it for this week
                 var search2 = from m in HoursDB.HoursList
-                             select m;
-                List<Hours> resultHours = new List<Hours>();
-                if (!String.IsNullOrEmpty(user))
-                {
-                    search2 = from m in search2
                               where m.creator.Contains(user)
                               where m.timestamp >= previousTimesheet.periodStart
                               where m.timestamp <= previousTimesheet.periodEnd
                               select m;
-                }
                 foreach (var item in search2)
                 {
                     resultHours.Add(item);
