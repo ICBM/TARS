@@ -7,7 +7,14 @@
 <h2>viewTimesheet
 @if (ViewBag.submitted)
 {
-    <small><i>(submitted)</i></small> 
+    if (ViewBag.approved)
+    {
+        <small><i>(approved)</i></small> 
+    }
+    else
+    {
+        <small><i>(submitted)</i></small> 
+    }
 }
 </h2>
 

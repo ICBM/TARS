@@ -23,9 +23,9 @@ namespace TARS.Models
         public string worker { get; set; }
         public DateTime periodStart { get; set; }
         public DateTime periodEnd { get; set; }
+        public bool submitted { get; set; }
         public bool approved { get; set; }
         public bool locked { get; set; }   //can be locked with or without being approved
-        public bool submitted { get; set; }
     }
 
     public class TimesheetDBContext : DbContext

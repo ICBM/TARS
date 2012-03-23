@@ -14,8 +14,6 @@ namespace TARS.Controllers
     public class ManagerController : UserController
     {
         protected PcaCodeDBContext PcaDB = new PcaCodeDBContext();
-        protected WorkEffortDBContext WorkEffortDB = new WorkEffortDBContext();
-        protected TaskDBContext TaskDB = new TaskDBContext();
         protected PCA_WEDBContext PCA_WEDB = new PCA_WEDBContext();
         
         //
