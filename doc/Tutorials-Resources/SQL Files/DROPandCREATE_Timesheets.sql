@@ -22,8 +22,8 @@ GO
 CREATE TABLE [dbo].[Timesheets](
 	[ID] [int] IDENTITY(1,1) NOT NULL,
 	[worker] [varchar](50) NULL,
-	[periodStart] [datetime] UNIQUE NOT NULL,
-	[periodEnd] [datetime] UNIQUE NOT NULL,
+	[periodStart] [datetime] NOT NULL,
+	[periodEnd] [datetime] NOT NULL,
 	[approved] [bit] NULL,
 	[locked] [bit] NULL,
 	[submitted] [bit] NULL,
