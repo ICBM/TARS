@@ -28,7 +28,7 @@
 </div>
 
 <div id="content" style="float:left;">
-<h3>Hours list</h3>
+<h3>Hours list for @ViewBag.timesheet.worker</h3>
 <table class="timesheet">
     <tr>
         <th>
@@ -48,6 +48,9 @@
         </th>
         <th>
             description
+        </th>
+        <th>
+            creator
         </th>
         <th></th>
     </tr>
@@ -74,6 +77,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.creator)
         </td>
     </tr>
     }

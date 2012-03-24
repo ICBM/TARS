@@ -49,6 +49,7 @@ namespace TARS.Controllers
                 return View("error");
             }
         }
+
 /*        public virtual ActionResult addHours()
         {
             Authentication auth = new Authentication();
@@ -80,7 +81,7 @@ namespace TARS.Controllers
                     HoursDB.SaveChanges();
                     return RedirectToAction("viewTimesheet/");
                 }
-                return View(newhours);
+                return View("error");
             }
             else
             {
@@ -91,14 +92,14 @@ namespace TARS.Controllers
         //
         // GET: /User/CheckForTimesheet
         //Function to create a new timesheet if one doesn't exist for the period
-        public virtual ActionResult checkForTimesheet(Hours newhours)
+        public virtual int checkForTimesheet(Hours newhours)
         {
 newhours.creator = "zeke";
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
                 Timesheet resulttimesheet = new Timesheet();
-                Timesheet previoustimesheet = new Timesheet();
+                DateTime startDay = newhours.timestamp.StartOfWeek(DayOfWeek.Sunday);
 
                 //Check if there is a timesheet for the week that corresponds to newhours.timestamp
                 var search = from m in TimesheetDB.TimesheetList
@@ -114,42 +115,30 @@ newhours.creator = "zeke";
      
                 //if there isn't a timesheet for the pay period, then create one
                 //If there is a timesheet for the current pay period, don't do anything
-                if (resulttimesheet.periodStart == null)
+                if (resulttimesheet.periodStart.CompareTo(startDay) != 0)
                 {
-                    DateTime dayFromPrevPeriod = newhours.timestamp;
-                    dayFromPrevPeriod = dayFromPrevPeriod.AddDays(-7);
                     Timesheet newTimesheet = new Timesheet();
 
-                    //Find timesheet for the week before so we can use the end date as the new start date
-                    previoustimesheet = getTimesheet(newhours.creator, dayFromPrevPeriod);
-
-                    //If there isn't a timesheet from the week before 
-                    if (previoustimesheet == null)
-                    {
-                        //Set pay period to start on Sunday 12:00am
-                        DateTime startDay = newhours.timestamp.StartOfWeek(DayOfWeek.Sunday);
-                        newTimesheet.periodStart = startDay;
-                        newTimesheet.periodEnd = startDay.AddDays(7);
-                    }
-                    else
-                    {
-                        //Set pay period to start where the previous period ended
-                        newTimesheet.periodStart = previoustimesheet.periodEnd;
-                        newTimesheet.periodEnd = newTimesheet.periodStart.AddDays(7);
-                    }
+                    //Set pay period to start on Sunday 12:00am
+                    newTimesheet.periodStart = startDay;
+                    newTimesheet.periodEnd = startDay.AddDays(7);
                     newTimesheet.worker = newhours.creator;
                     newTimesheet.approved = false;
                     newTimesheet.locked = false;
                     newTimesheet.submitted = false;
+
                     //add timesheet and save to the database
                     TimesheetDB.TimesheetList.Add(newTimesheet);
+                    //TimesheetDB.Entry(newTimesheet).State = System.Data.EntityState.Added;
                     TimesheetDB.SaveChanges();
+
+                    return 1;
                 }
-                return RedirectToAction("viewTimesheet/");
+                return 1;
             }
             else
             {
-                return RedirectToAction("viewTimesheet/");
+                return 0;
             }
         }
 
@@ -416,6 +405,33 @@ user = "zeke";
             {
                 return View("error");
             }
+        }
+
+        //
+        //Function to retrieve the status of an employees timesheet from the specified date
+        public virtual string getTimesheetStatus(string userName, DateTime refDate)
+        {
+            string status = "";
+            var tmptimesheet = new Timesheet();
+            tmptimesheet = getTimesheet(userName, refDate);
+
+            if (tmptimesheet.locked)
+            {
+                status = "locked";
+            }
+            else if (tmptimesheet.approved)
+            {
+                status = "approved";
+            }
+            else if (tmptimesheet.submitted)
+            {
+                status = "submitted";
+            }
+            else
+            {
+                status = "not submitted";
+            }
+            return status;
         }
 
         // 

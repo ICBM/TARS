@@ -18,9 +18,6 @@
             Contractor Name
         </th>
         <th>
-            End Date (to be implemented)
-        </th>
-        <th>
             Timesheet status
         </th>
         <th>
@@ -42,10 +39,7 @@
             @Html.DisplayFor(modelItem => item.contractorName)
         </td>
         <td>
-            To be implemented
-        </td>
-        <td>
-            To be implemented
+            @Html.Action("getTimesheetStatus", "User", new { userName = item.un, refDate = DateTime.Now })
         </td>
         <td>
             @Html.ActionLink("View User's Timesheet", "approveTimesheet", new { id=item.ID })

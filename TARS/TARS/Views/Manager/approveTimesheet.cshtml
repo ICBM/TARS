@@ -82,6 +82,7 @@ else
 <div id="menu" style="float:right;">
 <h4><b></b>Actions</b></h4>
 <p>@Html.ActionLink("Submit For Employee", "managerSubmitTimesheet/", new { id = (int)ViewBag.timesheet.ID })</p>
-<p>@Html.ActionLink("Approve Timesheet", "submitApproveTimesheet/", new { id = (int)ViewBag.timesheet.ID })</p>
-<p>@Html.ActionLink("Disapprove Timesheet", "submitDisapproveTimesheet/", new { id = (int)ViewBag.timesheet.ID })</p>
+<p>@Html.ActionLink("Approve", "submitApproveTimesheet/", new { id = (int)ViewBag.timesheet.ID })</p>
+<p>@Html.ActionLink("Disapprove", "submitDisapproveTimesheet/", new { id = (int)ViewBag.timesheet.ID })</p>
+<p>@Html.ActionLink("Back to Employee List", "userManagement/")</p>
 </div>
