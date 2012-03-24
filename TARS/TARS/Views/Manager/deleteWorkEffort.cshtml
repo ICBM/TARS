@@ -1,11 +1,13 @@
 ﻿@model TARS.Models.WorkEffort
 
 @{
-    ViewBag.Title = "viewWorkEffort";
+    ViewBag.Title = "DeleteWorkEffort";
 }
 
-<h2>Details</h2>
+<h2>Delete</h2>
 
+<h3>Are you sure you want to delete this?</h3>
+<h4>To do: Establish restriction that WE's with attributed hours cannot be deleted (per WE3_Delete Work Effort.doc)</h4>
 <fieldset>
     <legend>PcaCode</legend>
 
@@ -30,8 +32,9 @@
     </div>
 
 </fieldset>
-<p>
-    @Html.ActionLink("Add Hours", "addHours", new { id=Model.ID })  
-    @Html.ActionLink("Edit", "editWorkEffort/", new { id=Model.ID }) |
-    @Html.ActionLink("Back to List", "searchWorkEffort/")
-</p>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> | 
+        @Html.ActionLink("Back to List", "weManagement/")
+    </p>
+}

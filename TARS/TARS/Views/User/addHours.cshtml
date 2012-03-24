@@ -64,7 +64,11 @@
         <div class="editor-field">
             @Html.EditorFor(model => model.description)
             @Html.ValidationMessageFor(model => model.description)
-        <input id="creator" name="creator" type="hidden" value="@User.Identity.Name" />
+        </div>
+        <!--<input id="creator" name="creator" type="hidden" value="@User.Identity.Name" />-->
+        <input id="creator" name="creator" type="hidden" value="steve" />
+        <!--@Html.HiddenFor(model => model.creator, User.Identity.Name)-->
+        
         <p>
             <input type="submit" value="Submit" />
         </p>

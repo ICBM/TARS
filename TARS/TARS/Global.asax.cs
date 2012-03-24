@@ -24,7 +24,7 @@ namespace TARS
             routes.MapRoute(
                 "Default", // Route name
                 "{controller}/{action}/{id}", // URL with parameters
-                new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
+                new { controller = "Home", action = "Index", id = -1 } // Parameter defaults
 			
 /*			
 				//the conditional statement makes the URL routing work with both IIS6 and IIS7

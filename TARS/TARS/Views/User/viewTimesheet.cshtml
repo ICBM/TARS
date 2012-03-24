@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<TARS.Models.Hours>
 
 @{
-    ViewBag.Title = "approveTimesheet";
+    ViewBag.Title = "viewTimesheet";
 }
 
-<h2>approveTimesheet
+<h2>viewTimesheet
 @if (ViewBag.timesheet.submitted)
 {
     if (ViewBag.timesheet.approved)
@@ -13,16 +13,22 @@
     }
     else
     {
-        <small><i>(submitted but not approved)</i></small> 
+        <small><i>(submitted)</i></small> 
     }
-}
-else
-{
-    <small><i>(not submitted)</i></small>
 }
 </h2>
 
-<h3>Hours list for @ViewBag.timesheet.worker</h3>
+<div id="menu" style="float:right;">
+<h4>Actions</h4>
+<p>@Html.ActionLink("New Timesheet", "copyTimesheet")</p>
+<p>@Html.ActionLink("Add Hours", "addHours", new { id = 1 })</p>
+<p>@Html.ActionLink("Submit Timesheet", "submitTimesheet", new { id = (int)ViewBag.timesheet.ID })</p>
+<p>@Html.ActionLink("Lookup PCA", "searchPCA")</p>
+<p>@Html.ActionLink("Lookup Work Effort", "searchWorkeffort")</p>
+</div>
+
+<div id="content" style="float:left;">
+<h3>Hours list</h3>
 <table class="timesheet">
     <tr>
         <th>
@@ -42,9 +48,6 @@ else
         </th>
         <th>
             description
-        </th>
-        <th>
-            creator
         </th>
         <th></th>
     </tr>
@@ -72,16 +75,41 @@ else
         <td>
             @Html.DisplayFor(modelItem => item.description)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.creator)
-        </td>
     </tr>
     }
 }
+</table>
 
-<div id="menu" style="float:right;">
-<h4><b></b>Actions</b></h4>
-<p>@Html.ActionLink("Submit For Employee", "managerSubmitTimesheet/", new { id = (int)ViewBag.timesheet.ID })</p>
-<p>@Html.ActionLink("Approve Timesheet", "submitApproveTimesheet/", new { id = (int)ViewBag.timesheet.ID })</p>
-<p>@Html.ActionLink("Disapprove Timesheet", "submitDisapproveTimesheet/", new { id = (int)ViewBag.timesheet.ID })</p>
+<h3>Task list</h3>
+<table class="timesheet">
+    <tr>
+        <th>
+            ID
+        </th>
+        <th>
+            WE
+        </th>
+        <th>
+            title
+        </th>
+    </tr>
+
+@if (ViewBag.taskList != null)
+{
+    foreach (var item in ViewBag.taskList)
+    {
+        <tr>
+            <td>
+                @item.ID
+            </td>
+            <td>
+                @item.WE
+            </td>
+            <td>
+                @item.title
+            </td>
+        </tr>
+    }
+}
+</table>
 </div>

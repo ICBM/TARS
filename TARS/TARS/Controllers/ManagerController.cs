@@ -203,61 +203,13 @@ namespace TARS.Controllers
             }
         }
 
-
-        public virtual ActionResult approveTimesheet(int id)
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                string user = "";
-
-                var searchUsers = from n in TARSUserDB.TARSUserList
-                                  where n.ID == id
-                                  select n;
-
-                var searchHours = from m in HoursDB.HoursList
-                                  select m;
-
-                foreach (var item in searchUsers)
-                {
-                    user = item.un;
-                }
-
-                searchHours = searchHours.Where(s => s.creator.Contains(user));
-                List<Task> resultTasks = new List<Task>();
-                foreach (var item in searchHours)
-                {
-                    var searchTasks = from m in TaskDB.TaskList
-                                      where m.ID == item.task
-                                      select m;
-                    resultTasks.AddRange(searchTasks);
-
-                }
-
-                ViewBag.taskList = resultTasks;
-                return View(searchHours);
-            }
-            else
-            {
-                return View("error");
-            }
-        }
-                
+               
         //This was attached to delete; not sure what this is yet, but it doesn't explode!
         protected override void Dispose(bool disposing)
         {
             PcaDB.Dispose();
             base.Dispose(disposing);
         }
-
-
-
-
-
-
-
-
-
 
         //
         // GET: /Manager/addWorkEffort
@@ -298,8 +250,7 @@ namespace TARS.Controllers
 
         //
         // GET: /Manager/searchWorkEffort
-        //  - Shows a list of all WorkEffort codes.
-        
+        //  - Shows a list of all WorkEffort codes.       
         public override ActionResult searchWorkEffort()
         {
             Authentication auth = new Authentication();
@@ -418,14 +369,6 @@ namespace TARS.Controllers
             }
         }
 
-
-
-
-
-
-
-
-        //*****************************************************************
         //
         // GET: /Manager/addTask
         public virtual ActionResult addTask()
@@ -569,12 +512,7 @@ namespace TARS.Controllers
                 return View("error");
             } 
         }
-        //******************************************************************
 
-
-
-
-        //*****************************************************************
         //
         // GET: /Manager/addPCA_WE
         public virtual ActionResult addPCA_WE()
@@ -718,16 +656,42 @@ namespace TARS.Controllers
                 return View("error");
             } 
         }
-        //******************************************************************
 
 
-
-        public virtual ActionResult approveHours()
+        //
+        //returns specified user's hours, along with manager options, to the View
+        public virtual ActionResult approveTimesheet(int id)
         {
+            DateTime tsDate = DateTime.Now;
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
-                return View(HoursDB.HoursList.ToList());
+                string user = "";
+
+                var searchUsers = from n in TARSUserDB.TARSUserList
+                                  where n.ID == id
+                                  select n;
+                var searchHours = from m in HoursDB.HoursList
+                                  select m;
+                foreach (var item in searchUsers)
+                {
+                    user = item.un;
+                }
+
+                searchHours = searchHours.Where(s => s.creator.Contains(user));
+                List<Task> resultTasks = new List<Task>();
+                foreach (var item in searchHours)
+                {
+                    tsDate = item.timestamp;    //used to retrieve the correct timesheet
+                    var searchTasks = from m in TaskDB.TaskList
+                                      where m.ID == item.task
+                                      select m;
+                    resultTasks.AddRange(searchTasks);
+                }
+
+                ViewBag.timesheet = getTimesheet(user, tsDate);
+                ViewBag.taskList = resultTasks;
+                return View(searchHours);
             }
             else
             {
@@ -735,14 +699,28 @@ namespace TARS.Controllers
             }
         }
 
-        [HttpPost]
-        public virtual ActionResult approveHours(List<Hours> hours)
+        //
+        //changes timesheet status to approved
+        public virtual ActionResult submitApproveTimesheet(int id)
         {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            if (id >= 0)
             {
-                HoursDB.SaveChanges();
-                return View();
+                Authentication auth = new Authentication();
+                if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+                {
+                    Timesheet ts = new Timesheet();
+                    ts = getTimesheetFromID(id);
+                    ts.approved = true;
+                    TimesheetDB.Entry(ts).State = System.Data.EntityState.Modified;
+                    //save changes to the database
+                    TimesheetDB.SaveChanges();
+
+                    return RedirectToAction("approveTimesheet/");
+                }
+                else
+                {
+                    return View("error");
+                }
             }
             else
             {
@@ -750,6 +728,82 @@ namespace TARS.Controllers
             }
         }
 
+        //
+        //changes timesheet status to disapproved
+        public virtual ActionResult submitDisapproveTimesheet(int id)
+        {
+            if (id >= 0)
+            {
+                Authentication auth = new Authentication();
+                if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+                {
+                    Timesheet ts = new Timesheet();
+                    ts = getTimesheetFromID(id);
+                    ts.approved = false;
+                    TimesheetDB.Entry(ts).State = System.Data.EntityState.Modified;
+                    //save changes to the database
+                    TimesheetDB.SaveChanges();
+
+                    return RedirectToAction("approveTimesheet/");
+                }
+                else
+                {
+                    return View("error");
+                }
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+        //
+        // GET: /Manager/managerSubmitTimesheet
+        //changes timesheet status to true so it will show up in the manager's list of timesheets to approve
+        public virtual ActionResult managerSubmitTimesheet(int id)
+        {
+            if (id >= 0)
+            {
+                Authentication auth = new Authentication();
+                if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+                {
+                    Timesheet ts = new Timesheet();
+                    ts = getTimesheetFromID(id);
+                    ts.submitted = true;
+                    TimesheetDB.Entry(ts).State = System.Data.EntityState.Modified;
+                    //save changes to the database
+                    TimesheetDB.SaveChanges();
+
+                    return RedirectToAction("approveTimesheet", getUserID(ts.worker));
+                }
+                else
+                {
+                    return View("error");
+                }
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+        //
+        //Returns the unique ID of specified user
+        public int getUserID(string worker)
+        {
+            int userID = 0;
+            var searchID = from m in TARSUserDB.TARSUserList
+                           where m.un.Contains(worker)
+                           select m;
+            foreach (var item in searchID)
+            {
+                userID = item.ID;
+            }
+            return userID;
+        }
+
+        //
+        //
         public override ActionResult viewHistory()
         {
             Authentication auth = new Authentication();
@@ -765,6 +819,5 @@ namespace TARS.Controllers
                 return View("error");
             }
         }
-
     }
 }

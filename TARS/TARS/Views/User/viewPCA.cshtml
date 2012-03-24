@@ -1,7 +1,7 @@
-﻿@model TARS.Models.WorkEffort
+﻿@model TARS.Models.PcaCode
 
 @{
-    ViewBag.Title = "viewWorkEffort";
+    ViewBag.Title = "viewPCA";
 }
 
 <h2>Details</h2>
@@ -31,7 +31,6 @@
 
 </fieldset>
 <p>
-    @Html.ActionLink("Add Hours", "addHours", new { id=Model.ID })  
-    @Html.ActionLink("Edit", "editWorkEffort/", new { id=Model.ID }) |
-    @Html.ActionLink("Back to List", "searchWorkEffort/")
+    @Html.ActionLink("Edit", "editPCA/", new { id=Model.ID }) |
+    @Html.ActionLink("Back to List", "searchPCA/")
 </p>

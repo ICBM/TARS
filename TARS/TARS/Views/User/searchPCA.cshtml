@@ -1,13 +1,13 @@
-﻿@model IEnumerable<TARS.Models.WorkEffort>
+﻿@model IEnumerable<TARS.Models.PcaCode>
 
 @{
-    ViewBag.Title = "searchWorkEffort";
+    ViewBag.Title = "searchPCA";
 }
 
-<h2>searchWorkEffort</h2>
+<h2>searchPCA</h2>
 
 <p>
-    @Html.ActionLink("Create New", "addWorkEffort")
+    @Html.ActionLink("Create New", "addPCA")
 </p>
 <table>
     <tr>
@@ -23,6 +23,7 @@
         <th>
             description
         </th>
+
         <th></th>
     </tr>
 
@@ -42,9 +43,9 @@
         </td>
 
         <td>
-            @Html.ActionLink("Edit", "editWorkEffort", new { id=item.ID }) |
-            @Html.ActionLink("Details", "viewWorkEffort", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "deleteWorkEffort", new { id=item.ID })
+            @Html.ActionLink("Edit", "editPCA", new { id=item.ID }) |
+            @Html.ActionLink("Details", "viewPCA", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "deletePCA", new { id=item.ID })
         </td>
     </tr>
 }

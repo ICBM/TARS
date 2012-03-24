@@ -121,17 +121,10 @@ newhours.creator = "zeke";
                     Timesheet newTimesheet = new Timesheet();
 
                     //Find timesheet for the week before so we can use the end date as the new start date
-                    var search2 = from m in TimesheetDB.TimesheetList
-                                  where m.worker.Contains(newhours.creator)
-                                  where m.periodStart <= dayFromPrevPeriod
-                                  where m.periodEnd >= dayFromPrevPeriod
-                                  select m;
-                    foreach (var item in search2)
-                    {
-                        previoustimesheet = item;
-                    }
+                    previoustimesheet = getTimesheet(newhours.creator, dayFromPrevPeriod);
+
                     //If there isn't a timesheet from the week before 
-                    if (previoustimesheet.periodStart == null)
+                    if (previoustimesheet == null)
                     {
                         //Set pay period to start on Sunday 12:00am
                         DateTime startDay = newhours.timestamp.StartOfWeek(DayOfWeek.Sunday);
@@ -158,6 +151,40 @@ newhours.creator = "zeke";
             {
                 return RedirectToAction("viewTimesheet/");
             }
+        }
+
+        //
+        //Function to retrieve a specified user's timesheet for specified date
+        public Timesheet getTimesheet(string user, DateTime tsDate)
+        {
+            Timesheet resulttimesheet = new Timesheet();
+
+            var search = from m in TimesheetDB.TimesheetList
+                            where m.worker.Contains(user)
+                            where m.periodStart <= tsDate
+                            where m.periodEnd >= tsDate
+                            select m;
+            foreach (var item in search)
+            {
+                resulttimesheet = item;
+            }
+            return resulttimesheet;
+        }
+
+        //
+        //Function to retrieve timesheet with specified unique id
+        public Timesheet getTimesheetFromID(int id)
+        {
+            Timesheet resulttimesheet = new Timesheet();
+
+            var search = from m in TimesheetDB.TimesheetList
+                         where m.ID == id
+                         select m;
+            foreach (var item in search)
+            {
+                resulttimesheet = item;
+            }
+            return resulttimesheet;
         }
 
         //
@@ -314,7 +341,7 @@ user = "zeke";
             {
                 DateTime startDay = DateTime.Now.StartOfWeek(DayOfWeek.Sunday);
                 List<Task> resultTasks = new List<Task>();
-                bool submittedFlag = false;
+                Timesheet timesheet = new Timesheet();
                 string user;
 
                 if (User != null)
@@ -345,11 +372,11 @@ user = "zeke";
                                       select m;
                 foreach (var item in searchTimesheet)
                 {
-                    submittedFlag = item.submitted;
+                    timesheet = item;
                 }
 
                 ViewBag.taskList = resultTasks;
-                ViewBag.submitted = submittedFlag; 
+                ViewBag.timesheet = timesheet;
                 //if (searchHours != null)
                 {
                     return View(searchHours);
@@ -364,31 +391,26 @@ user = "zeke";
         //
         // GET: /User/submitTimesheet
         //changes timesheet status to true so it will show up in the manager's list of timesheets to approve
-        public virtual ActionResult submitTimesheet()
+        public virtual ActionResult submitTimesheet(int id)
         {
-            Authentication auth = new Authentication();
-            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+            if (id >= 0)
             {
-//need to fix this to be actual user
-var user = "zeke";
-                Timesheet tmptimesheet = new Timesheet();
-                DateTime startDay = DateTime.Now.StartOfWeek(DayOfWeek.Sunday);
-                //select current timesheet
-                var search = from m in TimesheetDB.TimesheetList
-                             where m.worker.Contains(user)
-                             where m.periodStart >= startDay
-                             select m; 
-                foreach (var item in search)
+                Authentication auth = new Authentication();
+                if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
                 {
-                    tmptimesheet = item;
-                }
-                tmptimesheet.submitted = true;
-                TimesheetDB.TimesheetList.Add(tmptimesheet);
-                TimesheetDB.Entry(tmptimesheet).State = System.Data.EntityState.Modified;
-                //save changes to the database
-                TimesheetDB.SaveChanges();
+                    Timesheet ts = new Timesheet();
+                    ts = getTimesheetFromID(id);
+                    ts.submitted = true;
+                    TimesheetDB.Entry(ts).State = System.Data.EntityState.Modified;
+                    //save changes to the database
+                    TimesheetDB.SaveChanges();
 
-                return RedirectToAction("viewTimesheet/");
+                    return RedirectToAction("viewTimesheet/");
+                }
+                else
+                {
+                    return View("error");
+                }
             }
             else
             {
