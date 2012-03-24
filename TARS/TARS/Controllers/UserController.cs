@@ -42,6 +42,7 @@ namespace TARS.Controllers
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
                 ViewBag.WorkEffortID = id;
+                ViewBag.userName = this.User.Identity.Name;
                 return View();
             }
             else
@@ -94,7 +95,6 @@ namespace TARS.Controllers
         //Function to create a new timesheet if one doesn't exist for the period
         public virtual int checkForTimesheet(Hours newhours)
         {
-newhours.creator = "zeke";
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {

@@ -65,12 +65,11 @@
             @Html.EditorFor(model => model.description)
             @Html.ValidationMessageFor(model => model.description)
         </div>
-        <!--<input id="creator" name="creator" type="hidden" value="@User.Identity.Name" />-->
-        <input id="creator" name="creator" type="hidden" value="steve" />
-        <!--@Html.HiddenFor(model => model.creator, User.Identity.Name)-->
+
+        <input id="creator" name="creator" type="hidden" value="@User.Identity.Name" />
         
         <p>
             <input type="submit" value="Submit" />
         </p>
-    </fieldset>
+    </fieldset>   
 }

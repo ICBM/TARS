@@ -715,7 +715,7 @@ namespace TARS.Controllers
                     //save changes to the database
                     TimesheetDB.SaveChanges();
 
-                    return RedirectToAction("approveTimesheet/");
+                    return RedirectToAction("approveTimesheet", new { id = getUserID(ts.worker) });
                 }
                 else
                 {
@@ -744,7 +744,7 @@ namespace TARS.Controllers
                     //save changes to the database
                     TimesheetDB.SaveChanges();
 
-                    return RedirectToAction("approveTimesheet/");
+                    return RedirectToAction("approveTimesheet", new { id = getUserID(ts.worker) });
                 }
                 else
                 {
@@ -774,7 +774,7 @@ namespace TARS.Controllers
                     //save changes to the database
                     TimesheetDB.SaveChanges();
 
-                    return RedirectToAction("approveTimesheet", getUserID(ts.worker));
+                    return RedirectToAction("approveTimesheet", new { id = getUserID(ts.worker) });
                 }
                 else
                 {
