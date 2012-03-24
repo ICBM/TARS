@@ -24,8 +24,8 @@ CREATE TABLE [dbo].[Hours](
 	[hoursType] [nchar](10) NULL,
 	[approved] [bit] NULL,
 	[timestamp] [datetime] NULL,
-	[description] [nchar](10) NULL,
-	[creator] [nchar](10) NULL,
+	[description] [varchar](50) NULL,
+	[creator] [nchar](50) NULL,
  CONSTRAINT [PK_Hours] PRIMARY KEY CLUSTERED 
 (
 	[ID] ASC

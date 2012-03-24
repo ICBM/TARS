@@ -81,8 +81,23 @@ else
 
 <div id="menu" style="float:right;">
 <h4><b></b>Actions</b></h4>
-<p>@Html.ActionLink("Submit For Employee", "managerSubmitTimesheet/", new { id = (int)ViewBag.timesheet.ID })</p>
-<p>@Html.ActionLink("Approve", "submitApproveTimesheet/", new { id = (int)ViewBag.timesheet.ID })</p>
-<p>@Html.ActionLink("Disapprove", "submitDisapproveTimesheet/", new { id = (int)ViewBag.timesheet.ID })</p>
-<p>@Html.ActionLink("Back to Employee List", "userManagement/")</p>
+    @if (ViewBag.timesheet.submitted == false)
+    {
+        <p>@Html.ActionLink("Submit For Employee", "managerSubmitTimesheet/", new { id = (int)ViewBag.timesheet.ID })</p>
+    }
+    
+    @if (ViewBag.timesheet.locked == false)
+    {
+        if (ViewBag.timesheet.approved == true)
+        {
+            <p>@Html.ActionLink("Undo Approved Status", "submitDisapproveTimesheet/", new { id = (int)ViewBag.timesheet.ID })</p>
+        }
+        else
+        {
+            <p>@Html.ActionLink("Approve", "submitApproveTimesheet/", new { id = (int)ViewBag.timesheet.ID })</p>
+            <p>@Html.ActionLink("Edit Hours For Employee", "editHours/", new { id = (int)ViewBag.timesheet.ID })</p>
+        }
+    }
+    
+    <p>@Html.ActionLink("Back to Employee List", "userManagement/")</p>
 </div>

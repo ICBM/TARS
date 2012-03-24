@@ -1,33 +1,33 @@
 ﻿@model IEnumerable<TARS.Models.PcaCode>
 
 @{
-    ViewBag.Title = "PCA Maintanence";
+    ViewBag.Title = "searchPCA";
 }
 
-<h2>Active PCA Codes</h2>
+<h2>searchPCA</h2>
 
-<table class="timesheet">
+<p>
+    @Html.ActionLink("Create New", "addPCA")
+</p>
+<table>
     <tr>
         <th>
-            Code
+            code
         </th>
         <th>
-            Start Date
+            startDate
         </th>
         <th>
-            End Date
+            endDate
         </th>
         <th>
-            Division
+            description
         </th>
-        <th>
-            Description
-        </th>
+
         <th></th>
     </tr>
 
-@foreach (var item in Model)
-    {
+@foreach (var item in Model) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.code)
@@ -39,17 +39,15 @@
             @Html.DisplayFor(modelItem => item.endDate)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.division)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.description)
         </td>
+
         <td>
             @Html.ActionLink("Edit", "editPCA", new { id=item.ID }) |
+            @Html.ActionLink("Details", "viewPCA", new { id=item.ID }) |
             @Html.ActionLink("Delete", "deletePCA", new { id=item.ID })
         </td>
     </tr>
-    }
-</table>
+}
 
-<p><a href="../addPCA/">Add PCA</a></p>
+</table>

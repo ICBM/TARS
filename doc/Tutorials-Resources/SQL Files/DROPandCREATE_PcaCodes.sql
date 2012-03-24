@@ -21,11 +21,12 @@ GO
 
 CREATE TABLE [dbo].[PcaCodes](
 	[ID] [int] IDENTITY(1,1) NOT NULL,
-	[code] [int] NULL,
-	[startDate] [datetime] NULL,
-	[endDate] [datetime] NULL,
-	[description] [varchar](max) NULL,
-	[active] [bit] NULL,
+	[code] [int] NOT NULL,
+	[startDate] [datetime] NOT NULL,
+	[endDate] [datetime] NOT NULL,
+	[description] [varchar](50) NOT NULL,
+	[division] [varchar](50) NOT NULL,
+	[active] [bit] NOT NULL,
  CONSTRAINT [PK_PcaCodes] PRIMARY KEY CLUSTERED 
 (
 	[ID] ASC

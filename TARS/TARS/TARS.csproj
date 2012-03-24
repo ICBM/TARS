@@ -215,13 +215,13 @@
     <Content Include="Views\User\viewWorkEffort.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\User\searchPCA.cshtml" />
+    <Content Include="Views\Manager\searchPCA.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Manager\deletePCA.cshtml" />
+    <Content Include="Views\Admin\deletePCA.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Manager\editPCA.cshtml" />
+    <Content Include="Views\Admin\editPCA.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\themes\base\images\Class Diagram 1.dia" />
@@ -238,7 +238,7 @@
     <Content Include="Views\Manager\editTask.cshtml" />
     <Content Include="Views\User\viewTask.cshtml" />
     <Content Include="Views\Manager\addPCA_WE.cshtml" />
-    <Content Include="Views\User\searchPCA_WE.cshtml" />
+    <Content Include="Views\Manager\searchPCA_WE.cshtml" />
     <Content Include="Views\Manager\editPCA_WE.cshtml" />
     <Content Include="Views\User\viewPCA_WE.cshtml" />
     <Content Include="Views\Manager\deletePCA_WE.cshtml" />
@@ -263,6 +263,7 @@
     <Content Include="Views\Admin\userMaintanence.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Views\User\editHours.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

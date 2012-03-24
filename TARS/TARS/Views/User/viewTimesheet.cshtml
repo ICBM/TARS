@@ -16,16 +16,27 @@
         <small><i>(submitted)</i></small> 
     }
 }
+else
+{
+    <small><i>(editable)</i></small>
+}
 </h2>
+
 
 <div id="menu" style="float:right;">
 <h4>Actions</h4>
-<p>@Html.ActionLink("New Timesheet", "copyTimesheet")</p>
-<p>@Html.ActionLink("Add Hours", "addHours", new { id = 1 })</p>
-<p>@Html.ActionLink("Submit Timesheet", "submitTimesheet", new { id = (int)ViewBag.timesheet.ID })</p>
-<p>@Html.ActionLink("Lookup PCA", "searchPCA")</p>
-<p>@Html.ActionLink("Lookup Work Effort", "searchWorkeffort")</p>
+    <p>@Html.ActionLink("Copy Previous Timesheet", "copyTimesheet")</p>
+    <p>@Html.ActionLink("Add New Hours", "addHours", new { id = 1 })</p>
+    @if (ViewBag.timesheet.approved == false)
+    {
+        if (ViewBag.timesheet.submitted == false)
+        {
+            <p>@Html.ActionLink("Submit Timesheet", "submitTimesheet", new { id = (int)ViewBag.timesheet.ID })</p>
+        }
+    }
+    <p>@Html.ActionLink("Lookup Work Effort", "searchWorkeffort")</p>
 </div>
+
 
 <div id="content" style="float:left;">
 <h3>Hours list for @this.User.Identity.Name</h3>
@@ -41,7 +52,7 @@
             hours
         </th>
         <th>
-            hoursType
+            earnings code
         </th>
         <th>
             timestamp
@@ -81,6 +92,14 @@
         <td>
             @Html.DisplayFor(modelItem => item.creator)
         </td>
+
+       @if (ViewBag.timesheet.submitted == false)
+        {
+            <td>
+                @Html.ActionLink("Edit", "editHours", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "deleteHours", new { id = item.ID })
+            </td>
+        }
     </tr>
     }
 }

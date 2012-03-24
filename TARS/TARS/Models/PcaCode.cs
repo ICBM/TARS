@@ -10,11 +10,12 @@ namespace TARS.Models
 {
     public class PcaCode
     {    
-        public int ID { get; set; } //DB iterator?
+        public int ID { get; set; } //DB iterator
         public int code { get; set; }
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }
         public string description { get; set; }
+        public string division { get; set; }
         public bool active { get; set; }
     }
 

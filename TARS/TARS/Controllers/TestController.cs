@@ -45,11 +45,8 @@ namespace TARS.Controllers
 
             var manager = new ManagerController();
             ViewBag.managerIndex               = manager.Index()               != null;
-            ViewBag.managerAddPCA              = manager.addPCA()              != null;
             ViewBag.managerSearchPCA           = manager.searchPCA()           != null;
             ViewBag.managerViewPCA             = manager.viewPCA(0)            != null;
-            ViewBag.managerEditPCA             = manager.editPCA(0)            != null;
-            ViewBag.managerDeletePCA           = manager.deletePCA(0)          != null;
             ViewBag.managerAddWorkEffort       = manager.addWorkEffort()       != null;
             ViewBag.managerSearchWorkEffort    = manager.searchWorkEffort()    != null;
             ViewBag.managerViewWorkEffort      = manager.viewWorkEffort(0)     != null;
@@ -58,6 +55,9 @@ namespace TARS.Controllers
 
             var admin = new AdminController();
             ViewBag.adminAddManager            = admin.addManager("")          != null;
+            ViewBag.managerEditPCA = admin.editPCA(0) != null;
+            ViewBag.managerDeletePCA = admin.deletePCA(0) != null;
+            ViewBag.managerAddPCA = admin.addPCA() != null;
 
             return View();
         }

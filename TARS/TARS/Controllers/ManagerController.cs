@@ -13,7 +13,7 @@ namespace TARS.Controllers
 {
     public class ManagerController : UserController
     {
-        protected PcaCodeDBContext PcaDB = new PcaCodeDBContext();
+        protected PcaCodeDBContext PcaCodeDB = new PcaCodeDBContext();
         protected PCA_WEDBContext PCA_WEDB = new PCA_WEDBContext();
         
         //
@@ -32,43 +32,6 @@ namespace TARS.Controllers
         }
 
         //
-        // GET: /Manager/addPCA
-        public virtual ActionResult addPCA()
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                return View();
-            }
-            else
-            {
-                return View("error");
-            } 
-        }
-
-        //
-        // POST: /Manager/addPCA
-        [HttpPost]
-        public virtual ActionResult addPCA(PcaCode pcacode)
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                if (ModelState.IsValid)
-                {
-                    PcaDB.PcaCodeList.Add(pcacode);
-                    PcaDB.SaveChanges();
-                    return RedirectToAction("maintainPCA/");
-                }
-                return View(pcacode);
-            }
-            else
-            {
-                return View("error");
-            }
-        }
-
-        //
         // GET: /Manager/searchPCA
         //  - Shows a list of all PCA codes.
         public virtual ActionResult searchPCA( )
@@ -76,7 +39,7 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
-                return View(PcaDB.PcaCodeList.ToList());
+                return View(PcaCodeDB.PcaCodeList.ToList());
             }
             else
             {
@@ -92,7 +55,7 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
-                PcaCode pcacode = PcaDB.PcaCodeList.Find(id);
+                PcaCode pcacode = PcaCodeDB.PcaCodeList.Find(id);
                 return View(pcacode);
             }
             else
@@ -101,80 +64,6 @@ namespace TARS.Controllers
             }
         }
 
-        // 
-        // GET: /Manager/editPCA/5
-        //  - Edits a specific PCA code.
-        public virtual ActionResult editPCA( int id )
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                PcaCode pcacode = PcaDB.PcaCodeList.Find(id);
-                return View(pcacode);
-            }
-            else
-            {
-                return View("error");
-            } 
-        }
-
-        //
-        // POST: /Manager/editPCA/5
-        [HttpPost]
-        public virtual ActionResult editPCA(PcaCode pcacode)
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                if (ModelState.IsValid)
-                {
-                    PcaDB.Entry(pcacode).State = EntityState.Modified;
-                    PcaDB.SaveChanges();
-                    return RedirectToAction("maintainPCA/");
-                }
-                return View(pcacode);
-            }
-            else
-            {
-                return View("error");
-            }
-        }
-
-        //
-        // GET: /Manager/deletePCA/5
-        public virtual ActionResult deletePCA(int id)
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                PcaCode pcacode = PcaDB.PcaCodeList.Find(id);
-                return View(pcacode);
-            }
-            else
-            {
-                return View("error");
-            }
-            
-        }
-
-        //
-        // POST: /Manager/deletePCA/5
-        [HttpPost, ActionName("deletePCA")] //This action MUST match the above delete function.
-        public virtual ActionResult confirmedDeletePCA(int id)
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                PcaCode pcacode = PcaDB.PcaCodeList.Find(id);
-                PcaDB.PcaCodeList.Remove(pcacode);
-                PcaDB.SaveChanges();
-                return RedirectToAction("maintainPCA/");
-            }
-            else
-            {
-                return View("error");
-            }
-        }
 
         public virtual ActionResult userManagement()
         {
@@ -207,7 +96,7 @@ namespace TARS.Controllers
         //This was attached to delete; not sure what this is yet, but it doesn't explode!
         protected override void Dispose(bool disposing)
         {
-            PcaDB.Dispose();
+            PcaCodeDB.Dispose();
             base.Dispose(disposing);
         }
 
@@ -706,7 +595,7 @@ namespace TARS.Controllers
             if (id >= 0)
             {
                 Authentication auth = new Authentication();
-                if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+                if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
                 {
                     Timesheet ts = new Timesheet();
                     ts = getTimesheetFromID(id);
@@ -735,11 +624,12 @@ namespace TARS.Controllers
             if (id >= 0)
             {
                 Authentication auth = new Authentication();
-                if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+                if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
                 {
                     Timesheet ts = new Timesheet();
                     ts = getTimesheetFromID(id);
                     ts.approved = false;
+                    ts.submitted = false;
                     TimesheetDB.Entry(ts).State = System.Data.EntityState.Modified;
                     //save changes to the database
                     TimesheetDB.SaveChanges();

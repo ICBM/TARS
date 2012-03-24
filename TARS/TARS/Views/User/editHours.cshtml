@@ -1,0 +1,76 @@
+﻿@model TARS.Models.Hours
+
+@{
+    ViewBag.Title = "editHours";
+}
+
+<h2>Edit Timesheet Entry</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Hours</legend>
+
+        @Html.HiddenFor(model => model.ID)
+        @Html.HiddenFor(model => model.creator)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.we)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.we)
+            @Html.ValidationMessageFor(model => model.we)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.task)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.task)
+            @Html.ValidationMessageFor(model => model.task)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.hours)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.hours)
+            @Html.ValidationMessageFor(model => model.hours)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.hoursType)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.hoursType)
+            @Html.ValidationMessageFor(model => model.hoursType)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.timestamp)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.timestamp)
+            @Html.ValidationMessageFor(model => model.timestamp)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.description)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.description)
+            @Html.ValidationMessageFor(model => model.description)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to Timesheet", "viewTimesheet/")
+</div>

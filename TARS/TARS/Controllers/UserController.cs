@@ -33,6 +33,7 @@ namespace TARS.Controllers
                 return View("error");
             }
         }
+
         //
         // GET: /User/addHours
         //Function to add hours to a workeffort with index id
@@ -51,19 +52,6 @@ namespace TARS.Controllers
             }
         }
 
-/*        public virtual ActionResult addHours()
-        {
-            Authentication auth = new Authentication();
-            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
-            {
-                return View();
-            }
-            else
-            {
-                return View("error");
-            }
-        }*/
-
         //
         // POST: /User/addHours
         //Takes filled form and adds it to database
@@ -75,6 +63,10 @@ namespace TARS.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    if (newhours.creator == null)
+                    {
+                        return View("error");
+                    }
                     //check to see if a timesheet exists for the period hours are being added to
                     checkForTimesheet(newhours);
                     //add and save new hours
@@ -229,7 +221,6 @@ namespace TARS.Controllers
                 {
                     search = search.Where(s => s.creator.Contains(user));
                 }
-
                 return View(search);
             }
             else
@@ -238,15 +229,72 @@ namespace TARS.Controllers
             } 
         }
 
-        //
-        // GET: /User/copyTimesheet
-        //Function to duplicate hours from previous week 
-        public virtual ActionResult copyTimesheet(string user)
+        // 
+        // GET: /User/editHours
+        //  - Edits a specified Hours entry
+        public virtual ActionResult editHours(int id)
         {
-user = "zeke";
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
+                Hours hours = HoursDB.HoursList.Find(id);
+                return View(hours);
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+        //
+        // POST: /User/editHours
+        [HttpPost]
+        public virtual ActionResult editHours(Hours tmpHours)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+            {
+                if (ModelState.IsValid)
+                {
+                    HoursDB.Entry(tmpHours).State = EntityState.Modified;
+                    HoursDB.SaveChanges();
+                }
+                return RedirectToAction("viewTimesheet");
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+        // 
+        // GET: /User/deleteHours
+        //  - Deletes a specified Hours entry
+        public virtual ActionResult deleteHours(int id)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+            {
+                Hours hours = HoursDB.HoursList.Find(id);
+                HoursDB.Entry(hours).State = EntityState.Deleted;
+                HoursDB.SaveChanges();
+                return RedirectToAction("viewTimesheet");
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+        //
+        // GET: /User/copyTimesheet
+        //Function to duplicate hours from previous week 
+        public virtual ActionResult copyTimesheet()
+        {
+            Authentication auth = new Authentication();
+            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+            {
+                string userName = this.User.Identity.Name;
                 Timesheet previousTimesheet = new Timesheet();
                 DateTime dayFromPrevPeriod = DateTime.Now;
                 dayFromPrevPeriod = dayFromPrevPeriod.AddDays(-7);
@@ -254,7 +302,7 @@ user = "zeke";
 
                 //Select the timesheet from the previous pay period if it exists
                 var search = from m in TimesheetDB.TimesheetList
-                             where m.worker.Contains(user)
+                             where m.worker.Contains(userName)
                              where m.periodStart <= dayFromPrevPeriod
                              where m.periodEnd >= dayFromPrevPeriod
                              select m;
@@ -264,7 +312,7 @@ user = "zeke";
                 }
                 //Iterate through each entry from previous week and duplicate it for this week
                 var search2 = from m in HoursDB.HoursList
-                              where m.creator.Contains(user)
+                              where m.creator.Contains(userName)
                               where m.timestamp >= previousTimesheet.periodStart
                               where m.timestamp <= previousTimesheet.periodEnd
                               select m;
@@ -280,7 +328,7 @@ user = "zeke";
                     //add new entry to Hours and History tables
                     addHours(copiedHours);
                 }
-                return RedirectToAction("viewTimesheet/");
+                return RedirectToAction("viewTimesheet");
             }
             else
             {
@@ -365,6 +413,7 @@ user = "zeke";
                 }
                 ViewBag.taskList = resultTasks;
                 ViewBag.timesheet = timesheet;
+
                 return View(searchHours);
             }
             else
