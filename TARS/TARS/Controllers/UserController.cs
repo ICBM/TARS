@@ -331,19 +331,19 @@ user = "zeke";
                 DateTime startDay = DateTime.Now.StartOfWeek(DayOfWeek.Sunday);
                 List<Task> resultTasks = new List<Task>();
                 Timesheet timesheet = new Timesheet();
-                string user;
+                string userName;
 
                 if (User != null)
                 {
-                    user = User.Identity.Name;
+                    userName = User.Identity.Name;
                 }
                 else
                 {
-                    user = "";
+                    userName = "";
                 }
                 //select all hours from current timesheet
                 var searchHours = from m in HoursDB.HoursList
-                                  where m.creator.Contains(user)
+                                  where m.creator.Contains(userName)
                                   where m.timestamp >= startDay
                                   select m;
                 foreach (var item in searchHours)
@@ -355,7 +355,7 @@ user = "zeke";
                     resultTasks.AddRange(searchTasks);
                 }
                 var searchTimesheet = from m in TimesheetDB.TimesheetList
-                                      where m.worker.Contains(user)
+                                      where m.worker.Contains(userName)
                                       where m.periodStart <= DateTime.Now
                                       where m.periodEnd >= DateTime.Now
                                       select m;
@@ -363,13 +363,9 @@ user = "zeke";
                 {
                     timesheet = item;
                 }
-
                 ViewBag.taskList = resultTasks;
                 ViewBag.timesheet = timesheet;
-                //if (searchHours != null)
-                {
-                    return View(searchHours);
-                }
+                return View(searchHours);
             }
             else
             {
@@ -379,7 +375,7 @@ user = "zeke";
 
         //
         // GET: /User/submitTimesheet
-        //changes timesheet status to true so it will show up in the manager's list of timesheets to approve
+        //changes timesheet submitted status to true
         public virtual ActionResult submitTimesheet(int id)
         {
             if (id >= 0)

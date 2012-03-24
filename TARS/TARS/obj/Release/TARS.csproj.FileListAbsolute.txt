@@ -1,7 +1,0 @@
-C:\Users\Scotty\Desktop\TARS\TARS\TARS\bin\TARS.dll
-C:\Users\Scotty\Desktop\TARS\TARS\TARS\bin\TARS.pdb
-C:\Users\Scotty\Desktop\TARS\TARS\TARS\bin\EntityFramework.dll
-C:\Users\Scotty\Desktop\TARS\TARS\TARS\bin\EntityFramework.xml
-C:\Users\Scotty\Desktop\TARS\TARS\TARS\obj\Release\ResolveAssemblyReference.cache
-C:\Users\Scotty\Desktop\TARS\TARS\TARS\obj\Release\TARS.dll
-C:\Users\Scotty\Desktop\TARS\TARS\TARS\obj\Release\TARS.pdb
