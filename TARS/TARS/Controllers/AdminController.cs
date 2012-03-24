@@ -108,7 +108,8 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
             {
-                PcaCode pcacode = PcaCodeDB.PcaCodeList.Find(id);
+                PcaCode pcacode = new PcaCode();
+                pcacode = PcaCodeDB.PcaCodeList.Find(id);
                 return View(pcacode);
             }
             else
@@ -125,9 +126,52 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
             {
-                PcaCodeDB.PcaCodeList.Add(pcacode);
-                PcaCodeDB.Entry(pcacode).State = System.Data.EntityState.Modified;
-                PcaCodeDB.SaveChanges();
+                //make sure startDate is prior to endDate 
+                if (pcacode.startDate.CompareTo(pcacode.endDate) > 0)
+                {
+                    return View("error");
+                }
+                TempData["tmpPcaCode"] = pcacode;
+                return RedirectToAction("confirmEditPCA");
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+        // 
+        // GET: /Admin/confirmEditPCA/
+        //  - gets confirmation before editing a specific PCA code.
+        public virtual ActionResult confirmEditPCA()
+        {
+            Authentication auth = new Authentication();
+            if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
+            {
+                return View(TempData["tmpPcaCode"]);
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+        //
+        // POST: /Admin/confirmEditPCA/
+        //gets confirmation before editing a specific PCA code
+        [HttpPost]
+        public virtual ActionResult confirmEditPCA(PcaCode pcacode)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
+            {
+
+                if (ModelState.IsValid)
+                {
+                    PcaCodeDB.PcaCodeList.Add(pcacode);
+                    PcaCodeDB.Entry(pcacode).State = System.Data.EntityState.Modified;
+                    PcaCodeDB.SaveChanges();
+                }
                 return RedirectToAction("maintainPCA");
             }
             else

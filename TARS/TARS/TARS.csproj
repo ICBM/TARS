@@ -264,6 +264,7 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="Views\User\editHours.cshtml" />
+    <Content Include="Views\Admin\confirmEditPCA.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
