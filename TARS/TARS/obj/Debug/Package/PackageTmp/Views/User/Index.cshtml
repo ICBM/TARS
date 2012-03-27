@@ -1,0 +1,76 @@
+﻿@model IEnumerable<TARS.Models.Hours>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>This is in Views/User/Index.cshtml</p>
+
+
+<h3>Hours list</h3>
+<table>
+    <tr>
+        <th>
+            Work Effort
+        </th>
+        <th>
+            Hours
+        </th>
+        <th>
+            Timestamp
+        </th>
+        <th>
+            Approved
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Creator
+        </th>
+        <th></th>
+    </tr>
+
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.workEffort)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.hours)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.timestamp)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.approved)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.creator)
+        </td>
+    </tr>
+    }
+}
+</table>
+
+
+<br /><br /><br />
+
+<p>
+    <a href="/TARS/User/searchWorkEffort/">searchWorkEffort( )</a><br />
+    Provides a list of all work efforts in the database.<br />
+</p>
+
+<p>
+    <a href="/TARS/User/viewHours/">viewHours()</a><br />
+    Provides a list of hours submittals in the database.<br />
+    Can take a string argument to search by user name.<br />
+</p>

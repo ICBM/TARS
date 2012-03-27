@@ -29,22 +29,6 @@ namespace TARS.Controllers
         }
 
 
-        public /*virtual*/ ActionResult addManager(string name)
-        {
-            Authentication auth = new Authentication();
-            if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
-            {
-                ViewBag.name = name;
-                return View();
-            }
-            else
-            {
-                return View("error");
-            }
-            
-        }
-
-
         public ActionResult maintainPCA()
         {
             Authentication auth = new Authentication();

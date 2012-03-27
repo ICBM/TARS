@@ -19,11 +19,11 @@
 
         <!--List of tasks in a dropdown, perhaps?-->
         <div class="editor-label">
-            @Html.LabelFor(model => model.task)
+            @Html.LabelFor(model => model.workEffort)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.task)
-            @Html.ValidationMessageFor(model => model.task)
+            @Html.EditorFor(model => model.workEffort)
+            @Html.ValidationMessageFor(model => model.workEffort)
         </div>
 
         <div class="editor-label">
@@ -35,12 +35,13 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.hoursType)
+            @Html.LabelFor(model => model.description)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.hoursType)
-            @Html.ValidationMessageFor(model => model.hoursType)
+            @Html.EditorFor(model => model.description)
+            @Html.ValidationMessageFor(model => model.description)
         </div>
+
         <!--Will want to hide from users and default to false-->
         <div class="editor-label">
             @Html.LabelFor(model => model.approved)
@@ -49,6 +50,7 @@
             @Html.EditorFor(model => model.approved)
             @Html.ValidationMessageFor(model => model.approved)
         </div>
+
         <!-- will want to replace with an automatically generated time-->
         <div class="editor-label">
             @Html.LabelFor(model => model.timestamp)
@@ -56,14 +58,6 @@
         <div class="editor-field">
             @Html.EditorFor(model => model.timestamp)
             @Html.ValidationMessageFor(model => model.timestamp)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.description)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.description)
-            @Html.ValidationMessageFor(model => model.description)
         </div>
 
         <input id="creator" name="creator" type="hidden" value="@User.Identity.Name" />

@@ -4,49 +4,75 @@
     ViewBag.Title = "searchWorkEffort";
 }
 
-<h2>searchWorkEffort</h2>
+<h2>Work Efforts</h2>
 
-<p>
-    @Html.ActionLink("Create New", "addWorkEffort")
-</p>
-<table>
+<!-- If the user has manager privileges, let them create new work efforts -->
+@if (ViewBag.managerFlag == true)
+{
+    <p>
+        @Html.ActionLink("Add Work Effort", "addWorkEffort", "Manager")
+    </p>
+}
+
+<!-- Display all of the work efforts -->   
+<table class="timesheet">
     <tr>
         <th>
-            code
+            PcaCode
         </th>
         <th>
-            startDate
+            EarningsCode
         </th>
         <th>
-            endDate
+            Description
         </th>
         <th>
-            description
+            StartDate
         </th>
+        <th>
+            EndDate
+        </th>
+
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.code)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.startDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.endDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.description)
-        </td>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.pcaCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.earningsCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.description)
+            </td>
+            <td>
+                @item.startDate.ToShortDateString()
+            </td>
+            <td>
+                @item.endDate.ToShortDateString()
+            </td>
 
-        <td>
-            @Html.ActionLink("Edit", "editWorkEffort", new { id=item.ID }) |
-            @Html.ActionLink("Details", "viewWorkEffort", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "deleteWorkEffort", new { id=item.ID })
-        </td>
-    </tr>
-}
-
+            <td>
+                <!-- If there are comments, provide a link to view them -->
+                @if ((item.comments != null) && (item.comments.Trim().Length > 0))
+                {
+                    @Html.ActionLink("View Comments", "viewWorkEffort", new { id=item.ID })
+                    if (ViewBag.managerFlag == true)
+                    {
+                        <html> | </html>
+                    }
+                }
+                <!-- If the user has manager privileges, let them edit and delete the work efforts -->
+                @if (ViewBag.managerFlag == true)
+                {
+                    @Html.ActionLink("Edit", "editWorkEffort", "Manager", new { id=item.ID }, null)
+                    <html> | </html>
+                    @Html.ActionLink("Delete", "deleteWorkEffort", "Manager", new { id=item.ID }, null)
+                }
+            </td>
+        </tr>
+    }
 </table>
+

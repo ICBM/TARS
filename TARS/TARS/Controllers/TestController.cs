@@ -40,7 +40,7 @@ namespace TARS.Controllers
             ViewBag.userAddHours           = user.addHours( 0 )        != null;
             ViewBag.userSearchWorkEffort   = user.searchWorkEffort()   != null;
             ViewBag.userViewWorkEffort     = user.viewWorkEffort()     != null;
-            ViewBag.userViewHours          = user.viewHours()          != null;
+            ViewBag.userViewTimesheet          = user.viewTimesheet()          != null;
             ViewBag.userViewHistory        = user.viewHistory()        != null;
 
             var manager = new ManagerController();
@@ -54,7 +54,7 @@ namespace TARS.Controllers
             ViewBag.managerDeleteWorkEffort    = manager.deleteWorkEffort(0)   != null;
 
             var admin = new AdminController();
-            ViewBag.adminAddManager            = admin.addManager("")          != null;
+            ViewBag.adminAddUser            = admin.addUser()          != null;
             ViewBag.managerEditPCA = admin.editPCA(0) != null;
             ViewBag.managerDeletePCA = admin.deletePCA(0) != null;
             ViewBag.managerAddPCA = admin.addPCA() != null;

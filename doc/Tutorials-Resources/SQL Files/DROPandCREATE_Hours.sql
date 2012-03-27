@@ -18,12 +18,10 @@ GO
 
 CREATE TABLE [dbo].[Hours](
 	[ID] [int] IDENTITY(1,1) NOT NULL,
-	[we] [int] NULL,
-	[task] [int] NULL,
+	[workEffort] [int] NULL,
 	[hours] [float] NULL,
-	[hoursType] [nchar](10) NULL,
-	[approved] [bit] NULL,
 	[timestamp] [datetime] NULL,
+	[approved] [bit] NULL,
 	[description] [varchar](50) NULL,
 	[creator] [nchar](50) NULL,
  CONSTRAINT [PK_Hours] PRIMARY KEY CLUSTERED 

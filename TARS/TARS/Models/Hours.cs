@@ -19,14 +19,11 @@ namespace TARS.Models
 {
     public class Hours
     {
-        public int ID { get; set; } //DB iterator?
-        //public int pca { get; set; }
-        public int we { get; set; }
-        public int task { get; set; }
+        public int ID { get; set; } //DB iterator
+        public int workEffort { get; set; }
         public double hours { get; set; }
-        public string hoursType { get; set; } //Earnings code || Might be ignored and dealt with by PCA!
-        public bool approved { get; set; }
         public DateTime timestamp { get; set; }
+        public bool approved { get; set; }
         public string description { get; set; } //User input
         public string creator { get; set; }
     }
@@ -57,12 +54,10 @@ namespace TARS.Models
                         break;
                 }
                 hist.dbtable = "Hours";
-                hist.change = "we: " + entry.Property(u => u.we).CurrentValue +
-              "; task: " + entry.Property(u => u.task).CurrentValue +
+                hist.change = "workEffort: " + entry.Property(u => u.workEffort).CurrentValue +
               "; hours: " + entry.Property(u => u.hours).CurrentValue +
-              "; hourstype: " + entry.Property(u => u.hoursType).CurrentValue +
-              "; approved: " + entry.Property(u => u.approved).CurrentValue +
               "; timestamp: " + entry.Property(u => u.timestamp).CurrentValue +
+              "; approved: " + entry.Property(u => u.approved).CurrentValue +
               "; description: " + entry.Property(u => u.description).CurrentValue +
               "; creator: " + entry.Property(u => u.creator).CurrentValue;
             }

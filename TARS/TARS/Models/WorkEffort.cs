@@ -11,10 +11,12 @@ namespace TARS.Models
     public class WorkEffort
     {
         public int ID { get; set; } //DB iterator?
-        public int code { get; set; }
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }
         public string description { get; set; }
+        public string comments { get; set; }
+        public int pcaCode { get; set; }
+        public string earningsCode { get; set; }
         public bool active { get; set; }
     }
 
@@ -44,10 +46,12 @@ namespace TARS.Models
                         break;
                 }
                 hist.dbtable = "WorkEfforts";
-                hist.change = "code: " + entry.Property(u => u.code).CurrentValue +
-              "; startDate: " + entry.Property(u => u.startDate).CurrentValue +
+                hist.change = "startDate: " + entry.Property(u => u.startDate).CurrentValue +
               "; endDate: " + entry.Property(u => u.endDate).CurrentValue +
               "; description: " + entry.Property(u => u.description).CurrentValue +
+              "; comments: " + entry.Property(u => u.comments).CurrentValue +
+              "; pcaCode: " + entry.Property(u => u.pcaCode).CurrentValue +
+              "; earningsCode: " + entry.Property(u => u.earningsCode).CurrentValue +
               "; active: " + entry.Property(u => u.active).CurrentValue;
             }
 

@@ -83,7 +83,6 @@
     <Compile Include="Models\Hours.cs" />
     <Compile Include="Models\PCA_WE.cs" />
     <Compile Include="Models\PcaCode.cs" />
-    <Compile Include="Models\Task.cs" />
     <Compile Include="Models\WorkEffort.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -209,9 +208,6 @@
     <Content Include="Views\Admin\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Admin\addManager.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\User\viewWorkEffort.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -232,17 +228,11 @@
     <Content Include="Views\User\searchWorkEffort.cshtml" />
     <Content Include="Views\Manager\editWorkEffort.cshtml" />
     <Content Include="Views\Manager\deleteWorkEffort.cshtml" />
-    <Content Include="Views\Manager\addTask.cshtml" />
-    <Content Include="Views\User\searchTask.cshtml" />
-    <Content Include="Views\Manager\deleteTask.cshtml" />
-    <Content Include="Views\Manager\editTask.cshtml" />
-    <Content Include="Views\User\viewTask.cshtml" />
     <Content Include="Views\Manager\addPCA_WE.cshtml" />
     <Content Include="Views\Manager\searchPCA_WE.cshtml" />
     <Content Include="Views\Manager\editPCA_WE.cshtml" />
     <Content Include="Views\User\viewPCA_WE.cshtml" />
     <Content Include="Views\Manager\deletePCA_WE.cshtml" />
-    <Content Include="Views\User\viewHours.cshtml" />
     <Content Include="Views\Test\TestViews.cshtml" />
     <Content Include="Views\User\viewTimesheet.cshtml" />
     <Content Include="Views\Admin\addPCA.cshtml" />

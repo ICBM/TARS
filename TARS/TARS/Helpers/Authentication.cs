@@ -25,12 +25,12 @@ var username = "zeke";
                 using (var context = TARSUserDB)
                 {
                     var userInDB = context.TARSUserList
-                                    .Where(u => u.un == username)
+                                    .Where(u => u.userName == username)
                                     .FirstOrDefault();
                     if (userInDB == null)
                     {
                         TARSUser newuser = new TARSUser();
-                        newuser.un = username;
+                        newuser.userName = username;
                         newuser.permission = 1;
                         TARSUserDB.TARSUserList.Add(newuser);
                         TARSUserDB.SaveChanges();

@@ -15,7 +15,6 @@ namespace TARS.Controllers
         protected WorkEffortDBContext WorkEffortDB = new WorkEffortDBContext();
         protected HoursDBContext HoursDB = new HoursDBContext();
         protected TimesheetDBContext TimesheetDB = new TimesheetDBContext();
-        protected TaskDBContext TaskDB = new TaskDBContext();
         protected TARSUserDBContext TARSUserDB = new TARSUserDBContext();
         
         //
@@ -176,6 +175,16 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
+                var searchPermission = from m in TARSUserDB.TARSUserList
+                             where m.userName.Contains(this.User.Identity.Name) 
+                             select m;
+                foreach (var item in searchPermission)
+                {
+                    if (item.permission > 1)
+                    {
+                        ViewBag.managerFlag = true;
+                    }
+                }                
                 return View(WorkEffortDB.WorkEffortList.ToList());
             }
             else
@@ -197,6 +206,16 @@ namespace TARS.Controllers
                 {
                     return HttpNotFound();
                 }
+                var searchPermission = from m in TARSUserDB.TARSUserList
+                             where m.userName.Contains(this.User.Identity.Name)
+                             select m;
+                foreach (var item in searchPermission)
+                {
+                    if (item.permission > 1)
+                    {
+                        ViewBag.managerFlag = true;
+                    }
+                }  
                 ViewBag.WorkEffortID = workeffort.ID;
                 return View(workeffort);
             }
@@ -204,29 +223,6 @@ namespace TARS.Controllers
             {
                 return View("error");
             }
-        }
-
-        //
-        // GET: /User/viewHours
-        //Look at a user's submitted hours.
-        //Can take a string as an argument with ?user="userName" in the URL right now
-        public virtual ActionResult viewHours(string user = "")
-        {
-            Authentication auth = new Authentication();
-            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
-            {
-                var search = from m in HoursDB.HoursList
-                             select m;
-                if (!String.IsNullOrEmpty(user))
-                {
-                    search = search.Where(s => s.creator.Contains(user));
-                }
-                return View(search);
-            }
-            else
-            {
-                return View("error");
-            } 
         }
 
         // 
@@ -377,7 +373,6 @@ namespace TARS.Controllers
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
                 DateTime startDay = DateTime.Now.StartOfWeek(DayOfWeek.Sunday);
-                List<Task> resultTasks = new List<Task>();
                 Timesheet timesheet = new Timesheet();
                 string userName;
 
@@ -394,14 +389,6 @@ namespace TARS.Controllers
                                   where m.creator.Contains(userName)
                                   where m.timestamp >= startDay
                                   select m;
-                foreach (var item in searchHours)
-                {
-                    //select task from each Hours entry
-                    var searchTasks = from m in TaskDB.TaskList
-                                      where m.ID == item.task
-                                      select m;
-                    resultTasks.AddRange(searchTasks);
-                }
                 var searchTimesheet = from m in TimesheetDB.TimesheetList
                                       where m.worker.Contains(userName)
                                       where m.periodStart <= DateTime.Now
@@ -411,7 +398,6 @@ namespace TARS.Controllers
                 {
                     timesheet = item;
                 }
-                ViewBag.taskList = resultTasks;
                 ViewBag.timesheet = timesheet;
 
                 return View(searchHours);
@@ -439,6 +425,39 @@ namespace TARS.Controllers
                     //save changes to the database
                     TimesheetDB.SaveChanges();
 
+                    return RedirectToAction("viewTimesheet/");
+                }
+                else
+                {
+                    return View("error");
+                }
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+        //
+        // GET: /User/unSubmitTimesheet
+        //changes timesheet submitted status to true (only if it isn't in approved or locked status)
+        public virtual ActionResult unSubmitTimesheet(int id)
+        {
+            if (id >= 0)
+            {
+                Authentication auth = new Authentication();
+                if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+                {
+                    Timesheet ts = new Timesheet();
+                    ts = getTimesheetFromID(id);
+                    //make sure the user is allowed to un-submit it
+                    if ((ts.approved == false) && (ts.locked == false))
+                    {
+                        ts.submitted = false;
+                        TimesheetDB.Entry(ts).State = System.Data.EntityState.Modified;
+                        //save changes to the database
+                        TimesheetDB.SaveChanges();
+                    }
                     return RedirectToAction("viewTimesheet/");
                 }
                 else

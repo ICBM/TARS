@@ -29,9 +29,13 @@ else
     <p>@Html.ActionLink("Add New Hours", "addHours", new { id = 1 })</p>
     @if (ViewBag.timesheet.approved == false)
     {
-        if (ViewBag.timesheet.submitted == false)
+        if (ViewBag.timesheet.submitted == true)
         {
-            <p>@Html.ActionLink("Submit Timesheet", "submitTimesheet", new { id = (int)ViewBag.timesheet.ID })</p>
+            <p>@Html.ActionLink("Un-submit Current Timesheet", "unSubmitTimesheet", new { id = (int)ViewBag.timesheet.ID })</p>
+        }
+        else
+        {
+            <p>@Html.ActionLink("Submit Current Timesheet", "submitTimesheet", new { id = (int)ViewBag.timesheet.ID })</p>
         }
     }
     <p>@Html.ActionLink("Lookup Work Effort", "searchWorkeffort")</p>
@@ -43,25 +47,19 @@ else
 <table class="timesheet">
     <tr>
         <th>
-            we
+            WorkEffort
         </th>
         <th>
-            task
+            Hours
         </th>
         <th>
-            hours
+            Description
         </th>
         <th>
-            earnings code
+            Date
         </th>
         <th>
-            timestamp
-        </th>
-        <th>
-            description
-        </th>
-        <th>
-            creator
+            Creator
         </th>
         <th></th>
     </tr>
@@ -72,22 +70,16 @@ else
     {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.we)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.task)
+            @Html.DisplayFor(modelItem => item.workEffort)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.hours)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.hoursType)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.timestamp)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.description)
+        </td>
+        <td>
+            @item.timestamp.ToShortDateString()
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.creator)
@@ -105,36 +97,5 @@ else
 }
 </table>
 
-<h3>Task list</h3>
-<table class="timesheet">
-    <tr>
-        <th>
-            ID
-        </th>
-        <th>
-            WE
-        </th>
-        <th>
-            title
-        </th>
-    </tr>
 
-@if (ViewBag.taskList != null)
-{
-    foreach (var item in ViewBag.taskList)
-    {
-        <tr>
-            <td>
-                @item.ID
-            </td>
-            <td>
-                @item.WE
-            </td>
-            <td>
-                @item.title
-            </td>
-        </tr>
-    }
-}
-</table>
 </div>

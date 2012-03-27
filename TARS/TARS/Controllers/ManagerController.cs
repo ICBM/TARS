@@ -259,150 +259,6 @@ namespace TARS.Controllers
         }
 
         //
-        // GET: /Manager/addTask
-        public virtual ActionResult addTask()
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                return View();
-            }
-            else
-            {
-                return View("error");
-            } 
-        }
-
-        //
-        // POST: /Manager/addTask
-        [HttpPost]
-        public virtual ActionResult addTask(Task task)
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                if (ModelState.IsValid)
-                {
-                    TaskDB.TaskList.Add(task);
-                    TaskDB.SaveChanges();
-                    return RedirectToAction("searchTask/");
-                }
-                return View(task);
-            }
-            else
-            {
-                return View("error");
-            } 
-        }
-
-        //
-        // GET: /Manager/searchTask
-        //  - Shows a list of all Task codes.
-        public virtual ActionResult searchTask()
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                return View(TaskDB.TaskList.ToList());
-            }
-            else
-            {
-                return View("error");
-            } 
-        }
-
-        //
-        // GET: /Manager/viewTask/5
-        //  - Shows detailed information for a single Task code.
-        public virtual ActionResult viewTask(int id)
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                Task task = TaskDB.TaskList.Find(id);
-                return View(task);
-            }
-            else
-            {
-                return View("error");
-            } 
-        }
-
-        //
-        // GET: /Manager/editTask/5
-        //  - Edits a specific Task code.
-        public virtual ActionResult editTask(int id)
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                Task task = TaskDB.TaskList.Find(id);
-                return View(task);
-            }
-            else
-            {
-                return View("error");
-            } 
-        }
-
-        //
-        // POST: /Manager/editTask/5
-        [HttpPost]
-        public virtual ActionResult editTask(Task task)
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                if (ModelState.IsValid)
-                {
-                    TaskDB.Entry(task).State = EntityState.Modified;
-                    TaskDB.SaveChanges();
-                    return RedirectToAction("searchTask/");
-                }
-                return View(task);
-            }
-            else
-            {
-                return View("error");
-            } 
-        }
-
-        //
-        // GET: /Manager/deleteTask/5
-        public virtual ActionResult deleteTask(int id)
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                Task task = TaskDB.TaskList.Find(id);
-                return View(task);
-            }
-            else
-            {
-                return View("error");
-            } 
-        }
-
-        //
-        // POST: /Manager/deleteTask/5
-        [HttpPost, ActionName("deleteTask")] //This action MUST match the above delete function.
-        public virtual ActionResult confirmedDeleteTask(int id)
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                Task task = TaskDB.TaskList.Find(id);
-                TaskDB.TaskList.Remove(task);
-                TaskDB.SaveChanges();
-                return RedirectToAction("searchTask/");
-            }
-            else
-            {
-                return View("error");
-            } 
-        }
-
-        //
         // GET: /Manager/addPCA_WE
         public virtual ActionResult addPCA_WE()
         {
@@ -564,22 +420,14 @@ namespace TARS.Controllers
                                   select m;
                 foreach (var item in searchUsers)
                 {
-                    user = item.un;
+                    user = item.userName;
                 }
-
                 searchHours = searchHours.Where(s => s.creator.Contains(user));
-                List<Task> resultTasks = new List<Task>();
                 foreach (var item in searchHours)
                 {
                     tsDate = item.timestamp;    //used to retrieve the correct timesheet
-                    var searchTasks = from m in TaskDB.TaskList
-                                      where m.ID == item.task
-                                      select m;
-                    resultTasks.AddRange(searchTasks);
                 }
-
                 ViewBag.timesheet = getTimesheet(user, tsDate);
-                ViewBag.taskList = resultTasks;
                 return View(searchHours);
             }
             else
@@ -683,7 +531,7 @@ namespace TARS.Controllers
         {
             int userID = 0;
             var searchID = from m in TARSUserDB.TARSUserList
-                           where m.un.Contains(worker)
+                           where m.userName.Contains(worker)
                            select m;
             foreach (var item in searchID)
             {

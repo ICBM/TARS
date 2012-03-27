@@ -9,16 +9,19 @@
 <table class="timesheet">
     <tr>
         <th>
-            User Name
+            UserName
         </th>
         <th>
             Permission
         </th>
         <th>
-            Contractor Name
+            Company
         </th>
         <th>
-            End Date (to be implemented)
+            Department
+        </th>
+        <th>
+            End Date
         </th>
         <th></th>
     </tr>
@@ -29,13 +32,16 @@
     {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.un)
+            @Html.DisplayFor(modelItem => item.userName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.permission)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.contractorName)
+            @Html.DisplayFor(modelItem => item.company)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.department)
         </td>
         <td>
             To be implemented

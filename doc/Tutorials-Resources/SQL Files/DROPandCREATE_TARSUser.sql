@@ -21,11 +21,16 @@ GO
 
 CREATE TABLE [dbo].[TARSUsers](
 	[ID] [int] IDENTITY(1,1) NOT NULL,
-	[un] [varchar](50) NULL,
+	[SID] [varchar](184) NULL,
+	[userName] [varchar](40) NOT NULL,
+	[userID] [varchar](26) NULL,
+	[startDate] [datetime2](7) NULL,
+	[endDate] [datetime2](7) NULL,
 	[permission] [int] NULL,
-	[costAllocated] [bit] NULL,
-	[contractorStart] [datetime] NULL,
-	[contractorName] [varchar](50) NULL,
+	[company] [varchar](40) NULL,
+	[department] [varchar](40) NULL,
+	[employeeOrContractor] [char](2) NULL,
+	[costAllocatedOrNot] [char](1) NULL,
  CONSTRAINT [PK_TARSUser] PRIMARY KEY CLUSTERED 
 (
 	[ID] ASC

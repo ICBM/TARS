@@ -2,7 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
+using System.Web.Security;
+using System.Text;
+using System.Collections;
 using System.DirectoryServices;
+
+using TARS.Helpers;
+using TARS.Models;
 
 //Necessary for DB calls.
 using System.Data.Entity;
@@ -12,11 +20,16 @@ namespace TARS.Models
     public class TARSUser
     {
         public int ID { get; set; } //DB iterator.
-        public string un { get; set; } //This might be changed to uid if Active Directory ends up playing nicer with that.
+        public string SID { get; set; }
+        public string userName { get; set; }
+        public string userID { get; set; }
+        public DateTime startDate { get; set; }
+        public DateTime endDate { get; set; }
         public int permission { get; set; } //1 User   2 Manager   3 Admin 
-        public bool costAllocated { get; set; }
-        public DateTime contractorStart { get; set; }
-        public string contractorName { get; set; }       
+        public string company { get; set; }
+        public string department { get; set; }
+        public string employeeOrContractor { get; set; }
+        public char costAllocatedOrNot { get; set; }
     }
 
     public static class DateTimeExtensions
@@ -59,9 +72,19 @@ namespace TARS.Models
                         hist.type = "modified";
                         break;
                 }
+
+                if (entry.Property(u => u.startDate).CurrentValue == null)
+                {
+                    entry.Property(u => u.startDate).CurrentValue = DateTime.MinValue;
+                }
+                if (entry.Property(u => u.endDate).CurrentValue == null)
+                {
+                    entry.Property(u => u.endDate).CurrentValue = DateTime.MaxValue;
+                }
+
                 hist.dbtable = "TARSUser";
-                hist.change = "un: " + entry.Property(u => u.un).CurrentValue +
-              "; task: " + entry.Property(u => u.permission).CurrentValue;
+                hist.change = "userName: " + entry.Property(u => u.userName).CurrentValue +
+              "; permission: " + entry.Property(u => u.permission).CurrentValue;
             }
 
             //Doesn't actually get the current user's name.  User.Identity.Name doesn't work here

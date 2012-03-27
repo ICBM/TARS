@@ -1,0 +1,101 @@
+﻿@model IEnumerable<TARS.Models.Hours>
+
+@{
+    ViewBag.Title = "viewTimesheet";
+}
+
+<h2>viewTimesheet
+@if (ViewBag.timesheet.submitted)
+{
+    if (ViewBag.timesheet.approved)
+    {
+        <small><i>(approved)</i></small> 
+    }
+    else
+    {
+        <small><i>(submitted)</i></small> 
+    }
+}
+else
+{
+    <small><i>(editable)</i></small>
+}
+</h2>
+
+
+<div id="menu" style="float:right;">
+<h4>Actions</h4>
+    <p>@Html.ActionLink("Copy Previous Timesheet", "copyTimesheet")</p>
+    <p>@Html.ActionLink("Add New Hours", "addHours", new { id = 1 })</p>
+    @if (ViewBag.timesheet.approved == false)
+    {
+        if (ViewBag.timesheet.submitted == true)
+        {
+            <p>@Html.ActionLink("Un-submit Current Timesheet", "unSubmitTimesheet", new { id = (int)ViewBag.timesheet.ID })</p>
+        }
+        else
+        {
+            <p>@Html.ActionLink("Submit Current Timesheet", "submitTimesheet", new { id = (int)ViewBag.timesheet.ID })</p>
+        }
+    }
+    <p>@Html.ActionLink("Lookup Work Effort", "searchWorkeffort")</p>
+</div>
+
+
+<div id="content" style="float:left;">
+<h3>Hours list for @this.User.Identity.Name</h3>
+<table class="timesheet">
+    <tr>
+        <th>
+            Work Effort
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Hours
+        </th>
+        <th>
+            Timestamp
+        </th>
+        <th>
+            Creator
+        </th>
+        <th></th>
+    </tr>
+
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.workEffort)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.hours)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.timestamp)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.creator)
+        </td>
+
+       @if (ViewBag.timesheet.submitted == false)
+        {
+            <td>
+                @Html.ActionLink("Edit", "editHours", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "deleteHours", new { id = item.ID })
+            </td>
+        }
+    </tr>
+    }
+}
+</table>
+
+
+</div>

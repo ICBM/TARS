@@ -107,7 +107,7 @@ model.RememberMe = false;
                 if (createStatus == MembershipCreateStatus.Success)
                 {
                     TARSUser newuser = new TARSUser();
-                    newuser.un = model.UserName;
+                    newuser.userName = model.UserName;
                     newuser.permission = 1;
                     TARSUserDBContext user = new TARSUserDBContext();
                     user.TARSUserList.Add(newuser);
@@ -201,7 +201,7 @@ model.RememberMe = false;
                     {
                         //Query the TARSUser table for the current user
                         var userInDB = context2.TARSUserList
-                                    .Where(u => u.un == model.UserName)
+                                    .Where(u => u.userName == model.UserName)
                                     .FirstOrDefault();
                         //Update contractor info in table
                         userInDB.contractorName = group.Name;

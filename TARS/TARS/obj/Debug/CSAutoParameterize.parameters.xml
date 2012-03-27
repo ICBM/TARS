@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="ApplicationServices-Web.config Connection String" description="ApplicationServices Connection String used in web.config by the application to access the database." defaultvalue="server=(local);uid=user;pwd=pw;database=icbmdb" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\zeke\\Documents\\CS481_Senior_Design\\TARS\\TARS\\TARS\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='ApplicationServices']/@connectionString" />
+  </parameter>
+  <parameter name="PcaCodeDBContext-Web.config Connection String" description="PcaCodeDBContext Connection String used in web.config by the application to access the database." defaultvalue="server=(local);uid=user;pwd=pw;database=icbmdb" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\zeke\\Documents\\CS481_Senior_Design\\TARS\\TARS\\TARS\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='PcaCodeDBContext']/@connectionString" />
+  </parameter>
+  <parameter name="WorkEffortDBContext-Web.config Connection String" description="WorkEffortDBContext Connection String used in web.config by the application to access the database." defaultvalue="server=(local);uid=user;pwd=pw;database=icbmdb" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\zeke\\Documents\\CS481_Senior_Design\\TARS\\TARS\\TARS\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='WorkEffortDBContext']/@connectionString" />
+  </parameter>
+  <parameter name="TaskDBContext-Web.config Connection String" description="TaskDBContext Connection String used in web.config by the application to access the database." defaultvalue="server=(local);uid=user;pwd=pw;database=icbmdb" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\zeke\\Documents\\CS481_Senior_Design\\TARS\\TARS\\TARS\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='TaskDBContext']/@connectionString" />
+  </parameter>
+  <parameter name="PCA_WEDBContext-Web.config Connection String" description="PCA_WEDBContext Connection String used in web.config by the application to access the database." defaultvalue="server=(local);uid=user;pwd=pw;database=icbmdb" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\zeke\\Documents\\CS481_Senior_Design\\TARS\\TARS\\TARS\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='PCA_WEDBContext']/@connectionString" />
+  </parameter>
+  <parameter name="HoursDBContext-Web.config Connection String" description="HoursDBContext Connection String used in web.config by the application to access the database." defaultvalue="server=(local);uid=user;pwd=pw;database=icbmdb" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\zeke\\Documents\\CS481_Senior_Design\\TARS\\TARS\\TARS\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='HoursDBContext']/@connectionString" />
+  </parameter>
+  <parameter name="TARSUserDBContext-Web.config Connection String" description="TARSUserDBContext Connection String used in web.config by the application to access the database." defaultvalue="server=(local);uid=user;pwd=pw;database=icbmdb" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\zeke\\Documents\\CS481_Senior_Design\\TARS\\TARS\\TARS\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='TARSUserDBContext']/@connectionString" />
+  </parameter>
+  <parameter name="TimesheetDBContext-Web.config Connection String" description="TimesheetDBContext Connection String used in web.config by the application to access the database." defaultvalue="server=(local);uid=user;pwd=pw;database=icbmdb" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\zeke\\Documents\\CS481_Senior_Design\\TARS\\TARS\\TARS\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='TimesheetDBContext']/@connectionString" />
+  </parameter>
+  <parameter name="HistoryDBContext-Web.config Connection String" description="HistoryDBContext Connection String used in web.config by the application to access the database." defaultvalue="server=(local);uid=user;pwd=pw;database=icbmdb" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\zeke\\Documents\\CS481_Senior_Design\\TARS\\TARS\\TARS\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='HistoryDBContext']/@connectionString" />
+  </parameter>
+</parameters>

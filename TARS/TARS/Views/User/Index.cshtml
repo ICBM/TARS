@@ -13,28 +13,22 @@
 <table>
     <tr>
         <th>
-            we
+            Work Effort
         </th>
         <th>
-            task
+            Hours
         </th>
         <th>
-            hours
+            Timestamp
         </th>
         <th>
-            hoursType
+            Approved
         </th>
         <th>
-            approved
+            Description
         </th>
         <th>
-            timestamp
-        </th>
-        <th>
-            description
-        </th>
-        <th>
-            creator
+            Creator
         </th>
         <th></th>
     </tr>
@@ -45,22 +39,16 @@
     {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.we)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.task)
+            @Html.DisplayFor(modelItem => item.workEffort)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.hours)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.hoursType)
+            @Html.DisplayFor(modelItem => item.timestamp)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.approved)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.timestamp)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.description)
@@ -72,37 +60,7 @@
     }
 }
 </table>
-<h3>Task list</h3>
-<table>
-    <tr>
-        <th>
-            ID
-        </th>
-        <th>
-            WE
-        </th>
-        <th>
-            title
-        </th>
-    </tr>
-@if (ViewBag.taskList != null)
-{
-    foreach (var item in ViewBag.taskList)
-    {
-        <tr>
-            <td>
-                @item.ID
-            </td>
-            <td>
-                @item.WE
-            </td>
-            <td>
-                @item.title
-            </td>
-        </tr>
-    }
-}
-</table>
+
 
 <br /><br /><br />
 

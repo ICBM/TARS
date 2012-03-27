@@ -20,7 +20,7 @@ namespace TARS.Models
     public class PcaCode
     {    
         public int ID { get; set; } //DB iterator
-        public int code { get; set; }
+        public int pcaCode { get; set; }
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }
         public string description { get; set; }
@@ -54,7 +54,7 @@ namespace TARS.Models
                         break;
                 }
                 hist.dbtable = "PcaCode";
-                hist.change = "code: " + entry.Property(u => u.code).CurrentValue +
+                hist.change = "pcaCode: " + entry.Property(u => u.pcaCode).CurrentValue +
               "; startDate: " + entry.Property(u => u.startDate).CurrentValue +
               "; endDate: " + entry.Property(u => u.endDate).CurrentValue +
               "; description: " + entry.Property(u => u.description).CurrentValue +

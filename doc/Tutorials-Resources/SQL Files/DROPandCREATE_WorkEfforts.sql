@@ -18,10 +18,12 @@ GO
 
 CREATE TABLE [dbo].[WorkEfforts](
 	[ID] [int] IDENTITY(1,1) NOT NULL,
-	[code] [int] NULL,
-	[startDate] [datetime] NULL,
-	[endDate] [datetime] NULL,
-	[description] [varchar](50) NULL,
+	[startDate] [datetime2](7) NULL,
+	[endDate] [datetime2](7) NULL,
+	[description] [varchar](100) NULL,
+	[comments] [varchar](250) NULL,
+	[pcaCode] [int] NOT NULL,
+	[earningsCode] [nchar](3) NOT NULL,
 	[active] [bit] NULL,
  CONSTRAINT [PK_WorkEfforts] PRIMARY KEY CLUSTERED 
 (
