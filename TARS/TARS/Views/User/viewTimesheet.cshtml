@@ -43,7 +43,15 @@ else
 
 
 <div id="content" style="float:left;">
-<h3>Hours list for @this.User.Identity.Name</h3>
+@if (this.User.Identity.Name.Trim().Length == 0)
+{
+    <h3>Hours list for <i>(Not Logged In)</i> </h3>
+}
+else
+{
+    <h3>Hours list for @this.User.Identity.Name</h3>
+}
+
 <table class="timesheet">
     <tr>
         <th>

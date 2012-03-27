@@ -31,7 +31,7 @@ namespace TARS.Controllers
             }
             else
             {
-                return View("error");
+                return View("notLoggedIn");
             }
         }
 
@@ -49,7 +49,7 @@ namespace TARS.Controllers
             }
             else
             {
-                return View("error");
+                return View("notLoggedIn");
             }
         }
 
@@ -79,8 +79,7 @@ namespace TARS.Controllers
             }
             else
             {
-                Console.Out.WriteLine("NOT LOGGED IN!");
-                return View("error");
+                return View("notLoggedIn");
             }
         }
 
@@ -192,7 +191,7 @@ namespace TARS.Controllers
             }
             else
             {
-                return View("error");
+                return View("notLoggedIn");
             }
         }
 
@@ -224,7 +223,7 @@ namespace TARS.Controllers
             }
             else
             {
-                return View("error");
+                return View("notLoggedIn");
             }
         }
 
@@ -241,7 +240,7 @@ namespace TARS.Controllers
             }
             else
             {
-                return View("error");
+                return View("notLoggedIn");
             }
         }
 
@@ -262,7 +261,7 @@ namespace TARS.Controllers
             }
             else
             {
-                return View("error");
+                return View("notLoggedIn");
             }
         }
 
@@ -281,7 +280,7 @@ namespace TARS.Controllers
             }
             else
             {
-                return View("error");
+                return View("notLoggedIn");
             }
         }
 
@@ -330,7 +329,7 @@ namespace TARS.Controllers
             }
             else
             {
-                return View("error");
+                return View("notLoggedIn");
             }
         }
 
@@ -346,7 +345,7 @@ namespace TARS.Controllers
             }
             else
             {
-                return View("error");
+                return View("notLoggedIn");
             }
         }
 
@@ -362,7 +361,7 @@ namespace TARS.Controllers
             }
             else
             {
-                return View("error");
+                return View("notLoggedIn");
             }
         }
 
@@ -399,7 +398,7 @@ namespace TARS.Controllers
             }
             else
             {
-                return View("error");
+                return View("notLoggedIn");
             }           
         }
 
@@ -424,7 +423,7 @@ namespace TARS.Controllers
                 }
                 else
                 {
-                    return View("error");
+                    return View("notLoggedIn");
                 }
             }
             else
@@ -457,7 +456,7 @@ namespace TARS.Controllers
                 }
                 else
                 {
-                    return View("error");
+                    return View("notLoggedIn");
                 }
             }
             else
