@@ -77,6 +77,8 @@
     <Compile Include="Helpers\Authentication.cs" />
     <Compile Include="Helpers\LDAPConnection.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\Divisions.cs" />
+    <Compile Include="Models\EarningsCodes.cs" />
     <Compile Include="Models\Timesheet.cs" />
     <Compile Include="Models\TARSUser.cs" />
     <Compile Include="Models\History.cs" />
@@ -255,6 +257,7 @@
     </Content>
     <Content Include="Views\User\editHours.cshtml" />
     <Content Include="Views\Admin\confirmEditPCA.cshtml" />
+    <Content Include="Views\Shared\notLoggedIn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

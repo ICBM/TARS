@@ -45,11 +45,8 @@ model.RememberMe = false;
                     TARSUserDBContext TARSUserDB = new TARSUserDBContext();
 //                    TARSUserDB.TARSUserList.Find(model.UserName);
 
-                    //If the user is not an IDHW employee, then make sure his/her contractor information is up to date
-                    if (model.costAllocated != true)
-                    {
-                        CheckContractorChanges(model);
-                    }                
+                    //check for and save any updates to the user's info in active directory
+                    CheckForActiveDirectoryChanges(model);               
 
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
@@ -181,38 +178,10 @@ model.RememberMe = false;
         }
 
 
-        //Function that checks if a contractor has changed employers 
-        //If so, it saves the new employer name and start-date in TARSUsers table
-        public void CheckContractorChanges(LogOnModel model)
+        //Function that checks for any changes in Active Directory 
+        //If so, it saves the new info in TARSUsers table
+        public void CheckForActiveDirectoryChanges(LogOnModel model)
         {
-/*            int costAllocated = 0;
-
-            PrincipalContext context = new PrincipalContext(ContextType.Domain, null, model.UserName, model.Password);
-            UserPrincipal user = UserPrincipal.FindByIdentity(context, model.UserName);
-            PrincipalSearchResult<Principal> groups = user.GetAuthorizationGroups();
- 
-            foreach (GroupPrincipal group in groups)
-            {
-                costAllocated = String.Compare(group.SamAccountName, "Users");
-                //If not part of "Users" group, then they aren't employed by IDHW
-                if (costAllocated != 1)
-                {
-                    using (var context2 = new TARSUserDBContext())
-                    {
-                        //Query the TARSUser table for the current user
-                        var userInDB = context2.TARSUserList
-                                    .Where(u => u.userName == model.UserName)
-                                    .FirstOrDefault();
-                        //Update contractor info in table
-                        userInDB.contractorName = group.Name;
-                        userInDB.contractorStart = System.DateTime.Now;
-                        context2.Entry(userInDB).State = EntityState.Modified;
-                        context2.SaveChanges();
-                    }
-                    break;
-                }
-            }
-*/
         }                                   
        
         #region Status Codes

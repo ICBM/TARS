@@ -29,10 +29,10 @@ else
             Work Effort
         </th>
         <th>
-            Description
+            Hours
         </th>
         <th>
-            Hours
+            HoursDescription
         </th>
         <th>
             Timestamp
@@ -49,7 +49,7 @@ else
     {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.workEffort)
+            @Html.Action("getWeDescription", "User", new{ id = item.workEffortID })
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.description)

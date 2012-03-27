@@ -67,11 +67,6 @@ namespace TARS.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    //make sure startDate is prior to endDate 
-                    if (pcacode.startDate.CompareTo(pcacode.endDate) > 0)
-                    {
-                        return View("error");
-                    }
                     PcaCodeDB.PcaCodeList.Add(pcacode);
                     PcaCodeDB.SaveChanges();
                     return RedirectToAction("maintainPCA/");

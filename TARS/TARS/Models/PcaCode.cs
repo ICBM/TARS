@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -20,12 +21,14 @@ namespace TARS.Models
     public class PcaCode
     {    
         public int ID { get; set; } //DB iterator
-        public int pcaCode { get; set; }
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }
         public string description { get; set; }
         public string division { get; set; }
-        public bool active { get; set; }
+
+        [Required]
+        [Range(10000, 99999, ErrorMessage = "PCA Code must be a 5 digit number")]
+        public int code { get; set; }
     }
 
     public class PcaCodeDBContext : DbContext
@@ -54,12 +57,11 @@ namespace TARS.Models
                         break;
                 }
                 hist.dbtable = "PcaCode";
-                hist.change = "pcaCode: " + entry.Property(u => u.pcaCode).CurrentValue +
+                hist.change = "pcaCode: " + entry.Property(u => u.code).CurrentValue +
               "; startDate: " + entry.Property(u => u.startDate).CurrentValue +
               "; endDate: " + entry.Property(u => u.endDate).CurrentValue +
               "; description: " + entry.Property(u => u.description).CurrentValue +
-              "; division: " + entry.Property(u => u.division).CurrentValue +
-              "; active: " + entry.Property(u => u.active).CurrentValue;
+              "; division: " + entry.Property(u => u.division).CurrentValue;
             }
 
             //Doesn't actually get the current user's name.  User.Identity.Name doesn't work here

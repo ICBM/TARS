@@ -53,7 +53,7 @@ else
             Hours
         </th>
         <th>
-            Description
+            HoursDescription
         </th>
         <th>
             Date
@@ -70,7 +70,7 @@ else
     {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.workEffort)
+            @Html.Action("getWeDescription", "User", new{ id = item.workEffortID })
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.hours)

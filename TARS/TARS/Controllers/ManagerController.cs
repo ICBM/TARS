@@ -107,6 +107,9 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
+ViewBag.descrip = "hello world";
+                ViewBag.divisionList = getDivisions();
+                ViewBag.earnCodesList = getEarningsCodes();
                 return View();
             }
             else
@@ -422,7 +425,9 @@ namespace TARS.Controllers
                 {
                     user = item.userName;
                 }
-                searchHours = searchHours.Where(s => s.creator.Contains(user));
+                searchHours = from s in searchHours
+                              where (s.creator.CompareTo(user) == 0)
+                              select s;
                 foreach (var item in searchHours)
                 {
                     tsDate = item.timestamp;    //used to retrieve the correct timesheet
@@ -531,7 +536,7 @@ namespace TARS.Controllers
         {
             int userID = 0;
             var searchID = from m in TARSUserDB.TARSUserList
-                           where m.userName.Contains(worker)
+                           where (m.userName.CompareTo(worker) == 0)
                            select m;
             foreach (var item in searchID)
             {

@@ -13,16 +13,13 @@
 <table>
     <tr>
         <th>
-            Work Effort
+            WorkEffort
         </th>
         <th>
             Hours
         </th>
         <th>
             Timestamp
-        </th>
-        <th>
-            Approved
         </th>
         <th>
             Description
@@ -39,16 +36,13 @@
     {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.workEffort)
+            @Html.Action("getWeDescription", "User", new {id = item.workEffortID})
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.hours)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.timestamp)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.approved)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.description)

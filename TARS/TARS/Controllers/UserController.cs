@@ -16,6 +16,8 @@ namespace TARS.Controllers
         protected HoursDBContext HoursDB = new HoursDBContext();
         protected TimesheetDBContext TimesheetDB = new TimesheetDBContext();
         protected TARSUserDBContext TARSUserDB = new TARSUserDBContext();
+        protected DivisionsDBContext DivisionsDB = new DivisionsDBContext();
+        protected EarningsCodesDBContext EarningsCodesDB = new EarningsCodesDBContext();
         
         //
         // GET: /User/
@@ -77,6 +79,7 @@ namespace TARS.Controllers
             }
             else
             {
+                Console.Out.WriteLine("NOT LOGGED IN!");
                 return View("error");
             }
         }
@@ -94,7 +97,7 @@ namespace TARS.Controllers
 
                 //Check if there is a timesheet for the week that corresponds to newhours.timestamp
                 var search = from m in TimesheetDB.TimesheetList
-                             where m.worker.Contains(newhours.creator)
+                             where (m.worker.CompareTo(newhours.creator) == 0)
                              where m.periodStart <= newhours.timestamp
                              where m.periodEnd >= newhours.timestamp
                              select m;
@@ -140,7 +143,7 @@ namespace TARS.Controllers
             Timesheet resulttimesheet = new Timesheet();
 
             var search = from m in TimesheetDB.TimesheetList
-                            where m.worker.Contains(user)
+                            where (m.worker.CompareTo(user) == 0)
                             where m.periodStart <= tsDate
                             where m.periodEnd >= tsDate
                             select m;
@@ -176,7 +179,7 @@ namespace TARS.Controllers
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
                 var searchPermission = from m in TARSUserDB.TARSUserList
-                             where m.userName.Contains(this.User.Identity.Name) 
+                             where (m.userName.CompareTo(this.User.Identity.Name) == 0) 
                              select m;
                 foreach (var item in searchPermission)
                 {
@@ -207,7 +210,7 @@ namespace TARS.Controllers
                     return HttpNotFound();
                 }
                 var searchPermission = from m in TARSUserDB.TARSUserList
-                             where m.userName.Contains(this.User.Identity.Name)
+                             where (m.userName.CompareTo(this.User.Identity.Name) == 0)
                              select m;
                 foreach (var item in searchPermission)
                 {
@@ -298,7 +301,7 @@ namespace TARS.Controllers
 
                 //Select the timesheet from the previous pay period if it exists
                 var search = from m in TimesheetDB.TimesheetList
-                             where m.worker.Contains(userName)
+                             where (m.worker.CompareTo(userName) == 0)
                              where m.periodStart <= dayFromPrevPeriod
                              where m.periodEnd >= dayFromPrevPeriod
                              select m;
@@ -308,7 +311,7 @@ namespace TARS.Controllers
                 }
                 //Iterate through each entry from previous week and duplicate it for this week
                 var search2 = from m in HoursDB.HoursList
-                              where m.creator.Contains(userName)
+                              where (m.creator.CompareTo(userName) == 0)
                               where m.timestamp >= previousTimesheet.periodStart
                               where m.timestamp <= previousTimesheet.periodEnd
                               select m;
@@ -320,7 +323,6 @@ namespace TARS.Controllers
                 {
                     copiedHours.hours = 0;
                     copiedHours.timestamp = DateTime.Now;
-                    copiedHours.approved = false;
                     //add new entry to Hours and History tables
                     addHours(copiedHours);
                 }
@@ -375,31 +377,24 @@ namespace TARS.Controllers
                 DateTime startDay = DateTime.Now.StartOfWeek(DayOfWeek.Sunday);
                 Timesheet timesheet = new Timesheet();
                 string userName;
+                userName = User.Identity.Name;
 
-                if (User != null)
-                {
-                    userName = User.Identity.Name;
-                }
-                else
-                {
-                    userName = "";
-                }
-                //select all hours from current timesheet
-                var searchHours = from m in HoursDB.HoursList
-                                  where m.creator.Contains(userName)
-                                  where m.timestamp >= startDay
-                                  select m;
                 var searchTimesheet = from m in TimesheetDB.TimesheetList
-                                      where m.worker.Contains(userName)
-                                      where m.periodStart <= DateTime.Now
-                                      where m.periodEnd >= DateTime.Now
-                                      select m;
+                                        where (m.worker.CompareTo(userName) == 0)
+                                        where m.periodStart <= DateTime.Now
+                                        where m.periodEnd >= DateTime.Now
+                                        select m;
                 foreach (var item in searchTimesheet)
                 {
                     timesheet = item;
                 }
                 ViewBag.timesheet = timesheet;
 
+                //select all hours from current timesheet
+                var searchHours = from m in HoursDB.HoursList
+                                    where (m.creator.CompareTo(userName) == 0)
+                                    where m.timestamp >= startDay
+                                    select m;
                 return View(searchHours);
             }
             else
@@ -515,5 +510,73 @@ namespace TARS.Controllers
                 return "???";
             }
         }
+
+        // 
+        //Function that returns the IDHW Divisions as a list of strings
+        public virtual List<string> getDivisions()
+        {
+            Authentication auth = new Authentication();
+            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+            {
+                List<string> divList = new List<string>();
+                var searchDivisions = from m in DivisionsDB.DivisionsList
+                                      select m;
+                foreach (var item in searchDivisions)
+                {
+                    divList.Add(item.divName);
+                }
+                return divList;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        // 
+        //Function that returns Earnings codes as a list of strings
+        public virtual List<string> getEarningsCodes()
+        {
+            Authentication auth = new Authentication();
+            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+            {
+                List<string> earnCodesList = new List<string>();
+                var searchEarnCodes = from m in EarningsCodesDB.EarningsCodesList
+                                      select m;
+                foreach (var item in searchEarnCodes)
+                {
+                    earnCodesList.Add(item.earningsCode + " " + item.description);
+                }
+                return earnCodesList;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        // 
+        //Function that returns the description of a work effort as a string
+        public virtual string getWeDescription(int id)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+            {
+                string weDescription = "";
+                var searchWorkEfforts = from m in WorkEffortDB.WorkEffortList
+                                        where m.ID == id
+                                        select m;
+                foreach (var item in searchWorkEfforts)
+                {
+                    weDescription = item.description;
+                }
+                return weDescription;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
     }
 }

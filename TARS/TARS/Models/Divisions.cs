@@ -17,19 +17,15 @@ using System.Data.Entity;
 
 namespace TARS.Models
 {
-    public class Hours
+    public class Divisions
     {
         public int ID { get; set; } //DB iterator
-        public int workEffortID { get; set; }
-        public double hours { get; set; }
-        public DateTime timestamp { get; set; }
-        public string description { get; set; } //User input
-        public string creator { get; set; }
+        public string divName { get; set; }     //Division Name
     }
 
-    public class HoursDBContext : DbContext
+    public class DivisionsDBContext : DbContext
     {
-        public DbSet<Hours> HoursList { get; set; }
+        public DbSet<Divisions> DivisionsList { get; set; }
         protected HistoryDBContext HistDB = new HistoryDBContext();
 
         public int SaveChanges()
@@ -37,8 +33,8 @@ namespace TARS.Models
             //call our code here
             var hist = new History();
             ChangeTracker.DetectChanges();
-            var holder = ChangeTracker.Entries<Hours>();
-            foreach (System.Data.Entity.Infrastructure.DbEntityEntry<Hours> entry in holder)
+            var holder = ChangeTracker.Entries<Divisions>();
+            foreach (System.Data.Entity.Infrastructure.DbEntityEntry<Divisions> entry in holder)
             {
                 switch (entry.State)
                 {
@@ -52,12 +48,8 @@ namespace TARS.Models
                         hist.type = "modified";
                         break;
                 }
-                hist.dbtable = "Hours";
-                hist.change = "workEffort: " + entry.Property(u => u.workEffortID).CurrentValue +
-              "; hours: " + entry.Property(u => u.hours).CurrentValue +
-              "; timestamp: " + entry.Property(u => u.timestamp).CurrentValue +
-              "; description: " + entry.Property(u => u.description).CurrentValue +
-              "; creator: " + entry.Property(u => u.creator).CurrentValue;
+                hist.dbtable = "Divisions";
+                hist.change = "Division: " + entry.Property(u => u.divName).CurrentValue;
             }
 
             //Doesn't actually get the current user's name.  User.Identity.Name doesn't work here

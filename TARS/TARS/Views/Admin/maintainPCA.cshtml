@@ -12,19 +12,16 @@
             PcaCode
         </th>
         <th>
-            StartDate
-        </th>
-        <th>
-            EndDate
+            Description
         </th>
         <th>
             Division
         </th>
         <th>
-            Description
+            StartDate
         </th>
         <th>
-            Active?
+            EndDate
         </th>
         <th></th>
     </tr>
@@ -33,7 +30,13 @@
     {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.pcaCode)
+            @Html.DisplayFor(modelItem => item.code)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.division)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.startDate)
@@ -41,15 +44,7 @@
         <td>
             @Html.DisplayFor(modelItem => item.endDate)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.division)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.active)
-        </td>
+
         <td>
             @Html.ActionLink("Edit", "editPCA", new { id=item.ID }) |
             @Html.ActionLink("Delete", "deletePCA", new { id=item.ID })
@@ -58,4 +53,4 @@
     }
 </table>
 
-<p><a href="../addPCA/">Add PCA</a></p>
+<p>@Html.ActionLink("Add PCA", "addPCA")</p>
