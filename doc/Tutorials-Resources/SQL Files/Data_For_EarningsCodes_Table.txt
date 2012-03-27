@@ -1,0 +1,29 @@
+1	ACT	Design
+2	ACT	Develop
+3	ACT	Meeting
+4	ACT	Management Tasks
+5	ACT	Support
+6	ACT	Travel
+7	ACT	Test
+8	ACT	Training/Conference
+9	ACT	Other
+10	ADT	Administrative Leave Taken
+11	SIC	Sick Leave Taken
+12	VAC	Vacation Leave Taken
+13	HOL	Holiday Pay (Not Worked)
+14	OCE	On-Call Hours Earned
+15	CPT	Compensatory Time Taken
+16	FMS	Family Medical Leave Sick Taken
+17	FMV	Family Medical Leave Vacation Taken
+18	JUR	Jury Duty
+19	MLF	Military Leave Taken
+20	SFT	Shift Differential
+21	FJC	Family Medical Leave On The Job Accident Comp Time Taken
+22	FJL	Family Medical Leave On The Job Accident Leave Without Pay
+23	FJS	Family Medical Leave On The Job Accident Vacation
+24	FMC	Family Medical Leave Comp Time Taken
+25	FML	Family Medical Leave Without Pay
+26	LWF	LWOP Furlough
+27	LWO	LWOP Other
+28	LWS	LWOP Sick
+29	MLT	Military Leave Taken
