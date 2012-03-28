@@ -590,5 +590,28 @@ namespace TARS.Controllers
             }
         }
 
+        // 
+        //Function that returns the IDHW division that the user works for
+        public virtual string getUserDivision()
+        {
+            Authentication auth = new Authentication();
+            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+            {
+                string division = "";
+                var searchUsers = from m in TARSUserDB.TARSUserList
+                                        where (m.userName.CompareTo(User.Identity.Name) == 0)
+                                        select m;
+                foreach (var item in searchUsers)
+                {
+                    division = item.department;
+                }
+                return division;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
     }
 }

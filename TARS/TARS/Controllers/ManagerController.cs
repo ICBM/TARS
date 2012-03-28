@@ -114,8 +114,7 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
-                string division = "";
-
+                string division = getUserDivision();
                 ViewBag.divisionName = division;
                 //getPcaCodes returns a List<int>
                 ViewBag.pcaList = getPcaCodes(division);
@@ -141,11 +140,27 @@ namespace TARS.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    WorkEffortDB.WorkEffortList.Add(workeffort);
-                    WorkEffortDB.SaveChanges();
-                    return RedirectToAction("weManagement");
+                    //make sure it falls within it's associated PCA code's time boundaries
+                    if (verifyWeTimeBounds(workeffort) == true)
+                    {
+                        WorkEffortDB.WorkEffortList.Add(workeffort);
+                        WorkEffortDB.SaveChanges();
+                        return RedirectToAction("weManagement");
+                    }
+                    else
+                    {
+                        ViewBag.withinTimeBounds = false;
+                        string division = getUserDivision();
+                        ViewBag.divisionName = division;
+                        //getPcaCodes returns a List<int>
+                        ViewBag.pcaList = getPcaCodes(division);
+                        //getEarningsCodeSelectList returns a  List<SelectListItem> to use in a dropdown
+                        ViewBag.earnCodeSelectList = getEarningsCodeSelectList();
+
+                        return View();
+                    }
                 }
-                return View(workeffort);
+                return View("error");
             }
             else
             {
@@ -198,6 +213,10 @@ namespace TARS.Controllers
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
                 WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
+                string division = getUserDivision();
+                ViewBag.divisionName = division;
+                ViewBag.pcaList = getPcaCodes(division);
+                ViewBag.earnCodeSelectList = getEarningsCodeSelectList();
                 return View(workeffort);
             }
             else
@@ -217,9 +236,23 @@ namespace TARS.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    WorkEffortDB.Entry(workeffort).State = EntityState.Modified;
-                    WorkEffortDB.SaveChanges();
-                    return RedirectToAction("weManagement/");
+                    //make sure it falls within it's associated PCA code's time boundaries
+                    if (verifyWeTimeBounds(workeffort) == true)
+                    {
+                        WorkEffortDB.Entry(workeffort).State = EntityState.Modified;
+                        WorkEffortDB.SaveChanges();
+                        return RedirectToAction("weManagement/");
+                    }
+                    else
+                    {
+                        ViewBag.withinTimeBounds = false;
+                        string division = getUserDivision();
+                        ViewBag.divisionName = division;
+                        ViewBag.pcaList = getPcaCodes(division);
+                        ViewBag.earnCodeSelectList = getEarningsCodeSelectList();
+
+                        return View(workeffort);
+                    }
                 }
                 return View(workeffort);
             }
@@ -576,6 +609,41 @@ namespace TARS.Controllers
                 userID = item.ID;
             }
             return userID;
+        }
+
+
+        //
+        //Checks to see if the work effort falls within it's PCA code's time boundaries
+        public bool verifyWeTimeBounds(WorkEffort effort)
+        {
+            bool dateFlag = false;
+            var searchPCA = from m in PcaCodeDB.PcaCodeList
+                           where (m.code.CompareTo(effort.pcaCode) == 0)
+                           select m;
+            foreach (var item in searchPCA)
+            {
+                if ((item.startDate <= effort.startDate) && (item.endDate >= effort.endDate))
+                {
+                    dateFlag = true;
+                }
+            }
+            return dateFlag;
+        }
+
+
+        //
+        //Returns PCA code's time boundaries as a string
+        public string showPcaTimeBounds(int pcacode)
+        {
+            string bounds = "";
+            var searchPCA = from m in PcaCodeDB.PcaCodeList
+                            where (m.code.CompareTo(pcacode) == 0)
+                            select m;
+            foreach (var item in searchPCA)
+            {
+                bounds = item.startDate.ToShortDateString() + " - " + item.endDate.ToShortDateString();
+            }
+            return bounds;
         }
 
 
