@@ -15,18 +15,14 @@
     <fieldset>
         <legend>PcaCode</legend>
 
-        <div class="editor-label"><b>
-            @Html.LabelFor(model => model.code)
-        <b></div>
+        <div class="editor-label"><b>PCA Code</b></div>
         <div class="editor-field">
             @Html.EditorFor(model => model.code)
             @Html.ValidationMessageFor(model => model.code)
         </div>
 
         <p>
-        <div class="editor-label"><b>
-            @Html.LabelFor(model => model.description)
-        </b></div>
+        <div class="editor-label"><b>Description</b></div>
         <div class="editor-field">
             @Html.EditorFor(model => model.description)
             @Html.ValidationMessageFor(model => model.description)
@@ -34,18 +30,14 @@
         </p>
 
         <p>
-        <div class="editor-label"><b>
-            @Html.LabelFor(model => model.division)
-        </b></div>
+        <div class="editor-label"><b>Department</b></div>
         <div class="editor-field">
             @Html.DropDownList("division", new SelectList(ViewBag.divisionList, Model))
         </div>
         </p>
 
         <p>
-        <div class="editor-label"><b>
-            @Html.LabelFor(model => model.startDate)
-        </b></div>
+        <div class="editor-label"><b>Start Date</b></div>
         <div class="editor-field">
             @Html.EditorFor(model => model.startDate)
             @Html.ValidationMessageFor(model => model.startDate)
@@ -53,9 +45,7 @@
         </p>
 
         <p>
-        <div class="editor-label"><b>
-            @Html.LabelFor(model => model.endDate)
-        </b></div>
+        <div class="editor-label"><b>End Date</b></div>
         <div class="editor-field">
             @Html.EditorFor(model => model.endDate)
             @Html.ValidationMessageFor(model => model.endDate)

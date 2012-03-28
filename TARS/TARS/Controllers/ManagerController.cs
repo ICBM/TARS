@@ -30,6 +30,7 @@ namespace TARS.Controllers
             }
         }
 
+
         //
         // GET: /Manager/searchPCA
         //  - Shows a list of all PCA codes.
@@ -45,6 +46,7 @@ namespace TARS.Controllers
                 return View("error");
             } 
         }
+
 
         //
         // GET: /Manager/viewPCA/5
@@ -64,6 +66,8 @@ namespace TARS.Controllers
         }
 
 
+        //
+        //
         public virtual ActionResult userManagement()
         {
             Authentication auth = new Authentication();
@@ -78,6 +82,8 @@ namespace TARS.Controllers
         }
 
 
+        //
+        //
         public virtual ActionResult weManagement()
         {
             Authentication auth = new Authentication();
@@ -91,13 +97,15 @@ namespace TARS.Controllers
             }
         }
 
-               
+
+        //       
         //This was attached to delete; not sure what this is yet, but it doesn't explode!
         protected override void Dispose(bool disposing)
         {
             PcaCodeDB.Dispose();
             base.Dispose(disposing);
         }
+
 
         //
         // GET: /Manager/addWorkEffort
@@ -107,15 +115,13 @@ namespace TARS.Controllers
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
                 string division = "";
-                var nameSearch = from n in TARSUserDB.TARSUserList
-                                 where (n.userName.CompareTo(this.User.Identity.Name) == 0)
-                                 select n;
-                foreach (var item in nameSearch)
-                {
-                    division = item.department;
-                }
+
+                ViewBag.divisionName = division;
+                //getPcaCodes returns a List<int>
                 ViewBag.pcaList = getPcaCodes(division);
-                ViewBag.earnCodesList = getEarningsCodes();
+                //getEarningsCodeSelectList returns a  List<SelectListItem> for use in a dropdown
+                ViewBag.earnCodeSelectList = getEarningsCodeSelectList();
+
                 return View();
             }
             else
@@ -123,6 +129,7 @@ namespace TARS.Controllers
                 return View("error");
             }
         }
+
 
         //
         // POST: /Manager/addWorkEffort
@@ -146,6 +153,7 @@ namespace TARS.Controllers
             }
         }
 
+        
         //
         // GET: /Manager/searchWorkEffort
         //  - Shows a list of all WorkEffort codes.       
@@ -180,6 +188,7 @@ namespace TARS.Controllers
             } 
         }
 
+
         //
         // GET: /Manager/editWorkEffort/5
         //  - Edits a specific WorkEffort code.
@@ -196,6 +205,7 @@ namespace TARS.Controllers
                 return View("error");
             } 
         }
+
 
         //
         // POST: /Manager/editWorkEffort/5
@@ -219,6 +229,7 @@ namespace TARS.Controllers
             }
         }
 
+
         //
         // GET: /Manager/deleteWorkEffort/5
         public virtual ActionResult deleteWorkEffort(int id)
@@ -234,6 +245,7 @@ namespace TARS.Controllers
                 return View("error");
             } 
         }
+
 
         //
         // POST: /Manager/deleteWorkEffort/5
@@ -254,6 +266,9 @@ namespace TARS.Controllers
             } 
         }
 
+
+        //
+        //
         public virtual ActionResult hideWorkEffort(int id)
         {
             Authentication auth = new Authentication();
@@ -266,6 +281,7 @@ namespace TARS.Controllers
                 return View("error");
             }
         }
+
 
         //
         // GET: /Manager/addPCA_WE
@@ -281,6 +297,7 @@ namespace TARS.Controllers
                 return View("error");
             } 
         }
+
 
         //
         // POST: /Manager/addPCA_WE
@@ -304,6 +321,7 @@ namespace TARS.Controllers
             } 
         }
 
+
         //
         // GET: /Manager/searchPCA_WE
         //  - Shows a list of all PCA_WE codes.
@@ -319,6 +337,7 @@ namespace TARS.Controllers
                 return View("error");
             } 
         }
+
 
         //
         // GET: /Manager/viewPCA_WE/5
@@ -337,6 +356,7 @@ namespace TARS.Controllers
             } 
         }
 
+
         //
         // GET: /Manager/editPCA_WE/5
         //  - Edits a specific PCA_WE code.
@@ -353,6 +373,7 @@ namespace TARS.Controllers
                 return View("error");
             } 
         }
+
 
         //
         // POST: /Manager/editPCA_WE/5
@@ -376,6 +397,7 @@ namespace TARS.Controllers
             } 
         }
 
+
         //
         // GET: /Manager/deletePCA_WE/5
         public virtual ActionResult deletePCA_WE(int id)
@@ -391,6 +413,7 @@ namespace TARS.Controllers
                 return View("error");
             } 
         }
+
 
         //
         // POST: /Manager/deletePCA_WE/5
@@ -447,6 +470,7 @@ namespace TARS.Controllers
             }
         }
 
+
         //
         //changes timesheet status to approved
         public virtual ActionResult submitApproveTimesheet(int id)
@@ -463,7 +487,7 @@ namespace TARS.Controllers
                     //save changes to the database
                     TimesheetDB.SaveChanges();
 
-                    return RedirectToAction("approveTimesheet", new { id = getUserID(ts.worker) });
+                    return RedirectToAction("approveTimesheet", new { id = getUserKeyID(ts.worker) });
                 }
                 else
                 {
@@ -475,6 +499,7 @@ namespace TARS.Controllers
                 return View("error");
             }
         }
+
 
         //
         //changes timesheet status to disapproved
@@ -493,7 +518,7 @@ namespace TARS.Controllers
                     //save changes to the database
                     TimesheetDB.SaveChanges();
 
-                    return RedirectToAction("approveTimesheet", new { id = getUserID(ts.worker) });
+                    return RedirectToAction("approveTimesheet", new { id = getUserKeyID(ts.worker) });
                 }
                 else
                 {
@@ -505,6 +530,7 @@ namespace TARS.Controllers
                 return View("error");
             }
         }
+
 
         //
         // GET: /Manager/managerSubmitTimesheet
@@ -523,7 +549,7 @@ namespace TARS.Controllers
                     //save changes to the database
                     TimesheetDB.SaveChanges();
 
-                    return RedirectToAction("approveTimesheet", new { id = getUserID(ts.worker) });
+                    return RedirectToAction("approveTimesheet", new { id = getUserKeyID(ts.worker) });
                 }
                 else
                 {
@@ -536,9 +562,10 @@ namespace TARS.Controllers
             }
         }
 
+
         //
         //Returns the unique ID of specified user
-        public int getUserID(string worker)
+        public int getUserKeyID(string worker)
         {
             int userID = 0;
             var searchID = from m in TARSUserDB.TARSUserList
@@ -550,6 +577,7 @@ namespace TARS.Controllers
             }
             return userID;
         }
+
 
         //
         //

@@ -26,8 +26,8 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model)
-    {
+  @foreach (var item in Model)
+  {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.code)
@@ -50,7 +50,7 @@
             @Html.ActionLink("Delete", "deletePCA", new { id=item.ID })
         </td>
     </tr>
-    }
+  }
 </table>
 
 <p>@Html.ActionLink("Add PCA", "addPCA")</p>

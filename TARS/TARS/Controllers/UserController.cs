@@ -537,46 +537,35 @@ namespace TARS.Controllers
         //Function that returns list of PCA codes for the specified division
         public virtual List<int> getPcaCodes(string division)
         {
-            Authentication auth = new Authentication();
-            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+            List<int> pcaList = new List<int>();
+            var searchPca = from m in PcaCodeDB.PcaCodeList
+                            where (m.division.CompareTo(division) == 0)
+                            select m;
+            foreach (var item in searchPca)
             {
-                List<int> pcaList = new List<int>();
-                var searchPca = from m in PcaCodeDB.PcaCodeList
-                                where (m.division.CompareTo(division) == 0)
-                                      select m;
-                foreach (var item in searchPca)
-                {
-                    pcaList.Add(item.code);
-                }
-                return pcaList;
+                pcaList.Add(item.code);
             }
-            else
-            {
-                return null;
-            }
+            return pcaList;
         }
 
         // 
-        //Function that returns Earnings codes as a list of strings
-        public virtual List<string> getEarningsCodes()
+        //Function that returns Earnings codes as a selection list that can be easily used in an Html.DropDown
+        public virtual List<SelectListItem> getEarningsCodeSelectList()
         {
-            Authentication auth = new Authentication();
-            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+            List<SelectListItem> earnCodesList = new List<SelectListItem>();
+            var searchEarnCodes = from m in EarningsCodesDB.EarningsCodesList
+                                    select m;
+            foreach (var item in searchEarnCodes)
             {
-                List<string> earnCodesList = new List<string>();
-                var searchEarnCodes = from m in EarningsCodesDB.EarningsCodesList
-                                      select m;
-                foreach (var item in searchEarnCodes)
+                earnCodesList.Add(new SelectListItem
                 {
-                    earnCodesList.Add(item.earningsCode + " " + item.description);
-                }
-                return earnCodesList;
+                    Text = item.earningsCode + "  " + item.description,
+                    Value = item.earningsCode
+                });                    
             }
-            else
-            {
-                return null;
-            }
+            return earnCodesList;
         }
+
 
         // 
         //Function that returns the description of a work effort as a string
