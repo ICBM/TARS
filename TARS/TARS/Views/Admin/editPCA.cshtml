@@ -10,59 +10,63 @@
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm())
+{
     @Html.ValidationSummary(true)
     <fieldset>
         <legend>PcaCode</legend>
-
         @Html.HiddenFor(model => model.ID)
 
-        <div class="editor-label">
+        <div class="editor-label"><b>
             @Html.LabelFor(model => model.code)
-        </div>
+        <b></div>
         <div class="editor-field">
             @Html.EditorFor(model => model.code)
             @Html.ValidationMessageFor(model => model.code)
         </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.startDate)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.startDate)
-            @Html.ValidationMessageFor(model => model.startDate)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.endDate)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.endDate)
-            @Html.ValidationMessageFor(model => model.endDate)
-        </div>
-
-        <div class="editor-label">
+        <p>
+        <div class="editor-label"><b>
             @Html.LabelFor(model => model.description)
-        </div>
+        </b></div>
         <div class="editor-field">
             @Html.EditorFor(model => model.description)
             @Html.ValidationMessageFor(model => model.description)
         </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.division)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.division)
-            @Html.ValidationMessageFor(model => model.division)
-        </div>
+        </p>
 
         <p>
-            <input type="submit" value="Save" />
+        <div class="editor-label"><b>
+            @Html.LabelFor(model => model.division)
+        </b></div>
+        <div class="editor-field">
+            @Html.DropDownList("division", new SelectList(ViewBag.divisionList, Model))
+        </div>
+        </p>
+
+        <p>
+        <div class="editor-label"><b>
+            @Html.LabelFor(model => model.startDate)
+        </b></div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.startDate)
+            @Html.ValidationMessageFor(model => model.startDate)
+        </div>
+        </p>
+
+        <p>
+        <div class="editor-label"><b>
+            @Html.LabelFor(model => model.endDate)
+        </b></div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.endDate)
+            @Html.ValidationMessageFor(model => model.endDate)
+        </div>
+        </p>
+
+        <p>
+            <input type="submit" value="Save" /> |
+            @Html.ActionLink("Back to List", "maintainPCA/")
         </p>
     </fieldset>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "maintainPCA/")
-</div>

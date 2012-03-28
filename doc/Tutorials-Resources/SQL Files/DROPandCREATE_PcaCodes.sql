@@ -25,7 +25,7 @@ CREATE TABLE [dbo].[PcaCodes](
 	[startDate] [datetime2](7) NULL,
 	[endDate] [datetime2](7) NULL,
 	[description] [varchar](40) NOT NULL,
-	[division] [varchar](25) NOT NULL,
+	[division] [varchar](40) NOT NULL,
  CONSTRAINT [PK_PcaCodes] PRIMARY KEY CLUSTERED 
 (
 	[ID] ASC

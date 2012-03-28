@@ -90,6 +90,7 @@ namespace TARS.Controllers
             {
                 PcaCode pcacode = new PcaCode();
                 pcacode = PcaCodeDB.PcaCodeList.Find(id);
+                ViewBag.divisionList = getDivisions();
                 return View(pcacode);
             }
             else
@@ -128,6 +129,7 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
             {
+                ViewBag.divisionList = getDivisions();
                 return View(TempData["tmpPcaCode"]);
             }
             else
