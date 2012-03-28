@@ -18,8 +18,7 @@
             @Html.LabelFor(model => model.pcaCode)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.pcaCode)
-            @Html.ValidationMessageFor(model => model.pcaCode)
+            @Html.DropDownList("pcaCode", new SelectList(ViewBag.pcaList, Model))
         </div>
 
         <div class="editor-label">

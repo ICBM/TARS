@@ -49,6 +49,7 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
             {
+                ViewBag.divisionList = getDivisions();
                 return View();
             }
             else

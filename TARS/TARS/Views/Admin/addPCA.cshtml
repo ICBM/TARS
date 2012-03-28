@@ -23,6 +23,22 @@
         </div>
 
         <div class="editor-label">
+            @Html.LabelFor(model => model.description)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.description)
+            @Html.ValidationMessageFor(model => model.description)
+        </div>
+
+<!-- need to fix this dropdown -->
+        <div class="editor-label">
+            @Html.LabelFor(model => model.division)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("division", new SelectList(ViewBag.divisionList, Model))
+        </div>
+
+        <div class="editor-label">
             @Html.LabelFor(model => model.startDate)
         </div>
         <div class="editor-field">
@@ -36,22 +52,6 @@
         <div class="editor-field">
             @Html.EditorFor(model => model.endDate)
             @Html.ValidationMessageFor(model => model.endDate)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.description)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.description)
-            @Html.ValidationMessageFor(model => model.description)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.division)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.division)
-            @Html.ValidationMessageFor(model => model.division)
         </div>
 
         <p>

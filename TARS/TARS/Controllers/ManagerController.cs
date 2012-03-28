@@ -13,7 +13,6 @@ namespace TARS.Controllers
 {
     public class ManagerController : UserController
     {
-        protected PcaCodeDBContext PcaCodeDB = new PcaCodeDBContext();
         protected PCA_WEDBContext PCA_WEDB = new PCA_WEDBContext();
         
         //
@@ -107,8 +106,15 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
-ViewBag.descrip = "hello world";
-                ViewBag.divisionList = getDivisions();
+                string division = "";
+                var nameSearch = from n in TARSUserDB.TARSUserList
+                                 where (n.userName.CompareTo(this.User.Identity.Name) == 0)
+                                 select n;
+                foreach (var item in nameSearch)
+                {
+                    division = item.department;
+                }
+                ViewBag.pcaList = getPcaCodes(division);
                 ViewBag.earnCodesList = getEarningsCodes();
                 return View();
             }

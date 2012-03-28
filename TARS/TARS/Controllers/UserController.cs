@@ -18,6 +18,7 @@ namespace TARS.Controllers
         protected TARSUserDBContext TARSUserDB = new TARSUserDBContext();
         protected DivisionsDBContext DivisionsDB = new DivisionsDBContext();
         protected EarningsCodesDBContext EarningsCodesDB = new EarningsCodesDBContext();
+        protected PcaCodeDBContext PcaCodeDB = new PcaCodeDBContext();
         
         //
         // GET: /User/
@@ -525,6 +526,29 @@ namespace TARS.Controllers
                     divList.Add(item.divName);
                 }
                 return divList;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        // 
+        //Function that returns list of PCA codes for the specified division
+        public virtual List<int> getPcaCodes(string division)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+            {
+                List<int> pcaList = new List<int>();
+                var searchPca = from m in PcaCodeDB.PcaCodeList
+                                where (m.division.CompareTo(division) == 0)
+                                      select m;
+                foreach (var item in searchPca)
+                {
+                    pcaList.Add(item.code);
+                }
+                return pcaList;
             }
             else
             {
