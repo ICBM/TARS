@@ -549,7 +549,7 @@ namespace TARS.Controllers
         }
 
         // 
-        //Function that returns Earnings codes as a selection list that can be easily used in an Html.DropDown
+        //Function that returns Earnings codes as a selection list that can be easily used in an Html DropDown
         public virtual List<SelectListItem> getEarningsCodeSelectList()
         {
             List<SelectListItem> earnCodesList = new List<SelectListItem>();

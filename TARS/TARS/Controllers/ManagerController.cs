@@ -119,7 +119,7 @@ namespace TARS.Controllers
                 ViewBag.divisionName = division;
                 //getPcaCodes returns a List<int>
                 ViewBag.pcaList = getPcaCodes(division);
-                //getEarningsCodeSelectList returns a  List<SelectListItem> for use in a dropdown
+                //getEarningsCodeSelectList returns a  List<SelectListItem> to use in a dropdown
                 ViewBag.earnCodeSelectList = getEarningsCodeSelectList();
 
                 return View();
