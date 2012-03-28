@@ -61,6 +61,8 @@
                     @Html.ActionLink("Edit", "editWorkEffort", "Manager", new { id=item.ID }, null)
                     <html> | </html>
                     @Html.ActionLink("Delete", "deleteWorkEffort", "Manager", new { id=item.ID }, null)
+                    <html> | </html>
+                    @Html.ActionLink("Hide", "hideWorkEffort", "Manager", new { id = item.ID }, null)
                 }
                 <!-- If there are comments, provide a link to view them -->
                 @if ((item.comments != null) && (item.comments.Trim().Length > 0))

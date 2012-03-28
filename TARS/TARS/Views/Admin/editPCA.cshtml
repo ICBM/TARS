@@ -21,6 +21,10 @@
         <div class="editor-field">
             @Html.EditorFor(model => model.code)
             @Html.ValidationMessageFor(model => model.code)
+            @if (ViewBag.duplicatePcaFlag == true)
+            {
+                <html>PCA code @Model.code already exists in @Model.division</html>
+            }
         </div>
 
         <p>

@@ -42,6 +42,7 @@ namespace TARS.Controllers
             }
         }
 
+
         //
         // GET: /Admin/addPCA
         public virtual ActionResult addPCA()
@@ -58,6 +59,7 @@ namespace TARS.Controllers
             }
         }
 
+
         //
         // POST: /Admin/addPCA
         [HttpPost]
@@ -68,9 +70,19 @@ namespace TARS.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    PcaCodeDB.PcaCodeList.Add(pcacode);
-                    PcaCodeDB.SaveChanges();
-                    return RedirectToAction("maintainPCA/");
+                    //make sure the pca code doesn't already exist in the same division
+                    if (pcaCheckIfDuplicate(pcacode) == false)
+                    {
+                        PcaCodeDB.PcaCodeList.Add(pcacode);
+                        PcaCodeDB.SaveChanges();
+                        return RedirectToAction("maintainPCA/");
+                    }
+                    else
+                    {
+                        ViewBag.duplicatePcaFlag = true;
+                        ViewBag.divisionList = getDivisions();
+                        return View(pcacode);
+                    }
                 }
                 return View(pcacode);
             }
@@ -79,6 +91,7 @@ namespace TARS.Controllers
                 return View("error");
             }
         }
+
 
         // 
         // GET: /Admin/editPCA/
@@ -99,6 +112,7 @@ namespace TARS.Controllers
             }
         }
 
+
         //
         // POST: /Admin/editPCA/
         [HttpPost]
@@ -112,6 +126,13 @@ namespace TARS.Controllers
                 {
                     return View("error");
                 }
+                //make sure the pca code doesn't already exist in the same division
+                if (pcaCheckIfDuplicate(pcacode) == true)
+                {
+                    ViewBag.duplicatePcaFlag = true;
+                    ViewBag.divisionList = getDivisions();
+                    return View(pcacode);
+                }
                 TempData["tmpPcaCode"] = pcacode;
                 return RedirectToAction("confirmEditPCA");
             }
@@ -120,6 +141,7 @@ namespace TARS.Controllers
                 return View("error");
             }
         }
+
 
         // 
         // GET: /Admin/confirmEditPCA/
@@ -137,6 +159,7 @@ namespace TARS.Controllers
                 return View("error");
             }
         }
+
 
         //
         // POST: /Admin/confirmEditPCA/
@@ -162,6 +185,7 @@ namespace TARS.Controllers
             }
         }
 
+
         //
         // GET: /Admin/deletePCA
         public virtual ActionResult deletePCA(int id)
@@ -177,6 +201,7 @@ namespace TARS.Controllers
                 return View("error");
             }
         }
+
 
         //
         // POST: /Admin/confirmDeletePCA
@@ -251,6 +276,22 @@ namespace TARS.Controllers
             {
                 return View("error");
             }
+        }
+
+
+        //
+        //Returns true if the PCA code already exists for the division 
+        public bool pcaCheckIfDuplicate(PcaCode pca)
+        {
+            bool existsFlag = false;
+            var searchPca = from p in PcaCodeDB.PcaCodeList
+                            where p.code == pca.code
+                            select p;
+            if (searchPca != null)
+            {
+                existsFlag = true;
+            }
+            return existsFlag;
         }
     }
 }
