@@ -1,0 +1,33 @@
+﻿@model TARS.Models.PCA_WE
+
+@{
+    ViewBag.Title = "deletePCA_WE";
+}
+
+<h2>Remove PCA Code From Work Effort</h2>
+
+@if (ViewBag.lastPcaFlag == true)
+{
+    <h4>Can't Remove:  Work Effort Must Have at Least One PCA Code!</h4>
+}
+
+@using (Html.BeginForm())
+{    
+    @Html.ValidationSummary(true)
+    <fieldset>
+
+        <b>Work Effort: </b>@ViewBag.workEffortDescription
+        @Html.Hidden("WE", (int)ViewBag.workEffortId)
+
+        <p>
+        <div class="editor-label"><b>Choose a PCA to Un-Associate</b></div>
+        <div class="editor-field">
+            @Html.DropDownList("PCA", new SelectList(ViewBag.pcaList, Model))
+        </div>
+        </p>
+
+        <p>
+            <input type="submit" value="Submit" />
+        </p>
+    </fieldset>   
+}

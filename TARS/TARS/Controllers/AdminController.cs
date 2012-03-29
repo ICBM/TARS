@@ -296,5 +296,149 @@ namespace TARS.Controllers
             }
             return existsFlag;
         }
+
+
+        //
+        // GET: /Admin/addPCA_WE
+        //  Adds a PCA code to the given Work Effort
+        public virtual ActionResult addPCA_WE(int weID)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
+            {
+                WorkEffort we = WorkEffortDB.WorkEffortList.Find(weID);
+                ViewBag.workEffortDescription = we.description;
+                ViewBag.workEffortId = weID;
+                ViewBag.pcaAddList = getAllPcaCodes();
+                return View();
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+
+        //
+        // POST: /Admin/addPCA_WE
+        //  Adds a PCA code to the given Work Effort
+        [HttpPost]
+        public virtual ActionResult addPCA_WE(PCA_WE pca_we)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
+            {
+                //The view actually passed the PCA code instead of the ID, so set the ID to the correct value
+                pca_we.PCA = getPcaIdFromCode(pca_we.PCA);
+
+                WorkEffort effort = WorkEffortDB.WorkEffortList.Find(pca_we.WE);
+                ViewBag.workEffortDescription = effort.description;
+                PcaCode pcaObj = PcaCodeDB.PcaCodeList.Find(pca_we.PCA);
+
+                //make sure it falls within it's associated PCA code's time boundaries
+                if (verifyWeTimeBounds(effort, pcaObj.code) == true)
+                {
+                    //update PCA_WE table in database
+                    PCA_WEDB.PCA_WEList.Add(pca_we);
+                    PCA_WEDB.Entry(pca_we).State = System.Data.EntityState.Added;
+                    PCA_WEDB.SaveChanges();
+                    return RedirectToAction("editWorkEffort", "Manager", new { id = pca_we.WE });
+                }
+                ViewBag.pcaAddList = getAllPcaCodes();
+                ViewBag.outOfPcaTimeBounds = true;
+                return View(pca_we);
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+
+
+
+        //
+        // GET: /Admin/deletePCA_WE
+        //  Deletes a PCA code from the given Work Effort
+        public virtual ActionResult deletePCA_WE(int weID)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
+            {
+                WorkEffort we = WorkEffortDB.WorkEffortList.Find(weID);
+                ViewBag.workEffortDescription = we.description;
+                ViewBag.workEffortId = weID;
+                ViewBag.pcaList = getWorkEffortPcaCodes(we);
+                return View();
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+
+        //
+        // POST: /Admin/deletePCA_WE
+        //  Deletes a PCA code to the given Work Effort
+        [HttpPost]
+        public virtual ActionResult deletePCA_WE(PCA_WE pca_we)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
+            {
+                //The view actually passed the PCA code instead of the ID, so set the ID to the correct value
+                pca_we.PCA = getPcaIdFromCode(pca_we.PCA);
+                int count = 0;
+
+                PCA_WE tmpPca = new PCA_WE();
+                var searchPcaWe = from p in PCA_WEDB.PCA_WEList
+                                  where p.PCA == pca_we.PCA
+                                  where p.WE == pca_we.WE
+                                  select p;
+                foreach (var item in searchPcaWe)
+                {
+                    tmpPca = PCA_WEDB.PCA_WEList.Find(item.ID);
+                    count += 1;
+                }
+
+                //if it's not the last PCA_WE, then delete 
+                if (count > 1)
+                {
+                    PCA_WEDB.PCA_WEList.Remove(tmpPca);
+                    PCA_WEDB.SaveChanges();
+                    return RedirectToAction("editWorkEffort", "Manager", new { id = pca_we.WE });
+                }
+
+                ViewBag.lastPcaFlag = true;
+                WorkEffort we = WorkEffortDB.WorkEffortList.Find(pca_we.WE);
+                ViewBag.workEffortDescription = we.description;
+                ViewBag.workEffortId = we.ID;
+                ViewBag.pcaList = getWorkEffortPcaCodes(we);
+                return View();
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+
+
+        // 
+        //Returns list of all the PCA codes in TARS
+        public virtual List<string> getAllPcaCodes()
+        {
+            List<string> pcaList = new List<string>();
+            string tmpPca = "";
+            var searchPca = from m in PcaCodeDB.PcaCodeList
+                            select m;
+            foreach (var item in searchPca)
+            {
+                tmpPca = item.code.ToString();
+                pcaList.Add(tmpPca);
+            }
+            return pcaList;
+        }
     }
 }

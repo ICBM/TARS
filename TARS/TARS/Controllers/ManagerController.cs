@@ -12,9 +12,7 @@ using TARS.Models;
 namespace TARS.Controllers
 {
     public class ManagerController : UserController
-    {
-        protected PCA_WEDBContext PCA_WEDB = new PCA_WEDBContext();
-        
+    {        
         //
         // GET: /Manager/
         public override ActionResult Index() //Overridden from User/Index, which was virtual.
@@ -49,7 +47,7 @@ namespace TARS.Controllers
 
 
         //
-        // GET: /Manager/viewPCA/5
+        // GET: /Manager/viewPCA
         //  - Shows detailed information for a single PCA code.
         public virtual ActionResult viewPCA( int id )
         {
@@ -116,9 +114,7 @@ namespace TARS.Controllers
             {
                 string division = getUserDivision();
                 ViewBag.divisionName = division;
-                //getPcaCodes returns a List<int>
-                ViewBag.pcaList = getPcaCodes(division);
-                //getEarningsCodeSelectList returns a  List<SelectListItem> to use in a dropdown
+                ViewBag.pcaList = getDivisionPcaCodes(division);
                 ViewBag.earnCodeSelectList = getEarningsCodeSelectList();
 
                 return View();
@@ -141,7 +137,7 @@ namespace TARS.Controllers
                 if (ModelState.IsValid)
                 {
                     //make sure it falls within it's associated PCA code's time boundaries
-                    if (verifyWeTimeBounds(workeffort) == true)
+                    if (verifyWeTimeBounds(workeffort, workeffort.pcaCode) == true)
                     {
                         //update WorkEffort table in database
                         WorkEffortDB.WorkEffortList.Add(workeffort);
@@ -161,7 +157,7 @@ namespace TARS.Controllers
                         ViewBag.withinTimeBounds = false;
                         string division = getUserDivision();
                         ViewBag.divisionName = division;
-                        ViewBag.pcaList = getPcaCodes(division);
+                        ViewBag.pcaList = getDivisionPcaCodes(division);
                         ViewBag.earnCodeSelectList = getEarningsCodeSelectList();
 
                         return View();
@@ -220,10 +216,16 @@ namespace TARS.Controllers
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
                 WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
+                ViewBag.pcaList = getWorkEffortPcaCodes(workeffort);
+                ViewBag.earnCodeSelectList = getEarningsCodeSelectList();
                 string division = getUserDivision();
                 ViewBag.divisionName = division;
-                ViewBag.pcaList = getPcaCodes(division);
-                ViewBag.earnCodeSelectList = getEarningsCodeSelectList();
+
+                Authentication newAuth = new Authentication();
+                if (newAuth.isAdmin(this))
+                {
+                    ViewBag.adminFlag = true;
+                }
                 return View(workeffort);
             }
             else
@@ -244,20 +246,24 @@ namespace TARS.Controllers
                 if (ModelState.IsValid)
                 {
                     //make sure it falls within it's associated PCA code's time boundaries
-                    if (verifyWeTimeBounds(workeffort) == true)
+                    if (verifyWeTimeBounds(workeffort, workeffort.pcaCode) == true)
                     {
                         WorkEffortDB.WorkEffortList.Add(workeffort);
+                        WorkEffortDB.Entry(workeffort).State = System.Data.EntityState.Modified;
                         WorkEffortDB.SaveChanges();
                         return RedirectToAction("weManagement");
                     }
                     else
                     {
                         ViewBag.withinTimeBounds = false;
-                        string division = getUserDivision();
-                        ViewBag.divisionName = division;
-                        ViewBag.pcaList = getPcaCodes(division);
+                        ViewBag.pcaList = getWorkEffortPcaCodes(workeffort);
                         ViewBag.earnCodeSelectList = getEarningsCodeSelectList();
 
+                        Authentication newAuth = new Authentication();
+                        if (newAuth.isAdmin(this))
+                        {
+                            ViewBag.adminFlag = true;
+                        }
                         return View(workeffort);
                     }
                 }
@@ -324,45 +330,6 @@ namespace TARS.Controllers
 
 
         //
-        // GET: /Manager/addPCA_WE
-        public virtual ActionResult addPCA_WE()
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                return View();
-            }
-            else
-            {
-                return View("error");
-            } 
-        }
-
-
-        //
-        // POST: /Manager/addPCA_WE
-        [HttpPost]
-        public virtual ActionResult addPCA_WE(PCA_WE pca_we)
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                if (ModelState.IsValid)
-                {
-                    PCA_WEDB.PCA_WEList.Add(pca_we);
-                    PCA_WEDB.SaveChanges();
-                    return RedirectToAction("searchPCA_WE/");
-                }
-                return View(pca_we);
-            }
-            else
-            {
-                return View("error");
-            } 
-        }
-
-
-        //
         // GET: /Manager/searchPCA_WE
         //  - Shows a list of all PCA_WE codes.
         public virtual ActionResult searchPCA_WE()
@@ -380,7 +347,7 @@ namespace TARS.Controllers
 
 
         //
-        // GET: /Manager/viewPCA_WE/5
+        // GET: /Manager/viewPCA_WE
         //  - Shows detailed information for a single PCA_WE code.
         public virtual ActionResult viewPCA_WE(int id)
         {
@@ -389,94 +356,6 @@ namespace TARS.Controllers
             {
                 PCA_WE pca_we = PCA_WEDB.PCA_WEList.Find(id);
                 return View(pca_we);
-            }
-            else
-            {
-                return View("error");
-            } 
-        }
-
-
-        //
-        // GET: /Manager/editPCA_WE
-        //  - Edits a specific PCA_WE code.
-        public virtual ActionResult editPCA_WE(int Pca, int WeID)
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                PCA_WE pca_we = new PCA_WE();
-                PcaCode tmpPca = getPcaFromCode(Pca);
-
-                var searchPcaWe = from p in PCA_WEDB.PCA_WEList
-                                  where p.PCA == tmpPca.ID
-                                  where p.WE == WeID
-                                  select p;
-                foreach (var item in searchPcaWe)
-                {
-                    pca_we = item;
-                }
-                return View(pca_we);
-            }
-            else
-            {
-                return View("error");
-            } 
-        }
-
-
-        //
-        // POST: /Manager/editPCA_WE
-        [HttpPost]
-        public virtual ActionResult editPCA_WE(PCA_WE pca_we)
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                if (ModelState.IsValid)
-                {
-                    PCA_WEDB.Entry(pca_we).State = EntityState.Modified;
-                    PCA_WEDB.SaveChanges();
-                    return RedirectToAction("searchPCA_WE/");
-                }
-                return View(pca_we);
-            }
-            else
-            {
-                return View("error");
-            } 
-        }
-
-
-        //
-        // GET: /Manager/deletePCA_WE/5
-        public virtual ActionResult deletePCA_WE(int id)
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                PCA_WE pca_we = PCA_WEDB.PCA_WEList.Find(id);
-                return View(pca_we);
-            }
-            else
-            {
-                return View("error");
-            } 
-        }
-
-
-        //
-        // POST: /Manager/deletePCA_WE/5
-        [HttpPost, ActionName("deletePCA_WE")] //This action MUST match the above delete function.
-        public virtual ActionResult confirmedDeletePCA_WE(int id)
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                PCA_WE pca_we = PCA_WEDB.PCA_WEList.Find(id);
-                PCA_WEDB.PCA_WEList.Remove(pca_we);
-                PCA_WEDB.SaveChanges();
-                return RedirectToAction("searchPCA_WE/");
             }
             else
             {
@@ -663,11 +542,11 @@ namespace TARS.Controllers
 
         //
         //Checks to see if the work effort falls within it's PCA code's time boundaries
-        public bool verifyWeTimeBounds(WorkEffort effort)
+        public bool verifyWeTimeBounds(WorkEffort effort, int pca)
         {
             bool dateFlag = false;
             var searchPCA = from m in PcaCodeDB.PcaCodeList
-                           where (m.code.CompareTo(effort.pcaCode) == 0)
+                           where (m.code.CompareTo(pca) == 0)
                            select m;
             foreach (var item in searchPCA)
             {
@@ -682,7 +561,8 @@ namespace TARS.Controllers
 
         //
         //Returns PCA code's time boundaries as a string
-        public string showPcaTimeBounds(int pcacode)
+        //(note: it's called from addWorkEffort View)
+        public string getPcaTimeBoundsString(int pcacode)
         {
             string bounds = "";
             var searchPCA = from m in PcaCodeDB.PcaCodeList

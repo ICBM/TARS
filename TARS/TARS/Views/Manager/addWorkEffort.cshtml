@@ -54,7 +54,7 @@
             @Html.ValidationMessageFor(model => model.endDate)
             @if (ViewBag.withinTimeBounds == false)
             {
-                <html>Not within the PCA code's time bounds: <b>@Html.Action("showPcaTimeBounds", Model.pcaCode) </b></html>
+                <html>Not within the PCA code's time bounds: <b>@Html.Action("getPcaTimeBoundsString", Model.pcaCode) </b></html>
             } 
         </div>
         </p>

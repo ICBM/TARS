@@ -41,12 +41,12 @@
             </p>
 
             <p>
-            <div class="editor-label"><b>Date </b>(and optional time)</div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.timestamp)
-                @Html.ValidationMessageFor(model => model.timestamp)
+            <div><b>Date</b></div>
+            <div>
+                @Model.timestamp
             </div>
             </p>
+            @Html.HiddenFor(model => model.timestamp)
 
             <p>
                 <input type="submit" value="Save" />

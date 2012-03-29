@@ -14,22 +14,22 @@
         @Html.DisplayFor(model => model.description)
     </div>
 
-    <div class="display-label"><b>PcaCode</b></div>
+    <div class="display-label"><b>Pca Code(s)</b></div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.pcaCode)
+        @Html.DropDownList("pcaCode", new SelectList(ViewBag.pcaList, Model))
     </div>
 
-    <div class="display-label"><b>EarningsCode</b></div>
+    <div class="display-label"><b>Earnings Code</b></div>
     <div class="display-field">
         @Html.DisplayFor(model => model.earningsCode)
     </div>
 
-    <div class="display-label"><b>StartDate</b></div>
+    <div class="display-label"><b>Start Date</b></div>
     <div class="display-field">
         @Html.DisplayFor(model => model.startDate)
     </div>
 
-    <div class="display-label"><b>EndDate</b></div>
+    <div class="display-label"><b>End Date</b></div>
     <div class="display-field">
         @Html.DisplayFor(model => model.endDate)
     </div>

@@ -19,6 +19,7 @@ namespace TARS.Controllers
         protected DivisionsDBContext DivisionsDB = new DivisionsDBContext();
         protected EarningsCodesDBContext EarningsCodesDB = new EarningsCodesDBContext();
         protected PcaCodeDBContext PcaCodeDB = new PcaCodeDBContext();
+        protected PCA_WEDBContext PCA_WEDB = new PCA_WEDBContext();
         
         //
         // GET: /User/
@@ -229,7 +230,8 @@ namespace TARS.Controllers
                     {
                         ViewBag.managerFlag = true;
                     }
-                }  
+                }
+                ViewBag.pcaList = getWorkEffortPcaCodes(workeffort);
                 ViewBag.WorkEffortID = workeffort.ID;
                 return View(workeffort);
             }
@@ -586,15 +588,36 @@ namespace TARS.Controllers
 
         // 
         //Returns list of PCA codes for the specified division
-        public virtual List<int> getPcaCodes(string division)
+        public virtual List<string> getDivisionPcaCodes(string division)
         {
-            List<int> pcaList = new List<int>();
+            List<string> pcaList = new List<string>();
+            string tmpPca = "";
             var searchPca = from m in PcaCodeDB.PcaCodeList
                             where (m.division.CompareTo(division) == 0)
                             select m;
             foreach (var item in searchPca)
             {
-                pcaList.Add(item.code);
+                tmpPca = item.code.ToString();
+                pcaList.Add(tmpPca);
+            }
+            return pcaList;
+        }
+ 
+
+        // 
+        //Returns list of PCA codes for the specified division
+        public virtual List<int> getWorkEffortPcaCodes(WorkEffort we)
+        {
+            List<int> pcaList = new List<int>();
+            PcaCode tmpPca = new PcaCode();
+            
+            var searchPcaWe = from m in PCA_WEDB.PCA_WEList
+                              where m.WE == we.ID
+                              select m;
+            foreach (var item in searchPcaWe)
+            {
+                tmpPca = PcaCodeDB.PcaCodeList.Find(item.PCA);
+                pcaList.Add(tmpPca.code);
             }
             return pcaList;
         }

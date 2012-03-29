@@ -213,9 +213,6 @@
     <Content Include="Views\User\viewWorkEffort.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Manager\searchPCA.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Admin\deletePCA.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -230,11 +227,8 @@
     <Content Include="Views\User\searchWorkEffort.cshtml" />
     <Content Include="Views\Manager\editWorkEffort.cshtml" />
     <Content Include="Views\Manager\deleteWorkEffort.cshtml" />
-    <Content Include="Views\Manager\addPCA_WE.cshtml" />
     <Content Include="Views\Manager\searchPCA_WE.cshtml" />
-    <Content Include="Views\Manager\editPCA_WE.cshtml" />
     <Content Include="Views\User\viewPCA_WE.cshtml" />
-    <Content Include="Views\Manager\deletePCA_WE.cshtml" />
     <Content Include="Views\Test\TestViews.cshtml" />
     <Content Include="Views\User\viewTimesheet.cshtml" />
     <Content Include="Views\Admin\addPCA.cshtml" />
@@ -258,6 +252,8 @@
     <Content Include="Views\User\editHours.cshtml" />
     <Content Include="Views\Admin\confirmEditPCA.cshtml" />
     <Content Include="Views\Shared\notLoggedIn.cshtml" />
+    <Content Include="Views\Admin\addPCA_WE.cshtml" />
+    <Content Include="Views\Admin\deletePCA_WE.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

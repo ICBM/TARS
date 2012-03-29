@@ -1,0 +1,34 @@
+﻿@model TARS.Models.PCA_WE
+
+@{
+    ViewBag.Title = "addPCA_WE";
+}
+
+<h2>Add PCA Code to Work Effort</h2>
+
+@if (ViewBag.outOfPcaTimeBounds == false)
+{
+    <h3>Work Effort is Not Witin PCA Code's Time Bounds</h3>
+}
+
+
+@using (Html.BeginForm())
+{    
+    @Html.ValidationSummary(true)
+    <fieldset>
+        
+        <b>Work Effort: </b>@ViewBag.workEffortDescription
+        @Html.Hidden("WE", (int)ViewBag.workEffortId)
+
+        <p>
+        <div class="editor-label"><b>Choose a PCA to Add</b></div>
+        <div class="editor-field">
+            @Html.DropDownList("PCA", new SelectList(ViewBag.pcaAddList, Model))
+        </div>
+        </p>
+
+        <p>
+            <input type="submit" value="Submit" />
+        </p>
+    </fieldset>   
+}

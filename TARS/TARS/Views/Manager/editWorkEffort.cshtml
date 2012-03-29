@@ -13,11 +13,16 @@
     @Html.ValidationSummary(true)
     <fieldset>
 
-        <div class="editor-label"><b>PCA Codes</b></div>
+        <div class="editor-label"><b>PCA Code(s)</b></div>
         <div class="display-field">
             <!-- This dropdown should not allow selections, it's just for viewing -->
             @Html.DropDownList("pcaCode", new SelectList(ViewBag.pcaList, Model))
-            @Html.ActionLink("Add or Remove PCA Code Associations", "editPCA_WE", new { Pca = Model.pcaCode, WeID = Model.ID })
+            @if (ViewBag.adminFlag == true)
+            {
+                @Html.ActionLink("Add a PCA Code Association", "addPCA_WE", "Admin", new { weID = Model.ID }, null)
+                <html> | </html>
+                @Html.ActionLink("Remove a PCA Code Association", "deletePCA_WE", "Admin", new { weID = Model.ID }, null)
+            }
         </div>
 
         <p>
