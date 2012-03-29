@@ -24,7 +24,7 @@ CREATE TABLE [dbo].[WorkEfforts](
 	[comments] [varchar](250) NULL,
 	[pcaCode] [int] NOT NULL,
 	[earningsCode] [nchar](3) NOT NULL,
-	[active] [bit] NULL,
+	[hidden] [bit] NULL,
  CONSTRAINT [PK_WorkEfforts] PRIMARY KEY CLUSTERED 
 (
 	[ID] ASC

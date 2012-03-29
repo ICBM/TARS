@@ -36,9 +36,10 @@ namespace TARS.Controllers
             }
         }
 
+
         //
         // GET: /User/addHours
-        //Function to add hours to a workeffort with index id
+        //Adds hours to a workeffort with index id
         public virtual ActionResult addHours(int id)
         {
             Authentication auth = new Authentication();
@@ -53,6 +54,7 @@ namespace TARS.Controllers
                 return View("notLoggedIn");
             }
         }
+
 
         //
         // POST: /User/addHours
@@ -84,9 +86,10 @@ namespace TARS.Controllers
             }
         }
 
+
         //
         // GET: /User/CheckForTimesheet
-        //Function to create a new timesheet if one doesn't exist for the period
+        //Creates a new timesheet if one doesn't exist for the period
         public virtual int checkForTimesheet(Hours newhours)
         {
             Authentication auth = new Authentication();
@@ -136,8 +139,9 @@ namespace TARS.Controllers
             }
         }
 
+
         //
-        //Function to retrieve a specified user's timesheet for specified date
+        //Retrieves a specified user's timesheet for specified date
         public Timesheet getTimesheet(string user, DateTime tsDate)
         {
             Timesheet resulttimesheet = new Timesheet();
@@ -154,8 +158,9 @@ namespace TARS.Controllers
             return resulttimesheet;
         }
 
+
         //
-        //Function to retrieve timesheet with specified unique id
+        //Retrieves timesheet with specified unique id
         public Timesheet getTimesheetFromID(int id)
         {
             Timesheet resulttimesheet = new Timesheet();
@@ -169,6 +174,7 @@ namespace TARS.Controllers
             }
             return resulttimesheet;
         }
+
 
         //
         // GET: /User/searchWorkEffort
@@ -195,6 +201,7 @@ namespace TARS.Controllers
                 return View("notLoggedIn");
             }
         }
+
 
         //
         // GET: /User/viewWorkEffort
@@ -228,6 +235,7 @@ namespace TARS.Controllers
             }
         }
 
+
         // 
         // GET: /User/editHours
         //  - Edits a specified Hours entry
@@ -237,6 +245,10 @@ namespace TARS.Controllers
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
                 Hours hours = HoursDB.HoursList.Find(id);
+                ViewBag.timesheetLockedFlag = getTimesheetLockedStatus(hours);
+                Authentication newAuth = new Authentication();
+                bool adminFlag = newAuth.isAdmin(this);
+                ViewBag.adminFlag = adminFlag;
                 return View(hours);
             }
             else
@@ -244,6 +256,7 @@ namespace TARS.Controllers
                 return View("notLoggedIn");
             }
         }
+
 
         //
         // POST: /User/editHours
@@ -266,6 +279,29 @@ namespace TARS.Controllers
             }
         }
 
+
+        //
+        //Updates Locked status of timesheet that refHours is in, and returns timesheet status
+        public bool getTimesheetLockedStatus(Hours refHours)
+        {
+            DateTime refDate = DateTime.Now;
+            Timesheet tmpTimesheet = getTimesheet(refHours.creator, DateTime.Now);
+            if (tmpTimesheet.locked == true)
+            {
+                return true;
+            }
+            if (tmpTimesheet.periodEnd < refDate.AddDays(-2))
+            {
+                //update locked status if end date was more than two days ago
+                tmpTimesheet.locked = true;
+                TimesheetDB.Entry(tmpTimesheet).State = EntityState.Modified;
+                TimesheetDB.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+
         // 
         // GET: /User/deleteHours
         //  - Deletes a specified Hours entry
@@ -285,9 +321,10 @@ namespace TARS.Controllers
             }
         }
 
+
         //
         // GET: /User/copyTimesheet
-        //Function to duplicate hours from previous week 
+        //Duplicates hours from previous week 
         public virtual ActionResult copyTimesheet()
         {
             Authentication auth = new Authentication();
@@ -334,6 +371,7 @@ namespace TARS.Controllers
             }
         }
 
+
         //
         // GET: /User/storeFile
         //Unimplemented
@@ -350,6 +388,7 @@ namespace TARS.Controllers
             }
         }
 
+
         //
         // GET: /User/viewHistory
         //Unimplemented
@@ -365,6 +404,7 @@ namespace TARS.Controllers
                 return View("notLoggedIn");
             }
         }
+
 
         //
         // GET: /User/viewTimesheet
@@ -403,6 +443,7 @@ namespace TARS.Controllers
             }           
         }
 
+
         //
         // GET: /User/submitTimesheet
         //changes timesheet submitted status to true
@@ -432,6 +473,7 @@ namespace TARS.Controllers
                 return View("error");
             }
         }
+
 
         //
         // GET: /User/unSubmitTimesheet
@@ -466,8 +508,9 @@ namespace TARS.Controllers
             }
         }
 
+
         //
-        //Function to retrieve the status of an employees timesheet from the specified date
+        //Retrieves the status of an employees timesheet from the specified date
         public virtual string getTimesheetStatus(string userName, DateTime refDate)
         {
             string status = "";
@@ -493,8 +536,9 @@ namespace TARS.Controllers
             return status;
         }
 
+
         // 
-        //Function that returns the current pay period as a string
+        //Returns the current pay period as a string
         public virtual string getPayPeriod()
         {
             Authentication auth = new Authentication();
@@ -511,8 +555,9 @@ namespace TARS.Controllers
             }
         }
 
+
         // 
-        //Function that returns the IDHW Divisions as a list of strings
+        //Returns the IDHW Divisions as a list of strings
         public virtual List<string> getDivisions()
         {
             Authentication auth = new Authentication();
@@ -533,8 +578,9 @@ namespace TARS.Controllers
             }
         }
 
+
         // 
-        //Function that returns list of PCA codes for the specified division
+        //Returns list of PCA codes for the specified division
         public virtual List<int> getPcaCodes(string division)
         {
             List<int> pcaList = new List<int>();
@@ -548,8 +594,9 @@ namespace TARS.Controllers
             return pcaList;
         }
 
+
         // 
-        //Function that returns Earnings codes as a selection list that can be easily used in an Html DropDown
+        //Returns Earnings Codes as a selection list that can be easily used in an Html DropDown
         public virtual List<SelectListItem> getEarningsCodeSelectList()
         {
             List<SelectListItem> earnCodesList = new List<SelectListItem>();
@@ -568,7 +615,7 @@ namespace TARS.Controllers
 
 
         // 
-        //Function that returns the description of a work effort as a string
+        //Returns the description of a work effort as a string
         public virtual string getWeDescription(int id)
         {
             Authentication auth = new Authentication();
@@ -590,8 +637,9 @@ namespace TARS.Controllers
             }
         }
 
+
         // 
-        //Function that returns the IDHW division that the user works for
+        //Returns the IDHW division that the user works for
         public virtual string getUserDivision()
         {
             Authentication auth = new Authentication();
@@ -612,6 +660,5 @@ namespace TARS.Controllers
                 return null;
             }
         }
-
     }
 }

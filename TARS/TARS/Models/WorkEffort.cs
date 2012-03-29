@@ -17,7 +17,7 @@ namespace TARS.Models
         public string comments { get; set; }
         public int pcaCode { get; set; }
         public string earningsCode { get; set; }
-        public bool active { get; set; }
+        public bool hidden { get; set; }
     }
 
     public class WorkEffortDBContext : DbContext
@@ -52,7 +52,7 @@ namespace TARS.Models
               "; comments: " + entry.Property(u => u.comments).CurrentValue +
               "; pcaCode: " + entry.Property(u => u.pcaCode).CurrentValue +
               "; earningsCode: " + entry.Property(u => u.earningsCode).CurrentValue +
-              "; active: " + entry.Property(u => u.active).CurrentValue;
+              "; hidden: " + entry.Property(u => u.hidden).CurrentValue;
             }
 
             //Doesn't actually get the current user's name.  User.Identity.Name doesn't work here
