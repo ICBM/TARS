@@ -39,14 +39,18 @@ namespace TARS.Controllers
 
         //
         // GET: /User/addHours
-        //Adds hours to a workeffort with index id
-        public virtual ActionResult addHours(int id)
+        //Adds hours to a work effort
+        public virtual ActionResult addHours()
         {
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
-                ViewBag.WorkEffortID = id;
-                ViewBag.userName = this.User.Identity.Name;
+                ViewBag.timesheetLockedFlag = isTimesheetLocked(User.Identity.Name, DateTime.Now);
+                Authentication newAuth = new Authentication();
+                bool adminFlag = newAuth.isAdmin(this);
+                ViewBag.adminFlag = adminFlag;
+                ViewBag.userName = User.Identity.Name;
+                ViewBag.workEffortList = getWorkEffortSelectList();
                 return View();
             }
             else
@@ -245,10 +249,12 @@ namespace TARS.Controllers
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
                 Hours hours = HoursDB.HoursList.Find(id);
-                ViewBag.timesheetLockedFlag = getTimesheetLockedStatus(hours);
+                ViewBag.timesheetLockedFlag = isTimesheetLocked(User.Identity.Name, DateTime.Now);
                 Authentication newAuth = new Authentication();
                 bool adminFlag = newAuth.isAdmin(this);
                 ViewBag.adminFlag = adminFlag;
+                ViewBag.userName = User.Identity.Name;
+                ViewBag.workEffortList = getWorkEffortSelectList();
                 return View(hours);
             }
             else
@@ -282,10 +288,9 @@ namespace TARS.Controllers
 
         //
         //Updates Locked status of timesheet that refHours is in, and returns timesheet status
-        public bool getTimesheetLockedStatus(Hours refHours)
+        public bool isTimesheetLocked(string worker,DateTime refDate)
         {
-            DateTime refDate = DateTime.Now;
-            Timesheet tmpTimesheet = getTimesheet(refHours.creator, DateTime.Now);
+            Timesheet tmpTimesheet = getTimesheet(worker, refDate);
             if (tmpTimesheet.locked == true)
             {
                 return true;
@@ -611,6 +616,28 @@ namespace TARS.Controllers
                 });                    
             }
             return earnCodesList;
+        }
+
+
+        // 
+        //Returns Work Efforts within the division as a selection list
+        public virtual List<SelectListItem> getWorkEffortSelectList()
+        {
+            List<SelectListItem> effortList = new List<SelectListItem>();
+
+            var searchEfforts = from m in WorkEffortDB.WorkEffortList
+                                  select m;
+//NEED TO FIX THIS TO CHECK ASSOCIATIONS WITH MULTIPLE PCA CODES
+            foreach (var item in searchEfforts)
+            {
+                string tmpValue = item.ID.ToString();
+                effortList.Add(new SelectListItem
+                {
+                    Text = item.description,
+                    Value = tmpValue
+                });
+            }
+            return effortList;
         }
 
 

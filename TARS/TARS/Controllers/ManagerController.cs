@@ -143,8 +143,17 @@ namespace TARS.Controllers
                     //make sure it falls within it's associated PCA code's time boundaries
                     if (verifyWeTimeBounds(workeffort) == true)
                     {
+                        //update WorkEffort table in database
                         WorkEffortDB.WorkEffortList.Add(workeffort);
                         WorkEffortDB.SaveChanges();
+
+                        //add the association to PCA_WE table in database
+                        PCA_WE tmpPcaWe = new PCA_WE();
+                        tmpPcaWe.WE = workeffort.ID;
+                        tmpPcaWe.PCA = getPcaIdFromCode(workeffort.pcaCode);
+                        PCA_WEDB.PCA_WEList.Add(tmpPcaWe);
+                        PCA_WEDB.SaveChanges();
+
                         return RedirectToAction("weManagement");
                     }
                     else
@@ -152,9 +161,7 @@ namespace TARS.Controllers
                         ViewBag.withinTimeBounds = false;
                         string division = getUserDivision();
                         ViewBag.divisionName = division;
-                        //getPcaCodes returns a List<int>
                         ViewBag.pcaList = getPcaCodes(division);
-                        //getEarningsCodeSelectList returns a  List<SelectListItem> to use in a dropdown
                         ViewBag.earnCodeSelectList = getEarningsCodeSelectList();
 
                         return View();
@@ -205,7 +212,7 @@ namespace TARS.Controllers
 
 
         //
-        // GET: /Manager/editWorkEffort/5
+        // GET: /Manager/editWorkEffort
         //  - Edits a specific WorkEffort code.
         public virtual ActionResult editWorkEffort(int id)
         {
@@ -227,7 +234,7 @@ namespace TARS.Controllers
 
 
         //
-        // POST: /Manager/editWorkEffort/5
+        // POST: /Manager/editWorkEffort
         [HttpPost]
         public virtual ActionResult editWorkEffort(WorkEffort workeffort)
         {
@@ -239,9 +246,9 @@ namespace TARS.Controllers
                     //make sure it falls within it's associated PCA code's time boundaries
                     if (verifyWeTimeBounds(workeffort) == true)
                     {
-                        WorkEffortDB.Entry(workeffort).State = EntityState.Modified;
+                        WorkEffortDB.WorkEffortList.Add(workeffort);
                         WorkEffortDB.SaveChanges();
-                        return RedirectToAction("weManagement/");
+                        return RedirectToAction("weManagement");
                     }
                     else
                     {
@@ -391,14 +398,24 @@ namespace TARS.Controllers
 
 
         //
-        // GET: /Manager/editPCA_WE/5
+        // GET: /Manager/editPCA_WE
         //  - Edits a specific PCA_WE code.
-        public virtual ActionResult editPCA_WE(int id)
+        public virtual ActionResult editPCA_WE(int Pca, int WeID)
         {
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
-                PCA_WE pca_we = PCA_WEDB.PCA_WEList.Find(id);
+                PCA_WE pca_we = new PCA_WE();
+                PcaCode tmpPca = getPcaFromCode(Pca);
+
+                var searchPcaWe = from p in PCA_WEDB.PCA_WEList
+                                  where p.PCA == tmpPca.ID
+                                  where p.WE == WeID
+                                  select p;
+                foreach (var item in searchPcaWe)
+                {
+                    pca_we = item;
+                }
                 return View(pca_we);
             }
             else
@@ -409,7 +426,7 @@ namespace TARS.Controllers
 
 
         //
-        // POST: /Manager/editPCA_WE/5
+        // POST: /Manager/editPCA_WE
         [HttpPost]
         public virtual ActionResult editPCA_WE(PCA_WE pca_we)
         {
@@ -609,6 +626,38 @@ namespace TARS.Controllers
                 userID = item.ID;
             }
             return userID;
+        }
+
+
+        //
+        //Returns the unique ID of specified PCA code
+        public int getPcaIdFromCode(int pcacode)
+        {
+            int PcaID = 0;
+            var searchID = from m in PcaCodeDB.PcaCodeList
+                           where m.code == pcacode
+                           select m;
+            foreach (var item in searchID)
+            {
+                PcaID = item.ID;
+            }
+            return PcaID;
+        }
+
+
+        //
+        //Returns a PcaCode object with the specified PCA code
+        public PcaCode getPcaFromCode(int pcacode)
+        {
+            PcaCode pcaCodeObj = new PcaCode();
+            var searchID = from m in PcaCodeDB.PcaCodeList
+                           where m.code == pcacode
+                           select m;
+            foreach (var item in searchID)
+            {
+                pcaCodeObj = item;
+            }
+            return pcaCodeObj;
         }
 
 

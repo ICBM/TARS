@@ -37,10 +37,10 @@ namespace TARS.Controllers
         {
             var user = new UserController();
             ViewBag.userIndex              = user.Index()              != null;
-            ViewBag.userAddHours           = user.addHours( 0 )        != null;
+            ViewBag.userAddHours           = user.addHours()           != null;
             ViewBag.userSearchWorkEffort   = user.searchWorkEffort()   != null;
             ViewBag.userViewWorkEffort     = user.viewWorkEffort()     != null;
-            ViewBag.userViewTimesheet          = user.viewTimesheet()          != null;
+            ViewBag.userViewTimesheet      = user.viewTimesheet()      != null;
             ViewBag.userViewHistory        = user.viewHistory()        != null;
 
             var manager = new ManagerController();

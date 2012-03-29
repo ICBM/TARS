@@ -9,52 +9,55 @@
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 
-@using (Html.BeginForm()) {
+@if ((ViewBag.timesheetLockedFlag == false) || (ViewBag.adminFlag == true))
+{
+    using (Html.BeginForm())
+    {    
+        @Html.ValidationSummary(true)
+        <fieldset>
+
+            <div class="editor-label"><b>Work Effort</b></div>
+            <div class="editor-field">
+                @Html.DropDownList("workEffortID", (List<SelectListItem>)ViewBag.workEffortList)
+            </div>
+
+            <p>
+            <div class="editor-label"><b>Hours Worked</b></div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.hours)
+                @Html.ValidationMessageFor(model => model.hours)
+            </div>
+            </p>
     
-    @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>addHours</legend>
+            <p>
+            <div class="editor-label"><b>Description of work</b></div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.description)
+                @Html.ValidationMessageFor(model => model.description)
+            </div>
+            </p>
 
-        <input data-val="true" data-val-number="The field we must be a number." data-val-required="The we field is required." id="we" name="we" type="hidden" value="@ViewBag.WorkEffortID" />
+            <p>
+            <div class="editor-label"><b>Date </b>(and optional time)</div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.timestamp)
+                @Html.ValidationMessageFor(model => model.timestamp)
+            </div>
+            </p>
 
-        <!--List of tasks in a dropdown, perhaps?-->
-        <div class="editor-label">
-            @Html.LabelFor(model => model.workEffortID)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.workEffortID)
-            @Html.ValidationMessageFor(model => model.workEffortID)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.hours)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.hours)
-            @Html.ValidationMessageFor(model => model.hours)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.description)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.description)
-            @Html.ValidationMessageFor(model => model.description)
-        </div>
-
-        <!-- will want to replace with an automatically generated time-->
-        <div class="editor-label">
-            @Html.LabelFor(model => model.timestamp)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.timestamp)
-            @Html.ValidationMessageFor(model => model.timestamp)
-        </div>
-
-        <input id="creator" name="creator" type="hidden" value="@User.Identity.Name" />
+            <input id="creator" name="creator" type="hidden" value="@User.Identity.Name" />
         
-        <p>
-            <input type="submit" value="Submit" />
-        </p>
-    </fieldset>   
+            <p>
+                <input type="submit" value="Submit" />
+            </p>
+        </fieldset>   
+    }
 }
+else
+{
+    <html><h3>Timesheet Is Locked</h3></html>
+}
+
+<div>
+    @Html.ActionLink("Back to Timesheet", "viewTimesheet/")
+</div>

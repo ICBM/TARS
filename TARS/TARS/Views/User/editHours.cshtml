@@ -12,45 +12,41 @@
 @if ( (ViewBag.timesheetLockedFlag == false) || (ViewBag.adminFlag == true) )
 {
     using (Html.BeginForm())
-    {
+    {   
+        @Html.HiddenFor(model => model.ID)
+        @Html.HiddenFor(model => model.creator)
+        
         @Html.ValidationSummary(true)
         <fieldset>
-            <legend>Hours</legend>
 
-            @Html.HiddenFor(model => model.ID)
-            @Html.HiddenFor(model => model.creator)
-
-            <div class="editor-label">
-                @Html.LabelFor(model => model.workEffortID)
-            </div>
+            <div class="editor-label"><b>Work Effort</b></div>
             <div class="editor-field">
-                @Html.EditorFor(model => model.workEffortID)
-                @Html.ValidationMessageFor(model => model.workEffortID)
+                @Html.DropDownList("workEffortID", (List<SelectListItem>)ViewBag.workEffortList)
             </div>
 
-            <div class="editor-label">
-                @Html.LabelFor(model => model.description)
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.description)
-                @Html.ValidationMessageFor(model => model.description)
-            </div>
-
-            <div class="editor-label">
-                @Html.LabelFor(model => model.hours)
-            </div>
+            <p>
+            <div class="editor-label"><b>Hours Worked</b></div>
             <div class="editor-field">
                 @Html.EditorFor(model => model.hours)
                 @Html.ValidationMessageFor(model => model.hours)
             </div>
-
-            <div class="editor-label">
-                @Html.LabelFor(model => model.timestamp)
+            </p>
+    
+            <p>
+            <div class="editor-label"><b>Description of work</b></div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.description)
+                @Html.ValidationMessageFor(model => model.description)
             </div>
+            </p>
+
+            <p>
+            <div class="editor-label"><b>Date </b>(and optional time)</div>
             <div class="editor-field">
                 @Html.EditorFor(model => model.timestamp)
                 @Html.ValidationMessageFor(model => model.timestamp)
             </div>
+            </p>
 
             <p>
                 <input type="submit" value="Save" />

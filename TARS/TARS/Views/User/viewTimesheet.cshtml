@@ -5,7 +5,11 @@
 }
 
 <h2>viewTimesheet
-@if (ViewBag.timesheet.submitted)
+@if (ViewBag.timesheet.locked)
+{
+    <small><i>(locked)</i></small>
+}
+else if (ViewBag.timesheet.submitted)
 {
     if (ViewBag.timesheet.approved)
     {
@@ -24,21 +28,24 @@ else
 
 
 <div id="menu" style="float:right;">
-<h4>Actions</h4>
-    <p>@Html.ActionLink("Copy Previous Timesheet", "copyTimesheet")</p>
-    <p>@Html.ActionLink("Add New Hours", "addHours", new { id = 1 })</p>
-    @if (ViewBag.timesheet.approved == false)
-    {
-        if (ViewBag.timesheet.submitted == true)
+    @if (ViewBag.timesheet.locked == false)
+    {   
+        <h4>Actions</h4>    
+        if (ViewBag.timesheet.approved == false)
         {
-            <p>@Html.ActionLink("Un-submit Current Timesheet", "unSubmitTimesheet", new { id = (int)ViewBag.timesheet.ID })</p>
-        }
-        else
-        {
-            <p>@Html.ActionLink("Submit Current Timesheet", "submitTimesheet", new { id = (int)ViewBag.timesheet.ID })</p>
+            if (ViewBag.timesheet.submitted == true)
+            {
+                <p>@Html.ActionLink("Un-submit Timesheet", "unSubmitTimesheet", new { id = (int)ViewBag.timesheet.ID })</p>
+            }
+            else
+            {
+                <p>@Html.ActionLink("Copy Previous Timesheet", "copyTimesheet")</p>
+                <p>@Html.ActionLink("Add New Hours", "addHours")</p> 
+                <p>@Html.ActionLink("Submit Current Timesheet", "submitTimesheet", new { id = (int)ViewBag.timesheet.ID })</p>
+            }
         }
     }
-    <p>@Html.ActionLink("Lookup Work Effort", "searchWorkeffort")</p>
+    
 </div>
 
 
@@ -78,7 +85,7 @@ else
     {
     <tr>
         <td>
-            @Html.Action("getWeDescription", "User", new{ id = item.workEffortID })
+            @Html.Action("getWeDescription", "User", new { id = item.workEffortID })
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.hours)
@@ -93,13 +100,13 @@ else
             @Html.DisplayFor(modelItem => item.creator)
         </td>
 
-       @if (ViewBag.timesheet.submitted == false)
-        {
+       @if ( (ViewBag.timesheet.submitted == false) && (ViewBag.timesheet.locked == false) )
+       {
             <td>
                 @Html.ActionLink("Edit", "editHours", new { id = item.ID }) |
                 @Html.ActionLink("Delete", "deleteHours", new { id = item.ID })
             </td>
-        }
+       }
     </tr>
     }
 }

@@ -12,9 +12,12 @@
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
     <fieldset>
-        <div class="editor-label"><b>PCA Code</b></div>
-        <div class="editor-field">
+
+        <div class="editor-label"><b>PCA Codes</b></div>
+        <div class="display-field">
+            <!-- This dropdown should not allow selections, it's just for viewing -->
             @Html.DropDownList("pcaCode", new SelectList(ViewBag.pcaList, Model))
+            @Html.ActionLink("Add or Remove PCA Code Associations", "editPCA_WE", new { Pca = Model.pcaCode, WeID = Model.ID })
         </div>
 
         <p>

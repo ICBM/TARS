@@ -10,7 +10,7 @@ namespace TARS.Models
 {
     public class WorkEffort
     {
-        public int ID { get; set; } //DB iterator?
+        public int ID { get; set; } //DB iterator
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }
         public string description { get; set; }
