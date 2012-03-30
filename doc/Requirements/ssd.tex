@@ -8,6 +8,7 @@
 \usepackage{appendix}
 \usepackage{tabularx}
 \usepackage{wrapfig}
+\usepackage{pdfpages}
 
 
 \newcommand{\HRule}{\rule{5cm}{0.1mm}}
@@ -41,7 +42,9 @@
 Scott Beddall\\
 Brett Hitchcock\\
 Chaylo Laurino\\
-Alex Nilson
+Alex Nilson\\
+Zeke Long\\
+Nathan Mazur
 \end{flushleft}
 \end{minipage}
 \begin{minipage}{0.4\textwidth}
@@ -131,8 +134,9 @@ Section 6 is a complete overview of project deliverables as well as providing an
 Sections 7 and beyond are appendices including original information and communications used to create this document.
 
 \section{\bfseries{Software Requirements, Constraints, and User Characteristics}}
-The following is a compiled list of TARS requirements. Below each individual requirement is a short comment as well as a status of that requirement as of 12/7/2011.
-\input{requirements_list.tex}
+The following is a compiled list of TARS requirements. Below each individual requirement is a short comment as well as a status of that requirement as of 3/30/2012.
+\includepdf[pages={1-6}]{requirements_summary.pdf}
+
 \section{Software Architecture}
 \subsection{Server Architecture - Microsoft Internet Information Services 7} 
 One of the IDHW's requirements for the this project is the use of Windows Server infrastructure. In this case the TARS development team will use Microsoft IIS7. Microsoft's Internet Information Services server is a modular, intuitive server application. New considerations must now be applied, however. IIS7, being a Microsoft product, uses Microsoft development software. Namely:
