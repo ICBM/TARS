@@ -51,7 +51,7 @@ namespace TARS.Controllers
                 bool adminFlag = newAuth.isAdmin(this);
                 ViewBag.adminFlag = adminFlag;
                 ViewBag.userName = User.Identity.Name;
-                ViewBag.workEffortList = getActiveWorkEffortSelectList();
+                ViewBag.workEffortList = getVisibleWorkEffortSelectList();
                 return View();
             }
             else
@@ -72,12 +72,22 @@ namespace TARS.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (newhours.creator == null)
+                    WorkEffort tmpWe = WorkEffortDB.WorkEffortList.Find(newhours.workEffortID);
+                    //check to make sure that the new hours are within the work effort's time bounds
+                    if ((newhours.timestamp < tmpWe.startDate) || (newhours.timestamp > tmpWe.endDate))
                     {
-                        return View("error");
+                        ViewBag.invalidTimestamp = true;
+                        ViewBag.timesheetLockedFlag = isTimesheetLocked(User.Identity.Name, DateTime.Now);
+                        Authentication newAuth = new Authentication();
+                        bool adminFlag = newAuth.isAdmin(this);
+                        ViewBag.adminFlag = adminFlag;
+                        ViewBag.userName = User.Identity.Name;
+                        ViewBag.workEffortList = getVisibleWorkEffortSelectList();
+                        return View(newhours);
                     }
                     //check to see if a timesheet exists for the period hours are being added to
                     checkForTimesheet(newhours);
+  
                     //add and save new hours
                     HoursDB.HoursList.Add(newhours);
                     HoursDB.SaveChanges();
@@ -256,7 +266,7 @@ namespace TARS.Controllers
                 bool adminFlag = newAuth.isAdmin(this);
                 ViewBag.adminFlag = adminFlag;
                 ViewBag.userName = User.Identity.Name;
-                ViewBag.workEffortList = getActiveWorkEffortSelectList();
+                ViewBag.workEffortList = getVisibleWorkEffortSelectList();
                 return View(hours);
             }
             else
@@ -644,7 +654,7 @@ namespace TARS.Controllers
 
         // 
         //Returns active Work Efforts WITHIN THE USER'S DIVISION as a selection list
-        public virtual List<SelectListItem> getActiveWorkEffortSelectList()
+        public virtual List<SelectListItem> getVisibleWorkEffortSelectList()
         {
             List<SelectListItem> effortList = new List<SelectListItem>();
             string division = getUserDivision();
@@ -658,7 +668,7 @@ namespace TARS.Controllers
             //(PCA codes and PCA_WE must be used to get all of the work efforts in the division)
             foreach (var we in searchEfforts)
             {
-                if ( (we.hidden != true)&&(we.startDate < DateTime.Today)&&(we.endDate > DateTime.Today) )
+                if (we.hidden != true)
                 {
                     var searchPcaWe = from p in PCA_WEDB.PCA_WEList
                                         where p.WE == we.ID
@@ -705,6 +715,17 @@ namespace TARS.Controllers
             {
                 return null;
             }
+        }
+
+
+        //
+        //Returns work effort's time boundaries as a string
+        //(note: it's called from addHours View)
+        public string getWeTimeBoundsString(int id)
+        {
+            WorkEffort we = WorkEffortDB.WorkEffortList.Find(id);
+            string bounds = we.startDate.ToShortDateString() + " - " + we.endDate.ToShortDateString();
+            return bounds;
         }
 
 

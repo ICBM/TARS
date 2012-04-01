@@ -42,6 +42,11 @@
             <div class="editor-field">
                 @Html.EditorFor(model => model.timestamp)
                 @Html.ValidationMessageFor(model => model.timestamp)
+                @if (ViewBag.invalidTimestamp == true)
+                {
+                    <html>Not within the work effort's date range: 
+                    <b>@Html.Action("getWeTimeBoundsString", new { id = Model.workEffortID })</b></html>
+                }
             </div>
             </p>
 
