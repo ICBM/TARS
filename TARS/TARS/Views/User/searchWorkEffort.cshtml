@@ -61,3 +61,9 @@
     }
 </table>
 
+<!-- if the user is has manager privileges, let them edit the work effort -->
+@if (ViewBag.managerFlag == true)
+{  
+    <p>@Html.ActionLink("Manage Work Efforts", "WeManagement", "Manager")</p>
+}
+

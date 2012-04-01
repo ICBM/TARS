@@ -301,15 +301,47 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
-                WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
-                WorkEffortDB.WorkEffortList.Remove(workeffort);
-                WorkEffortDB.SaveChanges();
-                return RedirectToAction("weManagement/");
+                //make sure that there aren't any hours billed to the work effort
+                if (checkWeForBilledHours(id) == true)
+                {
+                    ViewBag.failedDelete = true;
+                    return View("WeManagement", WorkEffortDB.WorkEffortList.ToList()); 
+                }
+                else
+                {
+                    WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
+                    WorkEffortDB.WorkEffortList.Remove(workeffort);
+                    WorkEffortDB.SaveChanges();
+                    return RedirectToAction("weManagement/");
+                }
             }
             else
             {
                 return View("error");
             } 
+        }
+
+
+        //
+        //Checks a work effort to see if any hours are currently billed to it. Returns TRUE if there are.
+        public bool checkWeForBilledHours(int id)
+        {
+            Timesheet tmpTimesheet = new Timesheet();
+
+            //get all hours that have been billed to the work effort
+            var searchHours = from h in HoursDB.HoursList
+                              where h.workEffortID == id
+                              select h;
+            foreach (var hrs in searchHours)
+            {
+                //If the corresponding timesheet is still active, return TRUE
+                tmpTimesheet = getTimesheet(hrs.creator, hrs.timestamp);
+                if (tmpTimesheet.locked == false)
+                {
+                    return true;
+                }
+            }
+            return false;       //if there are no hours billed to it, return false
         }
 
 
@@ -328,8 +360,8 @@ namespace TARS.Controllers
                     WorkEffortDB.SaveChanges();
                     return RedirectToAction("WeManagement");
                 }
-                ViewBag.tooEarly = true;
-                return View();
+                ViewBag.failedHide = true;
+                return View("WeManagement", WorkEffortDB.WorkEffortList.ToList());
             }
             else
             {
@@ -440,7 +472,7 @@ namespace TARS.Controllers
                 if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
                 {
                     Timesheet ts = new Timesheet();
-                    ts = getTimesheetFromID(id);
+                    ts = TimesheetDB.TimesheetList.Find(id);
                     ts.approved = true;
                     TimesheetDB.Entry(ts).State = System.Data.EntityState.Modified;
                     //save changes to the database
@@ -470,7 +502,7 @@ namespace TARS.Controllers
                 if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
                 {
                     Timesheet ts = new Timesheet();
-                    ts = getTimesheetFromID(id);
+                    ts = TimesheetDB.TimesheetList.Find(id);
                     ts.approved = false;
                     ts.submitted = false;
                     TimesheetDB.Entry(ts).State = System.Data.EntityState.Modified;
@@ -502,7 +534,7 @@ namespace TARS.Controllers
                 if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
                 {
                     Timesheet ts = new Timesheet();
-                    ts = getTimesheetFromID(id);
+                    ts = TimesheetDB.TimesheetList.Find(id);
                     ts.submitted = true;
                     TimesheetDB.Entry(ts).State = System.Data.EntityState.Modified;
                     //save changes to the database

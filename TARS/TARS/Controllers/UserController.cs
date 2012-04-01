@@ -175,23 +175,6 @@ namespace TARS.Controllers
 
 
         //
-        //Retrieves timesheet with specified unique id
-        public Timesheet getTimesheetFromID(int id)
-        {
-            Timesheet resulttimesheet = new Timesheet();
-
-            var search = from m in TimesheetDB.TimesheetList
-                         where m.ID == id
-                         select m;
-            foreach (var item in search)
-            {
-                resulttimesheet = item;
-            }
-            return resulttimesheet;
-        }
-
-
-        //
         // GET: /User/searchWorkEffort
         //Lists out all workefforts in the database
         public virtual ActionResult searchWorkEffort()
@@ -472,7 +455,7 @@ namespace TARS.Controllers
                 if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
                 {
                     Timesheet ts = new Timesheet();
-                    ts = getTimesheetFromID(id);
+                    ts = TimesheetDB.TimesheetList.Find(id);
                     ts.submitted = true;
                     TimesheetDB.Entry(ts).State = System.Data.EntityState.Modified;
                     //save changes to the database
@@ -503,7 +486,7 @@ namespace TARS.Controllers
                 if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
                 {
                     Timesheet ts = new Timesheet();
-                    ts = getTimesheetFromID(id);
+                    ts = TimesheetDB.TimesheetList.Find(id);
                     //make sure the user is allowed to un-submit it
                     if ((ts.approved == false) && (ts.locked == false))
                     {

@@ -6,6 +6,16 @@
 
 <h2>Work Effort Management</h2>
 
+@if (ViewBag.failedDelete == true)
+{
+    <h3>Error: Can't delete work effort that has hours billed to it.</h3>
+}
+
+@if (ViewBag.failedHide == true)
+{
+    <h3>Error: Can't hide a work effort before its end date.</h3>
+}
+
 <p>
 @Html.ActionLink("Add Work Effort", "addWorkEffort")
 </p>
