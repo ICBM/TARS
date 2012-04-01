@@ -154,13 +154,13 @@ namespace TARS.Controllers
                     }
                     else
                     {
-                        ViewBag.withinTimeBounds = false;
+                        ViewBag.notWithinTimeBounds = true;
                         string division = getUserDivision();
                         ViewBag.divisionName = division;
                         ViewBag.pcaList = getDivisionPcaCodes(division);
                         ViewBag.earnCodeSelectList = getEarningsCodeSelectList();
 
-                        return View();
+                        return View(workeffort);
                     }
                 }
                 return View("error");
@@ -255,7 +255,7 @@ namespace TARS.Controllers
                     }
                     else
                     {
-                        ViewBag.withinTimeBounds = false;
+                        ViewBag.notWithinTimeBounds = true;
                         ViewBag.pcaList = getWorkEffortPcaCodes(workeffort);
                         ViewBag.earnCodeSelectList = getEarningsCodeSelectList();
 
@@ -463,13 +463,13 @@ namespace TARS.Controllers
 
         //
         // GET: /Manager/managerSubmitTimesheet
-        //changes timesheet status to true so it will show up in the manager's list of timesheets to approve
+        //changes the specified timesheet submitted status to true
         public virtual ActionResult managerSubmitTimesheet(int id)
         {
             if (id >= 0)
             {
                 Authentication auth = new Authentication();
-                if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+                if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
                 {
                     Timesheet ts = new Timesheet();
                     ts = getTimesheetFromID(id);

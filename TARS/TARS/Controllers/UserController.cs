@@ -51,7 +51,7 @@ namespace TARS.Controllers
                 bool adminFlag = newAuth.isAdmin(this);
                 ViewBag.adminFlag = adminFlag;
                 ViewBag.userName = User.Identity.Name;
-                ViewBag.workEffortList = getWorkEffortSelectList();
+                ViewBag.workEffortList = getActiveWorkEffortSelectList();
                 return View();
             }
             else
@@ -256,7 +256,7 @@ namespace TARS.Controllers
                 bool adminFlag = newAuth.isAdmin(this);
                 ViewBag.adminFlag = adminFlag;
                 ViewBag.userName = User.Identity.Name;
-                ViewBag.workEffortList = getWorkEffortSelectList();
+                ViewBag.workEffortList = getActiveWorkEffortSelectList();
                 return View(hours);
             }
             else
@@ -643,22 +643,41 @@ namespace TARS.Controllers
 
 
         // 
-        //Returns Work Efforts within the division as a selection list
-        public virtual List<SelectListItem> getWorkEffortSelectList()
+        //Returns Work Efforts WITHIN THE USER'S DIVISION as a selection list
+        public virtual List<SelectListItem> getActiveWorkEffortSelectList()
         {
             List<SelectListItem> effortList = new List<SelectListItem>();
+            string division = getUserDivision();
 
             var searchEfforts = from m in WorkEffortDB.WorkEffortList
-                                  select m;
-//NEED TO FIX THIS TO CHECK ASSOCIATIONS WITH MULTIPLE PCA CODES
-            foreach (var item in searchEfforts)
+                                select m;
+            var searchPca = from p in PcaCodeDB.PcaCodeList
+                            where (p.division.CompareTo(division) == 0)
+                            select p;
+
+            //get all the work efforts in the user's division
+            //(PCA codes and PCA_WE must be used to get all of the work efforts in the division)
+            foreach (var we in searchEfforts)
             {
-                string tmpValue = item.ID.ToString();
-                effortList.Add(new SelectListItem
+                if (we.hidden != true)
                 {
-                    Text = item.description,
-                    Value = tmpValue
-                });
+                    foreach (var pca in searchPca)
+                    {
+                        var searchPcaWe = from p in PCA_WEDB.PCA_WEList
+                                          where p.PCA == pca.ID
+                                          where p.WE == we.ID
+                                          select p;
+                        foreach (var pca_we in searchPcaWe)
+                        {
+                            string tmpValue = we.ID.ToString();
+                            effortList.Add(new SelectListItem
+                            {
+                                Text = we.description,
+                                Value = tmpValue
+                            });
+                        }
+                    }
+                }
             }
             return effortList;
         }
