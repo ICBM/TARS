@@ -6,4 +6,3 @@
 6	Public Health
 7	Support Services
 8	Welfare (Self Reliance)
-29	MLT	Military Leave Taken
