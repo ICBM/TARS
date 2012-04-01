@@ -307,9 +307,10 @@ namespace TARS.Controllers
             if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
             {
                 WorkEffort we = WorkEffortDB.WorkEffortList.Find(weID);
+                PcaCode pca = getPcaFromCode(we.pcaCode);
                 ViewBag.workEffortDescription = we.description;
                 ViewBag.workEffortId = weID;
-                ViewBag.pcaAddList = getAllPcaCodes();
+                ViewBag.pcaAddList = getDivisionPcaCodes(pca.division);
                 return View();
             }
             else

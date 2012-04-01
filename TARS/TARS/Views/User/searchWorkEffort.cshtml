@@ -36,45 +36,49 @@
         <th></th>
     </tr>
 
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.pcaCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.earningsCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.description)
-            </td>
-            <td>
-                @item.startDate.ToShortDateString()
-            </td>
-            <td>
-                @item.endDate.ToShortDateString()
-            </td>
+    @foreach (var item in Model) 
+    {
+        if (item.hidden == false)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.pcaCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.earningsCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.description)
+                </td>
+                <td>
+                    @item.startDate.ToShortDateString()
+                </td>
+                <td>
+                    @item.endDate.ToShortDateString()
+                </td>
 
-            <td>
-                <!-- If the user has manager privileges, let them edit and delete the work efforts -->
-                @if (ViewBag.managerFlag == true)
-                {
-                    @Html.ActionLink("Edit", "editWorkEffort", "Manager", new { id=item.ID }, null)
-                    <html> | </html>
-                    @Html.ActionLink("Delete", "deleteWorkEffort", "Manager", new { id=item.ID }, null)
-                    <html> | </html>
-                    @Html.ActionLink("Hide", "hideWorkEffort", "Manager", new { id = item.ID }, null)
-                }
-                <!-- If there are comments, provide a link to view them -->
-                @if ((item.comments != null) && (item.comments.Trim().Length > 0))
-                {
-                    if (ViewBag.managerFlag == true)
+                <td>
+                    <!-- If the user has manager privileges, let them edit and delete the work efforts -->
+                    @if (ViewBag.managerFlag == true)
                     {
+                        @Html.ActionLink("Edit", "editWorkEffort", "Manager", new { id = item.ID }, null)
                         <html> | </html>
-                    }                    
-                    @Html.ActionLink("View Comments", "viewWorkEffort", new { id = item.ID })
-                }                
-            </td>
-        </tr>
+                        @Html.ActionLink("Delete", "deleteWorkEffort", "Manager", new { id = item.ID }, null)
+                        <html> | </html>
+                        @Html.ActionLink("Hide", "hideWorkEffort", "Manager", new { id = item.ID }, null)
+                    }
+                    <!-- If there are comments, provide a link to view them -->
+                    @if ((item.comments != null) && (item.comments.Trim().Length > 0))
+                    {
+                        if (ViewBag.managerFlag == true)
+                        {
+                            <html> | </html>
+                        }                    
+                        @Html.ActionLink("View Comments", "viewWorkEffort", new { id = item.ID })
+                    }                
+                </td>
+            </tr>
+        }
     }
 </table>
 

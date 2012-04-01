@@ -44,8 +44,14 @@
     <!-- if the user is has manager privileges, let them edit the work effort -->
     @if (ViewBag.managerFlag == true)
     {  
-        @Html.ActionLink("Edit", "editWorkEffort/", "Manager", new { id = Model.ID }, null)
+        @Html.ActionLink("Edit", "editWorkEffort", "Manager", new { id = Model.ID }, null)
         <html> | </html>
+        @Html.ActionLink("Manage Work Efforts", "WeManagement", "Manager")
+        <html> | </html>
+        @Html.ActionLink("View Active Work Efforts", "searchWorkEffort")
     }
-    @Html.ActionLink("Back to List", "searchWorkEffort/")
+    else
+    {
+        @Html.ActionLink("Back to List", "searchWorkEffort")
+    }
 </p>
