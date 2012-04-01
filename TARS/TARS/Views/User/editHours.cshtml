@@ -19,10 +19,11 @@
         @Html.ValidationSummary(true)
         <fieldset>
 
-            <div class="editor-label"><b>Work Effort</b></div>
-            <div class="editor-field">
-                @Html.DropDownList("workEffortID", (List<SelectListItem>)ViewBag.workEffortList)
+            <div><b>Work Effort</b></div>
+            <div>
+                @ViewBag.workEffort.description
             </div>
+            @Html.HiddenFor(model => model.workEffortID)
 
             <p>
             <div class="editor-label"><b>Hours Worked</b></div>

@@ -266,7 +266,7 @@ namespace TARS.Controllers
                 bool adminFlag = newAuth.isAdmin(this);
                 ViewBag.adminFlag = adminFlag;
                 ViewBag.userName = User.Identity.Name;
-                ViewBag.workEffortList = getVisibleWorkEffortSelectList();
+                ViewBag.workEffort = WorkEffortDB.WorkEffortList.Find(hours.workEffortID);
                 return View(hours);
             }
             else
