@@ -643,38 +643,39 @@ namespace TARS.Controllers
 
 
         // 
-        //Returns Work Efforts WITHIN THE USER'S DIVISION as a selection list
+        //Returns active Work Efforts WITHIN THE USER'S DIVISION as a selection list
         public virtual List<SelectListItem> getActiveWorkEffortSelectList()
         {
             List<SelectListItem> effortList = new List<SelectListItem>();
             string division = getUserDivision();
+            string tmpValue = "";
+            PcaCode tmpPca = new PcaCode();
 
             var searchEfforts = from m in WorkEffortDB.WorkEffortList
                                 select m;
-            var searchPca = from p in PcaCodeDB.PcaCodeList
-                            where (p.division.CompareTo(division) == 0)
-                            select p;
 
-            //get all the work efforts in the user's division
+            //narrow down to work efforts in the user's division
             //(PCA codes and PCA_WE must be used to get all of the work efforts in the division)
             foreach (var we in searchEfforts)
             {
-                if (we.hidden != true)
+                if ( (we.hidden != true)&&(we.startDate < DateTime.Today)&&(we.endDate > DateTime.Today) )
                 {
-                    foreach (var pca in searchPca)
+                    var searchPcaWe = from p in PCA_WEDB.PCA_WEList
+                                        where p.WE == we.ID
+                                        select p;
+                    foreach (var pca_we in searchPcaWe)
                     {
-                        var searchPcaWe = from p in PCA_WEDB.PCA_WEList
-                                          where p.PCA == pca.ID
-                                          where p.WE == we.ID
-                                          select p;
-                        foreach (var pca_we in searchPcaWe)
+                        tmpPca = PcaCodeDB.PcaCodeList.Find(pca_we.PCA);
+                        //if the PCA is in the user's division, then add the Work Effort to the list
+                        if (tmpPca.division.CompareTo(division) == 0)
                         {
-                            string tmpValue = we.ID.ToString();
+                            tmpValue = we.ID.ToString();
                             effortList.Add(new SelectListItem
                             {
                                 Text = we.description,
                                 Value = tmpValue
                             });
+                            break;
                         }
                     }
                 }
