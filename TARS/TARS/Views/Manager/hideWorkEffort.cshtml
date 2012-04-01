@@ -1,3 +1,12 @@
-﻿<h2>Hide Work Effort</h2>
+﻿@{
+    ViewBag.Title = "hideWorkEffort";
+}
 
-<p>To be implemented</p>
+<h2>Hide Work Effort Error</h2>
+
+@if (ViewBag.tooEarly == true)
+{
+    <html><b>Error:</b>  Can't hide a work effort before its end date. </html>
+}
+
+@Html.ActionLink(" Back to Work Effort Management", "WeManagement")

@@ -6,15 +6,7 @@
 
 <h2>Work Efforts</h2>
 
-<!-- If the user has manager privileges, let them create new work efforts -->
-@if (ViewBag.managerFlag == true)
-{
-    <p>
-        @Html.ActionLink("Add Work Effort", "addWorkEffort", "Manager")
-    </p>
-}
-
-<!-- Display all of the work efforts -->   
+<!-- Display all of the active (not hidden) work efforts -->   
 <table class="timesheet">
     <tr>
         <th>
@@ -58,22 +50,9 @@
                 </td>
 
                 <td>
-                    <!-- If the user has manager privileges, let them edit and delete the work efforts -->
-                    @if (ViewBag.managerFlag == true)
-                    {
-                        @Html.ActionLink("Edit", "editWorkEffort", "Manager", new { id = item.ID }, null)
-                        <html> | </html>
-                        @Html.ActionLink("Delete", "deleteWorkEffort", "Manager", new { id = item.ID }, null)
-                        <html> | </html>
-                        @Html.ActionLink("Hide", "hideWorkEffort", "Manager", new { id = item.ID }, null)
-                    }
                     <!-- If there are comments, provide a link to view them -->
                     @if ((item.comments != null) && (item.comments.Trim().Length > 0))
-                    {
-                        if (ViewBag.managerFlag == true)
-                        {
-                            <html> | </html>
-                        }                    
+                    {                  
                         @Html.ActionLink("View Comments", "viewWorkEffort", new { id = item.ID })
                     }                
                 </td>

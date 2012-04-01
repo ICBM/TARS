@@ -27,6 +27,9 @@
         <th>
             EndDate
         </th>
+        <th>
+            Hidden
+        </th>
     </tr>
 
     @if (Model != null)
@@ -49,11 +52,21 @@
                 <td>
                     @item.endDate.ToShortDateString()
                 </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.hidden)
+                </td>
 
                 <td>
                     @Html.ActionLink("Edit", "editWorkEffort", new { id=item.ID }) |
                     @Html.ActionLink("Delete", "deleteWorkEffort", new { id=item.ID }) |
-                    @Html.ActionLink("Hide", "hideWorkEffort", new { id=item.ID })
+                    @if (item.hidden == true)
+                    {
+                        @Html.ActionLink("Un-Hide", "unHideWorkEffort", new { id=item.ID })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Hide", "hideWorkEffort", new { id = item.ID })
+                    }
                     <!-- If there are comments, provide a link to view them -->
                     @if ((item.comments != null) && (item.comments.Trim().Length > 0))
                     {

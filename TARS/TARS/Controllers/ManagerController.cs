@@ -314,13 +314,43 @@ namespace TARS.Controllers
 
 
         //
-        //
+        //Marks an expired work effort as hidden so it doesn't show up for employees
         public virtual ActionResult hideWorkEffort(int id)
         {
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
+                WorkEffort we = WorkEffortDB.WorkEffortList.Find(id);
+                if (we.endDate < DateTime.Today)
+                {
+                    we.hidden = true;
+                    WorkEffortDB.Entry(we).State = System.Data.EntityState.Modified;
+                    WorkEffortDB.SaveChanges();
+                    return RedirectToAction("WeManagement");
+                }
+                ViewBag.tooEarly = true;
                 return View();
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+
+        //
+        //Marks a hidden work effort as not hidden so it shows up for employees
+        public virtual ActionResult unHideWorkEffort(int id)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                WorkEffort we = WorkEffortDB.WorkEffortList.Find(id);
+                we.hidden = false;
+                WorkEffortDB.Entry(we).State = System.Data.EntityState.Modified;
+                WorkEffortDB.SaveChanges();
+
+                return RedirectToAction("WeManagement");
             }
             else
             {
