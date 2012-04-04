@@ -169,8 +169,9 @@ namespace TARS.Controllers
             foreach (var item in search)
             {
                 resulttimesheet = item;
+                return resulttimesheet;
             }
-            return resulttimesheet;
+            return null;
         }
 
 
@@ -286,17 +287,20 @@ namespace TARS.Controllers
         public bool isTimesheetLocked(string worker,DateTime refDate)
         {
             Timesheet tmpTimesheet = getTimesheet(worker, refDate);
-            if (tmpTimesheet.locked == true)
+            if (tmpTimesheet != null)
             {
-                return true;
-            }
-            if (tmpTimesheet.periodEnd < refDate.AddDays(-2))
-            {
-                //update locked status if end date was more than two days ago
-                tmpTimesheet.locked = true;
-                TimesheetDB.Entry(tmpTimesheet).State = EntityState.Modified;
-                TimesheetDB.SaveChanges();
-                return true;
+                if (tmpTimesheet.locked == true)
+                {
+                    return true;
+                }
+                if (tmpTimesheet.periodEnd < refDate.AddDays(-2))
+                {
+                    //update locked status if end date was more than two days ago
+                    tmpTimesheet.locked = true;
+                    TimesheetDB.Entry(tmpTimesheet).State = EntityState.Modified;
+                    TimesheetDB.SaveChanges();
+                    return true;
+                }
             }
             return false;
         }
@@ -516,22 +520,24 @@ namespace TARS.Controllers
             string status = "";
             var tmptimesheet = new Timesheet();
             tmptimesheet = getTimesheet(userName, refDate);
-
-            if (tmptimesheet.locked)
+            if (tmptimesheet != null)
             {
-                status = "locked";
-            }
-            else if (tmptimesheet.approved)
-            {
-                status = "approved";
-            }
-            else if (tmptimesheet.submitted)
-            {
-                status = "submitted";
-            }
-            else
-            {
-                status = "not submitted";
+                if (tmptimesheet.locked)
+                {
+                    status = "locked";
+                }
+                else if (tmptimesheet.approved)
+                {
+                    status = "approved";
+                }
+                else if (tmptimesheet.submitted)
+                {
+                    status = "submitted";
+                }
+                else
+                {
+                    status = "not submitted";
+                }
             }
             return status;
         }
