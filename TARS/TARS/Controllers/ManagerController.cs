@@ -114,7 +114,7 @@ namespace TARS.Controllers
             {
                 string division = getUserDivision();
                 ViewBag.divisionName = division;
-                ViewBag.pcaList = getDivisionPcaCodes(division);
+                ViewBag.pcaList = getDivisionPcaSelectList(division);
                 ViewBag.earnCodeSelectList = getEarningsCodeSelectList();
 
                 return View();
@@ -596,6 +596,26 @@ namespace TARS.Controllers
                 pcaCodeObj = item;
             }
             return pcaCodeObj;
+        }
+
+
+        // 
+        //Returns PCA Codes as a selection list
+        public virtual List<SelectListItem> getDivisionPcaSelectList(string division)
+        {
+            List<SelectListItem> pcaCodesList = new List<SelectListItem>();
+            var searchPcaCodes = from m in PcaCodeDB.PcaCodeList
+                                 where (m.division.CompareTo(division) == 0)
+                                 select m;
+            foreach (var item in searchPcaCodes)
+            {
+                pcaCodesList.Add(new SelectListItem
+                {
+                    Text = item.code.ToString(),
+                    Value = item.code.ToString()
+                });
+            }
+            return pcaCodesList;
         }
 
 

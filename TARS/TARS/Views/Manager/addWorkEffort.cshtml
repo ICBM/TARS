@@ -21,7 +21,7 @@
 
         <div class="editor-label"><b>PCA Code</b></div>
         <div class="editor-field">
-            @Html.DropDownList("pcaCode", new SelectList(ViewBag.pcaList, Model))
+            @Html.DropDownList("pcaCode", (List<SelectListItem>)ViewBag.pcaList)
         </div>
 
         <p>

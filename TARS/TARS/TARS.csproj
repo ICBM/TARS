@@ -253,6 +253,11 @@
     <Content Include="Views\Shared\notLoggedIn.cshtml" />
     <Content Include="Views\Admin\addPCA_WE.cshtml" />
     <Content Include="Views\Admin\deletePCA_WE.cshtml" />
+    <Content Include="Views\Manager\addPCA_WE.cshtml" />
+    <Content Include="Views\Manager\deletePCA_WE.cshtml" />
+    <Content Include="Views\Manager\editPCA_WE.cshtml" />
+    <Content Include="Views\Manager\hideWorkEffort.cshtml" />
+    <Content Include="Views\Manager\searchPCA.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
