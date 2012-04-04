@@ -129,21 +129,7 @@ namespace TARS.Controllers
                 //If there is a timesheet for the current pay period, don't do anything
                 if (resulttimesheet.periodStart.CompareTo(startDay) != 0)
                 {
-                    Timesheet newTimesheet = new Timesheet();
-
-                    //Set pay period to start on Sunday 12:00am
-                    newTimesheet.periodStart = startDay;
-                    newTimesheet.periodEnd = startDay.AddDays(7);
-                    newTimesheet.worker = newhours.creator;
-                    newTimesheet.approved = false;
-                    newTimesheet.locked = false;
-                    newTimesheet.submitted = false;
-
-                    //add timesheet and save to the database
-                    TimesheetDB.TimesheetList.Add(newTimesheet);
-                    //TimesheetDB.Entry(newTimesheet).State = System.Data.EntityState.Added;
-                    TimesheetDB.SaveChanges();
-
+                    createCurrentTimesheet(User.Identity.Name);
                     return 1;
                 }
                 return 1;
@@ -152,6 +138,27 @@ namespace TARS.Controllers
             {
                 return 0;
             }
+        }
+
+
+        //
+        //Creates an empty timesheet for the specified user
+        public void createCurrentTimesheet(string userName)
+        {
+            Timesheet newTimesheet = new Timesheet();
+            DateTime startDay = DateTime.Now.StartOfWeek(DayOfWeek.Sunday);
+            //Set pay period to start on Sunday 12:00am
+            newTimesheet.periodStart = startDay;
+            newTimesheet.periodEnd = startDay.AddDays(7);
+            newTimesheet.worker = userName;
+            newTimesheet.approved = false;
+            newTimesheet.locked = false;
+            newTimesheet.submitted = false;
+
+            //add timesheet and save to the database
+            TimesheetDB.TimesheetList.Add(newTimesheet);
+            TimesheetDB.Entry(newTimesheet).State = System.Data.EntityState.Added;
+            TimesheetDB.SaveChanges();
         }
 
 

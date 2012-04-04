@@ -434,25 +434,22 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
-                string user = "";
+                TARSUser user = TARSUserDB.TARSUserList.Find(id);
 
-                var searchUsers = from n in TARSUserDB.TARSUserList
-                                  where n.ID == id
-                                  select n;
                 var searchHours = from m in HoursDB.HoursList
+                                  where (m.creator.CompareTo(user.userName) == 0)
                                   select m;
-                foreach (var item in searchUsers)
-                {
-                    user = item.userName;
-                }
-                searchHours = from s in searchHours
-                              where (s.creator.CompareTo(user) == 0)
-                              select s;
                 foreach (var item in searchHours)
                 {
                     tsDate = item.timestamp;    //used to retrieve the correct timesheet
                 }
-                ViewBag.timesheet = getTimesheet(user, tsDate);
+
+                ViewBag.timesheet = getTimesheet(user.userName, tsDate);
+                if (ViewBag.timesheet == null)
+                {
+                    createCurrentTimesheet(user.userName);
+                    ViewBag.timesheet = getTimesheet(user.userName, DateTime.Now);
+                }
                 return View(searchHours);
             }
             else
