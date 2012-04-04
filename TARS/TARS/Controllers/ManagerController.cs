@@ -157,7 +157,7 @@ namespace TARS.Controllers
                         ViewBag.notWithinTimeBounds = true;
                         string division = getUserDivision();
                         ViewBag.divisionName = division;
-                        ViewBag.pcaList = getDivisionPcaCodes(division);
+                        ViewBag.pcaList = getDivisionPcaSelectList(division);
                         ViewBag.earnCodeSelectList = getEarningsCodeSelectList();
 
                         return View(workeffort);

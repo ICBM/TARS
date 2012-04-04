@@ -23,7 +23,7 @@
         <p>
         <div class="editor-label"><b>Choose a PCA to Add</b></div>
         <div class="editor-field">
-            @Html.DropDownList("PCA", new SelectList(ViewBag.pcaAddList, Model))
+            @Html.DropDownList("PCA", (List<SelectListItem>)ViewBag.pcaAddList)
         </div>
         </p>
 

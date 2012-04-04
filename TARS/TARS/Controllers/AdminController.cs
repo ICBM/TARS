@@ -310,7 +310,7 @@ namespace TARS.Controllers
                 PcaCode pca = getPcaFromCode(we.pcaCode);
                 ViewBag.workEffortDescription = we.description;
                 ViewBag.workEffortId = weID;
-                ViewBag.pcaAddList = getDivisionPcaCodes(pca.division);
+                ViewBag.pcaAddList = getDivisionPcaSelectList(pca.division);
                 return View();
             }
             else

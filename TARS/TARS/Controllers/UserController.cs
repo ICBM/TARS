@@ -590,24 +590,6 @@ namespace TARS.Controllers
                 return null;
             }
         }
-
-
-        // 
-        //Returns list of PCA codes for the specified division
-        public virtual List<string> getDivisionPcaCodes(string division)
-        {
-            List<string> pcaList = new List<string>();
-            string tmpPca = "";
-            var searchPca = from m in PcaCodeDB.PcaCodeList
-                            where (m.division.CompareTo(division) == 0)
-                            select m;
-            foreach (var item in searchPca)
-            {
-                tmpPca = item.code.ToString();
-                pcaList.Add(tmpPca);
-            }
-            return pcaList;
-        }
  
 
         // 
