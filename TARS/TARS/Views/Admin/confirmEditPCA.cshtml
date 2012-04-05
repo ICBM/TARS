@@ -18,9 +18,11 @@
         @Html.HiddenFor(model => model.ID)
         @Html.HiddenFor(model => model.code)
 
-        <div class="editor-label"><b>PCA Code</b></div>
-        @Model.code
-
+        <div class="display-label"><b>PcaCode</b></div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.code)
+        </div>
+    
         <p>
         <div class="editor-label"><b>Description</b></div>
         <div class="editor-field">

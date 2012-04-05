@@ -4,36 +4,43 @@
     ViewBag.Title = "Delete";
 }
 
-<h2>Delete</h2>
+<h2>Delete PCA</h2>
 
 <h3>Are you sure you want to delete this?</h3>
 <fieldset>
-    <legend>PcaCode</legend>
 
-    <div class="display-label">PcaCode</div>
+    <div class="display-label"><b>PcaCode</b></div>
     <div class="display-field">
         @Html.DisplayFor(model => model.code)
     </div>
 
-    <div class="display-label">StartDate</div>
+    <p>
+    <div class="display-label"><b>StartDate</b></div>
     <div class="display-field">
         @Html.DisplayFor(model => model.startDate)
     </div>
+    </p>
 
-    <div class="display-label">EndDate</div>
+    <p>
+    <div class="display-label"><b>EndDate</b></div>
     <div class="display-field">
         @Html.DisplayFor(model => model.endDate)
     </div>
+    </p>
 
-    <div class="display-label">Description</div>
+    <p>
+    <div class="display-label"><b>Description</b></div>
     <div class="display-field">
         @Html.DisplayFor(model => model.description)
     </div>
+    </p>
 
-    <div class="display-label">Division</div>
+    <p>
+    <div class="display-label"><b>Division</b></div>
     <div class="display-field">
         @Html.DisplayFor(model => model.division)
     </div>
+    </p>
 
 </fieldset>
 @using (Html.BeginForm())
