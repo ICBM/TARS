@@ -87,7 +87,15 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
-                return View(WorkEffortDB.WorkEffortList.ToList());
+                var workEffortList = WorkEffortDB.WorkEffortList.ToList();
+
+                //create a list of lists (each work effort will have a list of PCA codes)
+                ViewBag.pcaListList = new List<List<int>>();
+                foreach (var item in workEffortList)
+                {
+                    ViewBag.pcaListList.Add(getWorkEffortPcaCodes(item));
+                }
+                return View(workEffortList);
             }
             else
             {

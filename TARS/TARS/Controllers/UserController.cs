@@ -29,7 +29,7 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth )
             {
-                return Redirect("/TARS/User/viewTimesheet/");
+                return RedirectToAction("viewTimesheet");
             }
             else
             {

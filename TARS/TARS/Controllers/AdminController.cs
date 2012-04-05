@@ -343,7 +343,7 @@ namespace TARS.Controllers
                     PCA_WEDB.PCA_WEList.Add(pca_we);
                     PCA_WEDB.Entry(pca_we).State = System.Data.EntityState.Added;
                     PCA_WEDB.SaveChanges();
-                    return RedirectToAction("editWorkEffort", "Manager", new { id = pca_we.WE });
+                    return RedirectToAction("weManagement", "Manager");
                 }
                 ViewBag.pcaAddList = getAllPcaCodes();
                 ViewBag.outOfPcaTimeBounds = true;
@@ -392,23 +392,25 @@ namespace TARS.Controllers
                 pca_we.PCA = getPcaIdFromCode(pca_we.PCA);
                 int count = 0;
 
-                PCA_WE tmpPca = new PCA_WE();
+                PCA_WE tmpPcaWe = new PCA_WE();
                 var searchPcaWe = from p in PCA_WEDB.PCA_WEList
-                                  where p.PCA == pca_we.PCA
                                   where p.WE == pca_we.WE
                                   select p;
                 foreach (var item in searchPcaWe)
                 {
-                    tmpPca = PCA_WEDB.PCA_WEList.Find(item.ID);
+                    if (item.PCA == pca_we.PCA)
+                    {
+                        tmpPcaWe = PCA_WEDB.PCA_WEList.Find(item.ID);
+                    }
                     count += 1;
                 }
 
                 //if it's not the last PCA_WE, then delete 
-                if (count > 1)
+                if (count > 0)
                 {
-                    PCA_WEDB.PCA_WEList.Remove(tmpPca);
+                    PCA_WEDB.PCA_WEList.Remove(tmpPcaWe);
                     PCA_WEDB.SaveChanges();
-                    return RedirectToAction("editWorkEffort", "Manager", new { id = pca_we.WE });
+                    return RedirectToAction("weManagement", "Manager");
                 }
 
                 ViewBag.lastPcaFlag = true;

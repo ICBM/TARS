@@ -23,7 +23,7 @@
 <table class="timesheet">
     <tr>
         <th>
-            PcaCode
+            PcaCode(s)
         </th>
         <th>
             EarningsCode
@@ -43,12 +43,14 @@
     </tr>
 
     @if (Model != null)
-    {
+    {        
+        int count = -1;
         foreach (var item in Model)
-        {       
+        {
+            count++;
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.pcaCode)
+                    @Html.DropDownList("pcaCode", new SelectList(ViewBag.pcaListList[count], Model))
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.earningsCode)
