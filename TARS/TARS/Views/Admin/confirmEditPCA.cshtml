@@ -15,14 +15,11 @@
 {
     @Html.ValidationSummary(true)
     <fieldset>
-        <legend>PcaCode</legend>
         @Html.HiddenFor(model => model.ID)
+        @Html.HiddenFor(model => model.code)
 
         <div class="editor-label"><b>PCA Code</b></div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.code)
-            @Html.ValidationMessageFor(model => model.code)
-        </div>
+        @Model.code
 
         <p>
         <div class="editor-label"><b>Description</b></div>

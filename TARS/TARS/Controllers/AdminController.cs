@@ -126,13 +126,6 @@ namespace TARS.Controllers
                 {
                     return View("error");
                 }
-                //make sure the pca code doesn't already exist in the same division
-                if (pcaCheckIfDuplicate(pcacode) == true)
-                {
-                    ViewBag.duplicatePcaFlag = true;
-                    ViewBag.divisionList = getDivisions();
-                    return View(pcacode);
-                }
                 TempData["tmpPcaCode"] = pcacode;
                 return RedirectToAction("confirmEditPCA");
             }
