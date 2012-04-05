@@ -95,6 +95,11 @@ namespace TARS.Controllers
                 {
                     ViewBag.pcaListList.Add(getWorkEffortPcaCodes(item));
                 }
+                //check if an "unable to hide Work Effort error should be displayed"
+                if (TempData["failedHide"] != null)
+                {
+                    ViewBag.failedHide = true;
+                }
                 return View(workEffortList);
             }
             else
@@ -368,8 +373,11 @@ namespace TARS.Controllers
                     WorkEffortDB.SaveChanges();
                     return RedirectToAction("WeManagement");
                 }
-                ViewBag.failedHide = true;
-                return View("WeManagement", WorkEffortDB.WorkEffortList.ToList());
+                else
+                {
+                    TempData["failedHide"] = true;
+                    return RedirectToAction("WeManagement");
+                }
             }
             else
             {
