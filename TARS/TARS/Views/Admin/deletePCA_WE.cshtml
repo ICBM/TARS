@@ -31,3 +31,8 @@
         </p>
     </fieldset>   
 }
+
+<p>
+@Html.ActionLink("Back to Edit", "editWorkEffort", "Manager", new { id = (int)ViewBag.workEffortId }, null)  |
+@Html.ActionLink("Back to Work Efforts", "weManagement", "Manager") 
+</p>

@@ -402,11 +402,11 @@ namespace TARS.Controllers
                     {
                         tmpPcaWe = PCA_WEDB.PCA_WEList.Find(item.ID);
                     }
-                    count += 1;
+                    count++;
                 }
 
                 //if it's not the last PCA_WE, then delete 
-                if (count > 0)
+                if (count > 1)
                 {
                     PCA_WEDB.PCA_WEList.Remove(tmpPcaWe);
                     PCA_WEDB.SaveChanges();
