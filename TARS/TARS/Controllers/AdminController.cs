@@ -34,6 +34,10 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if(auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
             {
+                if (TempData["failedPcaDelete"] != null)
+                {
+                    ViewBag.failedPcaDelete = true;
+                }
                 return View(PcaCodeDB.PcaCodeList.ToList());
             }
             else
@@ -204,15 +208,44 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
             {
-                PcaCode pcacode = PcaCodeDB.PcaCodeList.Find(id);
-                PcaCodeDB.PcaCodeList.Remove(pcacode);
-                PcaCodeDB.SaveChanges();
-                return RedirectToAction("maintainPCA/");
+                //make sure there are no work efforts attached to the PCA
+                if (checkPcaForAttachedWorkEfforts(id) == true)
+                {
+                    TempData["failedPcaDelete"] = true;
+                    return RedirectToAction("maintainPCA");
+                }
+                else
+                {
+                    PcaCode pcacode = PcaCodeDB.PcaCodeList.Find(id);
+                    PcaCodeDB.PcaCodeList.Remove(pcacode);
+                    PcaCodeDB.SaveChanges();
+                    return RedirectToAction("maintainPCA");
+                }
             }
             else
             {
                 return View("error");
             }
+        }
+
+
+        //
+        //Checks a PCA to see if any Work Efforts are currently attached to it. Returns TRUE if there are.
+        public bool checkPcaForAttachedWorkEfforts(int id)
+        {
+            var searchPcaWe = from p in PCA_WEDB.PCA_WEList
+                              where p.PCA == id
+                              select p;
+            foreach (var item in searchPcaWe)
+            {
+                //return true if there is an entry in PCA_WE table with a matching PCA id
+                if (item != null)
+                {
+                    return true;
+                }
+                return false;
+            }
+            return false;
         }
 
 

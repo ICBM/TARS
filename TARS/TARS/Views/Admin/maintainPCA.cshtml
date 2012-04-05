@@ -6,6 +6,11 @@
 
 <h2>Active PCA Codes</h2>
 
+@if (ViewBag.failedPcaDelete == true)
+{
+    <h3>Error: Can't delete a PCA if Work Efforts are attached.</h3>
+}
+
 <p>@Html.ActionLink("Add PCA", "addPCA")</p>
 
 <table class="timesheet">
