@@ -14,9 +14,7 @@ namespace TARS.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "Welcome to TARS MVC Home controller";
-
-
+            ViewBag.Message = "Welcome to TARS";
 
             //LDAPConnection test = new LDAPConnection();
 

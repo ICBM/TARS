@@ -17,9 +17,9 @@
 				<img src="@Url.Content("~/Content/themes/base/images/logo.png")"  id="logo" alt="logo" />
 				<table class="nav">
 					<tr>
-						<td>@Html.ActionLink("Administration", "../Admin/Index/")</TD>
-						<td>@Html.ActionLink("Managerial", "../Manager/Index/")</td>
-						<td>@Html.ActionLink("User Panel", "../User/Index/")</td>
+						<td>@Html.ActionLink("Administration", "Index", "Admin")</TD>
+						<td>@Html.ActionLink("Managerial", "Index", "Manager")</td>
+						<td>@Html.ActionLink("User Panel", "Index", "User")</td>
 						<td>@Html.Partial("_LogOnPartial")</td>
 					</tr>
 				</table>
