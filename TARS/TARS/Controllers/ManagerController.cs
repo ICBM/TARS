@@ -329,6 +329,9 @@ namespace TARS.Controllers
                 else
                 {
                     WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
+                    //delete the PCA_WE entries for the work effort
+                    deleteAllPcaWeForWorkEffort(id);
+                    //delete the work effort
                     WorkEffortDB.WorkEffortList.Remove(workeffort);
                     WorkEffortDB.SaveChanges();
                     return RedirectToAction("weManagement");
@@ -338,6 +341,22 @@ namespace TARS.Controllers
             {
                 return View("error");
             } 
+        }
+
+
+        //
+        //Deletes all entries in PCA_WE table for specified Work Effort
+        public void deleteAllPcaWeForWorkEffort(int id)
+        {
+            var searchPcaWe = from p in PCA_WEDB.PCA_WEList
+                              where p.WE == id
+                              select p;
+            foreach (var item in searchPcaWe)
+            {
+                //delete the association from the PCA_WE table
+                PCA_WEDB.PCA_WEList.Remove(item);
+                WorkEffortDB.SaveChanges();
+            }
         }
 
 
