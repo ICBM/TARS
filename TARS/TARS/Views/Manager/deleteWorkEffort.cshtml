@@ -11,9 +11,9 @@
 <fieldset>
     <legend>Work Effort</legend>
 
-    <div class="display-label"><b>PcaCode</b></div>
+    <div class="display-label"><b>PcaCode(s)</b></div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.pcaCode)
+        @Html.DropDownList("pcaCode", new SelectList(ViewBag.pcaList, Model))
     </div>
 
     <p>
@@ -55,6 +55,6 @@
 @using (Html.BeginForm()) {
     <p>
         <input type="submit" value="Delete" /> | 
-        @Html.ActionLink("Back to List", "weManagement/")
+        @Html.ActionLink("Back to List", "weManagement")
     </p>
 }

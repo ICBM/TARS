@@ -100,6 +100,11 @@ namespace TARS.Controllers
                 {
                     ViewBag.failedHide = true;
                 }
+                //check if an "unable to delete Work Effort error should be displayed"
+                if (TempData["failedDelete"] != null)
+                {
+                    ViewBag.failedDelete = true;
+                }
                 return View(workEffortList);
             }
             else
@@ -297,6 +302,7 @@ namespace TARS.Controllers
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
                 WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
+                ViewBag.pcaList = getWorkEffortPcaCodes(workeffort);
                 return View(workeffort);
             }
             else
@@ -307,7 +313,7 @@ namespace TARS.Controllers
 
 
         //
-        // POST: /Manager/deleteWorkEffort/5
+        // POST: /Manager/deleteWorkEffort
         [HttpPost, ActionName("deleteWorkEffort")] //This action MUST match the above delete function.
         public virtual ActionResult confirmedDeleteWorkEffort(int id)
         {
@@ -317,15 +323,15 @@ namespace TARS.Controllers
                 //make sure that there aren't any hours billed to the work effort
                 if (checkWeForBilledHours(id) == true)
                 {
-                    ViewBag.failedDelete = true;
-                    return View("WeManagement", WorkEffortDB.WorkEffortList.ToList()); 
+                    TempData["failedDelete"] = true;
+                    return RedirectToAction("weManagement"); 
                 }
                 else
                 {
                     WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
                     WorkEffortDB.WorkEffortList.Remove(workeffort);
                     WorkEffortDB.SaveChanges();
-                    return RedirectToAction("weManagement/");
+                    return RedirectToAction("weManagement");
                 }
             }
             else
