@@ -348,15 +348,21 @@ namespace TARS.Controllers
         //Deletes all entries in PCA_WE table for specified Work Effort
         public void deleteAllPcaWeForWorkEffort(int id)
         {
+            List<PCA_WE> tmpPcaWe = new List<PCA_WE>();
             var searchPcaWe = from p in PCA_WEDB.PCA_WEList
                               where p.WE == id
                               select p;
             foreach (var item in searchPcaWe)
             {
+                tmpPcaWe.Add(item);
+            }
+            foreach (var item in tmpPcaWe)
+            {
                 //delete the association from the PCA_WE table
                 PCA_WEDB.PCA_WEList.Remove(item);
-                WorkEffortDB.SaveChanges();
+                PCA_WEDB.SaveChanges();
             }
+            return;
         }
 
 
