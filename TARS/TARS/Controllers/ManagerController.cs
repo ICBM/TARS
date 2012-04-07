@@ -90,10 +90,10 @@ namespace TARS.Controllers
                 var workEffortList = WorkEffortDB.WorkEffortList.ToList();
 
                 //create a list of lists (each work effort will have a list of PCA codes)
-                ViewBag.pcaListList = new List<List<int>>();
+                ViewBag.pcaListOfLists = new List<List<int>>();
                 foreach (var item in workEffortList)
                 {
-                    ViewBag.pcaListList.Add(getWorkEffortPcaCodes(item));
+                    ViewBag.pcaListOfLists.Add(getWorkEffortPcaCodes(item));
                 }
                 //check if an "unable to hide Work Effort error should be displayed"
                 if (TempData["failedHide"] != null)

@@ -202,10 +202,10 @@ namespace TARS.Controllers
                     }
                 }
                 //create a list of lists (each work effort will have a list of PCA codes)
-                ViewBag.pcaListList = new List<List<int>>();
+                ViewBag.pcaListOfLists = new List<List<int>>();
                 foreach (var item in workEffortList)
                 {
-                    ViewBag.pcaListList.Add(getWorkEffortPcaCodes(item));
+                    ViewBag.pcaListOfLists.Add(getWorkEffortPcaCodes(item));
                 }
                 return View(workEffortList);
             }
