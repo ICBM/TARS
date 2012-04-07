@@ -758,7 +758,7 @@ namespace TARS.Controllers
                                         select m;
                 foreach (var item in searchUsers)
                 {
-                    division = item.department;
+                    division = item.company;
                 }
                 return division;
             }
