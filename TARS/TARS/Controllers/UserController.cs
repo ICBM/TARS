@@ -46,12 +46,13 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
-                ViewBag.timesheetLockedFlag = isTimesheetLocked(User.Identity.Name, DateTime.Now);
+                string division = TempData["division"].ToString();
+                ViewBag.division = division;
+                ViewBag.workEffortList = getVisibleWorkEffortSelectList(division);
                 Authentication newAuth = new Authentication();
                 bool adminFlag = newAuth.isAdmin(this);
                 ViewBag.adminFlag = adminFlag;
                 ViewBag.userName = User.Identity.Name;
-                ViewBag.workEffortList = getVisibleWorkEffortSelectList();
                 return View();
             }
             else
@@ -65,7 +66,7 @@ namespace TARS.Controllers
         // POST: /User/addHours
         //Takes filled form and adds it to database
         [HttpPost]
-        public virtual ActionResult addHours(Hours newhours)
+        public virtual ActionResult addHours(Hours newhours, string division = null)
         {
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
@@ -73,25 +74,32 @@ namespace TARS.Controllers
                 if (ModelState.IsValid)
                 {
                     WorkEffort tmpWe = WorkEffortDB.WorkEffortList.Find(newhours.workEffortID);
-                    //check to make sure that the new hours are within the work effort's time bounds
-                    if ((newhours.timestamp < tmpWe.startDate) || (newhours.timestamp > tmpWe.endDate))
+                    bool tsLockedFlag = isTimesheetLocked(User.Identity.Name, newhours.timestamp);
+
+                    /* check to make sure that the new hours are within the work effort's time bounds 
+                       and the timesheet isn't locked
+                    */
+                    if ((newhours.timestamp < tmpWe.startDate) || 
+                        (newhours.timestamp > tmpWe.endDate) || 
+                        (tsLockedFlag == true))
                     {
                         ViewBag.invalidTimestamp = true;
-                        ViewBag.timesheetLockedFlag = isTimesheetLocked(User.Identity.Name, DateTime.Now);
+                        ViewBag.timesheetLockedFlag = tsLockedFlag;
                         Authentication newAuth = new Authentication();
                         bool adminFlag = newAuth.isAdmin(this);
                         ViewBag.adminFlag = adminFlag;
                         ViewBag.userName = User.Identity.Name;
-                        ViewBag.workEffortList = getVisibleWorkEffortSelectList();
+                        ViewBag.division = division;
+                        ViewBag.workEffortList = getVisibleWorkEffortSelectList(division);
                         return View(newhours);
                     }
-                    //check to see if a timesheet exists for the period hours are being added to
+                    //make sure that a timesheet exists for the period hours are being added to
                     checkForTimesheet(newhours);
   
                     //add and save new hours
                     HoursDB.HoursList.Add(newhours);
                     HoursDB.SaveChanges();
-                    return RedirectToAction("viewTimesheet/");
+                    return RedirectToAction("viewTimesheet");
                 }
                 return View("error");
             }
@@ -99,6 +107,30 @@ namespace TARS.Controllers
             {
                 return View("notLoggedIn");
             }
+        }
+
+
+        //
+        //GET: /User/selectDivisionToAddHours
+        //
+        public virtual ActionResult selectDivisionToAddHours()
+        {
+            List<string> divisions = getDivisions();
+            string userDivision = getUserDivision();
+            var divisionList = new SelectList(divisions, userDivision);
+            ViewBag.divisionList = divisionList;
+            return View() ;
+        }
+
+
+        //
+        //POST: /User/selectDivisionToAddHours
+        //Passes the selected division to addHours so the appropriate Work Efforts can be displayed
+        [HttpPost]
+        public virtual ActionResult selectDivisionToAddHours(string division)
+        {
+            TempData["division"] = division;
+            return RedirectToAction("addHours");
         }
 
 
@@ -638,18 +670,17 @@ namespace TARS.Controllers
 
 
         // 
-        //Returns active Work Efforts WITHIN THE USER'S DIVISION as a selection list
-        public virtual List<SelectListItem> getVisibleWorkEffortSelectList()
+        //Returns active Work Efforts WITHIN THE SPECIFIED DIVISION as a selection list
+        public virtual List<SelectListItem> getVisibleWorkEffortSelectList(string division)
         {
             List<SelectListItem> effortList = new List<SelectListItem>();
-            string division = getUserDivision();
-            string tmpValue = "";
             PcaCode tmpPca = new PcaCode();
+            string tmpValue = "";
 
             var searchEfforts = from m in WorkEffortDB.WorkEffortList
                                 select m;
 
-            //narrow down to work efforts in the user's division
+            //narrow down to work efforts in the specified division
             //(PCA codes and PCA_WE must be used to get all of the work efforts in the division)
             foreach (var we in searchEfforts)
             {

@@ -198,9 +198,6 @@
     <Content Include="Views\User\addHours.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\User\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Manager\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -254,6 +251,7 @@
     <Content Include="Views\Admin\addPCA_WE.cshtml" />
     <Content Include="Views\Admin\deletePCA_WE.cshtml" />
     <Content Include="Views\Manager\searchPCA.cshtml" />
+    <Content Include="Views\User\selectDivisionToAddHours.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "selectDivisionToAddHours";
+}
+
+<h2>Choose Division to Add Hours</h2>
+
+@using (Html.BeginForm())
+{  
+    <fieldset>
+        <div><b>Select Division</b></div>
+        @Html.DropDownList("division", (SelectList)ViewBag.divisionList)
+    
+        <p>
+        <input type="submit" value="Proceed" />
+        </p>
+    </fieldset>
+}

@@ -4,7 +4,7 @@
     ViewBag.Title = "viewTimesheet";
 }
 
-<h2>viewTimesheet
+<h2>View Timesheet
 @if (ViewBag.timesheet.locked)
 {
     <small><i>(locked)</i></small>
@@ -40,7 +40,7 @@ else
             else
             {
                 <p>@Html.ActionLink("Copy Previous Timesheet", "copyTimesheet")</p>
-                <p>@Html.ActionLink("Add New Hours", "addHours")</p> 
+                <p>@Html.ActionLink("Add New Hours", "selectDivisionToAddHours")</p> 
                 <p>@Html.ActionLink("Submit Current Timesheet", "submitTimesheet", new { id = (int)ViewBag.timesheet.ID })</p>
             }
         }
