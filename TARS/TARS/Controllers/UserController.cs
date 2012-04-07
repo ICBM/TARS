@@ -190,6 +190,7 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
+                var workEffortList = WorkEffortDB.WorkEffortList.ToList();
                 var searchPermission = from m in TARSUserDB.TARSUserList
                              where (m.userName.CompareTo(this.User.Identity.Name) == 0) 
                              select m;
@@ -199,8 +200,14 @@ namespace TARS.Controllers
                     {
                         ViewBag.managerFlag = true;
                     }
-                }                
-                return View(WorkEffortDB.WorkEffortList.ToList());
+                }
+                //create a list of lists (each work effort will have a list of PCA codes)
+                ViewBag.pcaListList = new List<List<int>>();
+                foreach (var item in workEffortList)
+                {
+                    ViewBag.pcaListList.Add(getWorkEffortPcaCodes(item));
+                }
+                return View(workEffortList);
             }
             else
             {

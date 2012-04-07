@@ -16,7 +16,7 @@
 <table class="timesheet">
     <tr>
         <th>
-            PcaCode
+            PcaCode(s)
         </th>
         <th>
             EarningsCode
@@ -34,35 +34,40 @@
         <th></th>
     </tr>
 
-    @foreach (var item in Model) 
+    @if (Model != null)
     {
-        if (item.hidden == false)
+        int count = -1;
+        foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.pcaCode)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.earningsCode)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.description)
-                </td>
-                <td>
-                    @item.startDate.ToShortDateString()
-                </td>
-                <td>
-                    @item.endDate.ToShortDateString()
-                </td>
+            count++;
+            if (item.hidden == false)
+            {
+                <tr>
+                    <td>
+                        @Html.DropDownList("pcaCode", new SelectList(ViewBag.pcaListList[count], Model))
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.earningsCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.description)
+                    </td>
+                    <td>
+                        @item.startDate.ToShortDateString()
+                    </td>
+                    <td>
+                        @item.endDate.ToShortDateString()
+                    </td>
 
-                <td>
-                    <!-- If there are comments, provide a link to view them -->
-                    @if ((item.comments != null) && (item.comments.Trim().Length > 0))
-                    {                  
-                        @Html.ActionLink("View Comments", "viewWorkEffort", new { id = item.ID })
-                    }                
-                </td>
-            </tr>
+                    <td>
+                        <!-- If there are comments, provide a link to view them -->
+                        @if ((item.comments != null) && (item.comments.Trim().Length > 0))
+                        {                  
+                            @Html.ActionLink("View Comments", "viewWorkEffort", new { id = item.ID })
+                        }                
+                    </td>
+                </tr>
+            }
         }
     }
 </table>
