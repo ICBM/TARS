@@ -15,6 +15,8 @@
     {    
         @Html.ValidationSummary(true)
         <fieldset>
+            <input name="creator" type="hidden" value="@User.Identity.Name" />
+            <input name="division" type="hidden" value="@ViewBag.division" />
 
             <div class="editor-label"><b>Work Effort</b></div>
             <div class="editor-field">
@@ -49,9 +51,7 @@
                 }
             </div>
             </p>
-
-            <input id="creator" name="creator" type="hidden" value="@User.Identity.Name" />
-        
+                    
             <p>
                 <input type="submit" value="Submit" />
             </p>
