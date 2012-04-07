@@ -365,10 +365,14 @@ namespace TARS.Controllers
                 //make sure it falls within it's associated PCA code's time boundaries
                 if (verifyWeTimeBounds(effort, pcaObj.code) == true)
                 {
-                    //update PCA_WE table in database
-                    PCA_WEDB.PCA_WEList.Add(pca_we);
-                    PCA_WEDB.Entry(pca_we).State = System.Data.EntityState.Added;
-                    PCA_WEDB.SaveChanges();
+                    //Make sure it's not a duplicate entry before adding to database
+                    if (checkIfDuplicatePcaWe(pca_we) == false)
+                    {
+                        //update PCA_WE table in database
+                        PCA_WEDB.PCA_WEList.Add(pca_we);
+                        PCA_WEDB.Entry(pca_we).State = System.Data.EntityState.Added;
+                        PCA_WEDB.SaveChanges();
+                    }
                     return RedirectToAction("weManagement", "Manager");
                 }
                 ViewBag.pcaAddList = getAllPcaCodes();
@@ -380,8 +384,6 @@ namespace TARS.Controllers
                 return View("error");
             }
         }
-
-
 
 
         //
@@ -450,6 +452,26 @@ namespace TARS.Controllers
             {
                 return View("error");
             }
+        }
+
+
+        //
+        //Returns TRUE if the PCA_WE entry already exists
+        public bool checkIfDuplicatePcaWe(PCA_WE pcawe)
+        {
+            var searchPcaWe = from p in PCA_WEDB.PCA_WEList
+                              where p.WE == pcawe.WE
+                              where p.PCA == pcawe.PCA
+                              select p;
+            foreach (var item in searchPcaWe)
+            {
+                if (item == null)
+                {
+                    return false;
+                }
+                return true;
+            }
+            return false;
         }
 
 
