@@ -8,7 +8,16 @@
 
 @if (ViewBag.emailSentFlag == true)
 {
-    <h3>Timesheet Rejected:  Notification email was sent to @ViewBag.messageRecipient</h3>
+    <h3>
+    @if (ViewBag.emailError != null)
+    {
+        <html>Timesheet Rejected, but there was an error sending notification email to @ViewBag.messageRecipient</html>
+    }
+    else
+    {
+        <html>Timesheet Rejected:  Notification email was sent to @ViewBag.messageRecipient</html>
+    }
+    </h3>
 }
 
 <table class="timesheet">
@@ -51,7 +60,7 @@
             @Html.Action("getTimesheetStatus", "User", new { userName = item.userName, refDate = DateTime.Now })
         </td>
         <td>
-            @Html.ActionLink("View User's Timesheet", "approveTimesheet", new { id=item.ID })
+            @Html.ActionLink("View User's Timesheet", "approveTimesheet", new { id = item.ID })
         </td>
     </tr>
     }

@@ -77,6 +77,7 @@ namespace TARS.Controllers
                 {
                     ViewBag.emailSentFlag = true;
                     ViewBag.messageRecipient = TempData["recipient"];
+                    ViewBag.emailError = TempData["emailError"];
                 }
                 return View(TARSUserDB.TARSUserList.ToList());
             }
@@ -565,6 +566,7 @@ namespace TARS.Controllers
                     sendRejectedTimesheetEmail(ts.worker);
                     TempData["emailSentFlag"] = true;
                     TempData["recipient"] = ts.worker;
+                    TempData["emailError"] = TempData["emailError"];
 
                     return RedirectToAction("userManagement");
                 }
@@ -593,14 +595,21 @@ string toAddress = "zeke_long@hotmail.com";
                           " has been rejected by a manager.<br /> Please log in to TARS and fix" +
                           " any errors, then re-submit as soon as possible.<br /><br /> Thanks!";
 
-            MailMessage mailMessage = new MailMessage();
-            mailMessage.To.Add(new MailAddress(toAddress));
-            mailMessage.Subject = subject;
-            mailMessage.Body = body;
-            mailMessage.IsBodyHtml = true;
+            try
+            {
+                MailMessage mailMessage = new MailMessage();
+                mailMessage.To.Add(new MailAddress(toAddress));
+                mailMessage.Subject = subject;
+                mailMessage.Body = body;
+                mailMessage.IsBodyHtml = true;
 
-            var client = new SmtpClient();
-            client.Send(mailMessage);
+                var client = new SmtpClient();
+                client.Send(mailMessage);
+            }
+            catch (Exception ex)
+            {
+                TempData["emailError"] = "Error: " + ex;
+            }
         
             return true;
         }
