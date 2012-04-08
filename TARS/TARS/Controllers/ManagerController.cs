@@ -589,27 +589,19 @@ string toAddress = "zeke_long@hotmail.com";
 //string toAddress = getEmailAddress(userName);
 
             string subject = "IDHW Rejected Timesheet";
-            string body = "Hello, <br /><br />This is an email to inform you that your IDHW timesheet has been rejected by a manager.<br /> Please log in to TARS and fix any errors, then re-submit as soon as possible.<br /><br /> Thanks!";
+            string body = "Hello, <br /><br />This is an email to inform you that your IDHW timesheet" +
+                          " has been rejected by a manager.<br /> Please log in to TARS and fix" +
+                          " any errors, then re-submit as soon as possible.<br /><br /> Thanks!";
 
-            try
-            {
-                MailMessage mailMessage = new MailMessage();
-                mailMessage.To.Add(new MailAddress(toAddress));
-                mailMessage.Subject = subject;
-                mailMessage.Body = body;
-                mailMessage.IsBodyHtml = true;
+            MailMessage mailMessage = new MailMessage();
+            mailMessage.To.Add(new MailAddress(toAddress));
+            mailMessage.Subject = subject;
+            mailMessage.Body = body;
+            mailMessage.IsBodyHtml = true;
 
-                var client = new SmtpClient
-                {
-                    EnableSsl = true,
-                };
-                client.Send(mailMessage);
-            }
-            catch (Exception ex)
-            {
-                string errorMessage = "Error: " + ex.Message;
-            }
-           
+            var client = new SmtpClient { EnableSsl = true };
+            client.Send(mailMessage);
+        
             return true;
         }
 
