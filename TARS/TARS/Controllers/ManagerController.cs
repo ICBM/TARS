@@ -599,7 +599,7 @@ string toAddress = "zeke_long@hotmail.com";
             mailMessage.Body = body;
             mailMessage.IsBodyHtml = true;
 
-            var client = new SmtpClient { EnableSsl = true };
+            var client = new SmtpClient();
             client.Send(mailMessage);
         
             return true;
