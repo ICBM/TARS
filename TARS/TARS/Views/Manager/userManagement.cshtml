@@ -6,6 +6,11 @@
 
 <h2>Active Users</h2>
 
+@if (ViewBag.emailSentFlag == true)
+{
+    <h3>Timesheet Rejected:  Notification email was sent to @ViewBag.messageRecipient</h3>
+}
+
 <table class="timesheet">
     <tr>
         <th>

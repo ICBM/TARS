@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Net.Mail;
 
 using TARS.Helpers;
 using TARS.Models;
@@ -71,6 +72,12 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
+                //if it's a redirect from submitRejectTimesheet()
+                if (TempData["emailSentFlag"] != null)
+                {
+                    ViewBag.emailSentFlag = true;
+                    ViewBag.messageRecipient = TempData["recipient"];
+                }
                 return View(TARSUserDB.TARSUserList.ToList());
             }
             else
@@ -507,7 +514,7 @@ namespace TARS.Controllers
 
 
         //
-        //changes timesheet status to approved
+        //changes timesheet status to submitted (if not already) and approved
         public virtual ActionResult submitApproveTimesheet(int id)
         {
             if (id >= 0)
@@ -517,12 +524,13 @@ namespace TARS.Controllers
                 {
                     Timesheet ts = new Timesheet();
                     ts = TimesheetDB.TimesheetList.Find(id);
+                    ts.submitted = true;
                     ts.approved = true;
                     TimesheetDB.Entry(ts).State = System.Data.EntityState.Modified;
                     //save changes to the database
                     TimesheetDB.SaveChanges();
 
-                    return RedirectToAction("approveTimesheet", new { id = getUserKeyID(ts.worker) });
+                    return RedirectToAction("userManagement");
                 }
                 else
                 {
@@ -537,8 +545,8 @@ namespace TARS.Controllers
 
 
         //
-        //changes timesheet status to disapproved
-        public virtual ActionResult submitDisapproveTimesheet(int id)
+        //changes timesheet submitted status to false and sends an alert email to employee
+        public virtual ActionResult submitRejectTimesheet(int id)
         {
             if (id >= 0)
             {
@@ -547,13 +555,18 @@ namespace TARS.Controllers
                 {
                     Timesheet ts = new Timesheet();
                     ts = TimesheetDB.TimesheetList.Find(id);
-                    ts.approved = false;
                     ts.submitted = false;
-                    TimesheetDB.Entry(ts).State = System.Data.EntityState.Modified;
+                    ts.approved = false;
                     //save changes to the database
+                    TimesheetDB.Entry(ts).State = System.Data.EntityState.Modified;
                     TimesheetDB.SaveChanges();
 
-                    return RedirectToAction("approveTimesheet", new { id = getUserKeyID(ts.worker) });
+                    //send an email to employee to notify them
+                    sendRejectedTimesheetEmail(ts.worker);
+                    TempData["emailSentFlag"] = true;
+                    TempData["recipient"] = ts.worker;
+
+                    return RedirectToAction("userManagement");
                 }
                 else
                 {
@@ -564,6 +577,40 @@ namespace TARS.Controllers
             {
                 return View("error");
             }
+        }
+
+
+        //
+        //Sends an email to inform employee that their timesheet was rejected
+        public bool sendRejectedTimesheetEmail(string userName)
+        {
+//NEED TO LOOK IN ACTIVE DIRECTORY TO GET THIS DONE CORRECTLY
+string toAddress = "zeke_long@hotmail.com";
+//string toAddress = getEmailAddress(userName);
+
+            string subject = "IDHW Rejected Timesheet";
+            string body = "Hello, <br /><br />This is an email to inform you that your IDHW timesheet has been rejected by a manager.<br /> Please log in to TARS and fix any errors, then re-submit as soon as possible.<br /><br /> Thanks!";
+
+            try
+            {
+                MailMessage mailMessage = new MailMessage();
+                mailMessage.To.Add(new MailAddress(toAddress));
+                mailMessage.Subject = subject;
+                mailMessage.Body = body;
+                mailMessage.IsBodyHtml = true;
+
+                var client = new SmtpClient
+                {
+                    EnableSsl = true,
+                };
+                client.Send(mailMessage);
+            }
+            catch (Exception ex)
+            {
+                string errorMessage = "Error: " + ex.Message;
+            }
+           
+            return true;
         }
 
 
