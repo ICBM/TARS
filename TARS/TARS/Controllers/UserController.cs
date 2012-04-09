@@ -124,7 +124,10 @@ namespace TARS.Controllers
                              where m.periodStart <= newhours.timestamp
                              where m.periodEnd >= newhours.timestamp
                              select m;
-                resulttimesheet = searchTs.First();
+                foreach (var item in searchTs)
+                {
+                    resulttimesheet = item;
+                }
      
                 //if there isn't a timesheet for the pay period, then create one
                 //If there is a timesheet for the current pay period, don't do anything
@@ -373,7 +376,7 @@ namespace TARS.Controllers
                     copiedHours.timestamp = DateTime.Now;
                     addHours(copiedHours);
                 }
-                return RedirectToAction("viewTimesheet", new { tsDate = dayFromPrevPeriod });
+                return RedirectToAction("viewTimesheet", new { tsDate = DateTime.Now });
             }
             else
             {
@@ -642,7 +645,10 @@ namespace TARS.Controllers
                 var searchUsers = from m in TARSUserDB.TARSUserList
                                   where (m.userName.CompareTo(User.Identity.Name) == 0)
                                   select m;
-                division = searchUsers.First().company;
+                foreach (var item in searchUsers)
+                {
+                    division = item.company;
+                }
                 return division;
             }
             else
