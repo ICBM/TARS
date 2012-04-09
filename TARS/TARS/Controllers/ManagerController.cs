@@ -138,7 +138,7 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
-                string division = getUserDivision();
+                string division = TempData["division"].ToString();
                 ViewBag.divisionName = division;
                 ViewBag.pcaList = getDivisionPcaSelectList(division);
                 ViewBag.earnCodeSelectList = getEarningsCodeSelectList();
@@ -195,6 +195,29 @@ namespace TARS.Controllers
             {
                 return View("error");
             }
+        }
+
+
+        //
+        //GET: /Manager/selectDivisionToAddWorkEffort
+        //
+        public virtual ActionResult selectDivisionToAddWorkEffort()
+        {
+            List<string> divisions = getDivisions();
+            string userDivision = getUserDivision();
+            var divisionList = new SelectList(divisions, userDivision);
+            ViewBag.divisionList = divisionList;
+            return View();
+        }
+
+
+        //POST: /Manager/selectDivisionToAddWorkEffort
+        //Passes the selected division to addWorkEffort so the appropriate PCA codes can be displayed
+        [HttpPost]
+        public virtual ActionResult selectDivisionToAddWorkEffort(string division)
+        {
+            TempData["division"] = division;
+            return RedirectToAction("addWorkEffort");
         }
 
         
@@ -608,7 +631,7 @@ string toAddress = "zeke_long@hotmail.com";
             }
             catch (Exception ex)
             {
-                TempData["emailError"] = "Error: " + ex;
+                TempData["emailError"] = ex;
             }
         
             return true;

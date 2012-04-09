@@ -253,6 +253,7 @@
     <Content Include="Views\Admin\deletePCA_WE.cshtml" />
     <Content Include="Views\Manager\searchPCA.cshtml" />
     <Content Include="Views\User\selectDivisionToAddHours.cshtml" />
+    <Content Include="Views\Manager\selectDivisionToAddWorkEffort.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

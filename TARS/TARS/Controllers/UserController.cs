@@ -374,7 +374,7 @@ namespace TARS.Controllers
 
         //
         // GET: /User/copyTimesheet
-        //Duplicates hours from previous week 
+        //Duplicates timesheet from previous week (but hours worked are set to zero)
         public virtual ActionResult copyTimesheet()
         {
             Authentication auth = new Authentication();
@@ -410,7 +410,6 @@ namespace TARS.Controllers
                 {
                     copiedHours.hours = 0;
                     copiedHours.timestamp = DateTime.Now;
-                    //add new entry to Hours and History tables
                     addHours(copiedHours);
                 }
                 return RedirectToAction("viewTimesheet");
