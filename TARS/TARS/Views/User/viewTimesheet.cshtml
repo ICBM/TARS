@@ -42,8 +42,17 @@
             }
         }
     }
-    <p>@Html.ActionLink("View Previous Timesheet", "viewTimesheet", 
-                        new { tsDate = (DateTime)ViewBag.timesheet.periodStart.AddDays(-1) }, null)</p>
+    
+    @if (ViewBag.noPreviousTimesheet != true)
+    {
+        <p>@Html.ActionLink("View Previous Timesheet", "viewTimesheet",
+                            new { tsDate = (DateTime)ViewBag.timesheet.periodStart.AddDays(-1) }, null)</p>
+    }
+    <!-- If the user isn't viewing their current timesheet -->
+    @if ( (DateTime.Now < ViewBag.timesheet.periodStart)||(DateTime.Now > ViewBag.timesheet.periodEnd) )
+    {
+        <p>@Html.ActionLink("Back to Current Timesheet", "viewTimesheet", new { tsDate = DateTime.Now }, null)</p>
+    }
     
 </div>
 

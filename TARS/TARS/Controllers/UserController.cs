@@ -463,19 +463,15 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
-                Timesheet timesheet = new Timesheet();
                 string userName = User.Identity.Name;
+                Timesheet timesheet = getTimesheet(userName, tsDate);
+                Timesheet prevTimesheet = getTimesheet(userName, tsDate.AddDays(-7));
 
-                var searchTimesheet = from m in TimesheetDB.TimesheetList
-                                        where (m.worker.CompareTo(userName) == 0)
-                                        where m.periodStart <= tsDate
-                                        where m.periodEnd >= tsDate
-                                        select m;
-                foreach (var item in searchTimesheet)
-                {
-                    timesheet = item;
-                }
                 ViewBag.timesheet = timesheet;
+                if (prevTimesheet == null)
+                {
+                    ViewBag.noPreviousTimesheet = true;
+                }
 
                 //select all hours from the timesheet
                 var searchHours = from m in HoursDB.HoursList
