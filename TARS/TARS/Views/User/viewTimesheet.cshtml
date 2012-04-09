@@ -29,11 +29,11 @@
 
 
 <div id="menu" style="float:right;">
+    <h4>Actions</h4>
     @if (ViewBag.timesheet.locked == false)
     {       
         if (ViewBag.timesheet.approved == false)
         {
-            <h4>Actions</h4>
             <p>@Html.ActionLink("Add New Hours", "selectDivisionToAddHours")</p> 
             if (ViewBag.timesheet.submitted == false)
             {
@@ -42,6 +42,8 @@
             }
         }
     }
+    <p>@Html.ActionLink("View Previous Timesheet", "viewTimesheet", 
+                        new { tsDate = (DateTime)ViewBag.timesheet.periodStart.AddDays(-1) }, null)</p>
     
 </div>
 

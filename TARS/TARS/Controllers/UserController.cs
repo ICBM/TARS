@@ -99,7 +99,7 @@ namespace TARS.Controllers
                     //add and save new hours
                     HoursDB.HoursList.Add(newhours);
                     HoursDB.SaveChanges();
-                    return RedirectToAction("viewTimesheet");
+                    return RedirectToAction("viewTimesheet", new { tsDate = newhours.timestamp });
                 }
                 return View("error");
             }
@@ -319,7 +319,7 @@ namespace TARS.Controllers
                     HoursDB.Entry(tmpHours).State = EntityState.Modified;
                     HoursDB.SaveChanges();
                 }
-                return RedirectToAction("viewTimesheet");
+                return RedirectToAction("viewTimesheet", new {tsDate=tmpHours.timestamp});
             }
             else
             {
@@ -363,7 +363,7 @@ namespace TARS.Controllers
                 Hours hours = HoursDB.HoursList.Find(id);
                 HoursDB.Entry(hours).State = EntityState.Deleted;
                 HoursDB.SaveChanges();
-                return RedirectToAction("viewTimesheet");
+                return RedirectToAction("viewTimesheet", new { tsDate = hours.timestamp });
             }
             else
             {
@@ -412,7 +412,7 @@ namespace TARS.Controllers
                     copiedHours.timestamp = DateTime.Now;
                     addHours(copiedHours);
                 }
-                return RedirectToAction("viewTimesheet");
+                return RedirectToAction("viewTimesheet", new { tsDate = dayFromPrevPeriod });
             }
             else
             {
@@ -509,40 +509,6 @@ namespace TARS.Controllers
                     //save changes to the database
                     TimesheetDB.SaveChanges();
 
-                    return RedirectToAction("viewTimesheet", new { tsDate = ts.periodStart });
-                }
-                else
-                {
-                    return View("notLoggedIn");
-                }
-            }
-            else
-            {
-                return View("error");
-            }
-        }
-
-
-        //
-        // GET: /User/unSubmitTimesheet
-        //changes timesheet submitted status to true (only if it isn't in approved or locked status)
-        public virtual ActionResult unSubmitTimesheet(int id)
-        {
-            if (id >= 0)
-            {
-                Authentication auth = new Authentication();
-                if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
-                {
-                    Timesheet ts = new Timesheet();
-                    ts = TimesheetDB.TimesheetList.Find(id);
-                    //make sure the user is allowed to un-submit it
-                    if ((ts.approved == false) && (ts.locked == false))
-                    {
-                        ts.submitted = false;
-                        TimesheetDB.Entry(ts).State = System.Data.EntityState.Modified;
-                        //save changes to the database
-                        TimesheetDB.SaveChanges();
-                    }
                     return RedirectToAction("viewTimesheet", new { tsDate = ts.periodStart });
                 }
                 else
