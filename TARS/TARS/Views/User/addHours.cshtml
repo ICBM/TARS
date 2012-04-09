@@ -4,7 +4,7 @@
     ViewBag.Title = "addHours";
 }
 
-<h2>Add Hours <small><i>(@ViewBag.division)</i></small></h2>
+<h2>Add Hours</h2>
 
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
@@ -18,10 +18,17 @@
             <input name="creator" type="hidden" value="@User.Identity.Name" />
             <input name="division" type="hidden" value="@ViewBag.division" />
 
-            <div class="editor-label"><b>Work Effort</b></div>
+            <div class="editor-label"><b>Division</b></div>
             <div class="editor-field">
-                @Html.DropDownList("workEffortID", (List<SelectListItem>)ViewBag.workEffortList)
+                @Html.DropDownList("division", (List<SelectListItem>)ViewBag.divisionList, "--Select Division--")
             </div>
+
+            <p>
+            <div class="editor-label"><b>Choose Work Effort</b></div>
+            <div class="editor-field">
+                @Html.DropDownListFor(p => p.workEffortID, Enumerable.Empty<SelectListItem>(), "--Select Work Effort--")
+            </div>
+            </p>
 
             <p>
             <div class="editor-label"><b>Hours Worked</b></div>
@@ -66,3 +73,21 @@ else
 <div>
     @Html.ActionLink("Back to Timesheet", "viewTimesheet/")
 </div>
+
+
+<!-- Populate Work Effort dropdown according to division that was selected -->
+<script type="text/javascript">
+    $('#division').change(function () {
+        var selectedDivision = $(this).val();
+        $.getJSON('@Url.Action("jsonWorkEffortSelectList")', { division: selectedDivision }, function (workefforts) {
+            var weSelect = $('#workEffortID');
+            weSelect.empty();
+            $.each(workefforts, function (index, we) {
+                weSelect.append($('<option/>', {
+                    value: we.value,
+                    text: we.text
+                }));
+            });
+        });
+    });
+</script>

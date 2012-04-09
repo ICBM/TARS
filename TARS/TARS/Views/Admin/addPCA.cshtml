@@ -34,9 +34,9 @@
         </p>
 
         <p>
-        <div class="editor-label"><b>Department</b></div>
+        <div class="editor-label"><b>Division</b></div>
         <div class="editor-field">
-            @Html.DropDownList("division", new SelectList(ViewBag.divisionList, Model))
+            @Html.DropDownListFor(p => p.division, new SelectList(ViewBag.divisionList, "Value", "Text"), "--Select Division--")
         </div>
         </p>
 

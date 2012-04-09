@@ -54,7 +54,7 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
             {
-                ViewBag.divisionList = getDivisionsList();
+                ViewBag.divisionList = getDivisionSelectList();
                 return View();
             }
             else
@@ -84,7 +84,7 @@ namespace TARS.Controllers
                     else
                     {
                         ViewBag.duplicatePcaFlag = true;
-                        ViewBag.divisionList = getDivisionsList();
+                        ViewBag.divisionList = getDivisionSelectList();
                         return View(pcacode);
                     }
                 }
@@ -107,7 +107,7 @@ namespace TARS.Controllers
             {
                 PcaCode pcacode = new PcaCode();
                 pcacode = PcaCodeDB.PcaCodeList.Find(id);
-                ViewBag.divisionList = getDivisionsList();
+                ViewBag.divisionList = getDivisionSelectList();
                 return View(pcacode);
             }
             else
@@ -148,7 +148,7 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
             {
-                ViewBag.divisionList = getDivisionsList();
+                ViewBag.divisionList = getDivisionSelectList();
                 return View(TempData["tmpPcaCode"]);
             }
             else
@@ -333,7 +333,8 @@ namespace TARS.Controllers
                 PcaCode pca = getPcaFromCode(we.pcaCode);
                 ViewBag.workEffortDescription = we.description;
                 ViewBag.workEffortId = weID;
-                ViewBag.pcaAddList = getDivisionPcaSelectList(pca.division);
+                ViewBag.divisionList = getDivisionSelectList();
+                ViewBag.pcaAddList = getDivisionPcaCodeList(pca.division);
                 return View();
             }
             else
@@ -372,6 +373,7 @@ namespace TARS.Controllers
                     }
                     return RedirectToAction("weManagement", "Manager");
                 }
+                ViewBag.divisionList = getDivisionSelectList();
                 ViewBag.pcaAddList = getAllPcaCodes();
                 ViewBag.outOfPcaTimeBounds = true;
                 return View(pca_we);
@@ -460,11 +462,14 @@ namespace TARS.Controllers
                               where p.WE == pcawe.WE
                               where p.PCA == pcawe.PCA
                               select p;
-            if (searchPcaWe.First() == null)
+            foreach (var item in searchPcaWe)
             {
-                return false;
+                if (item != null)
+                {
+                    return true;
+                }
             }
-            return true;
+            return false;
         }
 
 

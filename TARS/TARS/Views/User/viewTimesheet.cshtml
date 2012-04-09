@@ -34,7 +34,7 @@
     {       
         if (ViewBag.timesheet.approved == false)
         {
-            <p>@Html.ActionLink("Add New Hours", "selectDivisionToAddHours")</p> 
+            <p>@Html.ActionLink("Add New Hours", "addHours")</p> 
             if (ViewBag.timesheet.submitted == false)
             {
                 <p>@Html.ActionLink("Copy Previous Timesheet", "copyTimesheet")</p>

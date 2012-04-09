@@ -21,9 +21,16 @@
         @Html.Hidden("WE", (int)ViewBag.workEffortId)
 
         <p>
-        <div class="editor-label"><b>Choose a PCA to Add</b></div>
+        <div class="editor-label"><b>Choose PCA's Division</b></div>
         <div class="editor-field">
-            @Html.DropDownList("PCA", (List<SelectListItem>)ViewBag.pcaAddList)
+            @Html.DropDownList("division", (List<SelectListItem>)ViewBag.divisionList, "--Select Division--", null)
+        </div>
+        </p>
+
+        <p>
+        <div class="editor-label"><b>Choose PCA to Add</b></div>
+        <div class="editor-field">
+            @Html.DropDownListFor(p => p.PCA, Enumerable.Empty<SelectListItem>(), "--Select PCA--")
         </div>
         </p>
 
@@ -37,3 +44,23 @@
 @Html.ActionLink("Back to Edit", "editWorkEffort", "Manager", new {id = (int)ViewBag.workEffortId}, null)  |
 @Html.ActionLink("Back to Work Efforts", "weManagement", "Manager") 
 </p>
+
+
+<!-- Populate PCA dropdown according to division that was selected -->
+<script type="text/javascript">
+    $('#division').change(function () {
+        var selectedDivision = $(this).val();
+            $.getJSON('@Url.Action("jsonPcaSelectList")', { division: selectedDivision }, function (pcas) {
+                var pcaSelect = $('#PCA');
+                pcaSelect.empty();
+                $.each(pcas, function (index, pca) {
+                    pcaSelect.append($('<option/>', {
+                        value: pca.value,
+                        text: pca.text
+                    }));
+                });
+            });
+    });
+</script>
+
+

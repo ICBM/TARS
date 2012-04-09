@@ -172,10 +172,10 @@
     <Content Include="Scripts\MicrosoftMvcValidation.js" />
     <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Account\ChangePassword.cshtml" />
-    <Content Include="Views\Account\ChangePasswordSuccess.cshtml" />
-    <Content Include="Views\Account\LogOn.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Admin\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Admin\Account\ChangePasswordSuccess.cshtml" />
+    <Content Include="Views\Admin\Account\LogOn.cshtml" />
+    <Content Include="Views\Admin\Account\Register.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
@@ -252,9 +252,8 @@
     <Content Include="Views\Admin\addPCA_WE.cshtml" />
     <Content Include="Views\Admin\deletePCA_WE.cshtml" />
     <Content Include="Views\Manager\searchPCA.cshtml" />
-    <Content Include="Views\User\selectDivisionToAddHours.cshtml" />
-    <Content Include="Views\Manager\selectDivisionToAddWorkEffort.cshtml" />
     <Content Include="Views\Manager\managerEditHours.cshtml" />
+    <Content Include="Views\Admin\aTest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

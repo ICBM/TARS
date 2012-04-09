@@ -46,13 +46,11 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
-                string division = TempData["division"].ToString();
-                ViewBag.division = division;
-                ViewBag.workEffortList = getVisibleWorkEffortSelectList(division);
                 Authentication newAuth = new Authentication();
                 bool adminFlag = newAuth.isAdmin(this);
                 ViewBag.adminFlag = adminFlag;
                 ViewBag.userName = User.Identity.Name;
+                ViewBag.divisionList = getDivisionSelectList();
                 return View();
             }
             else
@@ -66,7 +64,7 @@ namespace TARS.Controllers
         // POST: /User/addHours
         //Takes filled form and adds it to database
         [HttpPost]
-        public virtual ActionResult addHours(Hours newhours, string division = null)
+        public virtual ActionResult addHours(Hours newhours)
         {
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
@@ -89,8 +87,7 @@ namespace TARS.Controllers
                         bool adminFlag = newAuth.isAdmin(this);
                         ViewBag.adminFlag = adminFlag;
                         ViewBag.userName = User.Identity.Name;
-                        ViewBag.division = division;
-                        ViewBag.workEffortList = getVisibleWorkEffortSelectList(division);
+                        ViewBag.divisionList = getDivisionSelectList();
                         return View(newhours);
                     }
                     //make sure that a timesheet exists for the period hours are being added to
@@ -107,30 +104,6 @@ namespace TARS.Controllers
             {
                 return View("notLoggedIn");
             }
-        }
-
-
-        //
-        //GET: /User/selectDivisionToAddHours
-        //
-        public virtual ActionResult selectDivisionToAddHours()
-        {
-            List<string> divisions = getDivisionsList();
-            string userDivision = getUserDivision();
-            var divisionList = new SelectList(divisions, userDivision);
-            ViewBag.divisionList = divisionList;
-            return View() ;
-        }
-
-
-        //
-        //POST: /User/selectDivisionToAddHours
-        //Passes the selected division to addHours so the appropriate Work Efforts can be displayed
-        [HttpPost]
-        public virtual ActionResult selectDivisionToAddHours(string division)
-        {
-            TempData["division"] = division;
-            return RedirectToAction("addHours");
         }
 
 
@@ -524,17 +497,21 @@ namespace TARS.Controllers
 
         // 
         //Returns the IDHW Divisions as a list of strings
-        public virtual List<string> getDivisionsList()
+        public virtual List<SelectListItem> getDivisionSelectList()
         {
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
-                List<string> divList = new List<string>();
+                List<SelectListItem> divList = new List<SelectListItem>();
                 var searchDivisions = from m in DivisionsDB.DivisionsList
                                       select m;
                 foreach (var item in searchDivisions)
                 {
-                    divList.Add(item.divName);
+                    divList.Add(new SelectListItem
+                    {
+                        Text = item.divName,
+                        Value = item.divName
+                    }); 
                 }
                 return divList;
             }
@@ -672,6 +649,22 @@ namespace TARS.Controllers
             {
                 return null;
             }
+        }
+
+
+        //
+        //
+        public ActionResult jsonWorkEffortSelectList(string division)
+        {
+            List<SelectListItem> weSelectList = getVisibleWorkEffortSelectList(division);
+            List<string> weIDList = new List<string>();
+            foreach (var item in weSelectList)
+            {
+                weIDList.Add(item.Value);
+            }
+            return Json(weIDList.Select(x => new { value = x, text = getWeDescription(Convert.ToInt32(x)) }), 
+                        JsonRequestBehavior.AllowGet
+                        );
         }
 
 

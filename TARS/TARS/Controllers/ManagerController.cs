@@ -138,11 +138,8 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
-                string division = TempData["division"].ToString();
-                ViewBag.divisionName = division;
-                ViewBag.pcaList = getDivisionPcaSelectList(division);
+                ViewBag.divisionList = getDivisionSelectList();
                 ViewBag.earnCodeSelectList = getEarningsCodeSelectList();
-
                 return View();
             }
             else
@@ -180,12 +177,9 @@ namespace TARS.Controllers
                     }
                     else
                     {
-                        string division = getUserDivision();
-                        ViewBag.divisionName = division;
-                        ViewBag.pcaList = getDivisionPcaSelectList(division);
+                        ViewBag.divisionList = getDivisionSelectList();
                         ViewBag.earnCodeSelectList = getEarningsCodeSelectList();
                         ViewBag.notWithinTimeBounds = true;
-
                         return View(workeffort);
                     }
                 }
@@ -195,29 +189,6 @@ namespace TARS.Controllers
             {
                 return View("error");
             }
-        }
-
-
-        //
-        //GET: /Manager/selectDivisionToAddWorkEffort
-        //
-        public virtual ActionResult selectDivisionToAddWorkEffort()
-        {
-            List<string> divisions = getDivisionsList();
-            string userDivision = getUserDivision();
-            var divisionList = new SelectList(divisions, userDivision);
-            ViewBag.divisionList = divisionList;
-            return View();
-        }
-
-
-        //POST: /Manager/selectDivisionToAddWorkEffort
-        //Passes the selected division to addWorkEffort so the appropriate PCA codes can be displayed
-        [HttpPost]
-        public virtual ActionResult selectDivisionToAddWorkEffort(string division)
-        {
-            TempData["division"] = division;
-            return RedirectToAction("addWorkEffort");
         }
 
         
@@ -755,19 +726,15 @@ string toAddress = "zeke_long@hotmail.com";
 
         // 
         //Returns PCA Codes as a selection list
-        public virtual List<SelectListItem> getDivisionPcaSelectList(string division)
+        public virtual List<string> getDivisionPcaCodeList(string division)
         {
-            List<SelectListItem> pcaCodesList = new List<SelectListItem>();
+            List<string> pcaCodesList = new List<string>();
             var searchPcaCodes = from m in PcaCodeDB.PcaCodeList
                                  where (m.division.CompareTo(division) == 0)
                                  select m;
             foreach (var item in searchPcaCodes)
             {
-                pcaCodesList.Add(new SelectListItem
-                {
-                    Text = item.code.ToString(),
-                    Value = item.code.ToString()
-                });
+                pcaCodesList.Add(item.code.ToString());
             }
             return pcaCodesList;
         }
@@ -778,14 +745,15 @@ string toAddress = "zeke_long@hotmail.com";
         public bool verifyWeTimeBounds(WorkEffort effort, int pca)
         {
             bool dateFlag = false;
-            PcaCode tmpPca = new PcaCode();
             var searchPCA = from m in PcaCodeDB.PcaCodeList
                            where (m.code.CompareTo(pca) == 0)
                            select m;
-            tmpPca = searchPCA.First();
-            if ((tmpPca.startDate <= effort.startDate) && (tmpPca.endDate >= effort.endDate))
+            foreach (var item in searchPCA)
             {
-                dateFlag = true;
+                if ((item.startDate <= effort.startDate) && (item.endDate >= effort.endDate))
+                {
+                    dateFlag = true;
+                }
             }
             return dateFlag;
         }
@@ -797,11 +765,14 @@ string toAddress = "zeke_long@hotmail.com";
         public string getPcaTimeBoundsString(int pcacode)
         {
             PcaCode tmpPca = new PcaCode();
+            string bounds = "";
             var searchPCA = from m in PcaCodeDB.PcaCodeList
                             where (m.code.CompareTo(pcacode) == 0)
                             select m;
-            tmpPca = searchPCA.First();
-            string bounds = tmpPca.startDate.ToShortDateString() + " - " + tmpPca.endDate.ToShortDateString();
+            foreach (var item in searchPCA)
+            {
+                bounds = tmpPca.startDate.ToShortDateString() + " - " + tmpPca.endDate.ToShortDateString();
+            }
             return bounds;
         }
 
@@ -822,6 +793,18 @@ string toAddress = "zeke_long@hotmail.com";
             {
                 return View("error");
             }
+        }
+
+
+        //
+        //
+        public ActionResult jsonPcaSelectList(string division)
+        {
+            IEnumerable<string> pcaList = getDivisionPcaCodeList(division);
+
+            return Json(pcaList.Select(x => new { value = x, text = x }),
+                        JsonRequestBehavior.AllowGet
+                        );
         }
     }
 }

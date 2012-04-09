@@ -4,12 +4,7 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Add Work Effort 
-@if (ViewBag.divisionName.Trim().Length > 0)
-{
-    <small><i>(@ViewBag.divisionName)</i></small>
-}
-</h2>
+<h2>Add Work Effort</h2>
 
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
@@ -19,10 +14,17 @@
     @Html.ValidationSummary(true)
     <fieldset>
 
+        <div class="editor-label"><b>Division</b></div>
+        <div class="editor-field">
+            @Html.DropDownList("division", (List<SelectListItem>)ViewBag.divisionList, "--Select Division--")
+        </div>
+
+        <p>
         <div class="editor-label"><b>PCA Code</b></div>
         <div class="editor-field">
-            @Html.DropDownList("pcaCode", (List<SelectListItem>)ViewBag.pcaList)
+            @Html.DropDownListFor(model => model.pcaCode, Enumerable.Empty<SelectListItem>(), "--Select PCA code--", null)
         </div>
+        </p>
 
         <p>
         <div class="editor-label"><b>Work Effort Description </b>(100 characters max)</div>
@@ -35,7 +37,7 @@
         <p>
         <div class="editor-label"><b>Earnings Code</b></div>
         <div class="editor-field">
-            @Html.DropDownList("earningsCode", (List<SelectListItem>)ViewBag.earnCodeSelectList)
+            @Html.DropDownListFor(model => model.earningsCode, (List<SelectListItem>)ViewBag.earnCodeSelectList, "--Select Earnings Code--", null)
         </div>
         </p>
 
@@ -76,3 +78,22 @@
 <div>
     @Html.ActionLink("Back to List", "weManagement/")
 </div>
+
+
+
+<!-- Populate PCA dropdown according to division that was selected -->
+<script type="text/javascript">
+    $('#division').change(function () {
+        var selectedDivision = $(this).val();
+        $.getJSON('@Url.Action("jsonPcaSelectList")', { division: selectedDivision }, function (pcas) {
+            var pcaSelect = $('#pcaCode');
+            pcaSelect.empty();
+            $.each(pcas, function (index, pca) {
+                pcaSelect.append($('<option/>', {
+                    value: pca.value,
+                    text: pca.text
+                }));
+            });
+        });
+    });
+</script>
