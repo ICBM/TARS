@@ -29,7 +29,7 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth )
             {
-                return RedirectToAction("viewTimesheet");
+                return RedirectToAction("viewTimesheet", new { tsDate = DateTime.Now });
             }
             else
             {
@@ -457,21 +457,19 @@ namespace TARS.Controllers
 
         //
         // GET: /User/viewTimesheet
-        //Gets a list of the current user's hours and associated tasks
-        public virtual ActionResult viewTimesheet()
+        //Gets the current user's hours for the time period that tsDate falls within
+        public virtual ActionResult viewTimesheet(DateTime tsDate)
         {
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
-                DateTime startDay = DateTime.Now.StartOfWeek(DayOfWeek.Sunday);
                 Timesheet timesheet = new Timesheet();
-                string userName;
-                userName = User.Identity.Name;
+                string userName = User.Identity.Name;
 
                 var searchTimesheet = from m in TimesheetDB.TimesheetList
                                         where (m.worker.CompareTo(userName) == 0)
-                                        where m.periodStart <= DateTime.Now
-                                        where m.periodEnd >= DateTime.Now
+                                        where m.periodStart <= tsDate
+                                        where m.periodEnd >= tsDate
                                         select m;
                 foreach (var item in searchTimesheet)
                 {
@@ -479,10 +477,11 @@ namespace TARS.Controllers
                 }
                 ViewBag.timesheet = timesheet;
 
-                //select all hours from current timesheet
+                //select all hours from the timesheet
                 var searchHours = from m in HoursDB.HoursList
                                     where (m.creator.CompareTo(userName) == 0)
-                                    where m.timestamp >= startDay
+                                    where m.timestamp >= timesheet.periodStart
+                                    where m.timestamp <= timesheet.periodEnd
                                     select m;
                 return View(searchHours);
             }

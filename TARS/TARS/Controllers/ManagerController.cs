@@ -505,29 +505,40 @@ namespace TARS.Controllers
 
 
         //
-        //returns specified user's hours, along with manager options, to the View
-        public virtual ActionResult approveTimesheet(int id)
+        //GET: Manager/approveTimesheet
+        //Gets hours for specified user for the time period that tsDate falls within
+        public virtual ActionResult approveTimesheet(int userKeyID, DateTime tsDate)
         {
-            DateTime tsDate = DateTime.Now;
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
-                TARSUser user = TARSUserDB.TARSUserList.Find(id);
+                TARSUser employee = TARSUserDB.TARSUserList.Find(userKeyID);
+                Timesheet timesheet = new Timesheet();
+
+                var searchTimesheet = from m in TimesheetDB.TimesheetList
+                                      where (m.worker.CompareTo(employee.userName) == 0)
+                                      where m.periodStart <= tsDate
+                                      where m.periodEnd >= tsDate
+                                      select m;
+                foreach (var item in searchTimesheet)
+                {
+                    timesheet = item;
+                }
+                if (timesheet == null)
+                {
+                    createCurrentTimesheet(employee.userName);
+                    ViewBag.timesheet = getTimesheet(employee.userName, DateTime.Now);
+                }
+                else
+                {
+                    ViewBag.timesheet = timesheet;
+                }
 
                 var searchHours = from m in HoursDB.HoursList
-                                  where (m.creator.CompareTo(user.userName) == 0)
+                                  where (m.creator.CompareTo(employee.userName) == 0)
+                                  where m.timestamp >= timesheet.periodStart
+                                  where m.timestamp <= timesheet.periodEnd
                                   select m;
-                foreach (var item in searchHours)
-                {
-                    tsDate = item.timestamp;    //used to retrieve the correct timesheet
-                }
-
-                ViewBag.timesheet = getTimesheet(user.userName, tsDate);
-                if (ViewBag.timesheet == null)
-                {
-                    createCurrentTimesheet(user.userName);
-                    ViewBag.timesheet = getTimesheet(user.userName, DateTime.Now);
-                }
                 return View(searchHours);
             }
             else

@@ -4,7 +4,7 @@
     ViewBag.Title = "approveTimesheet";
 }
 
-<h2>approveTimesheet
+<h2>Approve Timesheet
 @if (ViewBag.timesheet.submitted)
 {
     if (ViewBag.timesheet.approved)
@@ -21,6 +21,27 @@ else
     <small><i>(not submitted)</i></small>
 }
 </h2>
+
+
+<div id="menu" style="float:right;">
+<h4><b></b>Actions</b></h4>    
+    @if (ViewBag.timesheet.locked == false)
+    {
+        if (ViewBag.timesheet.approved == true)
+        {
+            <p>@Html.ActionLink("Undo Approved Status", "submitRejectTimesheet/", new { id = (int)ViewBag.timesheet.ID })</p>
+        }
+        else
+        {
+            <p>@Html.ActionLink("Approve", "submitApproveTimesheet/", new { id = (int)ViewBag.timesheet.ID })</p>
+            <p>@Html.ActionLink("Reject", "submitRejectTimesheet/", new { id = (int)ViewBag.timesheet.ID })</p>
+            <p>@Html.ActionLink("Edit Hours For Employee", "editHours/", new { id = (int)ViewBag.timesheet.ID })</p>
+        }
+    }
+    
+    <p>@Html.ActionLink("Back to Employee List", "userManagement/")</p>
+</div>
+
 
 <h3>Hours list for @ViewBag.timesheet.worker</h3>
 <table class="timesheet">
@@ -52,10 +73,10 @@ else
             @Html.Action("getWeDescription", "User", new{ id = item.workEffortID })
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.description)
+            @Html.DisplayFor(modelItem => item.hours)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.hours)
+            @Html.DisplayFor(modelItem => item.description)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.timestamp)
@@ -68,21 +89,4 @@ else
 }
 </table>
 
-<div id="menu" style="float:right;">
-<h4><b></b>Actions</b></h4>    
-    @if (ViewBag.timesheet.locked == false)
-    {
-        if (ViewBag.timesheet.approved == true)
-        {
-            <p>@Html.ActionLink("Undo Approved Status", "submitRejectTimesheet/", new { id = (int)ViewBag.timesheet.ID })</p>
-        }
-        else
-        {
-            <p>@Html.ActionLink("Approve", "submitApproveTimesheet/", new { id = (int)ViewBag.timesheet.ID })</p>
-            <p>@Html.ActionLink("Reject", "submitRejectTimesheet/", new { id = (int)ViewBag.timesheet.ID })</p>
-            <p>@Html.ActionLink("Edit Hours For Employee", "editHours/", new { id = (int)ViewBag.timesheet.ID })</p>
-        }
-    }
-    
-    <p>@Html.ActionLink("Back to Employee List", "userManagement/")</p>
-</div>
+

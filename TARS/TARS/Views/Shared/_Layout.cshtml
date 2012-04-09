@@ -26,7 +26,7 @@
 				<table class="contextMenu">
 					<tr>
 						<td>
-                            @Html.ActionLink("View My Timesheet", "viewTimesheet", "User")
+                            @Html.ActionLink("View My Timesheet", "viewTimesheet", "User", new { tsDate = DateTime.Now }, null)
                         </td>
                         <td>
                             @Html.ActionLink("View Work Efforts", "searchWorkEffort", "User")

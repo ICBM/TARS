@@ -40,7 +40,7 @@ namespace TARS.Controllers
             ViewBag.userAddHours           = user.addHours()           != null;
             ViewBag.userSearchWorkEffort   = user.searchWorkEffort()   != null;
             ViewBag.userViewWorkEffort     = user.viewWorkEffort()     != null;
-            ViewBag.userViewTimesheet      = user.viewTimesheet()      != null;
+            ViewBag.userViewTimesheet      = user.viewTimesheet(DateTime.Now)      != null;
             ViewBag.userViewHistory        = user.viewHistory()        != null;
 
             var manager = new ManagerController();
