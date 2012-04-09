@@ -35,7 +35,6 @@ else
         {
             <p>@Html.ActionLink("Approve", "submitApproveTimesheet/", new { id = (int)ViewBag.timesheet.ID })</p>
             <p>@Html.ActionLink("Reject", "submitRejectTimesheet/", new { id = (int)ViewBag.timesheet.ID })</p>
-            <p>@Html.ActionLink("Edit Hours For Employee", "editHours/", new { id = (int)ViewBag.timesheet.ID })</p>
         }
     }
     
@@ -83,6 +82,10 @@ else
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.creator)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "managerEditHours", new { hrsID = item.ID, tsID = (int)ViewBag.timesheet.ID }) |
+            @Html.ActionLink("Delete", "managerDeleteHours", new { hrsID = item.ID, tsID = (int)ViewBag.timesheet.ID })
         </td>
     </tr>
     }

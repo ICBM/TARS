@@ -54,7 +54,7 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
             {
-                ViewBag.divisionList = getDivisions();
+                ViewBag.divisionList = getDivisionsList();
                 return View();
             }
             else
@@ -84,7 +84,7 @@ namespace TARS.Controllers
                     else
                     {
                         ViewBag.duplicatePcaFlag = true;
-                        ViewBag.divisionList = getDivisions();
+                        ViewBag.divisionList = getDivisionsList();
                         return View(pcacode);
                     }
                 }
@@ -107,7 +107,7 @@ namespace TARS.Controllers
             {
                 PcaCode pcacode = new PcaCode();
                 pcacode = PcaCodeDB.PcaCodeList.Find(id);
-                ViewBag.divisionList = getDivisions();
+                ViewBag.divisionList = getDivisionsList();
                 return View(pcacode);
             }
             else
@@ -148,7 +148,7 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
             {
-                ViewBag.divisionList = getDivisions();
+                ViewBag.divisionList = getDivisionsList();
                 return View(TempData["tmpPcaCode"]);
             }
             else

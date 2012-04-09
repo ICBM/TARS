@@ -203,7 +203,7 @@ namespace TARS.Controllers
         //
         public virtual ActionResult selectDivisionToAddWorkEffort()
         {
-            List<string> divisions = getDivisions();
+            List<string> divisions = getDivisionsList();
             string userDivision = getUserDivision();
             var divisionList = new SelectList(divisions, userDivision);
             ViewBag.divisionList = divisionList;
@@ -672,6 +672,53 @@ string toAddress = "zeke_long@hotmail.com";
                 {
                     return View("error");
                 }
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+
+        // GET: /Manager/managerEditHours
+        //  - Edits a specified Hours entry
+        public virtual ActionResult managerEditHours(int hrsID, int tsID)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                Hours hours = HoursDB.HoursList.Find(hrsID);
+                Timesheet timesheet = TimesheetDB.TimesheetList.Find(tsID);
+                ViewBag.timesheetLockedFlag = timesheet.locked;
+                Authentication newAuth = new Authentication();
+                bool adminFlag = newAuth.isAdmin(this);
+                ViewBag.adminFlag = adminFlag;
+                ViewBag.userName = timesheet.worker;
+                ViewBag.workEffort = WorkEffortDB.WorkEffortList.Find(hours.workEffortID);
+                return View(hours);
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+
+        //
+        // POST: /Manager/managerEditHours
+        [HttpPost]
+        public virtual ActionResult managerEditHours(Hours tmpHours)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                if (ModelState.IsValid)
+                {
+                    HoursDB.Entry(tmpHours).State = EntityState.Modified;
+                    HoursDB.SaveChanges();
+                }
+                int userKeyID = getUserKeyID(tmpHours.creator);
+                return RedirectToAction("approveTimesheet", new { userKeyID = userKeyID, tsDate = tmpHours.timestamp });
             }
             else
             {

@@ -115,7 +115,7 @@ namespace TARS.Controllers
         //
         public virtual ActionResult selectDivisionToAddHours()
         {
-            List<string> divisions = getDivisions();
+            List<string> divisions = getDivisionsList();
             string userDivision = getUserDivision();
             var divisionList = new SelectList(divisions, userDivision);
             ViewBag.divisionList = divisionList;
@@ -284,14 +284,14 @@ namespace TARS.Controllers
 
         // 
         // GET: /User/editHours
-        //  - Edits a specified Hours entry
+        //  - Edits a specified Hours entry for the logged in user
         public virtual ActionResult editHours(int id)
         {
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
                 Hours hours = HoursDB.HoursList.Find(id);
-                ViewBag.timesheetLockedFlag = isTimesheetLocked(User.Identity.Name, DateTime.Now);
+                ViewBag.timesheetLockedFlag = isTimesheetLocked(hours.creator, hours.timestamp);
                 Authentication newAuth = new Authentication();
                 bool adminFlag = newAuth.isAdmin(this);
                 ViewBag.adminFlag = adminFlag;
@@ -509,7 +509,7 @@ namespace TARS.Controllers
                     //save changes to the database
                     TimesheetDB.SaveChanges();
 
-                    return RedirectToAction("viewTimesheet/");
+                    return RedirectToAction("viewTimesheet", new { tsDate = ts.periodStart });
                 }
                 else
                 {
@@ -543,7 +543,7 @@ namespace TARS.Controllers
                         //save changes to the database
                         TimesheetDB.SaveChanges();
                     }
-                    return RedirectToAction("viewTimesheet/");
+                    return RedirectToAction("viewTimesheet", new { tsDate = ts.periodStart });
                 }
                 else
                 {
@@ -608,7 +608,7 @@ namespace TARS.Controllers
 
         // 
         //Returns the IDHW Divisions as a list of strings
-        public virtual List<string> getDivisions()
+        public virtual List<string> getDivisionsList()
         {
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
