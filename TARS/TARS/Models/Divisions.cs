@@ -52,9 +52,7 @@ namespace TARS.Models
                 hist.change = "Division: " + entry.Property(u => u.divName).CurrentValue;
             }
 
-            //Doesn't actually get the current user's name.  User.Identity.Name doesn't work here
-            hist.username = "placeholder";
-
+            hist.username = System.Web.HttpContext.Current.User.Identity.Name;
             hist.timestamp = System.DateTime.Now;
             HistDB.HistoryList.Add(hist);
             HistDB.SaveChanges();

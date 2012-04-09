@@ -55,16 +55,14 @@ namespace TARS.Models
                 }
                 hist.dbtable = "Timesheet";
                 hist.change = "worker: " + entry.Property(u => u.worker).CurrentValue +
-              "; periodStart: " + entry.Property(u => u.periodStart).CurrentValue +
-              "; periodEnd: " + entry.Property(u => u.periodEnd).CurrentValue +
-              "; submitted: " + entry.Property(u => u.submitted).CurrentValue +
-              "; approved: " + entry.Property(u => u.approved).CurrentValue +
-              "; locked: " + entry.Property(u => u.locked).CurrentValue;
+                              "; periodStart: " + entry.Property(u => u.periodStart).CurrentValue +
+                              "; periodEnd: " + entry.Property(u => u.periodEnd).CurrentValue +
+                              "; submitted: " + entry.Property(u => u.submitted).CurrentValue +
+                              "; approved: " + entry.Property(u => u.approved).CurrentValue +
+                              "; locked: " + entry.Property(u => u.locked).CurrentValue;
             }
 
-            //Doesn't actually get the current user's name.  User.Identity.Name doesn't work here
-            hist.username = "placeholder";
-
+            hist.username = System.Web.HttpContext.Current.User.Identity.Name;
             hist.timestamp = System.DateTime.Now;
             HistDB.HistoryList.Add(hist);
             HistDB.SaveChanges();

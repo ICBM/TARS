@@ -58,15 +58,13 @@ namespace TARS.Models
                 }
                 hist.dbtable = "PcaCode";
                 hist.change = "pcaCode: " + entry.Property(u => u.code).CurrentValue +
-              "; startDate: " + entry.Property(u => u.startDate).CurrentValue +
-              "; endDate: " + entry.Property(u => u.endDate).CurrentValue +
-              "; description: " + entry.Property(u => u.description).CurrentValue +
-              "; division: " + entry.Property(u => u.division).CurrentValue;
+                              "; startDate: " + entry.Property(u => u.startDate).CurrentValue +
+                              "; endDate: " + entry.Property(u => u.endDate).CurrentValue +
+                              "; description: " + entry.Property(u => u.description).CurrentValue +
+                              "; division: " + entry.Property(u => u.division).CurrentValue;
             }
 
-            //Doesn't actually get the current user's name.  User.Identity.Name doesn't work here
-            hist.username = "placeholder";
-
+            hist.username = System.Web.HttpContext.Current.User.Identity.Name;
             hist.timestamp = System.DateTime.Now;
             HistDB.HistoryList.Add(hist);
             HistDB.SaveChanges();

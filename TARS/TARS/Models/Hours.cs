@@ -54,15 +54,13 @@ namespace TARS.Models
                 }
                 hist.dbtable = "Hours";
                 hist.change = "workEffort: " + entry.Property(u => u.workEffortID).CurrentValue +
-              "; hours: " + entry.Property(u => u.hours).CurrentValue +
-              "; timestamp: " + entry.Property(u => u.timestamp).CurrentValue +
-              "; description: " + entry.Property(u => u.description).CurrentValue +
-              "; creator: " + entry.Property(u => u.creator).CurrentValue;
+                              "; hours: " + entry.Property(u => u.hours).CurrentValue +
+                              "; timestamp: " + entry.Property(u => u.timestamp).CurrentValue +
+                              "; description: " + entry.Property(u => u.description).CurrentValue +
+                              "; creator: " + entry.Property(u => u.creator).CurrentValue;
             }
 
-            //Doesn't actually get the current user's name.  User.Identity.Name doesn't work here
-            hist.username = "placeholder";
-
+            hist.username = System.Web.HttpContext.Current.User.Identity.Name;
             hist.timestamp = System.DateTime.Now;
             HistDB.HistoryList.Add(hist);
             HistDB.SaveChanges();
