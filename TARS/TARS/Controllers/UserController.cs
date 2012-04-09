@@ -201,8 +201,15 @@ namespace TARS.Controllers
                             where m.periodStart <= tsDate
                             where m.periodEnd >= tsDate
                             select m;
-            resulttimesheet = searchTs.First();
-            return resulttimesheet;
+            foreach (var item in searchTs)
+            {
+                if (item != null)
+                {
+                    resulttimesheet = item;
+                    return resulttimesheet;
+                }
+            }
+            return null;            
         }
 
 
