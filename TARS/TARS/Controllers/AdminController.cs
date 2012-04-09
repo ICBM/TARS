@@ -313,12 +313,9 @@ namespace TARS.Controllers
             var searchPca = from p in PcaCodeDB.PcaCodeList
                             where p.code == pca.code
                             select p;
-            foreach (var item in searchPca)
+            if (searchPca.First().code > 0)
             {
-                if (item.code > 0)
-                {
-                    existsFlag = true;
-                }
+                existsFlag = true;
             }
             return existsFlag;
         }
@@ -463,15 +460,11 @@ namespace TARS.Controllers
                               where p.WE == pcawe.WE
                               where p.PCA == pcawe.PCA
                               select p;
-            foreach (var item in searchPcaWe)
+            if (searchPcaWe.First() == null)
             {
-                if (item == null)
-                {
-                    return false;
-                }
-                return true;
+                return false;
             }
-            return false;
+            return true;
         }
 
 

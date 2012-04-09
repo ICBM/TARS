@@ -137,7 +137,7 @@ namespace TARS.Controllers
         //
         // GET: /User/CheckForTimesheet
         //Creates a new timesheet if one doesn't exist for the period
-        public virtual int checkForTimesheet(Hours newhours)
+        public void checkForTimesheet(Hours newhours)
         {
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
@@ -146,29 +146,25 @@ namespace TARS.Controllers
                 DateTime startDay = newhours.timestamp.StartOfWeek(DayOfWeek.Sunday);
 
                 //Check if there is a timesheet for the week that corresponds to newhours.timestamp
-                var search = from m in TimesheetDB.TimesheetList
+                var searchTs = from m in TimesheetDB.TimesheetList
                              where (m.worker.CompareTo(newhours.creator) == 0)
                              where m.periodStart <= newhours.timestamp
                              where m.periodEnd >= newhours.timestamp
                              select m;
-                foreach (var item in search)
-                {
-                    //copy to placeholder timesheet so it can be edited
-                    resulttimesheet = item;
-                }
+                resulttimesheet = searchTs.First();
      
                 //if there isn't a timesheet for the pay period, then create one
                 //If there is a timesheet for the current pay period, don't do anything
                 if (resulttimesheet.periodStart.CompareTo(startDay) != 0)
                 {
                     createCurrentTimesheet(User.Identity.Name);
-                    return 1;
+                    return;
                 }
-                return 1;
+                return;
             }
             else
             {
-                return 0;
+                return;
             }
         }
 
@@ -200,17 +196,13 @@ namespace TARS.Controllers
         {
             Timesheet resulttimesheet = new Timesheet();
 
-            var search = from m in TimesheetDB.TimesheetList
+            var searchTs = from m in TimesheetDB.TimesheetList
                             where (m.worker.CompareTo(user) == 0)
                             where m.periodStart <= tsDate
                             where m.periodEnd >= tsDate
                             select m;
-            foreach (var item in search)
-            {
-                resulttimesheet = item;
-                return resulttimesheet;
-            }
-            return null;
+            resulttimesheet = searchTs.First();
+            return resulttimesheet;
         }
 
 
@@ -222,17 +214,13 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
-                var workEffortList = WorkEffortDB.WorkEffortList.ToList();
-                var searchPermission = from m in TARSUserDB.TARSUserList
-                             where (m.userName.CompareTo(this.User.Identity.Name) == 0) 
-                             select m;
-                foreach (var item in searchPermission)
+                Authentication auth2 = new Authentication();
+                if (auth2.isManager(this))
                 {
-                    if (item.permission > 1)
-                    {
-                        ViewBag.managerFlag = true;
-                    }
+                    ViewBag.managerFlag = true;
                 }
+
+                var workEffortList = WorkEffortDB.WorkEffortList.ToList();
                 //create a list of lists (each work effort will have a list of PCA codes)
                 ViewBag.pcaListOfLists = new List<List<int>>();
                 foreach (var item in workEffortList)
@@ -256,20 +244,16 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
+                Authentication auth2 = new Authentication();
+                if (auth2.isManager(this))
+                {
+                    ViewBag.managerFlag = true;
+                }
+
                 WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
                 if (workeffort == null)
                 {
                     return HttpNotFound();
-                }
-                var searchPermission = from m in TARSUserDB.TARSUserList
-                             where (m.userName.CompareTo(this.User.Identity.Name) == 0)
-                             select m;
-                foreach (var item in searchPermission)
-                {
-                    if (item.permission > 1)
-                    {
-                        ViewBag.managerFlag = true;
-                    }
                 }
                 ViewBag.pcaList = getWorkEffortPcaCodes(workeffort);
                 ViewBag.WorkEffortID = workeffort.ID;
@@ -380,32 +364,29 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
-                string userName = this.User.Identity.Name;
+                string userName = User.Identity.Name;
                 Timesheet previousTimesheet = new Timesheet();
                 DateTime dayFromPrevPeriod = DateTime.Now;
                 dayFromPrevPeriod = dayFromPrevPeriod.AddDays(-7);
                 List<Hours> resultHours = new List<Hours>();
 
                 //Select the timesheet from the previous pay period if it exists
-                var search = from m in TimesheetDB.TimesheetList
-                             where (m.worker.CompareTo(userName) == 0)
-                             where m.periodStart <= dayFromPrevPeriod
-                             where m.periodEnd >= dayFromPrevPeriod
-                             select m;
-                foreach (var item in search)
+                var searchTs = from m in TimesheetDB.TimesheetList
+                               where (m.worker.CompareTo(userName) == 0)
+                               where m.periodStart <= dayFromPrevPeriod
+                               where m.periodEnd >= dayFromPrevPeriod
+                               select m;
+                foreach (var item in searchTs)
                 {
                     previousTimesheet = item;
                 }
                 //Iterate through each entry from previous week and duplicate it for this week
-                var search2 = from m in HoursDB.HoursList
-                              where (m.creator.CompareTo(userName) == 0)
-                              where m.timestamp >= previousTimesheet.periodStart
-                              where m.timestamp <= previousTimesheet.periodEnd
-                              select m;
-                foreach (var item in search2)
-                {
-                    resultHours.Add(item);
-                }
+                var searchHours = from m in HoursDB.HoursList
+                                  where (m.creator.CompareTo(userName) == 0)
+                                  where m.timestamp >= previousTimesheet.periodStart
+                                  where m.timestamp <= previousTimesheet.periodEnd
+                                  select m;
+                resultHours.AddRange(searchHours);
                 foreach (var copiedHours in resultHours)
                 {
                     copiedHours.hours = 0;
@@ -413,40 +394,6 @@ namespace TARS.Controllers
                     addHours(copiedHours);
                 }
                 return RedirectToAction("viewTimesheet", new { tsDate = dayFromPrevPeriod });
-            }
-            else
-            {
-                return View("notLoggedIn");
-            }
-        }
-
-
-        //
-        // GET: /User/storeFile
-        //Unimplemented
-        public virtual ActionResult storeFile()
-        {
-            Authentication auth = new Authentication();
-            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
-            {
-                return null;
-            }
-            else
-            {
-                return View("notLoggedIn");
-            }
-        }
-
-
-        //
-        // GET: /User/viewHistory
-        //Unimplemented
-        public virtual ActionResult viewHistory()
-        {
-            Authentication auth = new Authentication();
-            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
-            {
-                return null;
             }
             else
             {
@@ -468,11 +415,11 @@ namespace TARS.Controllers
                 Timesheet prevTimesheet = getTimesheet(userName, tsDate.AddDays(-7));
 
                 ViewBag.timesheet = timesheet;
+                //The View will only provide a link to previous timesheet if it exists
                 if (prevTimesheet == null)
                 {
                     ViewBag.noPreviousTimesheet = true;
                 }
-
                 //select all hours from the timesheet
                 var searchHours = from m in HoursDB.HoursList
                                     where (m.creator.CompareTo(userName) == 0)
@@ -501,8 +448,8 @@ namespace TARS.Controllers
                     Timesheet ts = new Timesheet();
                     ts = TimesheetDB.TimesheetList.Find(id);
                     ts.submitted = true;
-                    TimesheetDB.Entry(ts).State = System.Data.EntityState.Modified;
                     //save changes to the database
+                    TimesheetDB.Entry(ts).State = System.Data.EntityState.Modified;
                     TimesheetDB.SaveChanges();
 
                     return RedirectToAction("viewTimesheet", new { tsDate = ts.periodStart });
@@ -639,7 +586,6 @@ namespace TARS.Controllers
 
             var searchEfforts = from m in WorkEffortDB.WorkEffortList
                                 select m;
-
             //narrow down to work efforts in the specified division
             //(PCA codes and PCA_WE must be used to get all of the work efforts in the division)
             foreach (var we in searchEfforts)
@@ -677,14 +623,10 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
-                string weDescription = "";
                 var searchWorkEfforts = from m in WorkEffortDB.WorkEffortList
                                         where m.ID == id
                                         select m;
-                foreach (var item in searchWorkEfforts)
-                {
-                    weDescription = item.description;
-                }
+                string weDescription = searchWorkEfforts.First().description;
                 return weDescription;
             }
             else
@@ -714,17 +656,48 @@ namespace TARS.Controllers
             {
                 string division = "";
                 var searchUsers = from m in TARSUserDB.TARSUserList
-                                        where (m.userName.CompareTo(User.Identity.Name) == 0)
-                                        select m;
-                foreach (var item in searchUsers)
-                {
-                    division = item.company;
-                }
+                                  where (m.userName.CompareTo(User.Identity.Name) == 0)
+                                  select m;
+                division = searchUsers.First().company;
                 return division;
             }
             else
             {
                 return null;
+            }
+        }
+
+
+        //
+        // GET: /User/storeFile
+        //Unimplemented
+        public virtual ActionResult storeFile()
+        {
+            Authentication auth = new Authentication();
+            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+            {
+                return null;
+            }
+            else
+            {
+                return View("notLoggedIn");
+            }
+        }
+
+
+        //
+        // GET: /User/viewHistory
+        //Unimplemented
+        public virtual ActionResult viewHistory()
+        {
+            Authentication auth = new Authentication();
+            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+            {
+                return null;
+            }
+            else
+            {
+                return View("notLoggedIn");
             }
         }
     }

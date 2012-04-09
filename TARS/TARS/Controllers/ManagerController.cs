@@ -180,11 +180,11 @@ namespace TARS.Controllers
                     }
                     else
                     {
-                        ViewBag.notWithinTimeBounds = true;
                         string division = getUserDivision();
                         ViewBag.divisionName = division;
                         ViewBag.pcaList = getDivisionPcaSelectList(division);
                         ViewBag.earnCodeSelectList = getEarningsCodeSelectList();
+                        ViewBag.notWithinTimeBounds = true;
 
                         return View(workeffort);
                     }
@@ -383,10 +383,7 @@ namespace TARS.Controllers
             var searchPcaWe = from p in PCA_WEDB.PCA_WEList
                               where p.WE == id
                               select p;
-            foreach (var item in searchPcaWe)
-            {
-                tmpPcaWe.Add(item);
-            }
+            tmpPcaWe.AddRange(searchPcaWe);
             foreach (var item in tmpPcaWe)
             {
                 //delete the association from the PCA_WE table
@@ -513,17 +510,8 @@ namespace TARS.Controllers
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
                 TARSUser employee = TARSUserDB.TARSUserList.Find(userKeyID);
-                Timesheet timesheet = new Timesheet();
+                Timesheet timesheet = getTimesheet(employee.userName, tsDate);
 
-                var searchTimesheet = from m in TimesheetDB.TimesheetList
-                                      where (m.worker.CompareTo(employee.userName) == 0)
-                                      where m.periodStart <= tsDate
-                                      where m.periodEnd >= tsDate
-                                      select m;
-                foreach (var item in searchTimesheet)
-                {
-                    timesheet = item;
-                }
                 if (timesheet == null)
                 {
                     createCurrentTimesheet(employee.userName);
@@ -628,7 +616,6 @@ string toAddress = "zeke_long@hotmail.com";
             string body = "Hello, <br /><br />This is an email to inform you that your IDHW timesheet" +
                           " has been rejected by a manager.<br /> Please log in to TARS and fix" +
                           " any errors, then re-submit as soon as possible.<br /><br /> Thanks!";
-
             try
             {
                 MailMessage mailMessage = new MailMessage();
@@ -735,10 +722,7 @@ string toAddress = "zeke_long@hotmail.com";
             var searchID = from m in TARSUserDB.TARSUserList
                            where (m.userName.CompareTo(worker) == 0)
                            select m;
-            foreach (var item in searchID)
-            {
-                userID = item.ID;
-            }
+            userID = searchID.First().ID;
             return userID;
         }
 
@@ -747,15 +731,12 @@ string toAddress = "zeke_long@hotmail.com";
         //Returns the unique ID of specified PCA code
         public int getPcaIdFromCode(int pcacode)
         {
-            int PcaID = 0;
+            int pcaID = 0;
             var searchID = from m in PcaCodeDB.PcaCodeList
                            where m.code == pcacode
                            select m;
-            foreach (var item in searchID)
-            {
-                PcaID = item.ID;
-            }
-            return PcaID;
+            pcaID = searchID.First().ID;
+            return pcaID;
         }
 
 
@@ -764,13 +745,10 @@ string toAddress = "zeke_long@hotmail.com";
         public PcaCode getPcaFromCode(int pcacode)
         {
             PcaCode pcaCodeObj = new PcaCode();
-            var searchID = from m in PcaCodeDB.PcaCodeList
+            var searchPca = from m in PcaCodeDB.PcaCodeList
                            where m.code == pcacode
                            select m;
-            foreach (var item in searchID)
-            {
-                pcaCodeObj = item;
-            }
+            pcaCodeObj = searchPca.First();
             return pcaCodeObj;
         }
 
@@ -800,15 +778,14 @@ string toAddress = "zeke_long@hotmail.com";
         public bool verifyWeTimeBounds(WorkEffort effort, int pca)
         {
             bool dateFlag = false;
+            PcaCode tmpPca = new PcaCode();
             var searchPCA = from m in PcaCodeDB.PcaCodeList
                            where (m.code.CompareTo(pca) == 0)
                            select m;
-            foreach (var item in searchPCA)
+            tmpPca = searchPCA.First();
+            if ((tmpPca.startDate <= effort.startDate) && (tmpPca.endDate >= effort.endDate))
             {
-                if ((item.startDate <= effort.startDate) && (item.endDate >= effort.endDate))
-                {
-                    dateFlag = true;
-                }
+                dateFlag = true;
             }
             return dateFlag;
         }
@@ -819,14 +796,12 @@ string toAddress = "zeke_long@hotmail.com";
         //(note: it's called from addWorkEffort View)
         public string getPcaTimeBoundsString(int pcacode)
         {
-            string bounds = "";
+            PcaCode tmpPca = new PcaCode();
             var searchPCA = from m in PcaCodeDB.PcaCodeList
                             where (m.code.CompareTo(pcacode) == 0)
                             select m;
-            foreach (var item in searchPCA)
-            {
-                bounds = item.startDate.ToShortDateString() + " - " + item.endDate.ToShortDateString();
-            }
+            tmpPca = searchPCA.First();
+            string bounds = tmpPca.startDate.ToShortDateString() + " - " + tmpPca.endDate.ToShortDateString();
             return bounds;
         }
 
