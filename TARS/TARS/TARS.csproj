@@ -256,6 +256,7 @@
     <Content Include="Views\Manager\managerEditHours.cshtml" />
     <Content Include="Views\Admin\aTest.cshtml" />
     <Content Include="Views\Manager\addWE_WeType.cshtml" />
+    <Content Include="Views\Manager\deleteWE_WeType.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

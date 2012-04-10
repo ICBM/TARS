@@ -354,13 +354,20 @@ namespace TARS.Controllers
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
                 WorkType wType = new WorkType();
-                foreach (var item in tmpWe.workTypes)
+                try
                 {
-                    wType.WE = tmpWe.ID;
-                    wType.description = item;
-                    //add each selected work type to the WorkType table
-                    WorkTypeDB.WorkTypeList.Add(wType);
-                    WorkTypeDB.SaveChanges();
+                    foreach (var item in tmpWe.workTypes)
+                    {
+                        wType.WE = tmpWe.ID;
+                        wType.description = item;
+                        //add each selected work type to the WorkType table
+                        WorkTypeDB.WorkTypeList.Add(wType);
+                        WorkTypeDB.SaveChanges();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    TempData["deleteWE_WeTypeError"] = ex;
                 }
                 return RedirectToAction("editWorkEffort", new { id = tmpWe.ID });
             }
@@ -369,6 +376,65 @@ namespace TARS.Controllers
                 return View("error");
             }
         }
+
+
+        //
+        // GET: /Manager/deleteWE_WeType
+        //  Deletes Work Type(s) from the given Work Effort
+        public virtual ActionResult deleteWE_WeType(int weID)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                WorkEffort we = WorkEffortDB.WorkEffortList.Find(weID);
+                ViewBag.workTypeDeleteList = getWorkEffortWorkTypeList(we);
+                return View(we);
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+
+        //
+        // POST: /Manager/deleteWE_WeType
+        //  Deletes Work Type(s) from the given Work Effort
+        [HttpPost]
+        public virtual ActionResult deleteWE_WeType(WorkEffort tmpWe)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                WorkType wType = new WorkType();
+                try
+                {
+                    foreach (var item in tmpWe.workTypes)
+                    {
+                        wType.WE = tmpWe.ID;
+                        wType.description = item;
+                        var searchWorkType = from w in WorkTypeDB.WorkTypeList
+                                             where w.WE == tmpWe.ID
+                                             where (w.description.CompareTo(item) == 0)
+                                             select w;
+                        wType = searchWorkType.First();
+                        //remove each selected work type from the WorkType table
+                        WorkTypeDB.WorkTypeList.Remove(wType);
+                        WorkTypeDB.SaveChanges();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    TempData["deleteWE_WeTypeError"] = ex;
+                }
+                return RedirectToAction("editWorkEffort", new { id = tmpWe.ID });
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
 
 
         //
