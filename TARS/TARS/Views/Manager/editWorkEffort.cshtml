@@ -13,6 +13,7 @@
 {
     @Html.ValidationSummary(true)
     <fieldset>
+        @Html.HiddenFor(model => model.earningsCode)
 
         <div class="editor-label"><b>Work Effort Description </b>(100 characters max)</div>
         <div class="editor-field">

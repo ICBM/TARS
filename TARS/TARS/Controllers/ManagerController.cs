@@ -360,14 +360,17 @@ namespace TARS.Controllers
                     {
                         wType.WE = tmpWe.ID;
                         wType.description = item;
-                        //add each selected work type to the WorkType table
-                        WorkTypeDB.WorkTypeList.Add(wType);
-                        WorkTypeDB.SaveChanges();
+                        if (checkIfDuplicateWE_WeType(wType) == false)
+                        {
+                            //add each selected work type to the WorkType table
+                            WorkTypeDB.WorkTypeList.Add(wType);
+                            WorkTypeDB.SaveChanges();
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
-                    TempData["deleteWE_WeTypeError"] = ex;
+                    TempData["addWE_WeTypeError"] = ex;
                 }
                 return RedirectToAction("editWorkEffort", new { id = tmpWe.ID });
             }
@@ -375,6 +378,22 @@ namespace TARS.Controllers
             {
                 return View("error");
             }
+        }
+
+
+        //
+        // Returns true if the WorkType association already exists
+        public bool checkIfDuplicateWE_WeType(WorkType wType)
+        {
+            var searchWorkTypes = from w in WorkTypeDB.WorkTypeList
+                                  where w.WE == wType.WE
+                                  where (w.description.CompareTo(wType.description) == 0)
+                                  select w;
+            foreach (var item in searchWorkTypes)
+            {
+                return true;
+            }
+            return false;
         }
 
 
