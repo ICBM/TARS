@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 //Necessary for DB calls.
 using System.Data.Entity;
@@ -17,6 +18,7 @@ namespace TARS.Models
         public string comments { get; set; }
         public int pcaCode { get; set; }
         public string earningsCode { get; set; }
+        public IEnumerable<string> workTypes { get; set; }
         public bool hidden { get; set; }
     }
 

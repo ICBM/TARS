@@ -23,13 +23,16 @@
 <table class="timesheet">
     <tr>
         <th>
+            Description
+        </th>
+        <th>
             PcaCode(s)
         </th>
         <th>
-            EarningsCode
+            WorkType(s)
         </th>
         <th>
-            Description
+            EarningsCode
         </th>
         <th>
             StartDate
@@ -50,13 +53,16 @@
             count++;
             <tr>
                 <td>
+                    @Html.DisplayFor(modelItem => item.description)
+                </td>
+                <td>
                     @Html.DropDownList("pcaCode", new SelectList(ViewBag.pcaListOfLists[count], Model))
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.earningsCode)
+                    @Html.DropDownList("workTypes", new SelectList(ViewBag.workTypesListOfLists[count], Model))
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.description)
+                    @Html.DisplayFor(modelItem => item.earningsCode)
                 </td>
                 <td>
                     @item.startDate.ToShortDateString()

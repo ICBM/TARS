@@ -87,6 +87,7 @@
     <Compile Include="Models\PCA_WE.cs" />
     <Compile Include="Models\PcaCode.cs" />
     <Compile Include="Models\WorkEffort.cs" />
+    <Compile Include="Models\WorkType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

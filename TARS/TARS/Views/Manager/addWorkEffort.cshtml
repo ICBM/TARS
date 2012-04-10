@@ -16,13 +16,13 @@
 
         <div class="editor-label"><b>Division</b></div>
         <div class="editor-field">
-            @Html.DropDownList("division", (List<SelectListItem>)ViewBag.divisionList, "--Select Division--")
+            @Html.DropDownList("division", (List<SelectListItem>)ViewBag.divisionList, "--Select--")
         </div>
 
         <p>
         <div class="editor-label"><b>PCA Code</b></div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.pcaCode, Enumerable.Empty<SelectListItem>(), "--Select PCA code--", null)
+            @Html.DropDownListFor(model => model.pcaCode, Enumerable.Empty<SelectListItem>(), "--Select--", null)
         </div>
         </p>
 
@@ -37,7 +37,14 @@
         <p>
         <div class="editor-label"><b>Earnings Code</b></div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.earningsCode, (List<SelectListItem>)ViewBag.earnCodeSelectList, "--Select Earnings Code--", null)
+            @Html.DropDownListFor(model => model.earningsCode, (List<SelectListItem>)ViewBag.earningsCodeSelectList, "--Select--", null)
+        </div>
+        </p>
+
+        <p>
+        <div class="editor-label"><b>Work Type(s)</b></div>
+        <div class="editor-field">
+            @Html.ListBox("workTypes", Enumerable.Empty<SelectListItem>())
         </div>
         </p>
 
@@ -92,6 +99,24 @@
                 pcaSelect.append($('<option/>', {
                     value: pca.value,
                     text: pca.text
+                }));
+            });
+        });
+    });
+</script>
+
+
+<!-- Populate Work Type dropdown according to Earnings Code that was selected -->
+<script type="text/javascript">
+    $('#earningsCode').change(function () {
+        var selectedEarnCode = $(this).val();
+        $.getJSON('@Url.Action("jsonWorkTypeSelectList")', { earnCode: selectedEarnCode }, function (worktypes) {
+            var wTypeSelect = $('#workTypes');
+            wTypeSelect.empty();
+            $.each(worktypes, function (index, wType) {
+                wTypeSelect.append($('<option/>', {
+                    value: wType.value,
+                    text: wType.text
                 }));
             });
         });

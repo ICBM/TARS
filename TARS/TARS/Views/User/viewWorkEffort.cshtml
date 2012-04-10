@@ -14,30 +14,47 @@
         @Html.DisplayFor(model => model.description)
     </div>
 
+    <p>
     <div class="display-label"><b>Pca Code(s)</b></div>
     <div class="display-field">
         @Html.DropDownList("pcaCode", new SelectList(ViewBag.pcaList, Model))
     </div>
+    </p>
 
+    <p>
+    <div class="display-label"><b>Work Type(s)</b></div>
+    <div class="display-field">
+        @Html.DropDownList("workTypes", new SelectList(ViewBag.workTypeList, Model))
+    </div>
+    </p>
+
+    <p>
     <div class="display-label"><b>Earnings Code</b></div>
     <div class="display-field">
         @Html.DisplayFor(model => model.earningsCode)
     </div>
+    </p>
 
+    <p>
     <div class="display-label"><b>Start Date</b></div>
     <div class="display-field">
         @Html.DisplayFor(model => model.startDate)
     </div>
+    </p>
 
+    <p>
     <div class="display-label"><b>End Date</b></div>
     <div class="display-field">
         @Html.DisplayFor(model => model.endDate)
     </div>
+    </p>
 
+    <p>
     <div class="display-label"><b>Comments</b></div>
     <div class="display-field">
         @Html.DisplayFor(model => model.comments)
     </div>
+    </p>
 
 </fieldset>
 <p>

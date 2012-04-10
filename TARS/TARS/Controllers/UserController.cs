@@ -13,6 +13,7 @@ namespace TARS.Controllers
     public class UserController : Controller
     {
         protected WorkEffortDBContext WorkEffortDB = new WorkEffortDBContext();
+        protected WorkTypeDBContext WorkTypeDB = new WorkTypeDBContext();
         protected HoursDBContext HoursDB = new HoursDBContext();
         protected TimesheetDBContext TimesheetDB = new TimesheetDBContext();
         protected TARSUserDBContext TARSUserDB = new TARSUserDBContext();
@@ -204,12 +205,16 @@ namespace TARS.Controllers
                 }
 
                 var workEffortList = WorkEffortDB.WorkEffortList.ToList();
-                //create a list of lists (each work effort will have a list of PCA codes)
+                //create a list of lists for pca codes and work types
+                //(each work effort will have a list of PCA codes and a list work types)
                 ViewBag.pcaListOfLists = new List<List<int>>();
+                ViewBag.workTypesListOfLists = new List<List<string>>();
                 foreach (var item in workEffortList)
                 {
                     ViewBag.pcaListOfLists.Add(getWorkEffortPcaCodes(item));
+                    ViewBag.workTypesListOfLists.Add(getWorkEffortWorkTypeList(item));
                 }
+                
                 return View(workEffortList);
             }
             else
@@ -222,13 +227,13 @@ namespace TARS.Controllers
         //
         // GET: /User/viewWorkEffort
         //View the details of a workeffort
-        public virtual ActionResult viewWorkEffort(int id = 0)
+        public virtual ActionResult viewWorkEffort(int id)
         {
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
-                Authentication auth2 = new Authentication();
-                if (auth2.isManager(this))
+                Authentication newAuth = new Authentication();
+                if (newAuth.isManager(this))
                 {
                     ViewBag.managerFlag = true;
                 }
@@ -239,6 +244,7 @@ namespace TARS.Controllers
                     return HttpNotFound();
                 }
                 ViewBag.pcaList = getWorkEffortPcaCodes(workeffort);
+                ViewBag.workTypeList = getWorkEffortWorkTypeList(workeffort);
                 ViewBag.WorkEffortID = workeffort.ID;
                 return View(workeffort);
             }
@@ -555,11 +561,43 @@ namespace TARS.Controllers
             {
                 earnCodesList.Add(new SelectListItem
                 {
-                    Text = item.earningsCode + "  " + item.description,
+                    Text = item.earningsCode,
                     Value = item.earningsCode
                 });                    
             }
             return earnCodesList;
+        }
+
+
+        // 
+        //Returns Earnings Code Descriptions for specified code as a list of strings
+        public virtual List<string> getWorkTypeList(string earnCode)
+        {
+            List<string> workTypesList = new List<string>();
+            var searchEarnCodes = from m in EarningsCodesDB.EarningsCodesList
+                                  where (m.earningsCode.CompareTo(earnCode) == 0)
+                                  select m;
+            foreach (var item in searchEarnCodes)
+            {
+                workTypesList.Add(item.earningsCode + " " + item.description);
+            }
+            return workTypesList;
+        }
+
+
+        // 
+        //Returns descriptions of all earnings codes associated with specified work effort
+        public virtual List<string> getWorkEffortWorkTypeList(WorkEffort we)
+        {
+            List<string> workTypesList = new List<string>();
+            var searchWorkTypes = from m in WorkTypeDB.WorkTypeList
+                                  where m.WE == we.ID
+                                  select m;
+            foreach (var item in searchWorkTypes)
+            {
+                workTypesList.Add(item.description);
+            }
+            return workTypesList;
         }
 
 

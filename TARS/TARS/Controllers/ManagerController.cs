@@ -97,12 +97,16 @@ namespace TARS.Controllers
             {
                 var workEffortList = WorkEffortDB.WorkEffortList.ToList();
 
-                //create a list of lists (each work effort will have a list of PCA codes)
+                //create a list of lists for pca codes and work types
+                //(each work effort will have a list of PCA codes and a list work types)
                 ViewBag.pcaListOfLists = new List<List<int>>();
+                ViewBag.workTypesListOfLists = new List<List<string>>();
                 foreach (var item in workEffortList)
                 {
                     ViewBag.pcaListOfLists.Add(getWorkEffortPcaCodes(item));
+                    ViewBag.workTypesListOfLists.Add(getWorkEffortWorkTypeList(item));
                 }
+
                 //check if an "unable to hide Work Effort error should be displayed"
                 if (TempData["failedHide"] != null)
                 {
@@ -139,7 +143,7 @@ namespace TARS.Controllers
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
                 ViewBag.divisionList = getDivisionSelectList();
-                ViewBag.earnCodeSelectList = getEarningsCodeSelectList();
+                ViewBag.earningsCodeSelectList = getEarningsCodeSelectList();
                 return View();
             }
             else
@@ -166,7 +170,17 @@ namespace TARS.Controllers
                         WorkEffortDB.WorkEffortList.Add(workeffort);
                         WorkEffortDB.SaveChanges();
 
-                        //add the association to PCA_WE table in database
+                        //add the WorkEffort/WorkTypes association to WorkTypes table
+                        WorkType wType = new WorkType();
+                        foreach (var item in workeffort.workTypes)
+                        {
+                            wType.WE = workeffort.ID;
+                            wType.description = item;
+                            WorkTypeDB.WorkTypeList.Add(wType);
+                            WorkTypeDB.SaveChanges();
+                        }
+
+                        //add the PCA_WE association to PCA_WE table
                         PCA_WE tmpPcaWe = new PCA_WE();
                         tmpPcaWe.WE = workeffort.ID;
                         tmpPcaWe.PCA = getPcaIdFromCode(workeffort.pcaCode);
@@ -178,7 +192,7 @@ namespace TARS.Controllers
                     else
                     {
                         ViewBag.divisionList = getDivisionSelectList();
-                        ViewBag.earnCodeSelectList = getEarningsCodeSelectList();
+                        ViewBag.earningsCodeSelectList = getEarningsCodeSelectList();
                         ViewBag.notWithinTimeBounds = true;
                         return View(workeffort);
                     }
@@ -189,41 +203,6 @@ namespace TARS.Controllers
             {
                 return View("error");
             }
-        }
-
-        
-        //
-        // GET: /Manager/searchWorkEffort
-        //  - Shows a list of all WorkEffort codes.       
-        public override ActionResult searchWorkEffort()
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                return View(WorkEffortDB.WorkEffortList.ToList());
-            }
-            else
-            {
-                return View("error");
-            } 
-        }
-        
-          
-        //
-        // GET: /Manager/viewWorkEffort/5
-        //  - Shows detailed information for a single WorkEffort code.
-        public override ActionResult viewWorkEffort(int id)
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
-                return View(workeffort);
-            }
-            else
-            {
-                return View("error");
-            } 
         }
 
 
@@ -803,6 +782,18 @@ string toAddress = "zeke_long@hotmail.com";
             IEnumerable<string> pcaList = getDivisionPcaCodeList(division);
 
             return Json(pcaList.Select(x => new { value = x, text = x }),
+                        JsonRequestBehavior.AllowGet
+                        );
+        }
+
+
+        //
+        //
+        public ActionResult jsonWorkTypeSelectList(string earnCode)
+        {
+            IEnumerable<string> workTypeList = getWorkTypeList(earnCode);
+
+            return Json(workTypeList.Select(x => new { value = x, text = x }),
                         JsonRequestBehavior.AllowGet
                         );
         }

@@ -39,7 +39,7 @@ namespace TARS.Controllers
             ViewBag.userIndex              = user.Index()              != null;
             ViewBag.userAddHours           = user.addHours()           != null;
             ViewBag.userSearchWorkEffort   = user.searchWorkEffort()   != null;
-            ViewBag.userViewWorkEffort     = user.viewWorkEffort()     != null;
+            ViewBag.userViewWorkEffort     = user.viewWorkEffort(0)     != null;
             ViewBag.userViewTimesheet      = user.viewTimesheet(DateTime.Now)      != null;
             ViewBag.userViewHistory        = user.viewHistory()        != null;
 
