@@ -25,9 +25,6 @@
             WorkType(s)
         </th>
         <th>
-            EarningsCode
-        </th>
-        <th>
             StartDate
         </th>
         <th>
@@ -54,9 +51,6 @@
                     </td>
                     <td>
                         @Html.DropDownList("workTypes", new SelectList(ViewBag.workTypesListOfLists[count], Model))
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.earningsCode)
                     </td>
                     <td>
                         @item.startDate.ToShortDateString()

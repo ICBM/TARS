@@ -374,7 +374,7 @@ namespace TARS.Controllers
                         PCA_WEDB.Entry(pca_we).State = System.Data.EntityState.Added;
                         PCA_WEDB.SaveChanges();
                     }
-                    return RedirectToAction("weManagement", "Manager");
+                    return RedirectToAction("editWorkEffort", "Manager", new { id = pca_we.WE });
                 }
                 ViewBag.divisionList = getDivisionSelectList();
                 ViewBag.pcaAddList = getAllPcaCodes();

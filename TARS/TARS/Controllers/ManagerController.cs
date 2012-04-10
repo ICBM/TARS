@@ -216,7 +216,7 @@ namespace TARS.Controllers
             {
                 WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
                 ViewBag.pcaList = getWorkEffortPcaCodes(workeffort);
-                ViewBag.earnCodeSelectList = getEarningsCodeSelectList();
+                ViewBag.workTypesList = getWorkEffortWorkTypeList(workeffort);
                 string division = getUserDivision();
                 ViewBag.divisionName = division;
 
@@ -256,7 +256,7 @@ namespace TARS.Controllers
                     {
                         ViewBag.notWithinTimeBounds = true;
                         ViewBag.pcaList = getWorkEffortPcaCodes(workeffort);
-                        ViewBag.earnCodeSelectList = getEarningsCodeSelectList();
+                        ViewBag.workTypesList = getWorkEffortWorkTypeList(workeffort);
 
                         Authentication newAuth = new Authentication();
                         if (newAuth.isAdmin(this))
@@ -322,6 +322,52 @@ namespace TARS.Controllers
             {
                 return View("error");
             } 
+        }
+
+
+        //
+        // GET: /Manager/addWE_WeType
+        //  Adds Work Type(s) to the given Work Effort
+        public virtual ActionResult addWE_WeType(int weID)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                WorkEffort we = WorkEffortDB.WorkEffortList.Find(weID);
+                ViewBag.workTypeAddList = getWorkTypeList(we.earningsCode);
+                return View(we);
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+
+        //
+        // POST: /Manager/addWE_WeType
+        //  Adds Work Type(s) to the given Work Effort
+        [HttpPost]
+        public virtual ActionResult addWE_WeType(WorkEffort tmpWe)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                WorkType wType = new WorkType();
+                foreach (var item in tmpWe.workTypes)
+                {
+                    wType.WE = tmpWe.ID;
+                    wType.description = item;
+                    //add each selected work type to the WorkType table
+                    WorkTypeDB.WorkTypeList.Add(wType);
+                    WorkTypeDB.SaveChanges();
+                }
+                return RedirectToAction("editWorkEffort", new { id = tmpWe.ID });
+            }
+            else
+            {
+                return View("error");
+            }
         }
 
 
