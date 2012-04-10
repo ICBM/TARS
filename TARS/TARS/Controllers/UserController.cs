@@ -74,23 +74,27 @@ namespace TARS.Controllers
                 {
                     WorkEffort tmpWe = WorkEffortDB.WorkEffortList.Find(newhours.workEffortID);
                     bool tsLockedFlag = isTimesheetLocked(User.Identity.Name, newhours.timestamp);
+                    Authentication newAuth = new Authentication();
+                    bool adminFlag = newAuth.isAdmin(this);
 
-                    /* check to make sure that the new hours are within the work effort's time bounds 
-                       and the timesheet isn't locked
-                    */
-                    if ((newhours.timestamp < tmpWe.startDate) || 
-                        (newhours.timestamp > tmpWe.endDate) || 
-                        (tsLockedFlag == true))
+                    //make sure that the new hours are within the work effort's time bounds 
+                    if ((newhours.timestamp < tmpWe.startDate) || (newhours.timestamp > tmpWe.endDate))
                     {
-                        ViewBag.invalidTimestamp = true;
+                        ViewBag.notWithinWeBounds = true;
                         ViewBag.timesheetLockedFlag = tsLockedFlag;
-                        Authentication newAuth = new Authentication();
-                        bool adminFlag = newAuth.isAdmin(this);
                         ViewBag.adminFlag = adminFlag;
                         ViewBag.userName = User.Identity.Name;
                         ViewBag.divisionList = getDivisionSelectList();
                         return View(newhours);
                     }
+                    //make sure that only Admin can add hours to locked timesheets
+                    if ((tsLockedFlag == true) && (adminFlag == false))
+                    {
+                        ViewBag.timesheetLockedFlag = true;
+                        ViewBag.adminFlag = false;
+                        return View(newhours);
+                    }
+
                     //make sure that a timesheet exists for the period hours are being added to
                     checkForTimesheet(newhours);
   
