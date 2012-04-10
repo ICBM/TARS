@@ -922,7 +922,7 @@ string toAddress = "zeke_long@hotmail.com";
 
         //
         //
-        public ActionResult jsonWorkTypeSelectList(string earnCode)
+        public ActionResult jsonWorkTypeListFromEarnCode(string earnCode)
         {
             IEnumerable<string> workTypeList = getWorkTypeList(earnCode);
 

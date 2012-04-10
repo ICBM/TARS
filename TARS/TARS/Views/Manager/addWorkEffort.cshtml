@@ -44,7 +44,7 @@
         <p>
         <div class="editor-label"><b>Work Type(s)</b></div>
         <div class="editor-field">
-            @Html.ListBox("workTypes", Enumerable.Empty<SelectListItem>())
+            @Html.ListBoxFor(model => model.workTypes, Enumerable.Empty<SelectListItem>())
         </div>
         </p>
 
@@ -87,7 +87,6 @@
 </div>
 
 
-
 <!-- Populate PCA dropdown according to division that was selected -->
 <script type="text/javascript">
     $('#division').change(function () {
@@ -110,11 +109,11 @@
 <script type="text/javascript">
     $('#earningsCode').change(function () {
         var selectedEarnCode = $(this).val();
-        $.getJSON('@Url.Action("jsonWorkTypeSelectList")', { earnCode: selectedEarnCode }, function (worktypes) {
-            var wTypeSelect = $('#workTypes');
-            wTypeSelect.empty();
+        $.getJSON('@Url.Action("jsonWorkTypeListFromEarnCode")', { earnCode: selectedEarnCode }, function (worktypes) {
+            var workTypeSelect = $('#workTypes');
+            workTypeSelect.empty();
             $.each(worktypes, function (index, wType) {
-                wTypeSelect.append($('<option/>', {
+                workTypeSelect.append($('<option/>', {
                     value: wType.value,
                     text: wType.text
                 }));
@@ -122,3 +121,5 @@
         });
     });
 </script>
+
+

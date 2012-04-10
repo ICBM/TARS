@@ -381,7 +381,10 @@ namespace TARS.Controllers
                                   where m.timestamp >= previousTimesheet.periodStart
                                   where m.timestamp <= previousTimesheet.periodEnd
                                   select m;
-                resultHours.AddRange(searchHours);
+                foreach (var item in searchHours)
+                {
+                    resultHours.Add(item);
+                }
                 foreach (var copiedHours in resultHours)
                 {
                     copiedHours.hours = 0;
@@ -567,8 +570,8 @@ namespace TARS.Controllers
             {
                 earnCodesList.Add(new SelectListItem
                 {
-                    Text = item.earningsCode,
-                    Value = item.earningsCode
+                    Text = item.earningsCode.ToString(),
+                    Value = item.earningsCode.ToString()
                 });                    
             }
             return earnCodesList;
