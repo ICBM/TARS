@@ -264,12 +264,14 @@ namespace TARS.Controllers
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
                 Hours hours = HoursDB.HoursList.Find(id);
+                WorkEffort we = WorkEffortDB.WorkEffortList.Find(hours.workEffortID);
                 ViewBag.timesheetLockedFlag = isTimesheetLocked(hours.creator, hours.timestamp);
                 Authentication newAuth = new Authentication();
                 bool adminFlag = newAuth.isAdmin(this);
                 ViewBag.adminFlag = adminFlag;
                 ViewBag.userName = User.Identity.Name;
-                ViewBag.workEffort = WorkEffortDB.WorkEffortList.Find(hours.workEffortID);
+                ViewBag.workEffort = we;
+                ViewBag.workTypeList = getWorkEffortWorkTypeList(we);
                 return View(hours);
             }
             else
@@ -707,6 +709,19 @@ namespace TARS.Controllers
                 weIDList.Add(item.Value);
             }
             return Json(weIDList.Select(x => new { value = x, text = getWeDescription(Convert.ToInt32(x)) }), 
+                        JsonRequestBehavior.AllowGet
+                        );
+        }
+
+
+        //
+        //
+        public ActionResult jsonWorkTypeSelectList(int weID)
+        {
+            WorkEffort we = WorkEffortDB.WorkEffortList.Find(weID);
+            IEnumerable<string> weSelectList = getWorkEffortWorkTypeList(we);
+
+            return Json(weSelectList.Select(x => new { value = x, text = x }),
                         JsonRequestBehavior.AllowGet
                         );
         }

@@ -756,13 +756,15 @@ string toAddress = "zeke_long@hotmail.com";
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
                 Hours hours = HoursDB.HoursList.Find(hrsID);
+                WorkEffort we = WorkEffortDB.WorkEffortList.Find(hours.workEffortID);
                 Timesheet timesheet = TimesheetDB.TimesheetList.Find(tsID);
                 ViewBag.timesheetLockedFlag = timesheet.locked;
                 Authentication newAuth = new Authentication();
                 bool adminFlag = newAuth.isAdmin(this);
                 ViewBag.adminFlag = adminFlag;
                 ViewBag.userName = timesheet.worker;
-                ViewBag.workEffort = WorkEffortDB.WorkEffortList.Find(hours.workEffortID);
+                ViewBag.workEffort = we;
+                ViewBag.workTypeList = getWorkEffortWorkTypeList(we);
                 return View(hours);
             }
             else

@@ -46,13 +46,13 @@ else
 <table class="timesheet">
     <tr>
         <th>
-            Work Effort
+            WorkEffort
+        </th>
+        <th>
+            WorkType
         </th>
         <th>
             Hours
-        </th>
-        <th>
-            HoursDescription
         </th>
         <th>
             Timestamp
@@ -72,10 +72,10 @@ else
             @Html.Action("getWeDescription", "User", new{ id = item.workEffortID })
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.hours)
+            @Html.DisplayFor(modelItem => item.description)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.description)
+            @Html.DisplayFor(modelItem => item.hours)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.timestamp)

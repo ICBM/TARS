@@ -26,18 +26,17 @@
             @Html.HiddenFor(model => model.workEffortID)
 
             <p>
+            <div class="editor-label"><b>Work Type</b></div>
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.description, new SelectList(ViewBag.workTypeList, Model))
+            </div>
+            </p>
+
+            <p>
             <div class="editor-label"><b>Hours Worked</b></div>
             <div class="editor-field">
                 @Html.EditorFor(model => model.hours)
                 @Html.ValidationMessageFor(model => model.hours)
-            </div>
-            </p>
-    
-            <p>
-            <div class="editor-label"><b>Description of work</b></div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.description)
-                @Html.ValidationMessageFor(model => model.description)
             </div>
             </p>
 

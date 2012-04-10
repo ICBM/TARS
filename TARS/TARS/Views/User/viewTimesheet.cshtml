@@ -69,10 +69,10 @@
             WorkEffort
         </th>
         <th>
-            Hours
+            WorkType            
         </th>
         <th>
-            HoursDescription
+            Hours
         </th>
         <th>
             Date
@@ -92,10 +92,10 @@
             @Html.Action("getWeDescription", "User", new { id = item.workEffortID })
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.hours)
+            @Html.DisplayFor(modelItem => item.description)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.description)
+            @Html.DisplayFor(modelItem => item.hours)
         </td>
         <td>
             @item.timestamp.ToShortDateString()
