@@ -18,15 +18,17 @@
             <input name="creator" type="hidden" value="@User.Identity.Name" />
             <input name="division" type="hidden" value="@ViewBag.division" />
 
-            <div class="editor-label"><b>Division</b></div>
-            <div class="editor-field">
-                @Html.DropDownList("division", (List<SelectListItem>)ViewBag.divisionList, "--Select--")
+            <p>
+            <div><b>Division</b></div>
+            <div>
+                @ViewBag.division
             </div>
+            </p>
 
             <p>
             <div class="editor-label"><b>Choose Work Effort</b></div>
             <div class="editor-field">
-                @Html.DropDownListFor(p => p.workEffortID, Enumerable.Empty<SelectListItem>(), "--Select--")
+                @Html.DropDownListFor(p => p.workEffortID, (List<SelectListItem>)ViewBag.workEffortList, "--Select--")
             </div>
             </p>
 
@@ -73,23 +75,6 @@ else
     @Html.ActionLink("Back to Timesheet", "viewTimesheet", new { tsDate = DateTime.Now })
 </div>
 
-
-<!-- Populate Work Effort dropdown according to division that was selected -->
-<script type="text/javascript">
-    $('#division').change(function () {
-        var selectedDivision = $(this).val();
-        $.getJSON('@Url.Action("jsonWorkEffortSelectList")', { division: selectedDivision }, function (workefforts) {
-            var weSelect = $('#workEffortID');
-            weSelect.empty();
-            $.each(workefforts, function (index, we) {
-                weSelect.append($('<option/>', {
-                    value: we.value,
-                    text: we.text
-                }));
-            });
-        });
-    });
-</script>
 
 <!-- Populate Description dropdown according to Work Effort that was selected -->
 <script type="text/javascript">

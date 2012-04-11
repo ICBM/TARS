@@ -50,8 +50,10 @@ namespace TARS.Controllers
                 Authentication newAuth = new Authentication();
                 bool adminFlag = newAuth.isAdmin(this);
                 ViewBag.adminFlag = adminFlag;
+                string division = getUserDivision();
+                ViewBag.division = division;
+                ViewBag.workEffortList = getVisibleWorkEffortSelectList(division);
                 ViewBag.userName = User.Identity.Name;
-                ViewBag.divisionList = getDivisionSelectList();
                 return View();
             }
             else
@@ -413,7 +415,7 @@ namespace TARS.Controllers
                 Timesheet prevTimesheet = getTimesheet(userName, tsDate.AddDays(-7));
 
                 ViewBag.timesheet = timesheet;
-                //The View will only provide a link to previous timesheet if it exists
+                //The View won't provide a link to previous timesheet unless it exists
                 if (prevTimesheet == null)
                 {
                     ViewBag.noPreviousTimesheet = true;

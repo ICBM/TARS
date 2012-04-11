@@ -60,7 +60,7 @@
             @Html.Action("getTimesheetStatus", "User", new { userName = item.userName, refDate = DateTime.Now })
         </td>
         <td>
-            @Html.ActionLink("View User's Timesheet", "approveTimesheet", new { userKeyID = item.ID, tsDate = DateTime.Now})
+            @Html.ActionLink("Approve/Reject Timesheet", "approveTimesheet", new { userKeyID = item.ID, tsDate = DateTime.Now})
         </td>
     </tr>
     }
