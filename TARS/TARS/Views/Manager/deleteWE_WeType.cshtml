@@ -15,10 +15,6 @@
         @Html.HiddenFor(model => model.ID)
 
         <p>
-        <b>Earnings Code: </b>@Model.earningsCode
-        </p>
-
-        <p>
         <div class="editor-label"><b>Choose Work Type(s) to Remove</b></div>
         <div class="editor-field">
             @Html.ListBoxFor(model => model.workTypes, new SelectList((List<string>)ViewBag.workTypeDeleteList, Model))

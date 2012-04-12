@@ -35,16 +35,9 @@
         </p>
 
         <p>
-        <div class="editor-label"><b>Earnings Code</b></div>
-        <div class="editor-field">
-            @Html.DropDownListFor(model => model.earningsCode, (List<SelectListItem>)ViewBag.earningsCodeSelectList, "--Select--", null)
-        </div>
-        </p>
-
-        <p>
         <div class="editor-label"><b>Work Type(s)</b></div>
         <div class="editor-field">
-            @Html.ListBoxFor(model => model.workTypes, Enumerable.Empty<SelectListItem>())
+            @Html.ListBoxFor(model => model.workTypes, new SelectList((List<string>)ViewBag.workTypeSelectList, Model))
         </div>
         </p>
 
@@ -76,6 +69,8 @@
         </div>
         </p>
     
+            <!-- Julie said earnings code doesn't go with work efforts -->
+            <input type="hidden" name="earningsCode" value="???" />
         <p>
             <input type="submit" value="Create" />
         </p>
@@ -98,24 +93,6 @@
                 pcaSelect.append($('<option/>', {
                     value: pca.value,
                     text: pca.text
-                }));
-            });
-        });
-    });
-</script>
-
-
-<!-- Populate Work Type dropdown according to Earnings Code that was selected -->
-<script type="text/javascript">
-    $('#earningsCode').change(function () {
-        var selectedEarnCode = $(this).val();
-        $.getJSON('@Url.Action("jsonWorkTypeListFromEarnCode")', { earnCode: selectedEarnCode }, function (worktypes) {
-            var workTypeSelect = $('#workTypes');
-            workTypeSelect.empty();
-            $.each(worktypes, function (index, wType) {
-                workTypeSelect.append($('<option/>', {
-                    value: wType.value,
-                    text: wType.text
                 }));
             });
         });

@@ -143,7 +143,7 @@ namespace TARS.Controllers
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
                 ViewBag.divisionList = getDivisionSelectList();
-                ViewBag.earningsCodeSelectList = getEarningsCodeSelectList();
+                ViewBag.workTypeSelectList = getWorkTypeList();
                 return View();
             }
             else
@@ -334,7 +334,7 @@ namespace TARS.Controllers
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
                 WorkEffort we = WorkEffortDB.WorkEffortList.Find(weID);
-                ViewBag.workTypeAddList = getWorkTypeList(we.earningsCode);
+                ViewBag.workTypeAddList = getWorkTypeList();
                 return View(we);
             }
             else
@@ -915,18 +915,6 @@ string toAddress = "zeke_long@hotmail.com";
             IEnumerable<string> pcaList = getDivisionPcaCodeList(division);
 
             return Json(pcaList.Select(x => new { value = x, text = x }),
-                        JsonRequestBehavior.AllowGet
-                        );
-        }
-
-
-        //
-        //
-        public ActionResult jsonWorkTypeListFromEarnCode(string earnCode)
-        {
-            IEnumerable<string> workTypeList = getWorkTypeList(earnCode);
-
-            return Json(workTypeList.Select(x => new { value = x, text = x }),
                         JsonRequestBehavior.AllowGet
                         );
         }

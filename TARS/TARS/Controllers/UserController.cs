@@ -582,12 +582,11 @@ namespace TARS.Controllers
 
 
         // 
-        //Returns Earnings Code Descriptions for specified code as a list of strings
-        public virtual List<string> getWorkTypeList(string earnCode)
+        //Returns a list of all Earnings Code Descriptions
+        public virtual List<string> getWorkTypeList()
         {
             List<string> workTypesList = new List<string>();
             var searchEarnCodes = from m in EarningsCodesDB.EarningsCodesList
-                                  where (m.earningsCode.CompareTo(earnCode) == 0)
                                   select m;
             foreach (var item in searchEarnCodes)
             {
