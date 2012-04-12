@@ -501,18 +501,10 @@ namespace TARS.Controllers
         //Returns the current pay period as a string
         public virtual string getPayPeriod()
         {
-            Authentication auth = new Authentication();
-            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
-            {
-                DateTime startDay = DateTime.Now.StartOfWeek(DayOfWeek.Sunday);
-                DateTime endDay = startDay.AddDays(6);
-                string payPeriod = startDay.ToShortDateString() + " - " + endDay.ToShortDateString();
-                return payPeriod;
-            }
-            else
-            {
-                return "???";
-            }
+            DateTime startDay = DateTime.Now.StartOfWeek(DayOfWeek.Sunday);
+            DateTime endDay = startDay.AddDays(6);
+            string payPeriod = startDay.ToShortDateString() + " - " + endDay.ToShortDateString();
+            return payPeriod;
         }
 
 
