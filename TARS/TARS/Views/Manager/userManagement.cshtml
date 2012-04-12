@@ -7,25 +7,25 @@
 <h2>@ViewBag.division Employees</h2>
 @if (ViewBag.department != null)
 {
-    <h3>Department: @ViewBag.department</h3>
+    <h3><i>Department: @ViewBag.department</i></h3>
 }
 else
 {
-    <h3>Department: All</h3>
+    <h3><i>Department: All</i></h3>
 }
 
 @if (ViewBag.emailSentFlag == true)
 {
-    <h3>
+    <h4>
     @if (ViewBag.emailError != null)
     {
-        <html>Timesheet Rejected, but there was an error sending notification email to @ViewBag.messageRecipient</html>
+        <html><center>Timesheet Rejected, but there was an error sending notification email to @ViewBag.messageRecipient</center></html>
     }
     else
     {
-        <html>Timesheet Rejected:  Notification email was sent to @ViewBag.messageRecipient</html>
+        <html><center>Timesheet Rejected:  Notification email was sent to @ViewBag.messageRecipient</center></html>
     }
-    </h3>
+    </h4>
 }
 
 

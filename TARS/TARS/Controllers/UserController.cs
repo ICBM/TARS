@@ -5,6 +5,8 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Net.Mail;
+
 using TARS.Models;
 using TARS.Helpers;
 
@@ -34,7 +36,7 @@ namespace TARS.Controllers
             }
             else
             {
-                return View("notLoggedIn");
+                return View("notLoggedOn");
             }
         }
 
@@ -58,7 +60,7 @@ namespace TARS.Controllers
             }
             else
             {
-                return View("notLoggedIn");
+                return View("notLoggedOn");
             }
         }
 
@@ -109,7 +111,7 @@ namespace TARS.Controllers
             }
             else
             {
-                return View("notLoggedIn");
+                return View("notLoggedOn");
             }
         }
 
@@ -226,7 +228,7 @@ namespace TARS.Controllers
             }
             else
             {
-                return View("notLoggedIn");
+                return View("notLoggedOn");
             }
         }
 
@@ -257,7 +259,7 @@ namespace TARS.Controllers
             }
             else
             {
-                return View("notLoggedIn");
+                return View("notLoggedOn");
             }
         }
 
@@ -283,7 +285,7 @@ namespace TARS.Controllers
             }
             else
             {
-                return View("notLoggedIn");
+                return View("notLoggedOn");
             }
         }
 
@@ -305,7 +307,7 @@ namespace TARS.Controllers
             }
             else
             {
-                return View("notLoggedIn");
+                return View("notLoggedOn");
             }
         }
 
@@ -349,7 +351,7 @@ namespace TARS.Controllers
             }
             else
             {
-                return View("notLoggedIn");
+                return View("notLoggedOn");
             }
         }
 
@@ -398,7 +400,7 @@ namespace TARS.Controllers
             }
             else
             {
-                return View("notLoggedIn");
+                return View("notLoggedOn");
             }
         }
 
@@ -431,7 +433,7 @@ namespace TARS.Controllers
             }
             else
             {
-                return View("notLoggedIn");
+                return View("notLoggedOn");
             }           
         }
 
@@ -453,11 +455,16 @@ namespace TARS.Controllers
                     TimesheetDB.Entry(ts).State = System.Data.EntityState.Modified;
                     TimesheetDB.SaveChanges();
 
+                    //send an email to employee to confirm timesheet submittal
+                    string body = "Your IDHW timesheet for the pay period of " + ts.periodStart.ToShortDateString() +
+                                    " - " + ts.periodEnd.ToShortDateString() + " has successfully been submitted.";
+                    SendEmail(ts.worker, "Timesheet Submitted", body);
+
                     return RedirectToAction("viewTimesheet", new { tsDate = ts.periodStart });
                 }
                 else
                 {
-                    return View("notLoggedIn");
+                    return View("notLoggedOn");
                 }
             }
             else
@@ -764,7 +771,7 @@ namespace TARS.Controllers
             }
             else
             {
-                return View("notLoggedIn");
+                return View("notLoggedOn");
             }
         }
 
@@ -781,8 +788,33 @@ namespace TARS.Controllers
             }
             else
             {
-                return View("notLoggedIn");
+                return View("notLoggedOn");
             }
         }
+
+
+        //
+        //Sends an email from local server
+        internal static void SendEmail(string userName, string subject, string body)
+        {
+string toAddress = "zeke_long@hotmail.com";
+            //string toAddress = getEmailAddress(userName);
+            try
+            {
+                MailMessage mailMessage = new MailMessage();
+                mailMessage.To.Add(new MailAddress(toAddress));
+                mailMessage.Subject = subject;
+                mailMessage.Body = body;
+                mailMessage.IsBodyHtml = true;
+
+                var client = new SmtpClient();
+                client.Send(mailMessage);
+            }
+            catch (Exception ex)
+            {
+                var tmpVar = ex;
+            }
+        }
+
     }
 }

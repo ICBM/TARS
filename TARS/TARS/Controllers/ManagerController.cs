@@ -5,7 +5,6 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Net.Mail;
 
 using TARS.Helpers;
 using TARS.Models;
@@ -78,7 +77,6 @@ namespace TARS.Controllers
                 {
                     ViewBag.emailSentFlag = true;
                     ViewBag.messageRecipient = TempData["recipient"];
-                    ViewBag.emailError = TempData["emailError"];
                 }
 
                 //if it's a request to view all users in the division
@@ -93,7 +91,7 @@ namespace TARS.Controllers
                     //display the user's in the current user's department
                     division = getUserDivision();
                     department = getUserDepartment();
-                    IEnumerable<TARSUser> deptEmployees = getDivDepartmentEmployeeList(division, department);
+                    IEnumerable<TARSUser> deptEmployees = getDepartmentEmployeeList(division, department);
                     ViewBag.division = division;
                     ViewBag.department = department;
                     return View(deptEmployees);
@@ -652,6 +650,11 @@ namespace TARS.Controllers
                     //save changes to the database
                     TimesheetDB.SaveChanges();
 
+                    //send an email to employee to notify of timesheet approval
+                    string body = "Your IDHW timesheet for the pay period of " + ts.periodStart.ToShortDateString() +
+                                    " - " + ts.periodEnd.ToShortDateString() + " has been approved by a manager.";
+                    SendEmail(ts.worker, "Timesheet Approved", body);
+
                     return RedirectToAction("userManagement");
                 }
                 else
@@ -684,75 +687,15 @@ namespace TARS.Controllers
                     TimesheetDB.SaveChanges();
 
                     //send an email to employee to notify them
-                    sendRejectedTimesheetEmail(ts.worker);
+                    string body = "Your IDHW timesheet for the pay period of " + ts.periodStart.ToShortDateString() + 
+                                    " - " + ts.periodEnd.ToShortDateString() + " has been rejected by a manager. " +
+                                    "Please fix it and re-submit as soon as possible.<br /><br />Thanks!";
+                    SendEmail(ts.worker, "Rejected Timesheet", body);
                     TempData["emailSentFlag"] = true;
                     TempData["recipient"] = ts.worker;
                     TempData["emailError"] = TempData["emailError"];
 
                     return RedirectToAction("userManagement");
-                }
-                else
-                {
-                    return View("error");
-                }
-            }
-            else
-            {
-                return View("error");
-            }
-        }
-
-
-        //
-        //Sends an email to inform employee that their timesheet was rejected
-        public bool sendRejectedTimesheetEmail(string userName)
-        {
-//NEED TO LOOK IN ACTIVE DIRECTORY TO GET THIS DONE CORRECTLY
-string toAddress = "zeke_long@hotmail.com";
-//string toAddress = getEmailAddress(userName);
-
-            string subject = "IDHW Rejected Timesheet";
-            string body = "Hello, <br /><br />This is an email to inform you that your IDHW timesheet" +
-                          " has been rejected by a manager.<br /> Please log in to TARS and fix" +
-                          " any errors, then re-submit as soon as possible.<br /><br /> Thanks!";
-            try
-            {
-                MailMessage mailMessage = new MailMessage();
-                mailMessage.To.Add(new MailAddress(toAddress));
-                mailMessage.Subject = subject;
-                mailMessage.Body = body;
-                mailMessage.IsBodyHtml = true;
-
-                var client = new SmtpClient();
-                client.Send(mailMessage);
-            }
-            catch (Exception ex)
-            {
-                TempData["emailError"] = ex;
-            }
-        
-            return true;
-        }
-
-
-        //
-        // GET: /Manager/managerSubmitTimesheet
-        //changes the specified timesheet submitted status to true
-        public virtual ActionResult managerSubmitTimesheet(int id)
-        {
-            if (id >= 0)
-            {
-                Authentication auth = new Authentication();
-                if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-                {
-                    Timesheet ts = new Timesheet();
-                    ts = TimesheetDB.TimesheetList.Find(id);
-                    ts.submitted = true;
-                    TimesheetDB.Entry(ts).State = System.Data.EntityState.Modified;
-                    //save changes to the database
-                    TimesheetDB.SaveChanges();
-
-                    return RedirectToAction("approveTimesheet", new { id = getUserKeyID(ts.worker) });
                 }
                 else
                 {
@@ -872,7 +815,7 @@ string toAddress = "zeke_long@hotmail.com";
 
         // 
         //Returns list of employees that work for specified department
-        public virtual List<TARSUser> getDivDepartmentEmployeeList(string division, string department)
+        public virtual List<TARSUser> getDepartmentEmployeeList(string division, string department)
         {
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)

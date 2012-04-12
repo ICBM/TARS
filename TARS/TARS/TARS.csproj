@@ -249,7 +249,7 @@
     </Content>
     <Content Include="Views\User\editHours.cshtml" />
     <Content Include="Views\Admin\confirmEditPCA.cshtml" />
-    <Content Include="Views\Shared\notLoggedIn.cshtml" />
+    <Content Include="Views\Shared\notLoggedOn.cshtml" />
     <Content Include="Views\Admin\addPCA_WE.cshtml" />
     <Content Include="Views\Admin\deletePCA_WE.cshtml" />
     <Content Include="Views\Manager\searchPCA.cshtml" />
