@@ -699,6 +699,30 @@ namespace TARS.Controllers
         }
 
 
+        // 
+        //Returns the IDHW department name that the user works for
+        public virtual string getUserDepartment()
+        {
+            Authentication auth = new Authentication();
+            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+            {
+                string department = "";
+                var searchUsers = from m in TARSUserDB.TARSUserList
+                                  where (m.userName.CompareTo(User.Identity.Name) == 0)
+                                  select m;
+                foreach (var item in searchUsers)
+                {
+                    department = item.department;
+                }
+                return department;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+
         //
         //
         public ActionResult jsonWorkEffortSelectList(string division)

@@ -64,14 +64,15 @@ namespace TARS.Controllers
             }
         }
 
-
         //
-        //
-        public virtual ActionResult userManagement()
+        //If division is null, it displays all the employees in the user's department
+        //Otherwise, it displays all the employees that work for the specified division
+        public virtual ActionResult userManagement(string division = null)
         {
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
+                string department = "";
                 //if it's a redirect from submitRejectTimesheet()
                 if (TempData["emailSentFlag"] != null)
                 {
@@ -79,7 +80,24 @@ namespace TARS.Controllers
                     ViewBag.messageRecipient = TempData["recipient"];
                     ViewBag.emailError = TempData["emailError"];
                 }
-                return View(TARSUserDB.TARSUserList.ToList());
+
+                //if it's a request to view all users in the division
+                if (division != null)
+                {
+                    IEnumerable<TARSUser> divEmployees = getDivisionEmployeeList(division);
+                    ViewBag.division = division;
+                    return View(divEmployees);
+                }
+                else
+                {
+                    //display the user's in the current user's department
+                    division = getUserDivision();
+                    department = getUserDepartment();
+                    IEnumerable<TARSUser> deptEmployees = getDivDepartmentEmployeeList(division, department);
+                    ViewBag.division = division;
+                    ViewBag.department = department;
+                    return View(deptEmployees);
+                }
             }
             else
             {
@@ -849,6 +867,55 @@ string toAddress = "zeke_long@hotmail.com";
                 pcaCodesList.Add(item.code.ToString());
             }
             return pcaCodesList;
+        }
+
+
+        // 
+        //Returns list of employees that work for specified department
+        public virtual List<TARSUser> getDivDepartmentEmployeeList(string division, string department)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                List<TARSUser> depEmployees = new List<TARSUser>();
+                var searchUsers = from m in TARSUserDB.TARSUserList
+                                  where (m.company.CompareTo(division) == 0)
+                                  where (m.department.CompareTo(department) == 0)
+                                  select m;
+                foreach (var item in searchUsers)
+                {
+                    depEmployees.Add(item);
+                }
+                return depEmployees;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+
+        // 
+        //Returns list of employees that work for specified division
+        public virtual List<TARSUser> getDivisionEmployeeList(string division)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                List<TARSUser> divEmployees = new List<TARSUser>();
+                var searchUsers = from m in TARSUserDB.TARSUserList
+                                  where (m.company.CompareTo(division) == 0)
+                                  select m;
+                foreach (var item in searchUsers)
+                {
+                    divEmployees.Add(item);
+                }
+                return divEmployees;
+            }
+            else
+            {
+                return null;
+            }
         }
 
 
