@@ -160,7 +160,7 @@ namespace TARS.Controllers
             DateTime startDay = DateTime.Now.StartOfWeek(DayOfWeek.Sunday);
             //Set pay period to start on Sunday 12:00am
             newTimesheet.periodStart = startDay;
-            newTimesheet.periodEnd = startDay.AddDays(6);
+            newTimesheet.periodEnd = startDay.AddDays(6.99999);
             newTimesheet.worker = userName;
             newTimesheet.approved = false;
             newTimesheet.locked = false;
