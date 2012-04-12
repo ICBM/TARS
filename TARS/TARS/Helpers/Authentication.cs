@@ -13,15 +13,14 @@ namespace TARS.Helpers
     {
         protected TARSUserDBContext TARSUserDB = new TARSUserDBContext();
 
-        static public bool DEBUG_bypassAuth = true; //Bypass all permission checking.
+        static public bool DEBUG_bypassAuth = false; //Bypass all permission checking if true
 
         protected int permission(Controller c)
         {
             var authed = c.Request.IsAuthenticated; //this completely breaks when used in test controller. the controller being called doesn't have a Request instance.
             if (authed == true)
             {
-//                var username = c.User.Identity.Name; //Grab username from the cookie.
-var username = "zeke";
+                var username = c.User.Identity.Name; //Grab username from the cookie.
                 using (var context = TARSUserDB)
                 {
                     var userInDB = context.TARSUserList
