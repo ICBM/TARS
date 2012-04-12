@@ -177,6 +177,7 @@ namespace TARS.Controllers
         //Retrieves a specified user's timesheet for specified date
         public Timesheet getTimesheet(string user, DateTime tsDate)
         {
+            checkForTimesheet(user, tsDate);
             Timesheet resulttimesheet = new Timesheet();
 
             var searchTs = from m in TimesheetDB.TimesheetList
