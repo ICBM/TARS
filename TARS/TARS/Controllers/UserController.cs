@@ -98,7 +98,7 @@ namespace TARS.Controllers
                     }
 
                     //make sure that a timesheet exists for the period hours are being added to
-                    checkForTimesheet(newhours);
+                    checkForTimesheet(newhours.creator, newhours.timestamp);
   
                     //add and save new hours
                     HoursDB.HoursList.Add(newhours);
@@ -117,19 +117,19 @@ namespace TARS.Controllers
         //
         // GET: /User/CheckForTimesheet
         //Creates a new timesheet if one doesn't exist for the period
-        public void checkForTimesheet(Hours newhours)
+        public void checkForTimesheet(string userName, DateTime tsDate)
         {
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
                 Timesheet resulttimesheet = new Timesheet();
-                DateTime startDay = newhours.timestamp.StartOfWeek(DayOfWeek.Sunday);
+                DateTime startDay = tsDate.StartOfWeek(DayOfWeek.Sunday);
 
                 //Check if there is a timesheet for the week that corresponds to newhours.timestamp
                 var searchTs = from m in TimesheetDB.TimesheetList
-                             where (m.worker.CompareTo(newhours.creator) == 0)
-                             where m.periodStart <= newhours.timestamp
-                             where m.periodEnd >= newhours.timestamp
+                             where (m.worker.CompareTo(userName) == 0)
+                             where m.periodStart <= tsDate
+                             where m.periodEnd >= tsDate
                              select m;
                 foreach (var item in searchTs)
                 {
@@ -140,7 +140,7 @@ namespace TARS.Controllers
                 //If there is a timesheet for the current pay period, don't do anything
                 if (resulttimesheet.periodStart.CompareTo(startDay) != 0)
                 {
-                    createCurrentTimesheet(User.Identity.Name);
+                    createCurrentTimesheet(userName);
                     return;
                 }
                 return;
@@ -160,7 +160,7 @@ namespace TARS.Controllers
             DateTime startDay = DateTime.Now.StartOfWeek(DayOfWeek.Sunday);
             //Set pay period to start on Sunday 12:00am
             newTimesheet.periodStart = startDay;
-            newTimesheet.periodEnd = startDay.AddDays(7);
+            newTimesheet.periodEnd = startDay.AddDays(6);
             newTimesheet.worker = userName;
             newTimesheet.approved = false;
             newTimesheet.locked = false;
@@ -504,7 +504,7 @@ namespace TARS.Controllers
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
                 DateTime startDay = DateTime.Now.StartOfWeek(DayOfWeek.Sunday);
-                DateTime endDay = startDay.AddDays(7);
+                DateTime endDay = startDay.AddDays(6);
                 string payPeriod = startDay.ToShortDateString() + " - " + endDay.ToShortDateString();
                 return payPeriod;
             }
