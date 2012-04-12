@@ -5,13 +5,15 @@
 }
 
 <h2>@ViewBag.division Employees</h2>
-@if (ViewBag.department != null)
+
+<!-- Allow Manager/Approver to select a different division (uses a script to submit form) -->
+@using (Html.BeginForm())
 {
-    <h3><i>Department: @ViewBag.department</i></h3>
-}
-else
-{
-    <h3><i>Department: All</i></h3>
+    <div class="editor-label"><b>Select Different Division</b></div>
+    <div class="editor-field"> 
+        @Html.DropDownList("division", (List<SelectListItem>)ViewBag.divisionList, new { @onchange = "this.form.submit();"})     
+    </div>
+    <br />
 }
 
 @if (ViewBag.emailSentFlag == true)
@@ -27,19 +29,6 @@ else
     }
     </h4>
 }
-
-
-<!-- Allow Manager/Approver to select a division (uses a script to submit form) -->
-<div id="menu" style="float:right;">
-    @using (Html.BeginForm())
-    {
-        <div class="editor-label"><b>Select Different Division</b></div>
-        <div class="editor-field">
-            @Html.DropDownList("division", (List<SelectListItem>)ViewBag.divisionList)
-        </div>     
-    }
-</div>
-
 
 <table class="timesheet">
     <tr>
@@ -87,14 +76,3 @@ else
     }
 }
 </table>
-
-
-<!-- Call userManagement with division parameter that was selected -->
-<script type="text/javascript">
-    $('#division').change(function () {
-        var divisionSelected = $(this).val();
-        var url = "/Home/Manager/userManagement" + divisionSelected;
-
-        $.post(url, function (data) {});
-    });
-</script>
