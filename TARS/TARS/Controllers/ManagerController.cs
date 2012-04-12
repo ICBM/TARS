@@ -64,14 +64,13 @@ namespace TARS.Controllers
         }
 
         //
-        //If division is null, it displays all the employees in the user's department
-        //Otherwise, it displays all the employees that work for the specified division
+        //Displays all the employees that work for the specified division
+        //If division is null, it displays employees in the same division as the manager
         public virtual ActionResult userManagement(string division = null)
         {
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
-                string department = "";
                 //if it's a redirect from submitRejectTimesheet()
                 if (TempData["emailSentFlag"] != null)
                 {
@@ -80,22 +79,14 @@ namespace TARS.Controllers
                 }
 
                 //if it's a request to view all users in the division
-                if (division != null)
+                if (division == null)
                 {
-                    IEnumerable<TARSUser> divEmployees = getDivisionEmployeeList(division);
-                    ViewBag.division = division;
-                    return View(divEmployees);
-                }
-                else
-                {
-                    //display the user's in the current user's department
                     division = getUserDivision();
-                    department = getUserDepartment();
-                    IEnumerable<TARSUser> deptEmployees = getDepartmentEmployeeList(division, department);
-                    ViewBag.division = division;
-                    ViewBag.department = department;
-                    return View(deptEmployees);
                 }
+                IEnumerable<TARSUser> divEmployees = getDivisionEmployeeList(division);
+                ViewBag.division = division;
+                ViewBag.divisionList = getDivisionSelectList();
+                return View(divEmployees);
             }
             else
             {
@@ -113,14 +104,12 @@ namespace TARS.Controllers
             {
                 var workEffortList = WorkEffortDB.WorkEffortList.ToList();
 
-                //create a list of lists for pca codes and work types
-                //(each work effort will have a list of PCA codes and a list work types)
+                //create a list of lists for pca codes
+                //(each work effort will have a list of PCA codes)
                 ViewBag.pcaListOfLists = new List<List<int>>();
-                ViewBag.workTypesListOfLists = new List<List<string>>();
                 foreach (var item in workEffortList)
                 {
                     ViewBag.pcaListOfLists.Add(getWorkEffortPcaCodes(item));
-                    ViewBag.workTypesListOfLists.Add(getWorkEffortWorkTypeList(item));
                 }
 
                 //check if an "unable to hide Work Effort error should be displayed"
@@ -159,7 +148,7 @@ namespace TARS.Controllers
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
                 ViewBag.divisionList = getDivisionSelectList();
-                ViewBag.workTypeSelectList = getWorkTypeList();
+                ViewBag.earnCodeList = getEarningsCodeSelectList();
                 return View();
             }
             else
@@ -186,16 +175,6 @@ namespace TARS.Controllers
                         WorkEffortDB.WorkEffortList.Add(workeffort);
                         WorkEffortDB.SaveChanges();
 
-                        //add the WorkEffort/WorkTypes association to WorkTypes table
-                        WorkType wType = new WorkType();
-                        foreach (var item in workeffort.workTypes)
-                        {
-                            wType.WE = workeffort.ID;
-                            wType.description = item;
-                            WorkTypeDB.WorkTypeList.Add(wType);
-                            WorkTypeDB.SaveChanges();
-                        }
-
                         //add the PCA_WE association to PCA_WE table
                         PCA_WE tmpPcaWe = new PCA_WE();
                         tmpPcaWe.WE = workeffort.ID;
@@ -208,7 +187,7 @@ namespace TARS.Controllers
                     else
                     {
                         ViewBag.divisionList = getDivisionSelectList();
-                        ViewBag.earningsCodeSelectList = getEarningsCodeSelectList();
+                        ViewBag.earnCodeList = getEarningsCodeSelectList();
                         ViewBag.notWithinTimeBounds = true;
                         return View(workeffort);
                     }
@@ -232,7 +211,6 @@ namespace TARS.Controllers
             {
                 WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
                 ViewBag.pcaList = getWorkEffortPcaCodes(workeffort);
-                ViewBag.workTypesList = getWorkEffortWorkTypeList(workeffort);
                 string division = getUserDivision();
                 ViewBag.divisionName = division;
 
@@ -272,7 +250,6 @@ namespace TARS.Controllers
                     {
                         ViewBag.notWithinTimeBounds = true;
                         ViewBag.pcaList = getWorkEffortPcaCodes(workeffort);
-                        ViewBag.workTypesList = getWorkEffortWorkTypeList(workeffort);
 
                         Authentication newAuth = new Authentication();
                         if (newAuth.isAdmin(this))
@@ -339,137 +316,6 @@ namespace TARS.Controllers
                 return View("error");
             } 
         }
-
-
-        //
-        // GET: /Manager/addWE_WeType
-        //  Adds Work Type(s) to the given Work Effort
-        public virtual ActionResult addWE_WeType(int weID)
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                WorkEffort we = WorkEffortDB.WorkEffortList.Find(weID);
-                ViewBag.workTypeAddList = getWorkTypeList();
-                return View(we);
-            }
-            else
-            {
-                return View("error");
-            }
-        }
-
-
-        //
-        // POST: /Manager/addWE_WeType
-        //  Adds Work Type(s) to the given Work Effort
-        [HttpPost]
-        public virtual ActionResult addWE_WeType(WorkEffort tmpWe)
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                WorkType wType = new WorkType();
-                try
-                {
-                    foreach (var item in tmpWe.workTypes)
-                    {
-                        wType.WE = tmpWe.ID;
-                        wType.description = item;
-                        if (checkIfDuplicateWE_WeType(wType) == false)
-                        {
-                            //add each selected work type to the WorkType table
-                            WorkTypeDB.WorkTypeList.Add(wType);
-                            WorkTypeDB.SaveChanges();
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    TempData["addWE_WeTypeError"] = ex;
-                }
-                return RedirectToAction("editWorkEffort", new { id = tmpWe.ID });
-            }
-            else
-            {
-                return View("error");
-            }
-        }
-
-
-        //
-        // Returns true if the WorkType association already exists
-        public bool checkIfDuplicateWE_WeType(WorkType wType)
-        {
-            var searchWorkTypes = from w in WorkTypeDB.WorkTypeList
-                                  where w.WE == wType.WE
-                                  where (w.description.CompareTo(wType.description) == 0)
-                                  select w;
-            foreach (var item in searchWorkTypes)
-            {
-                return true;
-            }
-            return false;
-        }
-
-
-        //
-        // GET: /Manager/deleteWE_WeType
-        //  Deletes Work Type(s) from the given Work Effort
-        public virtual ActionResult deleteWE_WeType(int weID)
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                WorkEffort we = WorkEffortDB.WorkEffortList.Find(weID);
-                ViewBag.workTypeDeleteList = getWorkEffortWorkTypeList(we);
-                return View(we);
-            }
-            else
-            {
-                return View("error");
-            }
-        }
-
-
-        //
-        // POST: /Manager/deleteWE_WeType
-        //  Deletes Work Type(s) from the given Work Effort
-        [HttpPost]
-        public virtual ActionResult deleteWE_WeType(WorkEffort tmpWe)
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                WorkType wType = new WorkType();
-                try
-                {
-                    foreach (var item in tmpWe.workTypes)
-                    {
-                        wType.WE = tmpWe.ID;
-                        wType.description = item;
-                        var searchWorkType = from w in WorkTypeDB.WorkTypeList
-                                             where w.WE == tmpWe.ID
-                                             where (w.description.CompareTo(item) == 0)
-                                             select w;
-                        wType = searchWorkType.First();
-                        //remove each selected work type from the WorkType table
-                        WorkTypeDB.WorkTypeList.Remove(wType);
-                        WorkTypeDB.SaveChanges();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    TempData["deleteWE_WeTypeError"] = ex;
-                }
-                return RedirectToAction("editWorkEffort", new { id = tmpWe.ID });
-            }
-            else
-            {
-                return View("error");
-            }
-        }
-
 
 
         //
@@ -725,7 +571,7 @@ namespace TARS.Controllers
                 ViewBag.adminFlag = adminFlag;
                 ViewBag.userName = timesheet.worker;
                 ViewBag.workEffort = we;
-                ViewBag.workTypeList = getWorkEffortWorkTypeList(we);
+                ViewBag.workTypeList = getEarnCodeWorkTypeList(we.earningsCode);
                 return View(hours);
             }
             else
@@ -810,31 +656,6 @@ namespace TARS.Controllers
                 pcaCodesList.Add(item.code.ToString());
             }
             return pcaCodesList;
-        }
-
-
-        // 
-        //Returns list of employees that work for specified department
-        public virtual List<TARSUser> getDepartmentEmployeeList(string division, string department)
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                List<TARSUser> depEmployees = new List<TARSUser>();
-                var searchUsers = from m in TARSUserDB.TARSUserList
-                                  where (m.company.CompareTo(division) == 0)
-                                  where (m.department.CompareTo(department) == 0)
-                                  select m;
-                foreach (var item in searchUsers)
-                {
-                    depEmployees.Add(item);
-                }
-                return depEmployees;
-            }
-            else
-            {
-                return null;
-            }
         }
 
 

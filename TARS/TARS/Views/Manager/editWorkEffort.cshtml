@@ -13,7 +13,7 @@
 {
     @Html.ValidationSummary(true)
     <fieldset>
-        @Html.HiddenFor(model => model.earningsCode)
+        @Html.HiddenFor(model => model.hidden)
 
         <div class="editor-label"><b>Work Effort Description </b>(100 characters max)</div>
         <div class="editor-field">
@@ -25,7 +25,8 @@
         <div class="editor-label"><b>PCA Code(s)</b></div>
         <div class="display-field">
             <!-- This dropdown should not allow selections, it's just for viewing -->
-            @Html.DropDownList("pcaCode", new SelectList(ViewBag.pcaList, Model))
+            @Html.DropDownList("pcaList", new SelectList(ViewBag.pcaList))
+            @Html.HiddenFor(model => model.pcaCode)
             @if (ViewBag.adminFlag == true)
             {
                 @Html.ActionLink("Add a PCA Code Association", "addPCA_WE", "Admin", new { weID = Model.ID }, null)
@@ -35,13 +36,9 @@
         </div>
         </p>
 
-        <div class="editor-label"><b>Work Type(s)</b></div>
-        <div class="display-field">
-            <!-- This dropdown should not allow selections, it's just for viewing -->
-            @Html.DropDownList("workTypes", new SelectList(ViewBag.workTypesList, Model))
-            @Html.ActionLink("Add Work Type Association(s)", "addWE_WeType", new { weID = Model.ID }) |
-            @Html.ActionLink("Remove Work Type Association(s)", "deleteWE_WeType", new { weID = Model.ID })
-        </div>
+        <div class="editor-label"><b>Earnings Code</b></div>
+            @Model.earningsCode
+            @Html.HiddenFor(model => model.earningsCode)
 
         <p>
         <div class="editor-label"><b>Start Date</b></div>

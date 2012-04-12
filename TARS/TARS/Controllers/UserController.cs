@@ -221,7 +221,6 @@ namespace TARS.Controllers
                 foreach (var item in workEffortList)
                 {
                     ViewBag.pcaListOfLists.Add(getWorkEffortPcaCodes(item));
-                    ViewBag.workTypesListOfLists.Add(getWorkEffortWorkTypeList(item));
                 }
                 
                 return View(workEffortList);
@@ -253,7 +252,6 @@ namespace TARS.Controllers
                     return HttpNotFound();
                 }
                 ViewBag.pcaList = getWorkEffortPcaCodes(workeffort);
-                ViewBag.workTypeList = getWorkEffortWorkTypeList(workeffort);
                 ViewBag.WorkEffortID = workeffort.ID;
                 return View(workeffort);
             }
@@ -280,7 +278,7 @@ namespace TARS.Controllers
                 ViewBag.adminFlag = adminFlag;
                 ViewBag.userName = User.Identity.Name;
                 ViewBag.workEffort = we;
-                ViewBag.workTypeList = getWorkEffortWorkTypeList(we);
+                ViewBag.workTypeList = getEarnCodeWorkTypeList(we.earningsCode);
                 return View(hours);
             }
             else
@@ -596,14 +594,14 @@ namespace TARS.Controllers
 
 
         // 
-        //Returns descriptions of all earnings codes associated with specified work effort
-        public virtual List<string> getWorkEffortWorkTypeList(WorkEffort we)
+        //Returns descriptions of all work types that have specified earnings code
+        public virtual List<string> getEarnCodeWorkTypeList(string earnCode)
         {
             List<string> workTypesList = new List<string>();
-            var searchWorkTypes = from m in WorkTypeDB.WorkTypeList
-                                  where m.WE == we.ID
+            var searchEarnCodes = from m in EarningsCodesDB.EarningsCodesList
+                                  where (m.earningsCode.CompareTo(earnCode) == 0)
                                   select m;
-            foreach (var item in searchWorkTypes)
+            foreach (var item in searchEarnCodes)
             {
                 workTypesList.Add(item.description);
             }
@@ -751,7 +749,7 @@ namespace TARS.Controllers
         public ActionResult jsonWorkTypeSelectList(int weID)
         {
             WorkEffort we = WorkEffortDB.WorkEffortList.Find(weID);
-            IEnumerable<string> weSelectList = getWorkEffortWorkTypeList(we);
+            IEnumerable<string> weSelectList = getEarnCodeWorkTypeList(we.earningsCode);
 
             return Json(weSelectList.Select(x => new { value = x, text = x }),
                         JsonRequestBehavior.AllowGet

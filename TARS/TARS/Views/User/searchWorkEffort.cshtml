@@ -22,7 +22,7 @@
             PcaCode(s)
         </th>
         <th>
-            WorkType(s)
+            EarningsCode
         </th>
         <th>
             StartDate
@@ -50,7 +50,7 @@
                         @Html.DropDownList("pcaCode", new SelectList(ViewBag.pcaListOfLists[count], Model))
                     </td>
                     <td>
-                        @Html.DropDownList("workTypes", new SelectList(ViewBag.workTypesListOfLists[count], Model))
+                        @item.earningsCode
                     </td>
                     <td>
                         @item.startDate.ToShortDateString()

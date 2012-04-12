@@ -18,7 +18,6 @@ namespace TARS.Models
         public string comments { get; set; }
         public int pcaCode { get; set; }
         public string earningsCode { get; set; }
-        public IEnumerable<string> workTypes { get; set; }
         public bool hidden { get; set; }
     }
 
