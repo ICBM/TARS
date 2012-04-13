@@ -465,12 +465,17 @@ namespace TARS.Controllers
                     ViewBag.timesheet = timesheet;
                 }
 
-                var searchHours = from m in HoursDB.HoursList
+                var hoursList = from m in HoursDB.HoursList
                                   where (m.creator.CompareTo(employee.userName) == 0)
                                   where m.timestamp >= timesheet.periodStart
                                   where m.timestamp <= timesheet.periodEnd
                                   select m;
-                return View(searchHours);
+                TempData["hoursList"] = hoursList;
+
+                //convert hoursList into a format that the view can use
+                List<TimesheetRow> tsRows = convertHoursForTimesheetView();
+                ViewBag.workEffortList = getVisibleWorkEffortSelectList(getUserDivision());
+                return View(tsRows);
             }
             else
             {

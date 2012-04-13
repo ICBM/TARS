@@ -15,22 +15,23 @@
 
 <table class="timesheet">
     <tr>
-        <th>
+        <th class="pca">
             PcaCode
         </th>
-        <th>
+        <th class="pca">
             Description
         </th>
-        <th>
+        <th class="pca">
             Division
         </th>
-        <th>
+        <th class="pca">
             StartDate
         </th>
-        <th>
+        <th class="pca">
             EndDate
         </th>
-        <th></th>
+        <th class="options">
+        </th>
     </tr>
 
   @foreach (var item in Model)
@@ -39,20 +40,22 @@
         <td>
             @Html.DisplayFor(modelItem => item.code)
         </td>
-        <td>
+        <td class="description">
             @Html.DisplayFor(modelItem => item.description)
         </td>
-        <td>
+        <td class="description">
             @Html.DisplayFor(modelItem => item.division)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.startDate)
+            @item.startDate.ToShortDateString()
+            @Html.HiddenFor(modelItem => item.startDate)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.endDate)
+            @item.endDate.ToShortDateString()
+            @Html.HiddenFor(modelItem => item.endDate)
         </td>
 
-        <td>
+        <td class="options">
             @Html.ActionLink("Edit", "editPCA", new { id=item.ID }) |
             @Html.ActionLink("Delete", "deletePCA", new { id=item.ID })
         </td>

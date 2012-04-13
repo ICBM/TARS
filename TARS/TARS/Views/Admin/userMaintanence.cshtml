@@ -6,6 +6,8 @@
 
 <h2>Active Users</h2>
 
+<p>@Html.ActionLink("Add User", "addUser")</p>
+
 <table class="timesheet">
     <tr>
         <th>
@@ -23,7 +25,6 @@
         <th>
             End Date
         </th>
-        <th></th>
     </tr>
 
 @if (Model != null)
@@ -31,22 +32,22 @@
     foreach (var item in Model)
     {
     <tr>
-        <td>
+        <td class="name">
             @Html.DisplayFor(modelItem => item.userName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.permission)
         </td>
-        <td>
+        <td class="description">
             @Html.DisplayFor(modelItem => item.company)
         </td>
-        <td>
+        <td class="description">
             @Html.DisplayFor(modelItem => item.department)
         </td>
-        <td>
+        <td class="date">
             To be implemented
         </td>
-        <td>
+        <td class="options">
             @Html.ActionLink("Edit", "editTARSUser") |
             @Html.ActionLink("End Date", "endDateTARSUser")
         </td>
@@ -54,5 +55,3 @@
     }
 }
 </table>
-
-<p>@Html.ActionLink("Add User", "addUser")</p>

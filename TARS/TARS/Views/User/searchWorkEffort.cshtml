@@ -15,23 +15,23 @@
 <!-- Display all of the active (not hidden) work efforts -->   
 <table class="timesheet">
     <tr>
-        <th>
+        <th class="description">
             Description
-        </th>
-        <th>
+        </th class="workEffort">
+        <th class="workEffort">
             PcaCode(s)
         </th>
-        <th>
+        <th class="workEffort">
             EarningsCode
         </th>
-        <th>
+        <th class="workEffort">
             StartDate
         </th>
-        <th>
+        <th class="workEffort">
             EndDate
         </th>
-
-        <th></th>
+        <th class="options">
+        </th>
     </tr>
 
     @if (Model != null)
@@ -43,7 +43,7 @@
             if (item.hidden == false)
             {
                 <tr>
-                    <td>
+                    <td class="description">
                         @Html.DisplayFor(modelItem => item.description)
                     </td>
                     <td>
@@ -59,7 +59,7 @@
                         @item.endDate.ToShortDateString()
                     </td>
 
-                    <td>
+                    <td class="options">
                         <!-- If there are comments, provide a link to view them -->
                         @if ((item.comments != null) && (item.comments.Trim().Length > 0))
                         {                  

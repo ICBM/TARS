@@ -6,7 +6,7 @@
 
 <h2>@ViewBag.division Employees</h2>
 
-<!-- Allow Manager/Approver to select a different division (uses a script to submit form) -->
+<!-- Allow Manager/Approver to select a different division -->
 @using (Html.BeginForm())
 {
     <div class="editor-label"><b>Select Different Division</b></div>
@@ -21,11 +21,11 @@
     <h4>
     @if (ViewBag.emailError != null)
     {
-        <html><center>Timesheet Rejected, but there was an error sending notification email to @ViewBag.messageRecipient</center></html>
+        <html>Timesheet Rejected, but there was an error sending notification email to @ViewBag.messageRecipient</html>
     }
     else
     {
-        <html><center>Timesheet Rejected:  Notification email was sent to @ViewBag.messageRecipient</center></html>
+        <html>Timesheet Rejected:  Notification email was sent to @ViewBag.messageRecipient</html>
     }
     </h4>
 }
@@ -54,22 +54,22 @@
     foreach (var item in Model)
     {
     <tr>
-        <td>
+        <td class="name">
             @Html.DisplayFor(modelItem => item.userName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.permission)
         </td>
-        <td>
+        <td class="description">
             @Html.DisplayFor(modelItem => item.company)
         </td>
-        <td>
+        <td class="description">
             @Html.DisplayFor(modelItem => item.department)
         </td>
         <td>
             @Html.Action("getTimesheetStatus", "User", new { userName = item.userName, refDate = DateTime.Now })
         </td>
-        <td>
+        <td class="options">
             @Html.ActionLink("Approve/Reject Timesheet", "approveTimesheet", new { userKeyID = item.ID, tsDate = DateTime.Now })
         </td>
     </tr>

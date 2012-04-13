@@ -22,23 +22,25 @@
 
 <table class="timesheet">
     <tr>
-        <th>
+        <th class="workEffort">
             Description
         </th>
-        <th>
+        <th class="workEffort">
             PcaCode(s)
         </th>
-        <th>
+        <th class="workEffort">
             EarningsCode
         </th>
-        <th>
+        <th class="workEffort">
             StartDate
         </th>
-        <th>
+        <th class="workEffort">
             EndDate
         </th>
-        <th>
+        <th class="workEffort">
             Hidden
+        </th>
+        <th class="options">
         </th>
     </tr>
 
@@ -49,7 +51,7 @@
         {
             count++;
             <tr>
-                <td>
+                <td class="description">
                     @Html.DisplayFor(modelItem => item.description)
                 </td>
                 <td>
@@ -68,7 +70,7 @@
                     @Html.DisplayFor(modelItem => item.hidden)
                 </td>
 
-                <td>
+                <td class="options">
                     @Html.ActionLink("Edit", "editWorkEffort", new { id=item.ID }) |
                     @Html.ActionLink("Delete", "deleteWorkEffort", new { id=item.ID }) |
                     @if (item.hidden == true)

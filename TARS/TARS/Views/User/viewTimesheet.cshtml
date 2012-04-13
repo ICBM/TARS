@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TARS.Models.Hours>
+﻿@model IEnumerable<TARS.Models.TimesheetRow>
 
 @{
     ViewBag.Title = "viewTimesheet";
@@ -27,94 +27,189 @@
     }
 </h3>
 
-
-<div id="menu" style="float:right;">
-    <h4>Actions</h4>
-    @if (ViewBag.timesheet.locked == false)
-    {       
-        if (ViewBag.timesheet.approved == false)
-        {
-            <p>@Html.ActionLink("Add New Hours", "addHours")</p> 
-            if (ViewBag.timesheet.submitted == false)
-            {
-                <p>@Html.ActionLink("Copy Previous Timesheet", "copyTimesheet")</p>
-                <p>@Html.ActionLink("Submit Timesheet", "submitTimesheet", new { id = (int)ViewBag.timesheet.ID })</p>
-            }
-        }
-    }
-    
-    @if (ViewBag.noPreviousTimesheet != true)
-    {
-        <p>@Html.ActionLink("View Previous Timesheet", "viewTimesheet",
-                            new { tsDate = (DateTime)ViewBag.timesheet.periodStart.AddDays(-1) }, null)</p>
-    }
-    <!-- If the user isn't viewing their current timesheet -->
-    @if ( (DateTime.Now < ViewBag.timesheet.periodStart)||(DateTime.Now > ViewBag.timesheet.periodEnd) )
-    {
-        <p>@Html.ActionLink("Back to Current Timesheet", "viewTimesheet", new { tsDate = DateTime.Now }, null)</p>
-    }
-    
-</div>
-
-
-<div id="content" style="float:left;">
 @if (this.User.Identity.Name.Trim().Length == 0)
 {
     <h3><i>(Not Logged In)</i></h3>
 }
 
-<table class="timesheet">
-    <tr>
-        <th>
-            WorkEffort
-        </th>
-        <th>
-            WorkType            
-        </th>
-        <th>
-            Hours
-        </th>
-        <th>
-            Date
-        </th>
-        <th>
-            Creator
-        </th>
-        <th></th>
-    </tr>
-
-@if (Model != null)
-{
-    foreach (var item in Model)
+<div id="content" style="float:left;">
+    @if (ViewBag.timesheet.locked == false)
+    {       
+        if (ViewBag.timesheet.approved == false)
+        {
+            @Html.ActionLink("Add New Hours", "addHours") 
+            if (ViewBag.timesheet.submitted == true)
+            {
+                <html> | </html>
+            }
+            if (ViewBag.timesheet.submitted == false)
+            {
+                <html> | </html>
+                @Html.ActionLink("Submit Timesheet", "submitTimesheet", new { id = (int)ViewBag.timesheet.ID })
+                <html> | </html>
+                @Html.ActionLink("Copy Previous Timesheet", "copyTimesheet")
+                <html> | </html>
+            }
+        }
+    }    
+    @if (ViewBag.noPreviousTimesheet != true)
     {
-    <tr>
-        <td>
-            @Html.Action("getWeDescription", "User", new { id = item.workEffortID })
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.hours)
-        </td>
-        <td>
-            @item.timestamp.ToShortDateString()
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.creator)
-        </td>
-
-       @if ((ViewBag.timesheet.approved == false) && (ViewBag.timesheet.locked == false))
-       {
-            <td>
-                @Html.ActionLink("Edit", "editHours", new { id = item.ID }) |
-                @Html.ActionLink("Delete", "deleteHours", new { id = item.ID })
-            </td>
-       }
-    </tr>
+        @Html.ActionLink("View Previous Timesheet", "viewTimesheet",
+                            new { tsDate = (DateTime)ViewBag.timesheet.periodStart.AddDays(-1) }, null)
     }
-}
-</table>
+    <!-- If the user isn't viewing their current timesheet -->
+    @if ((DateTime.Now < ViewBag.timesheet.periodStart) || (DateTime.Now > ViewBag.timesheet.periodEnd))
+    {
+        if (ViewBag.noPreviousTimesheet != true)
+        {
+            <html> | </html>
+        }
+        @Html.ActionLink("Back to Current Timesheet", "viewTimesheet", new { tsDate = DateTime.Now }, null)
+    }   
+    <br /><br />
 
 
+    <table class="timesheet">
+        <tr>
+            <th>
+                WorkEffort
+            </th>
+            <th>
+                WorkType            
+            </th>
+            <th>
+                SUN
+            </th>
+            <th>
+                MON
+            </th>
+            <th>
+                TUE
+            </th>
+            <th>
+                WED
+            </th>
+            <th>
+                THU
+            </th>
+            <th>
+                FRI
+            </th>
+            <th>
+                SAT
+            </th>
+            <th>
+                TOTALS
+            </th>
+        </tr>
+
+        @{double combinedTotal = 0;}  <!-- this is for displaying the total hours for the week -->
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+            <tr>
+                <td class="description">
+                    @Html.HiddenFor(modelItem => item.workeffort)
+                    @Html.DisplayFor(modelItem => item.workeffort)
+                </td>
+                <td class="description">
+                    @Html.HiddenFor(modelItem => item.worktype)
+                    @Html.DisplayFor(modelItem => item.worktype)
+                </td>
+                <td class="days">
+                    @Html.TextBoxFor(modelItem => item.sunHours, new { @class = "hoursEditor" })
+                </td>
+                <td class="days">
+                    @Html.TextBoxFor(modelItem => item.monHours, new { @class = "hoursEditor" })
+                </td>
+                <td class="days">
+                    @Html.TextBoxFor(modelItem => item.tueHours, new { @class = "hoursEditor" })
+                </td>
+                <td class="days">
+                    @Html.TextBoxFor(modelItem => item.wedHours, new { @class = "hoursEditor" })
+                </td>
+                <td class="days">
+                    @Html.TextBoxFor(modelItem => item.thuHours, new { @class = "hoursEditor" })
+                </td>
+                <td class="days">
+                    @Html.TextBoxFor(modelItem => item.friHours, new { @class = "hoursEditor" })
+                </td>
+                <td class="days">
+                    @Html.TextBoxFor(modelItem => item.satHours, new { @class = "hoursEditor" })
+                </td>
+                <td class="days">
+                    <!-- Add up total hours. It's only for display purposes here -->
+                    @{double total = item.sunHours + item.monHours + item.tueHours + item.wedHours +
+                                    item.thuHours + item.friHours + item.satHours;
+                      combinedTotal += total;
+                    }
+                    @total
+                </td>
+            </tr>
+            }
+        }   
+        @if ((ViewBag.timesheet.approved != true) && (ViewBag.timesheet.locked != true))
+        {    
+            <tr>
+                <!-- Display a dropdown list to add a work effort -->
+                <td>
+                    @Html.DropDownList("workEffortID", (List<SelectListItem>)ViewBag.workEffortList, "--- Add a Work Effort ---")
+                </td>
+                <!-- Display a dropdown list to add a work type -->
+                <td>
+                    @Html.DropDownList("workType", Enumerable.Empty<SelectListItem>(), "--- Work Type ---")
+                </td>
+                <td class="empty"></td>
+                <td class="empty"></td>
+                <td class="empty"></td>
+                <td class="empty"></td>
+                <td class="empty"></td>
+                <td class="empty"></td>
+                <td class="empty"></td>
+                <td class="weekTotal">@combinedTotal</td>
+            </tr>
+        }
+    </table>
 </div>
+
+
+<!-- Populates Work Type dropdown according to Work Effort that was selected -->
+<script type="text/javascript">
+    $('#workEffortID').change(function () {
+        var selectedWorkEffort = $(this).val();
+        $.getJSON('@Url.Action("jsonWorkTypeSelectList")', { weID: selectedWorkEffort }, function (worktypes) {
+            var workTypeSelect = $('#workType');
+            workTypeSelect.empty();
+            $.each(worktypes, function (index, wType) {
+                workTypeSelect.append($('<option/>', {
+                    value: wType.value,
+                    text: wType.text
+                }));
+            });
+        });
+    });
+</script>
+
+
+<!-- Adds the specified Work Effort and Work Type to the user's timesheet when they click on a Work Type -->
+<script type="text/javascript">
+    $('#workType').change(function () {
+        var selectedWorkType = $(this).val();
+        $.ajax({
+            url: '@Url.Action("addHours")',
+            type: "POST",
+            data:
+			{
+			    workEffortID: $('#workEffortID').val(),
+			    hours: 0,
+			    timestamp: '@ViewBag.timesheet.periodStart.AddDays(4)',
+			    description: selectedWorkType,
+			    creator: '@ViewBag.timesheet.worker'
+			},
+            success: function (msg) {
+                location.reload();
+            }
+        });
+    });
+</script>

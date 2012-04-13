@@ -15,7 +15,6 @@ namespace TARS.Controllers
     public class UserController : Controller
     {
         protected WorkEffortDBContext WorkEffortDB = new WorkEffortDBContext();
-        protected WorkTypeDBContext WorkTypeDB = new WorkTypeDBContext();
         protected HoursDBContext HoursDB = new HoursDBContext();
         protected TimesheetDBContext TimesheetDB = new TimesheetDBContext();
         protected TARSUserDBContext TARSUserDB = new TARSUserDBContext();
@@ -422,17 +421,113 @@ namespace TARS.Controllers
                     ViewBag.noPreviousTimesheet = true;
                 }
                 //select all hours from the timesheet
-                var searchHours = from m in HoursDB.HoursList
+                var hoursList = from m in HoursDB.HoursList
                                     where (m.creator.CompareTo(userName) == 0)
                                     where m.timestamp >= timesheet.periodStart
                                     where m.timestamp <= timesheet.periodEnd
                                     select m;
-                return View(searchHours);
+                TempData["hoursList"] = hoursList;
+
+                //convert hoursList into a format that the view can use
+                List<TimesheetRow> tsRows = convertHoursForTimesheetView();
+                ViewBag.workEffortList = getVisibleWorkEffortSelectList(getUserDivision());
+                return View(tsRows);
             }
             else
             {
                 return View("notLoggedOn");
             }           
+        }
+
+
+        //
+        //
+        //Returns list of objects that each contain hours for Sun-Sat for each workEffort/workType pairing
+        public List<TimesheetRow> convertHoursForTimesheetView()
+        {
+            string effortDescription = "";
+            IEnumerable<Hours> hoursList = (IEnumerable<Hours>)TempData["hoursList"];
+            List<string> workEffortList = new List<string>();
+            List<string> workTypeList = new List<string>();
+            List<string> effortTypeConcat = new List<string>();
+            List<TimesheetRow> tsRowList = new List<TimesheetRow>();
+            //create a list of workEffort/workType pairings for the pay period
+            foreach (var item in hoursList)
+            {
+                effortDescription = getWeDescription(item.workEffortID);
+                workEffortList.Add(effortDescription);
+                workTypeList.Add(item.description);
+                effortTypeConcat.Add(effortDescription + "::::" + item.description);
+            }
+            //remove duplicates from the list
+            effortTypeConcat = effortTypeConcat.Distinct().ToList();
+
+            //for each unique workEffort/workType pairing
+            foreach (var effortAndType in effortTypeConcat)
+            {
+                TimesheetRow tmpTsRow = new TimesheetRow();
+
+                /* save the work effort description and type, then remove from the front of the list.
+                 * In the process, any duplicate pairs are ignored and removed by comparing to effortTypeConcat
+                 */
+                for (int count = 0; count < 100; count++)
+                {
+                    if ((effortAndType.Contains(workEffortList.First())) &&
+                         (effortAndType.Contains(workTypeList.First())))
+                    {
+                        tmpTsRow.workeffort = workEffortList.First();
+                        tmpTsRow.worktype = workTypeList.First();
+                        workEffortList.RemoveAt(0);
+                        workTypeList.RemoveAt(0);
+                        break;
+                    }
+                    else
+                    {
+                        workEffortList.RemoveAt(0);
+                        workTypeList.RemoveAt(0);
+                    }
+               
+                }
+
+                //for each hours entry in the pay period
+                foreach (var tmpVal in hoursList)
+                {
+                    effortDescription = getWeDescription(tmpVal.workEffortID);
+                    //if the hours entry belongs to the unique workEffort/workType pairing
+                    if ((effortAndType.CompareTo(effortDescription + "::::" + tmpVal.description) == 0))
+                    {
+                        switch (tmpVal.timestamp.DayOfWeek.ToString())
+                        {
+                            case ("Sunday"):
+                                tmpTsRow.sunHours = tmpVal.hours;
+                                break;
+                            case ("Monday"):
+                                tmpTsRow.monHours = tmpVal.hours;
+                                break;
+                            case ("Tuesday"):
+                                tmpTsRow.tueHours = tmpVal.hours;
+                                break;
+                            case ("Wednesday"):
+                                tmpTsRow.wedHours = tmpVal.hours;
+                                break;
+                            case ("Thursday"):
+                                tmpTsRow.thuHours = tmpVal.hours;
+                                break;
+                            case ("Friday"):
+                                tmpTsRow.friHours = tmpVal.hours;
+                                break;
+                            case ("Saturday"):
+                                tmpTsRow.satHours = tmpVal.hours;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+                //Add the TimesheetRow so it will be displayed in viewTimesheet View
+                tsRowList.Add(tmpTsRow);
+            }
+            return tsRowList;
         }
 
 
@@ -458,7 +553,7 @@ namespace TARS.Controllers
                                     " - " + ts.periodEnd.ToShortDateString() + " has successfully been submitted.";
                     SendEmail(ts.worker, "Timesheet Submitted", body);
 
-                    return RedirectToAction("viewTimesheet", new { tsDate = ts.periodStart });
+                    return RedirectToAction("viewTimesheet", new { tsDate = ts.periodStart.AddDays(2) });
                 }
                 else
                 {
@@ -564,15 +659,26 @@ namespace TARS.Controllers
         public virtual List<SelectListItem> getEarningsCodeSelectList()
         {
             List<SelectListItem> earnCodesList = new List<SelectListItem>();
+
+            //There are multiple ACT work types, so just add it once
+            earnCodesList.Add(new SelectListItem
+            {
+                Text = "ACT",
+                Value = "ACT"
+            });
             var searchEarnCodes = from m in EarningsCodesDB.EarningsCodesList
                                     select m;
             foreach (var item in searchEarnCodes)
             {
-                earnCodesList.Add(new SelectListItem
+                //ACT has already been added
+                if ((item.earningsCode.CompareTo("ACT") != 0))
                 {
-                    Text = item.earningsCode.ToString(),
-                    Value = item.earningsCode.ToString()
-                });                    
+                    earnCodesList.Add(new SelectListItem
+                    {
+                        Text = item.earningsCode.ToString(),
+                        Value = item.earningsCode.ToString()
+                    });                    
+                }
             }
             return earnCodesList;
         }
@@ -603,7 +709,7 @@ namespace TARS.Controllers
                                   select m;
             foreach (var item in searchEarnCodes)
             {
-                workTypesList.Add(item.description);
+                workTypesList.Add(item.earningsCode + " " + item.description);
             }
             return workTypesList;
         }

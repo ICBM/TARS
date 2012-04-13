@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TARS.Models.Hours>
+﻿@model IEnumerable<TARS.Models.TimesheetRow>
 
 @{
     ViewBag.Title = "approveTimesheet";
@@ -18,74 +18,102 @@ else
 }
 </h2>
 
+<h3>Employee: @ViewBag.timesheet.worker</h3>
 
-<div id="menu" style="float:right;">
-<h4><b></b>Actions</b></h4>    
+
+<div id="menu" style="float:right;">    
     @if (ViewBag.timesheet.locked == false)
     {
         if (ViewBag.timesheet.approved == true)
         {
-            <p>@Html.ActionLink("Undo Approved Status", "submitRejectTimesheet/", new { id = (int)ViewBag.timesheet.ID })</p>
+            @Html.ActionLink("Undo Approved Status", "submitRejectTimesheet", new { id = (int)ViewBag.timesheet.ID })
+            <html> | </html>
         }
         else
         {
-            <p>@Html.ActionLink("Approve", "submitApproveTimesheet/", new { id = (int)ViewBag.timesheet.ID })</p>
-            <p>@Html.ActionLink("Reject", "submitRejectTimesheet/", new { id = (int)ViewBag.timesheet.ID })</p>
+            @Html.ActionLink("Approve", "submitApproveTimesheet", new { id = (int)ViewBag.timesheet.ID })
+            <html> | </html>
+            @Html.ActionLink("Reject", "submitRejectTimesheet", new { id = (int)ViewBag.timesheet.ID })
+            <html> | </html>
         }
     }
-    
-    <p>@Html.ActionLink("Back to Employee List", "userManagement/")</p>
+    @Html.ActionLink("Back to Employee List", "userManagement") 
 </div>
+<br /><br /><br />
 
-
-<h3>Hours list for @ViewBag.timesheet.worker</h3>
 <table class="timesheet">
     <tr>
         <th>
             WorkEffort
         </th>
         <th>
-            WorkType
+            WorkType            
         </th>
         <th>
-            Hours
+            SUN
         </th>
         <th>
-            Timestamp
+            MON
         </th>
         <th>
-            Creator
+            TUE
         </th>
-        <th></th>
+        <th>
+            WED
+        </th>
+        <th>
+            THU
+        </th>
+        <th>
+            FRI
+        </th>
+        <th>
+            SAT
+        </th>
+        <th>
+            TOTALS
+        </th>
     </tr>
-
-@if (Model != null)
-{
-    foreach (var item in Model)
+    @if (Model != null)
     {
-    <tr>
-        <td>
-            @Html.Action("getWeDescription", "User", new{ id = item.workEffortID })
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.hours)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.timestamp)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.creator)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "managerEditHours", new { hrsID = item.ID, tsID = (int)ViewBag.timesheet.ID }) |
-            @Html.ActionLink("Delete", "managerDeleteHours", new { hrsID = item.ID, tsID = (int)ViewBag.timesheet.ID })
-        </td>
-    </tr>
-    }
-}
+        foreach (var item in Model)
+        {
+        <tr>
+            <td class="description">
+                @Html.HiddenFor(modelItem => item.workeffort)
+                @Html.DisplayFor(modelItem => item.workeffort)
+            </td>
+            <td class="description">
+                @Html.HiddenFor(modelItem => item.worktype)
+                @Html.DisplayFor(modelItem => item.worktype)
+            </td>
+            <td class="days">
+                @Html.TextBoxFor(modelItem => item.sunHours, new { @class = "hoursEditor" })
+            </td>
+            <td class="days">
+                @Html.TextBoxFor(modelItem => item.monHours, new { @class = "hoursEditor" })
+            </td>
+            <td class="days">
+                @Html.TextBoxFor(modelItem => item.tueHours, new { @class = "hoursEditor" })
+            </td>
+            <td class="days">
+                @Html.TextBoxFor(modelItem => item.wedHours, new { @class = "hoursEditor" })
+            </td>
+            <td class="days">
+                @Html.TextBoxFor(modelItem => item.thuHours, new { @class = "hoursEditor" })
+            </td>
+            <td class="days">
+                @Html.TextBoxFor(modelItem => item.friHours, new { @class = "hoursEditor" })
+            </td>
+            <td class="days">
+                @Html.TextBoxFor(modelItem => item.satHours, new { @class = "hoursEditor" })
+            </td>
+            <td class="days">
+                ---
+            </td>
+        </tr>
+        }
+    }  
 </table>
 
 
