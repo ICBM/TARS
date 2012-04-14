@@ -74,6 +74,8 @@ else
             TOTALS
         </th>
     </tr>
+
+    @{double combinedTotal = 0;}  <!-- this is for displaying the total hours for the week -->
     @if (Model != null)
     {
         foreach (var item in Model)
@@ -109,7 +111,12 @@ else
                 @Html.TextBoxFor(modelItem => item.satHours, new { @class = "hoursEditor" })
             </td>
             <td class="days">
-                ---
+                <!-- Add up total hours. It's only for display purposes here -->
+                @{double total = item.sunHours + item.monHours + item.tueHours + item.wedHours +
+                                item.thuHours + item.friHours + item.satHours;
+                    combinedTotal += total;
+                }
+                @total
             </td>
         </tr>
         }

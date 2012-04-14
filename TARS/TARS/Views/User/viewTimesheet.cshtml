@@ -103,50 +103,89 @@
             </th>
         </tr>
 
-        @{double combinedTotal = 0;}  <!-- this is for displaying the total hours for the week -->
+        @{double combinedTotal = 0;}  <!-- for displaying the total hours for the week -->
         @if (Model != null)
         {
             foreach (var item in Model)
-            {
-            <tr>
-                <td class="description">
-                    @Html.HiddenFor(modelItem => item.workeffort)
-                    @Html.DisplayFor(modelItem => item.workeffort)
-                </td>
-                <td class="description">
-                    @Html.HiddenFor(modelItem => item.worktype)
-                    @Html.DisplayFor(modelItem => item.worktype)
-                </td>
-                <td class="days">
-                    @Html.TextBoxFor(modelItem => item.sunHours, new { @class = "hoursEditor" })
-                </td>
-                <td class="days">
-                    @Html.TextBoxFor(modelItem => item.monHours, new { @class = "hoursEditor" })
-                </td>
-                <td class="days">
-                    @Html.TextBoxFor(modelItem => item.tueHours, new { @class = "hoursEditor" })
-                </td>
-                <td class="days">
-                    @Html.TextBoxFor(modelItem => item.wedHours, new { @class = "hoursEditor" })
-                </td>
-                <td class="days">
-                    @Html.TextBoxFor(modelItem => item.thuHours, new { @class = "hoursEditor" })
-                </td>
-                <td class="days">
-                    @Html.TextBoxFor(modelItem => item.friHours, new { @class = "hoursEditor" })
-                </td>
-                <td class="days">
-                    @Html.TextBoxFor(modelItem => item.satHours, new { @class = "hoursEditor" })
-                </td>
-                <td class="days">
-                    <!-- Add up total hours. It's only for display purposes here -->
-                    @{double total = item.sunHours + item.monHours + item.tueHours + item.wedHours +
-                                    item.thuHours + item.friHours + item.satHours;
-                      combinedTotal += total;
-                    }
-                    @total
-                </td>
-            </tr>
+            {            
+                double total = 0;    <!-- for displaying hours on a workEffort/workType for the week -->     
+                <tr>
+                    <td class="description">
+                        @Html.HiddenFor(modelItem => item.workeffort)
+                        @Html.DisplayFor(modelItem => item.workeffort)
+                    </td>
+                    <td class="description">
+                        @Html.HiddenFor(modelItem => item.worktype)
+                        @Html.DisplayFor(modelItem => item.worktype)
+                    </td>
+                    <td class="days">
+                        @if (item.sunHours != null){
+                            total += item.sunHours.hours; 
+                            @item.sunHours.hours
+                        }
+                        else{
+                            <html> 0 </html>
+                        }
+                    </td>
+                    <td class="days">
+                        @if (item.monHours != null){
+                            total += item.monHours.hours; 
+                            @item.monHours.hours
+                        }
+                        else{
+                            <html> 0 </html>
+                        }
+                    </td>
+                    <td class="days">
+                        @if (item.tueHours != null){
+                            total += item.tueHours.hours; 
+                            @item.tueHours.hours
+                        }
+                        else{
+                            <html> 0 </html>
+                        }
+                    </td>
+                    <td class="days">
+                        @if (item.wedHours != null){
+                            total += item.wedHours.hours; 
+                            @item.wedHours.hours
+                        }
+                        else{
+                            <html> 0 </html>
+                        }
+                    </td>
+                    <td class="days">
+                        @if (item.thuHours != null){
+                            total += item.thuHours.hours; 
+                            @item.thuHours.hours
+                        }
+                        else{
+                            <html> 0 </html>
+                        }
+                    </td>
+                    <td class="days">
+                        @if (item.friHours != null){
+                            total += item.friHours.hours; 
+                            @item.friHours.hours
+                        }
+                        else{
+                            <html> 0 </html>
+                        }
+                    </td>
+                    <td class="days">
+                        @if (item.satHours != null){
+                            total += item.satHours.hours; 
+                            @item.satHours.hours
+                        }
+                        else{
+                            <html> 0 </html>
+                        }
+                    </td>
+                    <td class="days">
+                        @{combinedTotal += total;}
+                        @total
+                    </td>
+                </tr>
             }
         }   
         @if ((ViewBag.timesheet.approved != true) && (ViewBag.timesheet.locked != true))

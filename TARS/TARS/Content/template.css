@@ -68,8 +68,8 @@ table.timesheet th
 {
     padding: 5px;
     width: 50px;
-    background-color: #87CEEB;
-    border: 1px solid #87CEEB; 
+    background-color: #1E90FF;
+    border: 1px solid #1E90FF; 
     color: Black;
 }
 
@@ -77,7 +77,8 @@ table.timesheet th.workEffort
 {
     padding: 5px;
     width: 90px;
-    background-color: #87CEEB; 
+    text-align: center;
+    background-color: #1E90FF; 
     color: Black;
 }
 
@@ -85,7 +86,8 @@ table.timesheet th.pca
 {
     padding: 5px;
     width: 90px;
-    background-color: #87CEEB; 
+    text-align: center;    
+    background-color: #1E90FF; 
     color: Black;
 }
 

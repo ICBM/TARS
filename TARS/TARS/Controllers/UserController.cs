@@ -499,25 +499,25 @@ namespace TARS.Controllers
                         switch (tmpVal.timestamp.DayOfWeek.ToString())
                         {
                             case ("Sunday"):
-                                tmpTsRow.sunHours = tmpVal.hours;
+                                tmpTsRow.sunHours = tmpVal;
                                 break;
                             case ("Monday"):
-                                tmpTsRow.monHours = tmpVal.hours;
+                                tmpTsRow.monHours = tmpVal;
                                 break;
                             case ("Tuesday"):
-                                tmpTsRow.tueHours = tmpVal.hours;
+                                tmpTsRow.tueHours = tmpVal;
                                 break;
                             case ("Wednesday"):
-                                tmpTsRow.wedHours = tmpVal.hours;
+                                tmpTsRow.wedHours = tmpVal;
                                 break;
                             case ("Thursday"):
-                                tmpTsRow.thuHours = tmpVal.hours;
+                                tmpTsRow.thuHours = tmpVal;
                                 break;
                             case ("Friday"):
-                                tmpTsRow.friHours = tmpVal.hours;
+                                tmpTsRow.friHours = tmpVal;
                                 break;
                             case ("Saturday"):
-                                tmpTsRow.satHours = tmpVal.hours;
+                                tmpTsRow.satHours = tmpVal;
                                 break;
                             default:
                                 break;
