@@ -43,7 +43,7 @@ namespace TARS.Controllers
         //
         // GET: /User/addHours
         //Adds hours to a work effort
-        public virtual ActionResult addHours()
+        public virtual ActionResult addHours(string date=null, string we=null, string wType=null)
         {
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
@@ -52,9 +52,17 @@ namespace TARS.Controllers
                 bool adminFlag = newAuth.isAdmin(this);
                 ViewBag.adminFlag = adminFlag;
                 string division = getUserDivision();
-                ViewBag.division = division;
                 ViewBag.workEffortList = getVisibleWorkEffortSelectList(division);
-                ViewBag.userName = User.Identity.Name;
+
+                if (Request.IsAjaxRequest())
+                {
+                    Hours newHours = new Hours();
+                    //newHours.timestamp = DateTime.Parse(date);
+                    //newHours.workEffortID = getWeIdFromDescription(we);
+                    //newHours.description = wType;
+
+                    return PartialView("_addHoursPartial");
+                }
                 return View();
             }
             else
@@ -264,7 +272,7 @@ namespace TARS.Controllers
         // 
         // GET: /User/editHours
         //  - Edits a specified Hours entry for the logged in user
-        public virtual ActionResult editHours(int id)
+        public virtual ActionResult editHours(int id = 0)
         {
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
@@ -275,9 +283,13 @@ namespace TARS.Controllers
                 Authentication newAuth = new Authentication();
                 bool adminFlag = newAuth.isAdmin(this);
                 ViewBag.adminFlag = adminFlag;
-                ViewBag.userName = User.Identity.Name;
                 ViewBag.workEffort = we;
                 ViewBag.workTypeList = getEarnCodeWorkTypeList(we.earningsCode);
+
+                if (Request.IsAjaxRequest())
+                {
+                    return PartialView("_editHoursPartial", hours);
+                }
                 return View(hours);
             }
             else
@@ -472,8 +484,8 @@ namespace TARS.Controllers
                  */
                 for (int count = 0; count < 100; count++)
                 {
-                    if ((effortAndType.Contains(workEffortList.First())) &&
-                         (effortAndType.Contains(workTypeList.First())))
+                    if ( (effortAndType.Contains(workEffortList.FirstOrDefault())) &&
+                         (effortAndType.Contains(workTypeList.FirstOrDefault())) )
                     {
                         tmpTsRow.workeffort = workEffortList.First();
                         tmpTsRow.worktype = workTypeList.First();
@@ -762,15 +774,35 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
-                var searchWorkEfforts = from m in WorkEffortDB.WorkEffortList
-                                        where m.ID == id
-                                        select m;
+                var searchWorkEfforts = from w in WorkEffortDB.WorkEffortList
+                                        where w.ID == id
+                                        select w;
                 string weDescription = searchWorkEfforts.First().description;
                 return weDescription;
             }
             else
             {
                 return null;
+            }
+        }
+
+
+        // 
+        //Returns the unique ID of the specified work effort
+        public virtual int getWeIdFromDescription(string description)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+            {
+                var searchWorkEfforts = from w in WorkEffortDB.WorkEffortList
+                                        where (w.description.CompareTo(description) == 0)
+                                        select w;
+                int id = searchWorkEfforts.First().ID;
+                return id;
+            }
+            else
+            {
+                return 0;
             }
         }
 
@@ -920,5 +952,10 @@ string toAddress = "zeke_long@hotmail.com";
             }
         }
 
+
+        public ActionResult modalTest()
+        {
+            return View();
+        }
     }
 }

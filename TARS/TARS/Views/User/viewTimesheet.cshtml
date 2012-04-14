@@ -34,7 +34,7 @@
 
 <div id="content" style="float:left;">
     @if (ViewBag.timesheet.locked == false)
-    {       
+    {
         if (ViewBag.timesheet.approved == false)
         {
             @Html.ActionLink("Add New Hours", "addHours") 
@@ -104,10 +104,11 @@
         </tr>
 
         @{double combinedTotal = 0;}  <!-- for displaying the total hours for the week -->
+        @{TARS.Models.Hours hoursObj = new TARS.Models.Hours();}    <!-- Used for jQuery posts -->
         @if (Model != null)
         {
             foreach (var item in Model)
-            {            
+            {
                 double total = 0;    <!-- for displaying hours on a workEffort/workType for the week -->     
                 <tr>
                     <td class="description">
@@ -119,69 +120,99 @@
                         @Html.DisplayFor(modelItem => item.worktype)
                     </td>
                     <td class="days">
-                        @if (item.sunHours != null){
-                            total += item.sunHours.hours; 
+                        @if (item.sunHours != null)
+                        {
+                            total += item.sunHours.hours;
+                            @Html.Hidden("hoursID", item.sunHours.ID)
                             @item.sunHours.hours
                         }
-                        else{
+                        else
+                        {
+                            @Html.Hidden("wEffort", item.workeffort)
+                            @Html.Hidden("wType", item.worktype)
+                            @Html.Hidden("hrsDay", "Sunday")
                             <html> 0 </html>
                         }
                     </td>
                     <td class="days">
                         @if (item.monHours != null){
-                            total += item.monHours.hours; 
+                            total += item.monHours.hours;
+                            @Html.Hidden("hoursID", item.monHours.ID)
                             @item.monHours.hours
                         }
                         else{
+                            @Html.Hidden("wEffort", item.workeffort)
+                            @Html.Hidden("wType", item.worktype)
+                            @Html.Hidden("hrsDay", "Monday")                            
                             <html> 0 </html>
                         }
                     </td>
                     <td class="days">
                         @if (item.tueHours != null){
-                            total += item.tueHours.hours; 
+                            total += item.tueHours.hours;
+                            @Html.Hidden("hoursID", item.tueHours.ID)
                             @item.tueHours.hours
                         }
                         else{
+                            @Html.Hidden("wEffort", item.workeffort)
+                            @Html.Hidden("wType", item.worktype)
+                            @Html.Hidden("hrsDay", "Tuesday")                             
                             <html> 0 </html>
                         }
                     </td>
                     <td class="days">
                         @if (item.wedHours != null){
-                            total += item.wedHours.hours; 
+                            total += item.wedHours.hours;
+                            @Html.Hidden("hoursID", item.wedHours.ID)
                             @item.wedHours.hours
                         }
                         else{
+                            @Html.Hidden("wEffort", item.workeffort)
+                            @Html.Hidden("wType", item.worktype)
+                            @Html.Hidden("hrsDay", "Wednesday")                             
                             <html> 0 </html>
                         }
                     </td>
                     <td class="days">
                         @if (item.thuHours != null){
-                            total += item.thuHours.hours; 
+                            total += item.thuHours.hours;
+                            @Html.Hidden("hoursID", item.thuHours.ID)
                             @item.thuHours.hours
                         }
                         else{
+                            @Html.Hidden("wEffort", item.workeffort)
+                            @Html.Hidden("wType", item.worktype)
+                            @Html.Hidden("hrsDay", "Thursday")                             
                             <html> 0 </html>
                         }
                     </td>
                     <td class="days">
                         @if (item.friHours != null){
-                            total += item.friHours.hours; 
+                            total += item.friHours.hours;
+                            @Html.Hidden("hoursID", item.friHours.ID)
                             @item.friHours.hours
                         }
                         else{
+                            @Html.Hidden("wEffort", item.workeffort)
+                            @Html.Hidden("wType", item.worktype)
+                            @Html.Hidden("hrsDay", "Friday")                             
                             <html> 0 </html>
                         }
                     </td>
                     <td class="days">
                         @if (item.satHours != null){
-                            total += item.satHours.hours; 
+                            total += item.satHours.hours;
+                            @Html.Hidden("hoursID", item.satHours.ID)
                             @item.satHours.hours
                         }
                         else{
+                            @Html.Hidden("wEffort", item.workeffort)
+                            @Html.Hidden("wType", item.worktype)
+                            @Html.Hidden("hrsDay", "Saturday")                             
                             <html> 0 </html>
                         }
                     </td>
-                    <td class="days">
+                    <td>
                         @{combinedTotal += total;}
                         @total
                     </td>
@@ -251,4 +282,116 @@
             }
         });
     });
+</script>
+
+
+<!-- Modal popup for adding/editing hours for day cell that is clicked on -->
+<script type="text/javascript">
+$(document).ready(function () {
+    $("td.days").each(function () {
+        $(this).mouseover(function () {
+            $(this).css("background-color", "#D3D3D3");
+        });
+        $(this).mouseout(function () {
+            $(this).css("background-color", "white");
+        });
+
+        //display the dialog box if a day cell is clicked
+        $(this).click(function () {
+            var hoursId = $(this).find('#hoursID').val();
+
+            if (hoursId > 0) {
+                var link = '@Url.Action("editHours", "User", new { id = "-1" })';
+                link = link.replace("-1", hoursId);
+                //get the html from _editHoursPartial and use it in the popup
+                $.get(link, function (result) {
+                    modal.open({ content: result });
+                });
+            }
+            else {
+                //var hrsDay = $(this).find('#hrsDay').val();
+                //var wEffort = $(this).find('#wEffort').val();
+                //var wType = $(this).find('#wType').val();
+                var link = '@Url.Action("addHours", "User", new { date = "-1", we = "-2", wType = "-3" })';
+                //link = link.replace("-1", hrsDay);
+                //link = link.replace("-2", wEffort);
+                //link = link.replace("-3", wType);
+                //get the html from _addHoursPartial and use it in the popup
+                $.get(link, function (result) {
+                    modal.open({ content: result });
+                });
+            }
+            e.preventDefault();
+        });
+
+        /*******************************************************************
+        **       The rest of this script is for the Modal Popup           **
+        *******************************************************************/
+        var modal = (function () {
+            var method = {},
+            $overlay,
+            $modal,
+            $modalContent,
+            $modalClose;
+
+            // Center the modal in the viewport
+            method.center = function () {
+                var top, left;
+                top = Math.max($(window).height() - $modal.outerHeight(), 0) / 2;
+                left = Math.max($(window).width() - $modal.outerWidth(), 0) / 2;
+                $modal.css({
+                    top: top + $(window).scrollTop(),
+                    left: left + $(window).scrollLeft()
+                });
+            };
+
+            // Open the modal
+            method.open = function (settings) {
+                $modalContent.append(settings.content);
+                $modal.css({
+                    width: settings.width || 'auto',
+                    height: settings.height || 'auto'
+                })
+                method.center();
+                $(window).bind('resize.modal', method.center);
+                $modal.show();
+                $overlay.show();
+            };
+
+            // Close the modal
+            method.close = function () {
+                $modal.hide();
+                $overlay.hide();
+                $modalContent.empty();
+                $(window).unbind('resize.modal');
+            };
+
+            $overlay = $('<div id="overlay"></div>');
+            $modal = $('<div id="modal"></div>');
+            $modalContent = $('<div id="modalContent"></div>');
+            $modalClose = $('<a id="modalClose" href="#">modalClose</a>');
+            $modal.hide();
+            $overlay.hide();
+            $modal.append($modalContent, $modalClose);
+
+            $(document).ready(function () {
+                $('body').append($overlay, $modal);
+            });
+
+            $modalClose.click(function (e) {
+                e.preventDefault();
+                method.close();
+            });
+
+            return method;
+        } ());
+
+        // Wait until the DOM has loaded before querying the document
+        $(document).ready(function () {
+            $.get('ajax.html', function (data) {
+                modal.open({ modalContent: data });
+            });
+        });
+    });
+});
 </script>

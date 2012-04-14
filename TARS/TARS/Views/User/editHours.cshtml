@@ -9,55 +9,8 @@
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 
-@if ( (ViewBag.timesheetLockedFlag == false) || (ViewBag.adminFlag == true) )
-{
-    using (Html.BeginForm())
-    {   
-        @Html.HiddenFor(model => model.ID)
-        @Html.HiddenFor(model => model.creator)
-        
-        @Html.ValidationSummary(true)
-        <fieldset>
-
-            <div><b>Work Effort</b></div>
-            <div>
-                @ViewBag.workEffort.description
-            </div>
-            @Html.HiddenFor(model => model.workEffortID)
-
-            <p>
-            <div class="editor-label"><b>Work Type</b></div>
-            <div class="editor-field">
-                @Html.DropDownListFor(model => model.description, new SelectList(ViewBag.workTypeList, Model))
-            </div>
-            </p>
-
-            <p>
-            <div class="editor-label"><b>Hours Worked</b></div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.hours)
-                @Html.ValidationMessageFor(model => model.hours)
-            </div>
-            </p>
-
-            <p>
-            <div><b>Date</b></div>
-            <div>
-                @Model.timestamp
-            </div>
-            </p>
-            @Html.HiddenFor(model => model.timestamp)
-
-            <p>
-                <input type="submit" value="Save" />
-            </p>
-        </fieldset>
-    }
-}
-else
-{
-    <h3>Timesheet Is Locked</h3>
-}    
+<!-- Render the partial view to populate this view -->
+@Html.Partial("_editHoursPartial")
 
 <div>
     @Html.ActionLink("Back to Timesheet", "viewTimesheet", new { tsDate = @Model.timestamp })

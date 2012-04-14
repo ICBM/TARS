@@ -6,89 +6,9 @@
 
 <h2>Add Hours</h2>
 
-<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
-
-@if ((ViewBag.timesheetLockedFlag != true) || (ViewBag.adminFlag == true))
-{
-    using (Html.BeginForm())
-    {    
-        @Html.ValidationSummary(true)
-        <fieldset>
-            <input name="creator" type="hidden" value="@User.Identity.Name" />
-            <input name="division" type="hidden" value="@ViewBag.division" />
-
-            <p>
-            <div><b>Division</b></div>
-            <div>
-                @ViewBag.division
-            </div>
-            </p>
-
-            <p>
-            <div class="editor-label"><b>Choose Work Effort</b></div>
-            <div class="editor-field">
-                @Html.DropDownListFor(p => p.workEffortID, (List<SelectListItem>)ViewBag.workEffortList, "--Select--")
-            </div>
-            </p>
-
-            <p>
-            <div class="editor-label"><b>Choose Work Type</b></div>
-            <div class="editor-field">
-                @Html.DropDownListFor(p => p.description, Enumerable.Empty<SelectListItem>(), "--Select--")
-            </div>
-            </p>
-
-            <p>
-            <div class="editor-label"><b>Hours Worked</b></div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.hours)
-                @Html.ValidationMessageFor(model => model.hours)
-            </div>
-            </p>
-
-            <p>
-            <div class="editor-label"><b>Date </b>(and optional time)</div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.timestamp)
-                @Html.ValidationMessageFor(model => model.timestamp)
-                @if (ViewBag.notWithinWeBounds == true)
-                {
-                    <html>Not within the work effort's date range: 
-                    <b>@Html.Action("getWeTimeBoundsString", new { id = Model.workEffortID })</b></html>
-                }
-            </div>
-            </p>
-                    
-            <p>
-                <input type="submit" value="Submit" />
-            </p>
-        </fieldset>   
-    }
-}
-else
-{
-    <html><h3>Timesheet for @Model.timestamp.ToShortDateString() Is Locked</h3></html>
-}
+@Html.Partial("_addHoursPartial")
 
 <div>
     @Html.ActionLink("Back to Timesheet", "viewTimesheet", new { tsDate = DateTime.Now })
 </div>
 
-
-<!-- Populate Description dropdown according to Work Effort that was selected -->
-<script type="text/javascript">
-    $('#workEffortID').change(function () {
-        var selectedWorkEffort = $(this).val();
-        $.getJSON('@Url.Action("jsonWorkTypeSelectList")', { weID: selectedWorkEffort }, function (worktypes) {
-            var workTypeSelect = $('#description');
-            workTypeSelect.empty();
-            $.each(worktypes, function (index, wType) {
-                workTypeSelect.append($('<option/>', {
-                    value: wType.value,
-                    text: wType.text
-                }));
-            });
-        });
-    });
-</script>
