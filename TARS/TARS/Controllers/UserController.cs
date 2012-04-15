@@ -57,11 +57,11 @@ namespace TARS.Controllers
                 if (Request.IsAjaxRequest())
                 {
                     Hours newHours = new Hours();
-                    //newHours.timestamp = DateTime.Parse(date);
-                    //newHours.workEffortID = getWeIdFromDescription(we);
-                    //newHours.description = wType;
+                    newHours.timestamp = DateTime.Parse(date);
+                    newHours.workEffortID = getWeIdFromDescription(we);
+                    newHours.description = wType;
 
-                    return PartialView("_addHoursPartial");
+                    return PartialView("_addHoursPartial", newHours);
                 }
                 return View();
             }
@@ -484,21 +484,26 @@ namespace TARS.Controllers
                  */
                 for (int count = 0; count < 100; count++)
                 {
-                    if ( (effortAndType.Contains(workEffortList.FirstOrDefault())) &&
-                         (effortAndType.Contains(workTypeList.FirstOrDefault())) )
+                    try
                     {
-                        tmpTsRow.workeffort = workEffortList.First();
-                        tmpTsRow.worktype = workTypeList.First();
-                        workEffortList.RemoveAt(0);
-                        workTypeList.RemoveAt(0);
-                        break;
+                        if ((effortAndType.Contains(workEffortList.First())) &&
+                             (effortAndType.Contains(workTypeList.First())))
+                        {
+                            tmpTsRow.workeffort = workEffortList.First();
+                            tmpTsRow.worktype = workTypeList.First();
+                            workEffortList.RemoveAt(0);
+                            workTypeList.RemoveAt(0);
+                            break;
+                        }
+                        else
+                        {
+                            workEffortList.RemoveAt(0);
+                            workTypeList.RemoveAt(0);
+                        }
                     }
-                    else
+                    catch
                     {
-                        workEffortList.RemoveAt(0);
-                        workTypeList.RemoveAt(0);
                     }
-               
                 }
 
                 //for each hours entry in the pay period
