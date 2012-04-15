@@ -130,7 +130,7 @@
                         {
                             @Html.Hidden("wEffort", item.workeffort)
                             @Html.Hidden("wType", item.worktype)
-                            @Html.Hidden("hrsDay", (string)ViewBag.timesheet.periodStart.ToString())
+                            @Html.Hidden("hrsDate", (string)ViewBag.timesheet.periodStart.ToString())
                             <html> 0 </html>
                         }
                     </td>
@@ -143,7 +143,7 @@
                         else{
                             @Html.Hidden("wEffort", item.workeffort)
                             @Html.Hidden("wType", item.worktype)
-                            @Html.Hidden("hrsDay", (string)ViewBag.timesheet.periodStart.AddDays(1).ToString())                            
+                            @Html.Hidden("hrsDate", (string)ViewBag.timesheet.periodStart.AddDays(1).ToString())                            
                             <html> 0 </html>
                         }
                     </td>
@@ -156,7 +156,7 @@
                         else{
                             @Html.Hidden("wEffort", item.workeffort)
                             @Html.Hidden("wType", item.worktype)
-                            @Html.Hidden("hrsDay", (string)ViewBag.timesheet.periodStart.AddDays(2).ToString())                             
+                            @Html.Hidden("hrsDate", (string)ViewBag.timesheet.periodStart.AddDays(2).ToString())                             
                             <html> 0 </html>
                         }
                     </td>
@@ -169,7 +169,7 @@
                         else{
                             @Html.Hidden("wEffort", item.workeffort)
                             @Html.Hidden("wType", item.worktype)
-                            @Html.Hidden("hrsDay", (string)ViewBag.timesheet.periodStart.AddDays(3).ToString())                             
+                            @Html.Hidden("hrsDate", (string)ViewBag.timesheet.periodStart.AddDays(3).ToString())                             
                             <html> 0 </html>
                         }
                     </td>
@@ -182,7 +182,7 @@
                         else{
                             @Html.Hidden("wEffort", item.workeffort)
                             @Html.Hidden("wType", item.worktype)
-                            @Html.Hidden("hrsDay", (string)ViewBag.timesheet.periodStart.AddDays(4).ToString())                             
+                            @Html.Hidden("hrsDate", (string)ViewBag.timesheet.periodStart.AddDays(4).ToString())                             
                             <html> 0 </html>
                         }
                     </td>
@@ -195,7 +195,7 @@
                         else{
                             @Html.Hidden("wEffort", item.workeffort)
                             @Html.Hidden("wType", item.worktype)
-                            @Html.Hidden("hrsDay", (string)ViewBag.timesheet.periodStart.AddDays(5).ToString())                             
+                            @Html.Hidden("hrsDate", (string)ViewBag.timesheet.periodStart.AddDays(5).ToString())                             
                             <html> 0 </html>
                         }
                     </td>
@@ -208,7 +208,7 @@
                         else{
                             @Html.Hidden("wEffort", item.workeffort)
                             @Html.Hidden("wType", item.worktype)
-                            @Html.Hidden("hrsDay", (string)ViewBag.timesheet.periodStart.AddDays(6).ToString())                             
+                            @Html.Hidden("hrsDate", (string)ViewBag.timesheet.periodStart.AddDays(6).ToString())                             
                             <html> 0 </html>
                         }
                     </td>
@@ -314,11 +314,11 @@
                 }
                 else {
                     link = '@Url.Action("addHours", "User")';
-                    var hrsDay = $(this).find('#hrsDay').val();
+                    var hrsDate = $(this).find('#hrsDate').val();
                     var wEffort = $(this).find('#wEffort').val();
                     var wType = $(this).find('#wType').val();
                     //get the html from _addHoursPartial and use it in the popup
-                    $.get(link, { we: wEffort, wt: wType, hrsDay: hrsDay}, function (result) {
+                    $.get(link, { we: wEffort, wt: wType, hrsDate: hrsDate}, function (result) {
                         modal.open({ content: result });
                     });
                 }

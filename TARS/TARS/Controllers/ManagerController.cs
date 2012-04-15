@@ -77,8 +77,6 @@ namespace TARS.Controllers
                     ViewBag.emailSentFlag = true;
                     ViewBag.messageRecipient = TempData["recipient"];
                 }
-
-                //if it's a request to view all users in the division
                 if (division == null)
                 {
                     division = getUserDivision();
@@ -457,7 +455,7 @@ namespace TARS.Controllers
 
                 if (timesheet == null)
                 {
-                    createCurrentTimesheet(employee.userName);
+                    createTimesheet(employee.userName, DateTime.Now);
                     ViewBag.timesheet = getTimesheet(employee.userName, DateTime.Now);
                 }
                 else

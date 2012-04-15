@@ -43,7 +43,7 @@ namespace TARS.Controllers
         //
         // GET: /User/addHours
         //Adds hours to a work effort
-        public virtual ActionResult addHours(string hrsDay=null, string we=null, string wt=null)
+        public virtual ActionResult addHours(string hrsDate=null, string we=null, string wt=null)
         {
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
@@ -56,7 +56,7 @@ namespace TARS.Controllers
 
                 if (Request.IsAjaxRequest())
                 {
-                    ViewBag.date = hrsDay;
+                    ViewBag.date = hrsDate;
                     ViewBag.workEffort = we;
                     ViewBag.workType = wt;
                     return PartialView("_addHoursPartial");
@@ -134,10 +134,10 @@ namespace TARS.Controllers
 
                 //Check if there is a timesheet for the week that corresponds to newhours.timestamp
                 var searchTs = from m in TimesheetDB.TimesheetList
-                             where (m.worker.CompareTo(userName) == 0)
-                             where m.periodStart <= tsDate
-                             where m.periodEnd >= tsDate
-                             select m;
+                               where (m.worker.CompareTo(userName) == 0)
+                               where m.periodStart <= tsDate
+                               where m.periodEnd >= tsDate
+                               select m;
                 foreach (var item in searchTs)
                 {
                     resulttimesheet = item;
@@ -147,7 +147,7 @@ namespace TARS.Controllers
                 //If there is a timesheet for the current pay period, don't do anything
                 if (resulttimesheet.periodStart.CompareTo(startDay) != 0)
                 {
-                    createCurrentTimesheet(userName);
+                    createTimesheet(userName, startDay);
                     return;
                 }
                 return;
@@ -161,22 +161,35 @@ namespace TARS.Controllers
 
         //
         //Creates an empty timesheet for the specified user
-        public void createCurrentTimesheet(string userName)
+        public void createTimesheet(string userName, DateTime startDay)
         {
             Timesheet newTimesheet = new Timesheet();
-            DateTime startDay = DateTime.Now.StartOfWeek(DayOfWeek.Sunday);
-            //Set pay period to start on Sunday 12:00am
-            newTimesheet.periodStart = startDay;
-            newTimesheet.periodEnd = startDay.AddDays(6.99999);
-            newTimesheet.worker = userName;
-            newTimesheet.approved = false;
-            newTimesheet.locked = false;
-            newTimesheet.submitted = false;
+            var searchTs = from t in TimesheetDB.TimesheetList
+                           where (t.worker.CompareTo(userName) == 0)
+                           where t.periodStart == startDay
+                           select t;
+            try
+            {
+                //make sure the timesheet doesn't exist already
+                if (searchTs.Count() == 0)
+                {
+                    //Set pay period to start on Sunday 12:00am
+                    newTimesheet.periodStart = startDay;
+                    newTimesheet.periodEnd = startDay.AddDays(6.99999);
+                    newTimesheet.worker = userName;
+                    newTimesheet.approved = false;
+                    newTimesheet.locked = false;
+                    newTimesheet.submitted = false;
 
-            //add timesheet and save to the database
-            TimesheetDB.TimesheetList.Add(newTimesheet);
-            TimesheetDB.Entry(newTimesheet).State = System.Data.EntityState.Added;
-            TimesheetDB.SaveChanges();
+                    //add timesheet and save to the database
+                    TimesheetDB.TimesheetList.Add(newTimesheet);
+                    TimesheetDB.Entry(newTimesheet).State = System.Data.EntityState.Added;
+                    TimesheetDB.SaveChanges();
+                }
+            }
+            catch
+            {
+            }
         }
 
 
