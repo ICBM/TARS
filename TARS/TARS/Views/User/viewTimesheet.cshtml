@@ -130,7 +130,7 @@
                         {
                             @Html.Hidden("wEffort", item.workeffort)
                             @Html.Hidden("wType", item.worktype)
-                            @Html.Hidden("hrsDay", "Sunday")
+                            @Html.Hidden("hrsDay", (string)ViewBag.timesheet.periodStart.ToString())
                             <html> 0 </html>
                         }
                     </td>
@@ -143,7 +143,7 @@
                         else{
                             @Html.Hidden("wEffort", item.workeffort)
                             @Html.Hidden("wType", item.worktype)
-                            @Html.Hidden("hrsDay", "Monday")                            
+                            @Html.Hidden("hrsDay", (string)ViewBag.timesheet.periodStart.AddDays(1).ToString())                            
                             <html> 0 </html>
                         }
                     </td>
@@ -156,7 +156,7 @@
                         else{
                             @Html.Hidden("wEffort", item.workeffort)
                             @Html.Hidden("wType", item.worktype)
-                            @Html.Hidden("hrsDay", "Tuesday")                             
+                            @Html.Hidden("hrsDay", (string)ViewBag.timesheet.periodStart.AddDays(2).ToString())                             
                             <html> 0 </html>
                         }
                     </td>
@@ -169,7 +169,7 @@
                         else{
                             @Html.Hidden("wEffort", item.workeffort)
                             @Html.Hidden("wType", item.worktype)
-                            @Html.Hidden("hrsDay", "Wednesday")                             
+                            @Html.Hidden("hrsDay", (string)ViewBag.timesheet.periodStart.AddDays(3).ToString())                             
                             <html> 0 </html>
                         }
                     </td>
@@ -182,7 +182,7 @@
                         else{
                             @Html.Hidden("wEffort", item.workeffort)
                             @Html.Hidden("wType", item.worktype)
-                            @Html.Hidden("hrsDay", "Thursday")                             
+                            @Html.Hidden("hrsDay", (string)ViewBag.timesheet.periodStart.AddDays(4).ToString())                             
                             <html> 0 </html>
                         }
                     </td>
@@ -195,7 +195,7 @@
                         else{
                             @Html.Hidden("wEffort", item.workeffort)
                             @Html.Hidden("wType", item.worktype)
-                            @Html.Hidden("hrsDay", "Friday")                             
+                            @Html.Hidden("hrsDay", (string)ViewBag.timesheet.periodStart.AddDays(5).ToString())                             
                             <html> 0 </html>
                         }
                     </td>
@@ -208,7 +208,7 @@
                         else{
                             @Html.Hidden("wEffort", item.workeffort)
                             @Html.Hidden("wType", item.worktype)
-                            @Html.Hidden("hrsDay", "Saturday")                             
+                            @Html.Hidden("hrsDay", (string)ViewBag.timesheet.periodStart.AddDays(6).ToString())                             
                             <html> 0 </html>
                         }
                     </td>
@@ -222,7 +222,7 @@
         @if ((ViewBag.timesheet.approved != true) && (ViewBag.timesheet.locked != true))
         {    
             <tr>
-                <!-- Display a dropdown list to add a work effort -->
+                <!-- Display a dropdown list for adding a work effort -->
                 <td>
                     @Html.DropDownList("workEffortID", (List<SelectListItem>)ViewBag.workEffortList, "--- Add a Work Effort ---")
                 </td>
@@ -230,15 +230,18 @@
                 <td>
                     @Html.DropDownList("workType", Enumerable.Empty<SelectListItem>(), "--- Work Type ---")
                 </td>
-                <td class="empty"></td>
-                <td class="empty"></td>
-                <td class="empty"></td>
-                <td class="empty"></td>
-                <td class="empty"></td>
-                <td class="empty"></td>
-                <td class="empty"></td>
-                <td class="weekTotal">@combinedTotal</td>
+                <td class="empty"></td><td class="empty"></td><td class="empty"></td>
+                <td class="empty"></td><td class="empty"></td><td class="empty"></td>
+                <td class="empty"></td><td class="weekTotal">@combinedTotal</td>
             </tr>
+        }
+        else
+        {
+            <tr>
+                <td class="empty"></td><td class="empty"><td class="empty"></td><td class="empty"></td>
+                <td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td>
+                <td class="empty"></td><td class="weekTotal">@combinedTotal</td>
+            </tr>            
         }
     </table>
 </div>
@@ -287,111 +290,109 @@
 
 <!-- Modal popup for adding/editing hours for day cell that is clicked on -->
 <script type="text/javascript">
-$(document).ready(function () {
-    $("td.days").each(function () {
-        $(this).mouseover(function () {
-            $(this).css("background-color", "#D3D3D3");
-        });
-        $(this).mouseout(function () {
-            $(this).css("background-color", "white");
-        });
+    $(document).ready(function () {
+        $("td.days").each(function () {
+            $(this).mouseover(function () {
+                $(this).css("background-color", "#D3D3D3");
+            });
+            $(this).mouseout(function () {
+                $(this).css("background-color", "white");
+            });
 
-        //display the dialog box if a day cell is clicked
-        $(this).click(function () {
-            var hoursId = $(this).find('#hoursID').val();
+            //display the dialog box if a day cell is clicked
+            $(this).click(function () {
+                var hoursId = $(this).find('#hoursID').val();
+                var link = "";
 
-            if (hoursId > 0) {
-                var link = '@Url.Action("editHours", "User", new { id = "-1" })';
-                link = link.replace("-1", hoursId);
-                //get the html from _editHoursPartial and use it in the popup
-                $.get(link, function (result) {
-                    modal.open({ content: result });
-                });
-            }
-            else {
-                //var hrsDay = $(this).find('#hrsDay').val();
-                //var wEffort = $(this).find('#wEffort').val();
-                //var wType = $(this).find('#wType').val();
-                var link = '@Url.Action("addHours", "User", new { date = "-1", we = "-2", wType = "-3" })';
-                //link = link.replace("-1", hrsDay);
-                //link = link.replace("-2", wEffort);
-                //link = link.replace("-3", wType);
-                //get the html from _addHoursPartial and use it in the popup
-                $.get(link, function (result) {
-                    modal.open({ content: result });
-                });
-            }
-            e.preventDefault();
-        });
+                if (hoursId > 0) {
+                    link = '@Url.Action("editHours", "User", new { id = "-1" })';
+                    link = link.replace("-1", hoursId);
+                    //get the html from _editHoursPartial and use it in the popup
+                    $.get(link, function (result) {
+                        modal.open({ content: result });
+                    });
+                }
+                else {
+                    link = '@Url.Action("addHours", "User")';
+                    var hrsDay = $(this).find('#hrsDay').val();
+                    var wEffort = $(this).find('#wEffort').val();
+                    var wType = $(this).find('#wType').val();
+                    //get the html from _addHoursPartial and use it in the popup
+                    $.get(link, { we: wEffort, wt: wType, hrsDay: hrsDay}, function (result) {
+                        modal.open({ content: result });
+                    });
+                }
+                e.preventDefault();
+            });
 
-        /*******************************************************************
-        **       The rest of this script is for the Modal Popup           **
-        *******************************************************************/
-        var modal = (function () {
-            var method = {},
+            /*******************************************************************
+            **       The rest of this script is for the Modal Popup           **
+            *******************************************************************/
+            var modal = (function () {
+                var method = {},
             $overlay,
             $modal,
             $modalContent,
             $modalClose;
 
-            // Center the modal in the viewport
-            method.center = function () {
-                var top, left;
-                top = Math.max($(window).height() - $modal.outerHeight(), 0) / 2;
-                left = Math.max($(window).width() - $modal.outerWidth(), 0) / 2;
-                $modal.css({
-                    top: top + $(window).scrollTop(),
-                    left: left + $(window).scrollLeft()
-                });
-            };
+                // Center the modal in the viewport
+                method.center = function () {
+                    var top, left;
+                    top = Math.max($(window).height() - $modal.outerHeight(), 0) / 2;
+                    left = Math.max($(window).width() - $modal.outerWidth(), 0) / 2;
+                    $modal.css({
+                        top: top + $(window).scrollTop(),
+                        left: left + $(window).scrollLeft()
+                    });
+                };
 
-            // Open the modal
-            method.open = function (settings) {
-                $modalContent.append(settings.content);
-                $modal.css({
-                    width: settings.width || 'auto',
-                    height: settings.height || 'auto'
-                })
-                method.center();
-                $(window).bind('resize.modal', method.center);
-                $modal.show();
-                $overlay.show();
-            };
+                // Open the modal
+                method.open = function (settings) {
+                    $modalContent.append(settings.content);
+                    $modal.css({
+                        width: settings.width || 'auto',
+                        height: settings.height || 'auto'
+                    })
+                    method.center();
+                    $(window).bind('resize.modal', method.center);
+                    $modal.show();
+                    $overlay.show();
+                };
 
-            // Close the modal
-            method.close = function () {
+                // Close the modal
+                method.close = function () {
+                    $modal.hide();
+                    $overlay.hide();
+                    $modalContent.empty();
+                    $(window).unbind('resize.modal');
+                };
+
+                $overlay = $('<div id="overlay"></div>');
+                $modal = $('<div id="modal"></div>');
+                $modalContent = $('<div id="modalContent"></div>');
+                $modalClose = $('<a id="modalClose" href="#">modalClose</a>');
                 $modal.hide();
                 $overlay.hide();
-                $modalContent.empty();
-                $(window).unbind('resize.modal');
-            };
+                $modal.append($modalContent, $modalClose);
 
-            $overlay = $('<div id="overlay"></div>');
-            $modal = $('<div id="modal"></div>');
-            $modalContent = $('<div id="modalContent"></div>');
-            $modalClose = $('<a id="modalClose" href="#">modalClose</a>');
-            $modal.hide();
-            $overlay.hide();
-            $modal.append($modalContent, $modalClose);
+                $(document).ready(function () {
+                    $('body').append($overlay, $modal);
+                });
 
+                $modalClose.click(function (e) {
+                    e.preventDefault();
+                    method.close();
+                });
+
+                return method;
+            } ());
+
+            // Wait until the DOM has loaded before querying the document
             $(document).ready(function () {
-                $('body').append($overlay, $modal);
-            });
-
-            $modalClose.click(function (e) {
-                e.preventDefault();
-                method.close();
-            });
-
-            return method;
-        } ());
-
-        // Wait until the DOM has loaded before querying the document
-        $(document).ready(function () {
-            $.get('ajax.html', function (data) {
-                modal.open({ modalContent: data });
+                $.get('ajax.html', function (data) {
+                    modal.open({ modalContent: data });
+                });
             });
         });
     });
-});
 </script>

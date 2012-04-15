@@ -43,7 +43,7 @@ namespace TARS.Controllers
         //
         // GET: /User/addHours
         //Adds hours to a work effort
-        public virtual ActionResult addHours(string date=null, string we=null, string wType=null)
+        public virtual ActionResult addHours(string hrsDay=null, string we=null, string wt=null)
         {
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
@@ -56,12 +56,10 @@ namespace TARS.Controllers
 
                 if (Request.IsAjaxRequest())
                 {
-                    Hours newHours = new Hours();
-                    newHours.timestamp = DateTime.Parse(date);
-                    newHours.workEffortID = getWeIdFromDescription(we);
-                    newHours.description = wType;
-
-                    return PartialView("_addHoursPartial", newHours);
+                    ViewBag.date = hrsDay;
+                    ViewBag.workEffort = we;
+                    ViewBag.workType = wt;
+                    return PartialView("_addHoursPartial");
                 }
                 return View();
             }
@@ -334,7 +332,7 @@ namespace TARS.Controllers
                 }
                 if (tmpTimesheet.periodEnd < refDate.AddDays(-2))
                 {
-                    //update locked status if end date was more than two days ago
+                    //lock the timesheet if end date was more than two days ago
                     tmpTimesheet.locked = true;
                     TimesheetDB.Entry(tmpTimesheet).State = EntityState.Modified;
                     TimesheetDB.SaveChanges();
@@ -427,6 +425,8 @@ namespace TARS.Controllers
                 Timesheet prevTimesheet = getTimesheet(userName, tsDate.AddDays(-7));
 
                 ViewBag.timesheet = timesheet;
+                //check if timesheet is locked; and if it should be, this method will lock it
+                isTimesheetLocked(userName, tsDate);
                 //The View won't provide a link to previous timesheet unless it exists
                 if (prevTimesheet == null)
                 {

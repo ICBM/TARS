@@ -1,8 +1,5 @@
 ﻿@model TARS.Models.Hours
            
-<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
-
 
 @if ((ViewBag.timesheetLockedFlag != true) || (ViewBag.adminFlag == true))
 {
@@ -12,19 +9,39 @@
         <fieldset>
             <input name="creator" type="hidden" value="@User.Identity.Name" />
 
-            <p>
-            <div class="editor-label"><b>Choose Work Effort</b></div>
-            <div class="editor-field">
-                @Html.DropDownListFor(p => p.workEffortID, (List<SelectListItem>)ViewBag.workEffortList, "--Select--")
-            </div>
-            </p>
+            @if(ViewBag.workEffort != null) {
+                <p>
+                <div class="editor-label"><b>Work Effort</b></div>
+                @ViewBag.workEffort
+                @Html.Hidden("workEffortID", Html.Action("getWeIdFromDescription",  
+                                            new { description = ViewBag.workEffort }))
+                </p>              
+            }
+            else {
+                <p>
+                <div class="editor-label"><b>Choose Work Effort</b></div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(model => model.workEffortID,
+                        (List<SelectListItem>)ViewBag.workEffortList, "--Select--")
+                </div>
+                </p>            
+            }
 
-            <p>
-            <div class="editor-label"><b>Choose Work Type</b></div>
-            <div class="editor-field">
-                @Html.DropDownListFor(p => p.description, Enumerable.Empty<SelectListItem>(), "--Select--")
-            </div>
-            </p>
+            @if (ViewBag.workType != null){
+                <p>
+                <div class="editor-label"><b>Work Type</b></div>
+                @ViewBag.workType
+                @Html.Hidden("description", (string)ViewBag.workType) 
+                </p> 
+            }
+            else{                   
+                <p>
+                <div class="editor-label"><b>Choose Work Type</b></div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(model => model.description, Enumerable.Empty<SelectListItem>(), "--Select--")
+                </div>
+                </p>    
+            }
 
             <p>
             <div class="editor-label"><b>Hours Worked</b></div>
@@ -34,18 +51,26 @@
             </div>
             </p>
 
-            <p>
-            <div class="editor-label"><b>Date</div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.timestamp)
-                @Html.ValidationMessageFor(model => model.timestamp)
-                @if (ViewBag.notWithinWeBounds == true)
-                {
-                    <html>Not within the work effort's date range: 
-                    <b>@Html.Action("getWeTimeBoundsString", new { id = Model.workEffortID })</b></html>
-                }
-            </div>
-            </p>
+            @if (ViewBag.date != null) {
+                <div class="editor-label"><b>Date</b></div>
+                @ViewBag.date
+                @Html.Hidden("timestamp", (string)ViewBag.date)
+            }
+            else
+            {          
+                <p>
+                <div class="editor-label"><b>Date</b></div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.timestamp)
+                    @Html.ValidationMessageFor(model => model.timestamp)
+                    @if (ViewBag.notWithinWeBounds == true)
+                    {
+                        <html>Not within the work effort's date range: 
+                        <b>@Html.Action("getWeTimeBoundsString", new { id = Model.workEffortID })</b></html>
+                    }
+                </div>
+                </p>
+            }
                     
             <p>
                 <input type="submit" value="Submit" />
