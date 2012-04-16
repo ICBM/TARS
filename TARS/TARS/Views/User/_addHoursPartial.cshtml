@@ -72,9 +72,16 @@
                 </p>
             }
                     
+            <!-- if it's a manager adding hours for an employee -->
+            @if (ViewBag.userKeyID != 0)
+            {
+                @Html.Hidden("userKeyID", (int)ViewBag.userKeyID)
+            }
+
             <p>
                 <input type="submit" value="Save" />
             </p>
+
         </fieldset>   
     }
 }

@@ -66,7 +66,7 @@ namespace TARS.Controllers
         //
         //Displays all the employees that work for the specified division
         //If division is null, it displays employees in the same division as the manager
-        public virtual ActionResult userManagement(string division = null)
+        public virtual ActionResult userManagement(DateTime refDate, string division = null)
         {
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
@@ -84,6 +84,8 @@ namespace TARS.Controllers
                 IEnumerable<TARSUser> divEmployees = getDivisionEmployeeList(division);
                 ViewBag.division = division;
                 ViewBag.divisionList = getDivisionSelectList();
+                ViewBag.refDate = refDate;
+                ViewBag.refPayPeriod = getPayPeriod(refDate);
                 return View(divEmployees);
             }
             else
@@ -473,6 +475,8 @@ namespace TARS.Controllers
                 //convert hoursList into a format that the view can use
                 List<TimesheetRow> tsRows = convertHoursForTimesheetView();
                 ViewBag.workEffortList = getVisibleWorkEffortSelectList(getUserDivision());
+                ViewBag.refDate = tsDate;
+                ViewBag.userKeyID = userKeyID;
                 return View(tsRows);
             }
             else
@@ -504,7 +508,7 @@ namespace TARS.Controllers
                                     " - " + ts.periodEnd.ToShortDateString() + " has been approved by a manager.";
                     SendEmail(ts.worker, "Timesheet Approved", body);
 
-                    return RedirectToAction("userManagement");
+                    return RedirectToAction("userManagement", new { refDate = DateTime.Now });
                 }
                 else
                 {
@@ -544,7 +548,7 @@ namespace TARS.Controllers
                     TempData["recipient"] = ts.worker;
                     TempData["emailError"] = TempData["emailError"];
 
-                    return RedirectToAction("userManagement");
+                    return RedirectToAction("userManagement", new { refDate=DateTime.Now });
                 }
                 else
                 {

@@ -43,7 +43,7 @@ namespace TARS.Controllers
         //
         // GET: /User/addHours
         //Adds hours to a work effort
-        public virtual ActionResult addHours(string hrsDate=null, string we=null, string wt=null)
+        public virtual ActionResult addHours(int userKeyID = 0, string hrsDate=null, string we=null, string wt=null)
         {
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
@@ -53,6 +53,7 @@ namespace TARS.Controllers
                 ViewBag.adminFlag = adminFlag;
                 string division = getUserDivision();
                 ViewBag.workEffortList = getVisibleWorkEffortSelectList(division);
+                ViewBag.userKeyID = userKeyID;
 
                 if (Request.IsAjaxRequest())
                 {
@@ -72,9 +73,11 @@ namespace TARS.Controllers
 
         //
         // POST: /User/addHours
-        //Takes filled form and adds it to database
+        /* If userKeyId isn't zero, that means a manager is adding hours for an employee, so
+         * it redirects to Manager/approveTimesheet instead of User/viewTimesheet
+         */
         [HttpPost]
-        public virtual ActionResult addHours(Hours newhours)
+        public virtual ActionResult addHours(Hours newhours, int userKeyId = 0)
         {
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
@@ -106,11 +109,19 @@ namespace TARS.Controllers
 
                     //make sure that a timesheet exists for the period hours are being added to
                     checkForTimesheet(newhours.creator, newhours.timestamp);
-  
+ 
                     //add and save new hours
                     HoursDB.HoursList.Add(newhours);
                     HoursDB.SaveChanges();
-                    return RedirectToAction("viewTimesheet", new { tsDate = newhours.timestamp });
+
+                    if (userKeyId == 0)
+                    {
+                        return RedirectToAction("viewTimesheet", new { tsDate = newhours.timestamp });
+                    }
+                    else
+                    {
+                        return RedirectToAction("approveTimesheet", "Manager", new { userKeyID = userKeyId, tsDate = newhours.timestamp });
+                    }
                 }
                 return View("error");
             }
@@ -196,8 +207,7 @@ namespace TARS.Controllers
         //
         //Retrieves a specified user's timesheet for specified date
         public Timesheet getTimesheet(string user, DateTime tsDate)
-        {
-            checkForTimesheet(user, tsDate);
+        {  
             Timesheet resulttimesheet = new Timesheet();
 
             var searchTs = from m in TimesheetDB.TimesheetList
@@ -207,11 +217,8 @@ namespace TARS.Controllers
                             select m;
             foreach (var item in searchTs)
             {
-                if (item != null)
-                {
-                    resulttimesheet = item;
-                    return resulttimesheet;
-                }
+                resulttimesheet = item;
+                return resulttimesheet;
             }
             return null;            
         }
@@ -283,12 +290,12 @@ namespace TARS.Controllers
         // 
         // GET: /User/editHours
         //  - Edits a specified Hours entry for the logged in user
-        public virtual ActionResult editHours(int id = 0)
+        public virtual ActionResult editHours(int hoursID = 0, int userKeyID = 0)
         {
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
-                Hours hours = HoursDB.HoursList.Find(id);
+                Hours hours = HoursDB.HoursList.Find(hoursID);
                 WorkEffort we = WorkEffortDB.WorkEffortList.Find(hours.workEffortID);
                 ViewBag.timesheetLockedFlag = isTimesheetLocked(hours.creator, hours.timestamp);
                 Authentication newAuth = new Authentication();
@@ -296,6 +303,7 @@ namespace TARS.Controllers
                 ViewBag.adminFlag = adminFlag;
                 ViewBag.workEffort = we;
                 ViewBag.workTypeList = getEarnCodeWorkTypeList(we.earningsCode);
+                ViewBag.userKeyID = userKeyID;
 
                 if (Request.IsAjaxRequest())
                 {
@@ -313,7 +321,7 @@ namespace TARS.Controllers
         //
         // POST: /User/editHours
         [HttpPost]
-        public virtual ActionResult editHours(Hours tmpHours)
+        public virtual ActionResult editHours(Hours tmpHours, int userKeyID = 0)
         {
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
@@ -323,7 +331,14 @@ namespace TARS.Controllers
                     HoursDB.Entry(tmpHours).State = EntityState.Modified;
                     HoursDB.SaveChanges();
                 }
-                return RedirectToAction("viewTimesheet", new {tsDate=tmpHours.timestamp});
+                if (userKeyID == 0)
+                {
+                    return RedirectToAction("viewTimesheet", new { tsDate = tmpHours.timestamp });
+                }
+                else
+                {
+                    return RedirectToAction("approveTimesheet", "Manager", new { userKeyID = userKeyID, tsDate = tmpHours.timestamp });
+                }
             }
             else
             {
@@ -434,6 +449,7 @@ namespace TARS.Controllers
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
                 string userName = User.Identity.Name;
+                checkForTimesheet(userName, tsDate);    //creates timesheet if it doesn't exist
                 Timesheet timesheet = getTimesheet(userName, tsDate);
                 Timesheet prevTimesheet = getTimesheet(userName, tsDate.AddDays(-7));
 
@@ -628,10 +644,10 @@ namespace TARS.Controllers
 
 
         // 
-        //Returns the current pay period as a string
-        public virtual string getPayPeriod()
+        //Returns the pay period covering the reference date as a string
+        public virtual string getPayPeriod(DateTime refDate)
         {
-            DateTime startDay = DateTime.Now.StartOfWeek(DayOfWeek.Sunday);
+            DateTime startDay = refDate.StartOfWeek(DayOfWeek.Sunday);
             DateTime endDay = startDay.AddDays(6);
             string payPeriod = startDay.ToShortDateString() + " - " + endDay.ToShortDateString();
             return payPeriod;
@@ -746,7 +762,7 @@ namespace TARS.Controllers
 
 
         // 
-        //Returns active Work Efforts WITHIN THE SPECIFIED DIVISION as a selection list
+        //Returns active Work Efforts within the specified division as a selection list
         public virtual List<SelectListItem> getVisibleWorkEffortSelectList(string division)
         {
             List<SelectListItem> effortList = new List<SelectListItem>();

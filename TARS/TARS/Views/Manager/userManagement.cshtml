@@ -16,6 +16,16 @@
     <br />
 }
 
+<b>Pay Period: @ViewBag.refPayPeriod</b>
+@Html.ActionLink("View Previous", "userManagement", new {refDate=ViewBag.refDate.AddDays(-7), division = ViewBag.division})
+@if (ViewBag.refDate.ToShortDateString() != DateTime.Now.ToShortDateString())
+{
+    <html> | </html>
+    @Html.ActionLink("View Current", "userManagement", new { refDate = DateTime.Now, division = ViewBag.division })
+}
+<br /><br />
+
+
 @if (ViewBag.emailSentFlag == true)
 {
     <h4>
@@ -53,26 +63,37 @@
 {
     foreach (var item in Model)
     {
-    <tr>
-        <td class="name">
-            @Html.DisplayFor(modelItem => item.userName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.permission)
-        </td>
-        <td class="description">
-            @Html.DisplayFor(modelItem => item.company)
-        </td>
-        <td class="description">
-            @Html.DisplayFor(modelItem => item.department)
-        </td>
-        <td>
-            @Html.Action("getTimesheetStatus", "User", new { userName = item.userName, refDate = DateTime.Now })
-        </td>
-        <td class="options">
-            @Html.ActionLink("Approve/Reject Timesheet", "approveTimesheet", new { userKeyID = item.ID, tsDate = DateTime.Now })
-        </td>
-    </tr>
+        var tsStatus = Html.Action("getTimesheetStatus", "User", new { userName = item.userName, refDate = ViewBag.refdate });
+        <tr>
+            <td class="name">
+                @Html.DisplayFor(modelItem => item.userName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.permission)
+            </td>
+            <td class="description">
+                @Html.DisplayFor(modelItem => item.company)
+            </td>
+            <td class="description">
+                @Html.DisplayFor(modelItem => item.department)
+            </td>
+            <td>
+                @if (tsStatus.ToString().Length == 0)
+                {
+                    <html> none </html>
+                }
+                else
+                {
+                    @tsStatus
+                }
+            </td>
+            <td class="options">
+                @if (tsStatus.ToString().Length != 0)
+                {
+                    @Html.ActionLink("Approve/Reject Timesheet", "approveTimesheet", new { userKeyID = item.ID, tsDate = ViewBag.refDate })
+                }
+            </td>
+        </tr>
     }
 }
 </table>

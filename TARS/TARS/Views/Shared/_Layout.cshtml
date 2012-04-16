@@ -36,7 +36,7 @@
 				<table class="update">
 					<tr>
 						<td><i>Current Pay Period: </i></td><td><b><font color="ff0000">
-                        @Html.Action("getPayPeriod", "User")</font></b></td>
+                        @Html.Action("getPayPeriod", "User", new { refDate = DateTime.Now })</font></b></td>
 					</tr>
                     
 				</table>

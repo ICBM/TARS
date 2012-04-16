@@ -39,6 +39,14 @@
             </p>
             @Html.HiddenFor(model => model.timestamp)
 
+
+            <!-- if userKeyID is not zero, we know a manager is editing hours for an employee -->
+            @if (ViewBag.userKeyID > 0)
+            {
+                @Html.Hidden("userKeyID", (int)ViewBag.userKeyID)
+            }
+            
+
             <p>
                 <input type="submit" value="Save" />
             </p>

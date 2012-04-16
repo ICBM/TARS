@@ -257,6 +257,8 @@
     <Content Include="Views\Manager\managerEditHours.cshtml" />
     <Content Include="Views\User\_editHoursPartial.cshtml" />
     <Content Include="Views\User\_addHoursPartial.cshtml" />
+    <Content Include="Views\Manager\addPCA_WE.cshtml" />
+    <Content Include="Views\Shared\_viewTimesheetPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
