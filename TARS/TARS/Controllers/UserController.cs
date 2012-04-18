@@ -245,7 +245,7 @@ namespace TARS.Controllers
                 ViewBag.workTypesListOfLists = new List<List<string>>();
                 foreach (var item in workEffortList)
                 {
-                    ViewBag.pcaListOfLists.Add(getWorkEffortPcaCodes(item));
+                    ViewBag.pcaListOfLists.Add(getWePcaCodesList(item));
                 }
                 
                 return View(workEffortList);
@@ -276,7 +276,7 @@ namespace TARS.Controllers
                 {
                     return HttpNotFound();
                 }
-                ViewBag.pcaList = getWorkEffortPcaCodes(workeffort);
+                ViewBag.pcaList = getWePcaCodesList(workeffort);
                 ViewBag.WorkEffortID = workeffort.ID;
                 return View(workeffort);
             }
@@ -521,7 +521,6 @@ namespace TARS.Controllers
                         {
                             tmpTsRow.workeffort = workEffortList.First().description;
                             tmpTsRow.worktype = workTypeList.First();
-                            tmpTsRow.pcaCode = workEffortList.First().pcaCode;
                             workEffortList.RemoveAt(0);
                             workTypeList.RemoveAt(0);
                             break;
@@ -684,12 +683,12 @@ namespace TARS.Controllers
  
 
         // 
-        //Returns list of PCA codes for the specified division
-        public virtual List<int> getWorkEffortPcaCodes(WorkEffort we)
+        //Returns list of PCA codes for the specified work effort
+        public virtual List<int> getWePcaCodesList(WorkEffort we)
         {
             List<int> pcaList = new List<int>();
             PcaCode tmpPca = new PcaCode();
-            
+
             var searchPcaWe = from m in PCA_WEDB.PCA_WEList
                               where m.WE == we.ID
                               select m;
@@ -699,6 +698,30 @@ namespace TARS.Controllers
                 pcaList.Add(tmpPca.code);
             }
             return pcaList;
+        }
+
+
+        // 
+        //Returns string with PCA codes, separated by commas, for the specified work effort
+        public virtual string getWePcaCodesString(string weDesc)
+        {
+            PcaCode tmpPca = new PcaCode();
+            string pcaString = "";
+
+            var searchWe = from w in WorkEffortDB.WorkEffortList
+                           where (w.description.CompareTo(weDesc) == 0)
+                           select w;
+            WorkEffort we = searchWe.First();
+            var searchPcaWe = from m in PCA_WEDB.PCA_WEList
+                              where m.WE == we.ID
+                              select m;
+            foreach (var item in searchPcaWe)
+            {
+                tmpPca = PcaCodeDB.PcaCodeList.Find(item.PCA);
+                pcaString = pcaString + " " + tmpPca.code + ",";
+            }
+            pcaString = pcaString.TrimEnd(',');
+            return pcaString;
         }
 
 

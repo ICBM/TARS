@@ -109,7 +109,7 @@ namespace TARS.Controllers
                 ViewBag.pcaListOfLists = new List<List<int>>();
                 foreach (var item in workEffortList)
                 {
-                    ViewBag.pcaListOfLists.Add(getWorkEffortPcaCodes(item));
+                    ViewBag.pcaListOfLists.Add(getWePcaCodesList(item));
                 }
 
                 //check if an "unable to hide Work Effort error should be displayed"
@@ -210,7 +210,7 @@ namespace TARS.Controllers
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
                 WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
-                ViewBag.pcaList = getWorkEffortPcaCodes(workeffort);
+                ViewBag.pcaList = getWePcaCodesList(workeffort);
                 string division = getUserDivision();
                 ViewBag.divisionName = division;
 
@@ -249,7 +249,7 @@ namespace TARS.Controllers
                     else
                     {
                         ViewBag.notWithinTimeBounds = true;
-                        ViewBag.pcaList = getWorkEffortPcaCodes(workeffort);
+                        ViewBag.pcaList = getWePcaCodesList(workeffort);
 
                         Authentication newAuth = new Authentication();
                         if (newAuth.isAdmin(this))
@@ -276,7 +276,7 @@ namespace TARS.Controllers
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
                 WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
-                ViewBag.pcaList = getWorkEffortPcaCodes(workeffort);
+                ViewBag.pcaList = getWePcaCodesList(workeffort);
                 return View(workeffort);
             }
             else

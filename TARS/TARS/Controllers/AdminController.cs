@@ -399,7 +399,7 @@ namespace TARS.Controllers
                 WorkEffort we = WorkEffortDB.WorkEffortList.Find(weID);
                 ViewBag.workEffortDescription = we.description;
                 ViewBag.workEffortId = weID;
-                ViewBag.pcaList = getWorkEffortPcaCodes(we);
+                ViewBag.pcaList = getWePcaCodesList(we);
                 return View();
             }
             else
@@ -447,7 +447,7 @@ namespace TARS.Controllers
                 WorkEffort we = WorkEffortDB.WorkEffortList.Find(pca_we.WE);
                 ViewBag.workEffortDescription = we.description;
                 ViewBag.workEffortId = we.ID;
-                ViewBag.pcaList = getWorkEffortPcaCodes(we);
+                ViewBag.pcaList = getWePcaCodesList(we);
                 return View();
             }
             else
