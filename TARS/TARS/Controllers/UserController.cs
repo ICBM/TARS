@@ -486,19 +486,20 @@ namespace TARS.Controllers
         //Returns list of objects that each contain hours for Sun-Sat for each workEffort/workType pairing
         public List<TimesheetRow> convertHoursForTimesheetView()
         {
+            WorkEffort effort = new WorkEffort();
             string effortDescription = "";
             IEnumerable<Hours> hoursList = (IEnumerable<Hours>)TempData["hoursList"];
-            List<string> workEffortList = new List<string>();
+            List<WorkEffort> workEffortList = new List<WorkEffort>();
             List<string> workTypeList = new List<string>();
             List<string> effortTypeConcat = new List<string>();
             List<TimesheetRow> tsRowList = new List<TimesheetRow>();
             //create a list of workEffort/workType pairings for the pay period
             foreach (var item in hoursList)
             {
-                effortDescription = getWeDescription(item.workEffortID);
-                workEffortList.Add(effortDescription);
+                effort = WorkEffortDB.WorkEffortList.Find(item.workEffortID);
+                workEffortList.Add(effort);
                 workTypeList.Add(item.description);
-                effortTypeConcat.Add(effortDescription + "::::" + item.description);
+                effortTypeConcat.Add(effort.description + "::::" + item.description);
             }
             //remove duplicates from the list
             effortTypeConcat = effortTypeConcat.Distinct().ToList();
@@ -515,11 +516,12 @@ namespace TARS.Controllers
                 {
                     try
                     {
-                        if ((effortAndType.Contains(workEffortList.First())) &&
+                        if ((effortAndType.Contains(workEffortList.First().description)) &&
                              (effortAndType.Contains(workTypeList.First())))
                         {
-                            tmpTsRow.workeffort = workEffortList.First();
+                            tmpTsRow.workeffort = workEffortList.First().description;
                             tmpTsRow.worktype = workTypeList.First();
+                            tmpTsRow.pcaCode = workEffortList.First().pcaCode;
                             workEffortList.RemoveAt(0);
                             workTypeList.RemoveAt(0);
                             break;
@@ -750,9 +752,22 @@ namespace TARS.Controllers
         public virtual List<string> getEarnCodeWorkTypeList(string earnCode)
         {
             List<string> workTypesList = new List<string>();
-            var searchEarnCodes = from m in EarningsCodesDB.EarningsCodesList
-                                  where (m.earningsCode.CompareTo(earnCode) == 0)
-                                  select m;
+            IEnumerable<EarningsCodes> searchEarnCodes = from m in EarningsCodesDB.EarningsCodesList
+                                                         select m;
+
+            if (earnCode.CompareTo("ACT") == 0)
+            {
+                searchEarnCodes = from m in searchEarnCodes
+                                      where (m.earningsCode.CompareTo(earnCode) == 0)
+                                      select m;
+            }
+            else
+            {
+                searchEarnCodes = from m in searchEarnCodes
+                                      where (m.earningsCode.CompareTo("ACT") != 0)
+                                      select m;
+            }
+
             foreach (var item in searchEarnCodes)
             {
                 workTypesList.Add(item.earningsCode + " " + item.description);

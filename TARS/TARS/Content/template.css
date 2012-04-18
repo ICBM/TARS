@@ -111,6 +111,12 @@ table.timesheet td.days
     text-align: center;
 }
 
+table.timesheet td.effortDescription
+{
+    text-align: left;
+    width: 200px;
+}
+
 table.timesheet td.description
 {
     text-align: left;

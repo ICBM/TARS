@@ -37,14 +37,8 @@
     {
         if (ViewBag.timesheet.approved == false)
         {
-            @Html.ActionLink("Add New Hours", "addHours") 
-            if (ViewBag.timesheet.submitted == true)
-            {
-                <html> | </html>
-            }
             if (ViewBag.timesheet.submitted == false)
             {
-                <html> | </html>
                 @Html.ActionLink("Submit Timesheet", "submitTimesheet", new { id = (int)ViewBag.timesheet.ID })
                 <html> | </html>
                 @Html.ActionLink("Copy Previous Timesheet", "copyTimesheet")

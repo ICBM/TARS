@@ -369,7 +369,7 @@ namespace TARS.Controllers
                     //Make sure it's not a duplicate entry before adding to database
                     if (checkIfDuplicatePcaWe(pca_we) == false)
                     {
-                        //update PCA_WE table in database
+                        //update PCA_WE table
                         PCA_WEDB.PCA_WEList.Add(pca_we);
                         PCA_WEDB.Entry(pca_we).State = System.Data.EntityState.Added;
                         PCA_WEDB.SaveChanges();

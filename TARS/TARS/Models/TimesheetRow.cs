@@ -8,6 +8,7 @@ namespace TARS.Models
     public class TimesheetRow
     {
         public string workeffort { get; set; }
+        public int pcaCode { get; set; }
         public string worktype { get; set; }
         public Hours sunHours { get; set; }
         public Hours monHours { get; set; }
