@@ -378,6 +378,7 @@ namespace TARS.Controllers
                 }
                 ViewBag.divisionList = getDivisionSelectList();
                 ViewBag.pcaAddList = getAllPcaCodes();
+                ViewBag.workEffortId = effort.ID;
                 ViewBag.outOfPcaTimeBounds = true;
                 return View(pca_we);
             }
