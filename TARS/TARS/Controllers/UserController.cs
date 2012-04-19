@@ -348,6 +348,34 @@ namespace TARS.Controllers
 
 
         //
+        /* Removes all the zero hours entries for the given workEffort/workType pair for the
+         * week on the user's timesheet. This results in that workEffort/workType pair being
+         * removed from the viewTimesheet View
+        */
+        [HttpPost]
+        public virtual ActionResult timesheetRemoveWorkEffort(int sundayID)
+        {
+            Hours sunHours = HoursDB.HoursList.Find(sundayID);
+            DateTime sunday = sunHours.timestamp;
+
+            var searchHours = from h in HoursDB.HoursList
+                              where (h.creator.CompareTo(sunHours.creator) == 0)
+                              where h.workEffortID == sunHours.workEffortID
+                              where (h.description.CompareTo(sunHours.description) == 0)
+                              where h.timestamp >= sunday
+                              where h.timestamp < System.Data.Objects.EntityFunctions.AddDays(sunday, 7)
+                              select h;
+            foreach (var item in searchHours)
+            {
+                HoursDB.HoursList.Remove(item);
+                HoursDB.Entry(item).State = System.Data.EntityState.Deleted;
+            }
+            HoursDB.SaveChanges();
+            return RedirectToAction("viewTimesheet", new { tsDate = sunday });
+        }
+
+
+        //
         //Updates Locked status of timesheet that refHours is in, and returns timesheet status
         public bool isTimesheetLocked(string worker,DateTime refDate)
         {
@@ -866,10 +894,14 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
+                int id = 0;
                 var searchWorkEfforts = from w in WorkEffortDB.WorkEffortList
                                         where (w.description.CompareTo(description) == 0)
                                         select w;
-                int id = searchWorkEfforts.First().ID;
+                foreach (var item in searchWorkEfforts)
+                {
+                    id = item.ID;
+                }
                 return id;
             }
             else

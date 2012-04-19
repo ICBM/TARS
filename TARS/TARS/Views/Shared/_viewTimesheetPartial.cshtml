@@ -36,14 +36,14 @@
     </tr>
 
     @{double combinedTotal = 0;}  <!-- for displaying the total hours for the week -->
-    @{TARS.Models.Hours hoursObj = new TARS.Models.Hours();}    <!-- Used for jQuery posts -->
     @if (Model != null)
     {
         foreach (var item in Model)
         {
-            double total = 0;    <!-- for displaying hours on a workEffort/workType for the week -->     
-            <tr>
-                <td class="effortDescription" title="PCA code: @Html.Action("getWePcaCodesString", "User", new {weDesc = item.workeffort})">
+            double total = 0;    <!-- for displaying hours on a workEffort/workType for the week -->  
+           
+            <tr class="timesheetRow">
+                <td class="effortDescription" title="PCA code(s): @Html.Action("getWePcaCodesString", "User", new {weDesc = item.workeffort})">
                     @Html.HiddenFor(modelItem => item.workeffort)
                     @Html.DisplayFor(modelItem => item.workeffort)
                 </td>
@@ -62,7 +62,7 @@
                     {
                         @Html.Hidden("wEffort", item.workeffort)
                         @Html.Hidden("wType", item.worktype)
-                        @Html.Hidden("hrsDate", (string)ViewBag.timesheet.periodStart.ToString())
+                        @Html.Hidden("hrsDate", (string)ViewBag.timesheet.periodStart.ToShortDateString())
                         <html> 0 </html>
                     }
                 </td>
@@ -75,7 +75,7 @@
                     else{
                         @Html.Hidden("wEffort", item.workeffort)
                         @Html.Hidden("wType", item.worktype)
-                        @Html.Hidden("hrsDate", (string)ViewBag.timesheet.periodStart.AddDays(1).ToString())                            
+                        @Html.Hidden("hrsDate", (string)ViewBag.timesheet.periodStart.AddDays(1).ToShortDateString())                            
                         <html> 0 </html>
                     }
                 </td>
@@ -88,7 +88,7 @@
                     else{
                         @Html.Hidden("wEffort", item.workeffort)
                         @Html.Hidden("wType", item.worktype)
-                        @Html.Hidden("hrsDate", (string)ViewBag.timesheet.periodStart.AddDays(2).ToString())                             
+                        @Html.Hidden("hrsDate", (string)ViewBag.timesheet.periodStart.AddDays(2).ToShortDateString())                             
                         <html> 0 </html>
                     }
                 </td>
@@ -101,7 +101,7 @@
                     else{
                         @Html.Hidden("wEffort", item.workeffort)
                         @Html.Hidden("wType", item.worktype)
-                        @Html.Hidden("hrsDate", (string)ViewBag.timesheet.periodStart.AddDays(3).ToString())                             
+                        @Html.Hidden("hrsDate", (string)ViewBag.timesheet.periodStart.AddDays(3).ToShortDateString())                             
                         <html> 0 </html>
                     }
                 </td>
@@ -114,7 +114,7 @@
                     else{
                         @Html.Hidden("wEffort", item.workeffort)
                         @Html.Hidden("wType", item.worktype)
-                        @Html.Hidden("hrsDate", (string)ViewBag.timesheet.periodStart.AddDays(4).ToString())                             
+                        @Html.Hidden("hrsDate", (string)ViewBag.timesheet.periodStart.AddDays(4).ToShortDateString())                             
                         <html> 0 </html>
                     }
                 </td>
@@ -127,7 +127,7 @@
                     else{
                         @Html.Hidden("wEffort", item.workeffort)
                         @Html.Hidden("wType", item.worktype)
-                        @Html.Hidden("hrsDate", (string)ViewBag.timesheet.periodStart.AddDays(5).ToString())                             
+                        @Html.Hidden("hrsDate", (string)ViewBag.timesheet.periodStart.AddDays(5).ToShortDateString())                             
                         <html> 0 </html>
                     }
                 </td>
@@ -140,13 +140,23 @@
                     else{
                         @Html.Hidden("wEffort", item.workeffort)
                         @Html.Hidden("wType", item.worktype)
-                        @Html.Hidden("hrsDate", (string)ViewBag.timesheet.periodStart.AddDays(6).ToString())                             
+                        @Html.Hidden("hrsDate", (string)ViewBag.timesheet.periodStart.AddDays(6).ToShortDateString())                             
                         <html> 0 </html>
                     }
                 </td>
                 <td>
                     @{combinedTotal += total;}
                     @total
+                </td>
+                <td class="empty">
+                    @if (total == 0)
+                    {
+                        //in a row with all zeros, sunday is the only guaranteed non-null hours object
+                        using( Html.BeginForm("timesheetRemoveWorkEffort", "User", new {sundayID = item.sunHours.ID}))
+                        {
+                            <input type="submit" value="Remove Row" style="font-size: 10px"/>
+                        }
+                    }
                 </td>
             </tr>
         }
@@ -170,7 +180,7 @@
     else
     {
         <tr>
-            <td class="empty"></td><td class="empty"><td class="empty"></td><td class="empty"></td>
+            <td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td>
             <td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td>
             <td class="empty"></td><td class="weekTotal">@combinedTotal</td>
         </tr>            
@@ -210,11 +220,11 @@
 			{
 			    workEffortID: $('#workEffortID').val(),
 			    hours: 0,
-			    timestamp: '@ViewBag.timesheet.periodStart.AddDays(4)',
+			    timestamp: '@ViewBag.timesheet.periodStart',
 			    description: selectedWorkType,
 			    creator: '@ViewBag.timesheet.worker'
 			},
-            success: function (msg) {
+            success: function () {
                 location.reload();
             }
         });
