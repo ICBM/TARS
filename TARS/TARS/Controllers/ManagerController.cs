@@ -31,13 +31,26 @@ namespace TARS.Controllers
 
         //
         // GET: /Manager/searchPCA
-        //  - Shows a list of all PCA codes.
-        public virtual ActionResult searchPCA( )
+        //  - Shows a list of PCA codes for specified division
+        public virtual ActionResult searchPCA(string division = null)
         {
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
-                return View(PcaCodeDB.PcaCodeList.ToList());
+                ViewBag.divisionList = getDivisionSelectList();
+                if ( (division == null)||(division.CompareTo("All") == 0) )
+                {
+                    ViewBag.division = "All";
+                    return View(PcaCodeDB.PcaCodeList.ToList());
+                }
+                else
+                {
+                    ViewBag.division = division;
+                    var pcaList = from p in PcaCodeDB.PcaCodeList
+                                  where (p.division.CompareTo(division) == 0)
+                                  select p;
+                    return View(pcaList.ToList());
+                }            
             }
             else
             {
@@ -45,23 +58,6 @@ namespace TARS.Controllers
             } 
         }
 
-
-        //
-        // GET: /Manager/viewPCA
-        //  - Shows detailed information for a single PCA code.
-        public virtual ActionResult viewPCA( int id )
-        {
-            Authentication auth = new Authentication();
-            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
-            {
-                PcaCode pcacode = PcaCodeDB.PcaCodeList.Find(id);
-                return View(pcacode);
-            }
-            else
-            {
-                return View("error");
-            }
-        }
 
         //
         //Displays all the employees that work for the specified division
@@ -148,7 +144,6 @@ namespace TARS.Controllers
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
                 ViewBag.divisionList = getDivisionSelectList();
-                ViewBag.earnCodeList = getEarningsCodeSelectList();
                 return View();
             }
             else
@@ -187,7 +182,6 @@ namespace TARS.Controllers
                     else
                     {
                         ViewBag.divisionList = getDivisionSelectList();
-                        ViewBag.earnCodeList = getEarningsCodeSelectList();
                         ViewBag.notWithinTimeBounds = true;
                         return View(workeffort);
                     }
@@ -578,7 +572,7 @@ namespace TARS.Controllers
                 ViewBag.adminFlag = adminFlag;
                 ViewBag.userName = timesheet.worker;
                 ViewBag.workEffort = we;
-                ViewBag.workTypeList = getEarnCodeWorkTypeList(we.earningsCode);
+                ViewBag.workTypeList = getWorkTypeList();
                 return View(hours);
             }
             else
@@ -656,8 +650,13 @@ namespace TARS.Controllers
         {
             List<string> pcaCodesList = new List<string>();
             var searchPcaCodes = from m in PcaCodeDB.PcaCodeList
+                                 select m;
+            if (division.CompareTo("All") != 0)
+            {
+                searchPcaCodes = from m in searchPcaCodes
                                  where (m.division.CompareTo(division) == 0)
                                  select m;
+            }
             foreach (var item in searchPcaCodes)
             {
                 pcaCodesList.Add(item.code.ToString());
@@ -668,15 +667,21 @@ namespace TARS.Controllers
 
         // 
         //Returns list of employees that work for specified division
-        public virtual List<TARSUser> getDivisionEmployeeList(string division)
+        //If division is null, it returns all employees
+        public virtual List<TARSUser> getDivisionEmployeeList(string division = null)
         {
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
                 List<TARSUser> divEmployees = new List<TARSUser>();
                 var searchUsers = from m in TARSUserDB.TARSUserList
+                                  select m;
+                if ( (division != null)&&(division.CompareTo("All") != 0) )
+                {
+                    searchUsers = from m in searchUsers
                                   where (m.company.CompareTo(division) == 0)
                                   select m;
+                }
                 foreach (var item in searchUsers)
                 {
                     divEmployees.Add(item);

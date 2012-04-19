@@ -204,9 +204,6 @@
     <Content Include="Views\Manager\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\User\viewPCA.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Admin\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -228,7 +225,7 @@
     <Content Include="Views\Manager\editWorkEffort.cshtml" />
     <Content Include="Views\Manager\deleteWorkEffort.cshtml" />
     <Content Include="Views\Manager\searchPCA_WE.cshtml" />
-    <Content Include="Views\User\viewPCA_WE.cshtml" />
+    <Content Include="Views\Manager\viewPCA_WE.cshtml" />
     <Content Include="Views\Test\TestViews.cshtml" />
     <Content Include="Views\User\viewTimesheet.cshtml" />
     <Content Include="Views\Admin\addPCA.cshtml" />

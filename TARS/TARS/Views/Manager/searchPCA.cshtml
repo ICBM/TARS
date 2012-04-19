@@ -4,15 +4,28 @@
     ViewBag.Title = "searchPCA";
 }
 
-<h2>searchPCA</h2>
+<h2>@ViewBag.division PCA Codes</h2>
 
-<p>
-    @Html.ActionLink("Create New", "addPCA")
-</p>
-<table>
+<!-- Option to sort by division -->
+@using (Html.BeginForm())
+{
+    <div class="editor-label"><b>Select Division</b></div>
+    <div class="editor-field"> 
+        @Html.DropDownList("division", (List<SelectListItem>)ViewBag.divisionList, new { @onchange = "this.form.submit();"})     
+    </div>
+    <br />
+}
+
+<table class="timesheet">
     <tr>
         <th>
             PcaCode
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Division
         </th>
         <th>
             StartDate
@@ -20,38 +33,24 @@
         <th>
             EndDate
         </th>
-        <td>
-            Division
-        </td>
-        <th>
-            Description
-        </th>
-
-        <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.pcaCode)
+            @item.code
+        </td>
+        <td class="description">
+            @item.description
+        </td>
+        <td class="description">
+            @item.division
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.startDate)
+            @item.startDate.ToShortDateString()
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.endDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.division)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.description)
-        </td>
-
-        <td>
-            @Html.ActionLink("Edit", "editPCA", new { id=item.ID }) |
-            @Html.ActionLink("Details", "viewPCA", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "deletePCA", new { id=item.ID })
+            @item.endDate.ToShortDateString()
         </td>
     </tr>
 }

@@ -302,7 +302,7 @@ namespace TARS.Controllers
                 bool adminFlag = newAuth.isAdmin(this);
                 ViewBag.adminFlag = adminFlag;
                 ViewBag.workEffort = we;
-                ViewBag.workTypeList = getEarnCodeWorkTypeList(we.earningsCode);
+                ViewBag.workTypeList = getWorkTypeList();
                 ViewBag.userKeyID = userKeyID;
 
                 if (Request.IsAjaxRequest())
@@ -693,6 +693,12 @@ namespace TARS.Controllers
                 List<SelectListItem> divList = new List<SelectListItem>();
                 var searchDivisions = from m in DivisionsDB.DivisionsList
                                       select m;
+
+                divList.Add(new SelectListItem
+                {
+                    Text = "All",
+                    Value = "All"
+                });
                 foreach (var item in searchDivisions)
                 {
                     divList.Add(new SelectListItem
@@ -754,71 +760,13 @@ namespace TARS.Controllers
 
 
         // 
-        //Returns Earnings Codes as a selection list that can be easily used in an Html DropDown
-        public virtual List<SelectListItem> getEarningsCodeSelectList()
-        {
-            List<SelectListItem> earnCodesList = new List<SelectListItem>();
-
-            //There are multiple ACT work types, so just add it once
-            earnCodesList.Add(new SelectListItem
-            {
-                Text = "ACT",
-                Value = "ACT"
-            });
-            var searchEarnCodes = from m in EarningsCodesDB.EarningsCodesList
-                                    select m;
-            foreach (var item in searchEarnCodes)
-            {
-                //ACT has already been added
-                if ((item.earningsCode.CompareTo("ACT") != 0))
-                {
-                    earnCodesList.Add(new SelectListItem
-                    {
-                        Text = item.earningsCode.ToString(),
-                        Value = item.earningsCode.ToString()
-                    });                    
-                }
-            }
-            return earnCodesList;
-        }
-
-
-        // 
         //Returns a list of all Earnings Code Descriptions
         public virtual List<string> getWorkTypeList()
         {
             List<string> workTypesList = new List<string>();
             var searchEarnCodes = from m in EarningsCodesDB.EarningsCodesList
                                   select m;
-            foreach (var item in searchEarnCodes)
-            {
-                workTypesList.Add(item.earningsCode + " " + item.description);
-            }
-            return workTypesList;
-        }
-
-
-        // 
-        //Returns descriptions of all work types that have specified earnings code
-        public virtual List<string> getEarnCodeWorkTypeList(string earnCode)
-        {
-            List<string> workTypesList = new List<string>();
-            IEnumerable<EarningsCodes> searchEarnCodes = from m in EarningsCodesDB.EarningsCodesList
-                                                         select m;
-
-            if (earnCode.CompareTo("ACT") == 0)
-            {
-                searchEarnCodes = from m in searchEarnCodes
-                                      where (m.earningsCode.CompareTo(earnCode) == 0)
-                                      select m;
-            }
-            else
-            {
-                searchEarnCodes = from m in searchEarnCodes
-                                      where (m.earningsCode.CompareTo("ACT") != 0)
-                                      select m;
-            }
-
+            workTypesList.Add("--- Choose a Work Type ---");
             foreach (var item in searchEarnCodes)
             {
                 workTypesList.Add(item.earningsCode + " " + item.description);
@@ -988,10 +936,9 @@ namespace TARS.Controllers
 
         //
         //
-        public ActionResult jsonWorkTypeSelectList(int weID)
+        public ActionResult jsonWorkTypeSelectList()
         {
-            WorkEffort we = WorkEffortDB.WorkEffortList.Find(weID);
-            IEnumerable<string> weSelectList = getEarnCodeWorkTypeList(we.earningsCode);
+            IEnumerable<string> weSelectList = getWorkTypeList();
 
             return Json(weSelectList.Select(x => new { value = x, text = x }),
                         JsonRequestBehavior.AllowGet
@@ -1024,6 +971,7 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
+
                 return null;
             }
             else

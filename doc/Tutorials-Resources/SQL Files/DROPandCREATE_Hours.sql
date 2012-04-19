@@ -21,7 +21,7 @@ CREATE TABLE [dbo].[Hours](
 	[workEffortID] [int] NULL,
 	[hours] [float] NULL,
 	[timestamp] [datetime] NULL,
-	[description] [varchar](50) NULL,
+	[description] [varchar](65) NULL,
 	[creator] [nchar](50) NULL,
  CONSTRAINT [PK_Hours] PRIMARY KEY CLUSTERED 
 (

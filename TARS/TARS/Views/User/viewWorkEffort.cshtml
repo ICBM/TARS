@@ -10,20 +10,13 @@
     <legend>WorkEffort</legend>
 
     <div class="display-label"><b>Description</b></div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.description)
-    </div>
+    @Html.TextAreaFor(model => model.description, 1, 50, new{@readonly="readonly"})
 
     <p>
     <div class="display-label"><b>Pca Code(s)</b></div>
     <div class="display-field">
         @Html.DropDownList("pcaCode", new SelectList(ViewBag.pcaList, Model))
     </div>
-    </p>
-
-    <p>
-    <div class="display-label"><b>Earnings Code</b></div>
-        @Model.earningsCode
     </p>
 
     <p>
@@ -41,10 +34,9 @@
     </p>
 
     <p>
-    <div class="display-label"><b>Comments</b></div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.comments)
+    <div class="display-label"><b>Comments</b>
     </div>
+    @Html.TextAreaFor(model => model.comments, 4, 50, new {@readonly="readonly"})
     </p>
 
 </fieldset>

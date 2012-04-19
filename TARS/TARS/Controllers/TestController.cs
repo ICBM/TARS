@@ -46,7 +46,6 @@ namespace TARS.Controllers
             var manager = new ManagerController();
             ViewBag.managerIndex               = manager.Index()               != null;
             ViewBag.managerSearchPCA           = manager.searchPCA()           != null;
-            ViewBag.managerViewPCA             = manager.viewPCA(0)            != null;
             ViewBag.managerAddWorkEffort       = manager.addWorkEffort()       != null;
             ViewBag.managerSearchWorkEffort    = manager.searchWorkEffort()    != null;
             ViewBag.managerViewWorkEffort      = manager.viewWorkEffort(0)     != null;

@@ -4,11 +4,11 @@
 
 <h2>Manager</h2>
 
-<p>@Html.ActionLink("Personal Time Management", "viewTimesheet", "User", new { tsDate = DateTime.Now }, null)</p>
-<p>View your personal timesheet here</p>
-
 <p>@Html.ActionLink("User Time Management", "userManagement", new { refDate = DateTime.Now }, null)</p>
 <p>View and approve User timesheets</p>
 
 <p>@Html.ActionLink("Work Effort Management", "weManagement")</p>
 <p>Add, modify, or delete Work Efforts</p>
+
+<p>@Html.ActionLink("View PCA Codes", "searchPca")</p>
+<p>View start dates, end dates, and descriptions of PCA codes</p>

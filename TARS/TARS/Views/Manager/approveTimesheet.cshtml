@@ -38,7 +38,7 @@ else
             <html> | </html>
         }
     }
-    @Html.ActionLink("Back to Employee List", "userManagement", new { refDate=DateTime.Now }, null)
+    @Html.ActionLink("Back to Employee List", "userManagement", new { refDate = ViewBag.timesheet.periodStart }, null)
 </div>
 <br /><br /><br />
 

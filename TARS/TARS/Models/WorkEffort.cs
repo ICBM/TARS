@@ -17,7 +17,6 @@ namespace TARS.Models
         public string description { get; set; }
         public string comments { get; set; }
         public int pcaCode { get; set; }
-        public string earningsCode { get; set; }
         public bool hidden { get; set; }
     }
 
@@ -52,7 +51,6 @@ namespace TARS.Models
                               "; description: " + entry.Property(u => u.description).CurrentValue +
                               "; comments: " + entry.Property(u => u.comments).CurrentValue +
                               "; pcaCode: " + entry.Property(u => u.pcaCode).CurrentValue +
-                              "; earningsCode: " + entry.Property(u => u.earningsCode).CurrentValue +
                               "; hidden: " + entry.Property(u => u.hidden).CurrentValue;
             }
 

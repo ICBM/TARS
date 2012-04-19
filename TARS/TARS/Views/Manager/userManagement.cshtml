@@ -16,12 +16,14 @@
     <br />
 }
 
-<b>Pay Period: @ViewBag.refPayPeriod</b>
-@Html.ActionLink("View Previous", "userManagement", new {refDate=ViewBag.refDate.AddDays(-7), division = ViewBag.division})
+<b>Pay Period: [@ViewBag.refPayPeriod] </b>
+@Html.ActionLink(" Previous ", "userManagement", new {refDate=ViewBag.refDate.AddDays(-7), division = ViewBag.division})
 @if (ViewBag.refDate.ToShortDateString() != DateTime.Now.ToShortDateString())
 {
     <html> | </html>
-    @Html.ActionLink("View Current", "userManagement", new { refDate = DateTime.Now, division = ViewBag.division })
+    @Html.ActionLink(" Next ", "userManagement", new { refDate = ViewBag.refDate.AddDays(7), division = ViewBag.division })
+    <html> | </html>
+    @Html.ActionLink(" Current ", "userManagement", new { refDate = DateTime.Now, division = ViewBag.division })
 }
 <br /><br />
 
@@ -63,7 +65,7 @@
 {
     foreach (var item in Model)
     {
-        var tsStatus = Html.Action("getTimesheetStatus", "User", new { userName = item.userName, refDate = ViewBag.refdate });
+        string tsStatus = Html.Action("getTimesheetStatus", "User", new { userName = item.userName, refDate = ViewBag.refdate }).ToString();
         <tr>
             <td class="name">
                 @Html.DisplayFor(modelItem => item.userName)
@@ -90,7 +92,14 @@
             <td class="options">
                 @if (tsStatus.ToString().Length != 0)
                 {
-                    @Html.ActionLink("Approve/Reject Timesheet", "approveTimesheet", new { userKeyID = item.ID, tsDate = ViewBag.refDate })
+                    if (tsStatus.CompareTo("locked") == 0)
+                    {
+                        @Html.ActionLink("View", "approveTimesheet", new { userKeyID = item.ID, tsDate = ViewBag.refDate })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("View/Approve/Reject", "approveTimesheet", new { userKeyID = item.ID, tsDate = ViewBag.refDate })
+                    }
                 }
             </td>
         </tr>

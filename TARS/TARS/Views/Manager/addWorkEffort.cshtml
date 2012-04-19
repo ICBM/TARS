@@ -28,17 +28,8 @@
 
         <p>
         <div class="editor-label"><b>Work Effort Description </b>(100 characters max)</div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.description)
-            @Html.ValidationMessageFor(model => model.description)
-        </div>
-        </p>
-
-        <p>
-        <div class="editor-label"><b>Earnings Code</b></div>
-        <div class="editor-field">
-            @Html.DropDownListFor(model => model.earningsCode, (List<SelectListItem>)ViewBag.earnCodeList, "--Select--", null)
-        </div>
+        @Html.TextAreaFor(model => model.description, 1, 50, null)
+        @Html.ValidationMessageFor(model => model.description)
         </p>
 
         <p>
@@ -63,10 +54,8 @@
 
         <p>
         <div class="editor-label"><b>Comments </b>(250 characters max)</div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.comments)
-            @Html.ValidationMessageFor(model => model.comments)
-        </div>
+        @Html.TextAreaFor(model => model.comments, 4, 50, null)
+        @Html.ValidationMessageFor(model => model.comments)
         </p>
     
         <p>

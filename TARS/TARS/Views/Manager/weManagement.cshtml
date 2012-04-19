@@ -29,9 +29,6 @@
             PcaCode(s)
         </th>
         <th class="workEffort">
-            EarningsCode
-        </th>
-        <th class="workEffort">
             StartDate
         </th>
         <th class="workEffort">
@@ -56,9 +53,6 @@
                 </td>
                 <td>
                     @Html.DropDownList("pcaCode", new SelectList(ViewBag.pcaListOfLists[count], Model))
-                </td>
-                <td>
-                    @item.earningsCode
                 </td>
                 <td>
                     @item.startDate.ToShortDateString()
