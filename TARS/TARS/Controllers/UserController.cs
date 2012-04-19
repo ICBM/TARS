@@ -379,6 +379,7 @@ namespace TARS.Controllers
         //Updates Locked status of timesheet that refHours is in, and returns timesheet status
         public bool isTimesheetLocked(string worker,DateTime refDate)
         {
+            DateTime todaysDate = DateTime.Now;
             Timesheet tmpTimesheet = getTimesheet(worker, refDate);
             if (tmpTimesheet != null)
             {
@@ -386,7 +387,7 @@ namespace TARS.Controllers
                 {
                     return true;
                 }
-                if (tmpTimesheet.periodEnd < refDate.AddDays(-2))
+                if (tmpTimesheet.periodEnd < todaysDate.AddDays(-2))
                 {
                     //lock the timesheet if end date was more than two days ago
                     tmpTimesheet.locked = true;
@@ -646,9 +647,11 @@ namespace TARS.Controllers
         //Retrieves the status of an employees timesheet from the specified date
         public virtual string getTimesheetStatus(string userName, DateTime refDate)
         {
+            //check if timesheet is locked, and lock it if it should be
+            isTimesheetLocked(userName, refDate);
+            Timesheet tmptimesheet = getTimesheet(userName, refDate);
             string status = "";
-            var tmptimesheet = new Timesheet();
-            tmptimesheet = getTimesheet(userName, refDate);
+
             if (tmptimesheet != null)
             {
                 if (tmptimesheet.locked)
