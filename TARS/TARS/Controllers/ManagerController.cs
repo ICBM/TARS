@@ -144,7 +144,7 @@ namespace TARS.Controllers
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
                 ViewBag.divisionList = getDivisionSelectList();
-                return View();
+                return View(new WorkEffort());
             }
             else
             {

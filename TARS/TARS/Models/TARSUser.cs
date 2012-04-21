@@ -28,6 +28,11 @@ namespace TARS.Models
         public DateTime startDate { get; set; }
         [DataType(DataType.Date)]
         public DateTime endDate { get; set; }
+        public TARSUser()
+        {
+            startDate = DateTime.Now;
+            endDate = DateTime.MaxValue;
+        }
     }
 
     public static class DateTimeExtensions

@@ -43,7 +43,7 @@
         <p>
         <div class="editor-label"><b>End Date</b></div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.endDate, new { @class = "datepicker" })
+            @Html.EditorFor(model => model.endDate)
             @Html.ValidationMessageFor(model => model.endDate)
             @if (ViewBag.notWithinTimeBounds == true)
             {

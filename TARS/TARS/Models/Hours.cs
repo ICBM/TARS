@@ -22,6 +22,10 @@ namespace TARS.Models
 
         [DataType(DataType.Date)]
         public DateTime timestamp { get; set; }
+        public Hours()
+        {
+            timestamp = DateTime.Now;
+        }
     }
 
     public class HoursDBContext : DbContext

@@ -22,6 +22,11 @@ namespace TARS.Models
         public DateTime startDate { get; set; }
         [DataType(DataType.Date)]
         public DateTime endDate { get; set; }
+        public WorkEffort()
+        {
+            startDate = DateTime.Now;
+            endDate = DateTime.Now;
+        }
     }
 
     public class WorkEffortDBContext : DbContext

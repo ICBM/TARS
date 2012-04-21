@@ -69,7 +69,7 @@ namespace TARS.Controllers
             if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
             {
                 ViewBag.divisionList = getDivisionSelectList();
-                return View();
+                return View(new PcaCode());
             }
             else
             {

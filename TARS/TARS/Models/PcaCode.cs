@@ -23,6 +23,11 @@ namespace TARS.Models
         public DateTime startDate { get; set; }
         [DataType(DataType.Date)]
         public DateTime endDate { get; set; }
+        public PcaCode()
+        {
+            startDate = DateTime.Now;
+            endDate = DateTime.Now;
+        }
 
         [Required]
         [Range(10000, 99999, ErrorMessage = "PCA Code must be a 5 digit number")]
