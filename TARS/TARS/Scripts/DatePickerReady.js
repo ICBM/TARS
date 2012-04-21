@@ -1,7 +1,9 @@
 ﻿if (!Modernizr.inputtypes.date) {
     $(function () {
         $(".datefield").datepicker({
-            showAnim: 'slideDown',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: 'c-10:c+20'
         });
     });
 }

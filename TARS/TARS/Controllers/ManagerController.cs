@@ -719,14 +719,13 @@ namespace TARS.Controllers
         //(note: it's called from addWorkEffort View)
         public string getPcaTimeBoundsString(int pcacode)
         {
-            PcaCode tmpPca = new PcaCode();
             string bounds = "";
             var searchPCA = from m in PcaCodeDB.PcaCodeList
-                            where (m.code.CompareTo(pcacode) == 0)
+                            where m.code == pcacode
                             select m;
             foreach (var item in searchPCA)
             {
-                bounds = tmpPca.startDate + " - " + tmpPca.endDate;
+                bounds = item.startDate.ToShortDateString() + " - " + item.endDate.ToShortDateString();
             }
             return bounds;
         }
