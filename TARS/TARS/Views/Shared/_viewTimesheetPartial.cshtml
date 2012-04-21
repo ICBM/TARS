@@ -51,7 +51,7 @@
                     @Html.HiddenFor(modelItem => item.worktype)
                     @Html.DisplayFor(modelItem => item.worktype)
                 </td>
-                <td class="days" title="Click to add/edit hours">
+                <td class="days" title="@Html.Action("getTimesheetDayCellTitle", "User", new {ts = ViewBag.timesheet})">
                     @if (item.sunHours != null)
                     {
                         total += item.sunHours.hours;
@@ -66,7 +66,7 @@
                         <html> 0 </html>
                     }
                 </td>
-                <td class="days" title="Click to add/edit hours">
+                <td class="days" title="@Html.Action("getTimesheetDayCellTitle", "User", new {ts = ViewBag.timesheet})">
                     @if (item.monHours != null){
                         total += item.monHours.hours;
                         @Html.Hidden("hoursID", item.monHours.ID)
@@ -79,7 +79,7 @@
                         <html> 0 </html>
                     }
                 </td>
-                <td class="days" title="Click to add/edit hours">
+                <td class="days" title="@Html.Action("getTimesheetDayCellTitle", "User", new {ts = ViewBag.timesheet})">
                     @if (item.tueHours != null){
                         total += item.tueHours.hours;
                         @Html.Hidden("hoursID", item.tueHours.ID)
@@ -92,7 +92,7 @@
                         <html> 0 </html>
                     }
                 </td>
-                <td class="days" title="Click to add/edit hours">
+                <td class="days" title="@Html.Action("getTimesheetDayCellTitle", "User", new {ts = ViewBag.timesheet})">
                     @if (item.wedHours != null){
                         total += item.wedHours.hours;
                         @Html.Hidden("hoursID", item.wedHours.ID)
@@ -105,7 +105,7 @@
                         <html> 0 </html>
                     }
                 </td>
-                <td class="days" title="Click to add/edit hours">
+                <td class="days" title="@Html.Action("getTimesheetDayCellTitle", "User", new {ts = ViewBag.timesheet})">
                     @if (item.thuHours != null){
                         total += item.thuHours.hours;
                         @Html.Hidden("hoursID", item.thuHours.ID)
@@ -118,7 +118,7 @@
                         <html> 0 </html>
                     }
                 </td>
-                <td class="days" title="Click to add/edit hours">
+                <td class="days" title="@Html.Action("getTimesheetDayCellTitle", "User", new {ts = ViewBag.timesheet})">
                     @if (item.friHours != null){
                         total += item.friHours.hours;
                         @Html.Hidden("hoursID", item.friHours.ID)
@@ -131,7 +131,7 @@
                         <html> 0 </html>
                     }
                 </td>
-                <td class="days" title="Click to add/edit hours">
+                <td class="days" title="@Html.Action("getTimesheetDayCellTitle", "User", new {ts = ViewBag.timesheet})">
                     @if (item.satHours != null){
                         total += item.satHours.hours;
                         @Html.Hidden("hoursID", item.satHours.ID)

@@ -54,6 +54,7 @@ namespace TARS.Controllers
                 string division = getUserDivision();
                 ViewBag.workEffortList = getVisibleWorkEffortSelectList(division);
                 ViewBag.userKeyID = userKeyID;
+                ViewBag.timesheetLockedFlag = isTimesheetLocked(User.Identity.Name, hrsDate);
 
                 if (Request.IsAjaxRequest())
                 {
@@ -295,12 +296,12 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
-                Hours hours = HoursDB.HoursList.Find(hoursID);
-                WorkEffort we = WorkEffortDB.WorkEffortList.Find(hours.workEffortID);
-                ViewBag.timesheetLockedFlag = isTimesheetLocked(hours.creator, hours.timestamp);
                 Authentication newAuth = new Authentication();
                 bool adminFlag = newAuth.isAdmin(this);
+                Hours hours = HoursDB.HoursList.Find(hoursID);
+                WorkEffort we = WorkEffortDB.WorkEffortList.Find(hours.workEffortID);
                 ViewBag.adminFlag = adminFlag;
+                ViewBag.timesheetLockedFlag = isTimesheetLocked(hours.creator, hours.timestamp);
                 ViewBag.workEffort = we;
                 ViewBag.workTypeList = getWorkTypeList();
                 ViewBag.userKeyID = userKeyID;
@@ -868,7 +869,7 @@ namespace TARS.Controllers
         public string getWeTimeBoundsString(int id)
         {
             WorkEffort we = WorkEffortDB.WorkEffortList.Find(id);
-            string bounds = we.startDate + " - " + we.endDate;
+            string bounds = we.startDate.ToShortDateString() + " - " + we.endDate.ToShortDateString();
             return bounds;
         }
 
@@ -918,6 +919,31 @@ namespace TARS.Controllers
             {
                 return null;
             }
+        }
+
+
+        //Returns title that is shown when hovering over a day cell on timesheet
+        public virtual string getTimesheetDayCellTitle(Timesheet ts)
+        {
+            string title = "";
+            Authentication auth = new Authentication();
+
+            if ( (ts.approved == true) || (ts.locked == true) )
+            {
+                if (auth.isAdmin(this))
+                {
+                    title = "Admin: Click to Add/Edit Hours";
+                }
+                else
+                {
+                    title = getTimesheetStatus(ts.worker, ts.periodStart);
+                }
+            }
+            else
+            {
+                title = "Click to Add/Edit Hours";
+            }
+            return title;
         }
 
 
