@@ -87,8 +87,8 @@ namespace TARS.Models
 
                 hist.dbtable = "TARSUser";
                 hist.change = "userName: " + entry.Property(u => u.userName).CurrentValue +
-                                "; startDate: " + entry.Property(u => u.startDate).CurrentValue +
-                                "; endDate: " + entry.Property(u => u.endDate).CurrentValue +
+                                "; startDate: " + entry.Property(u => u.startDate).CurrentValue.ToShortDateString() +
+                                "; endDate: " + entry.Property(u => u.endDate).CurrentValue.ToShortDateString() +
                                 "; permission: " + entry.Property(u => u.permission).CurrentValue +
                                 "; company: " + entry.Property(u => u.company).CurrentValue +
                                 "; department: " + entry.Property(u => u.department).CurrentValue +

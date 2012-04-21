@@ -1,0 +1,56 @@
+﻿@model IEnumerable<TARS.Models.History>
+
+@{
+    ViewBag.Title = "viewHistory";
+}
+
+<h2>View History</h2>
+
+
+<table class="timesheet">
+    <tr>
+        <th class="workEffort">
+            Date
+        </th>
+        <th class="workEffort">
+            UserName
+        </th>
+        <th class="workEffort">
+            TypeOfChange
+        </th>
+        <th class="workEffort">
+            DatabaseTable
+        </th>
+        <th class="workEffort">
+            Details
+        </th>
+        <th class="options">
+        </th>
+    </tr>
+
+    @if (Model != null)
+    {        
+        foreach (var item in Model.Reverse())
+        {
+            <tr>
+                <td class="description">
+                    @Html.DisplayFor(modelItem => item.timestamp)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dbtable)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.change)
+                </td>
+                <td class="options">
+                </td>
+            </tr>
+        }
+    }
+</table>

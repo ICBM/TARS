@@ -262,6 +262,7 @@
     <Content Include="Views\Manager\addPCA_WE.cshtml" />
     <Content Include="Views\Shared\_viewTimesheetPartial.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Date.cshtml" />
+    <Content Include="Views\Manager\viewHistory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

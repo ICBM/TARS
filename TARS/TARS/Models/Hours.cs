@@ -54,10 +54,10 @@ namespace TARS.Models
                         break;
                 }
                 hist.dbtable = "Hours";
-                hist.change = "workEffort: " + entry.Property(u => u.workEffortID).CurrentValue +
+                hist.change = "workEffortID: " + entry.Property(u => u.workEffortID).CurrentValue +
+                              "; workType: " + entry.Property(u => u.description).CurrentValue +
                               "; hours: " + entry.Property(u => u.hours).CurrentValue +
-                              "; timestamp: " + entry.Property(u => u.timestamp).CurrentValue +
-                              "; description: " + entry.Property(u => u.description).CurrentValue +
+                              "; date: " + entry.Property(u => u.timestamp).CurrentValue.ToShortDateString() +
                               "; creator: " + entry.Property(u => u.creator).CurrentValue;
             }
 

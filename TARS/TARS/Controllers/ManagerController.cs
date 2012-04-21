@@ -12,7 +12,9 @@ using TARS.Models;
 namespace TARS.Controllers
 {
     public class ManagerController : UserController
-    {        
+    {
+        protected HistoryDBContext HistoryDB = new HistoryDBContext();   
+
         //
         // GET: /Manager/
         public override ActionResult Index() //Overridden from User/Index, which was virtual.
@@ -738,10 +740,11 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
-                //fetch data from Form
-                //request data from model
-                //send data to appropriate view
-                return null;
+                DateTime dateRef = DateTime.Now.AddDays(-7);
+                var searchHist = from h in HistoryDB.HistoryList
+                                 where h.timestamp > dateRef
+                                 select h;
+                return View(searchHist.ToList());
             }
             else
             {

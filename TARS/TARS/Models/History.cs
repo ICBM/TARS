@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -11,11 +12,13 @@ namespace TARS.Models
     public class History
     {
         public int ID { get; set; } //DB iterator?
-        public DateTime timestamp { get; set; }
         public string username { get; set; }
         public string type { get; set; }
         public string change { get; set; }
         public string dbtable { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime timestamp { get; set; }
     }
 
     public class HistoryDBContext : DbContext

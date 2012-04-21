@@ -55,11 +55,11 @@ namespace TARS.Models
                         break;
                 }
                 hist.dbtable = "WorkEfforts";
-                hist.change = "startDate: " + entry.Property(u => u.startDate).CurrentValue +
-                              "; endDate: " + entry.Property(u => u.endDate).CurrentValue +
-                              "; description: " + entry.Property(u => u.description).CurrentValue +
+                hist.change = "description: " + entry.Property(u => u.description).CurrentValue +
                               "; comments: " + entry.Property(u => u.comments).CurrentValue +
                               "; pcaCode: " + entry.Property(u => u.pcaCode).CurrentValue +
+                              "; startDate: " + entry.Property(u => u.startDate).CurrentValue.ToShortDateString() +
+                              "; endDate: " + entry.Property(u => u.endDate).CurrentValue.ToShortDateString() +
                               "; hidden: " + entry.Property(u => u.hidden).CurrentValue;
             }
 

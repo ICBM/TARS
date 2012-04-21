@@ -50,8 +50,8 @@ namespace TARS.Models
                 }
                 hist.dbtable = "Timesheet";
                 hist.change = "worker: " + entry.Property(u => u.worker).CurrentValue +
-                              "; periodStart: " + entry.Property(u => u.periodStart).CurrentValue +
-                              "; periodEnd: " + entry.Property(u => u.periodEnd).CurrentValue +
+                              "; periodStart: " + entry.Property(u => u.periodStart).CurrentValue.ToShortDateString() +
+                              "; periodEnd: " + entry.Property(u => u.periodEnd).CurrentValue.ToShortDateString() +
                               "; submitted: " + entry.Property(u => u.submitted).CurrentValue +
                               "; approved: " + entry.Property(u => u.approved).CurrentValue +
                               "; locked: " + entry.Property(u => u.locked).CurrentValue;

@@ -45,7 +45,7 @@ namespace TARS.Models
                 }
                 hist.dbtable = "EarningsCodes";
                 hist.change = "EarningsCode: " + entry.Property(u => u.earningsCode).CurrentValue +
-                                "Description: " + entry.Property(u => u.description).CurrentValue;
+                              "; Description: " + entry.Property(u => u.description).CurrentValue;
             }
 
             hist.username = System.Web.HttpContext.Current.User.Identity.Name;

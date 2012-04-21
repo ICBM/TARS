@@ -42,8 +42,8 @@ namespace TARS.Models
                         break;
                 }
                 hist.dbtable = "PCA_WE";
-                hist.change = "PCA: " + entry.Property(u => u.PCA).CurrentValue +
-                                "; WE: " + entry.Property(u => u.WE).CurrentValue;
+                hist.change = "PCA ID: " + entry.Property(u => u.PCA).CurrentValue +
+                              "; Work Effort ID: " + entry.Property(u => u.WE).CurrentValue;
             }
 
             hist.username = System.Web.HttpContext.Current.User.Identity.Name;

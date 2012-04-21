@@ -61,10 +61,10 @@ namespace TARS.Models
                 }
                 hist.dbtable = "PcaCode";
                 hist.change = "pcaCode: " + entry.Property(u => u.code).CurrentValue +
-                              "; startDate: " + entry.Property(u => u.startDate).CurrentValue +
-                              "; endDate: " + entry.Property(u => u.endDate).CurrentValue +
                               "; description: " + entry.Property(u => u.description).CurrentValue +
-                              "; division: " + entry.Property(u => u.division).CurrentValue;
+                              "; division: " + entry.Property(u => u.division).CurrentValue +
+                              "; startDate: " + entry.Property(u => u.startDate).CurrentValue.ToShortDateString() +
+                              "; endDate: " + entry.Property(u => u.endDate).CurrentValue.ToShortDateString();
             }
 
             hist.username = System.Web.HttpContext.Current.User.Identity.Name;
