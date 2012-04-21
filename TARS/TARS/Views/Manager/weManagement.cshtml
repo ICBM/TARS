@@ -55,10 +55,10 @@
                     @Html.DropDownList("pcaCode", new SelectList(ViewBag.pcaListOfLists[count], Model))
                 </td>
                 <td>
-                    @item.startDate.ToShortDateString()
+                    @Html.DisplayFor(modelItem => item.startDate)
                 </td>
                 <td>
-                    @item.endDate.ToShortDateString()
+                    @Html.DisplayFor(modelItem => item.endDate)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.hidden)

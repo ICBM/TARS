@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -17,13 +18,16 @@ namespace TARS.Models
         public string SID { get; set; }
         public string userName { get; set; }
         public string userID { get; set; }
-        public DateTime startDate { get; set; }
-        public DateTime endDate { get; set; }
         public int permission { get; set; } //1 User   2 Manager   3 Admin 
         public string company { get; set; }
         public string department { get; set; }
         public string employeeOrContractor { get; set; }
         public char costAllocatedOrNot { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime startDate { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime endDate { get; set; }
     }
 
     public static class DateTimeExtensions

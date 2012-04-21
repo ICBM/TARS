@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -12,11 +13,14 @@ namespace TARS.Models
     {
         public int ID { get; set; } //DB iterator
         public string worker { get; set; }
-        public DateTime periodStart { get; set; }
-        public DateTime periodEnd { get; set; }
         public bool submitted { get; set; }
         public bool approved { get; set; }
         public bool locked { get; set; }   //can be locked with or without being approved
+
+        [DataType(DataType.Date)]
+        public DateTime periodStart { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime periodEnd { get; set; }
     }
 
     public class TimesheetDBContext : DbContext

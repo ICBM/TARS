@@ -60,7 +60,7 @@ namespace TARS.Controllers
 
 
         //
-        //Displays all the employees that work for the specified division
+        //Displays all the employees that work for the specified division, and a link to their timesheets
         //If division is null, it displays employees in the same division as the manager
         public virtual ActionResult userManagement(DateTime refDate, string division = null)
         {
@@ -263,7 +263,7 @@ namespace TARS.Controllers
 
 
         //
-        // GET: /Manager/deleteWorkEffort/5
+        // GET: /Manager/deleteWorkEffort
         public virtual ActionResult deleteWorkEffort(int id)
         {
             Authentication auth = new Authentication();
@@ -498,8 +498,8 @@ namespace TARS.Controllers
                     TimesheetDB.SaveChanges();
 
                     //send an email to employee to notify of timesheet approval
-                    string body = "Your IDHW timesheet for the pay period of " + ts.periodStart.ToShortDateString() +
-                                    " - " + ts.periodEnd.ToShortDateString() + " has been approved by a manager.";
+                    string body = "Your IDHW timesheet for the pay period of " + ts.periodStart +
+                                    " - " + ts.periodEnd + " has been approved by a manager.";
                     SendEmail(ts.worker, "Timesheet Approved", body);
 
                     return RedirectToAction("userManagement", new { refDate = DateTime.Now });
@@ -534,8 +534,8 @@ namespace TARS.Controllers
                     TimesheetDB.SaveChanges();
 
                     //send an email to employee to notify them
-                    string body = "Your IDHW timesheet for the pay period of " + ts.periodStart.ToShortDateString() + 
-                                    " - " + ts.periodEnd.ToShortDateString() + " has been rejected by a manager. " +
+                    string body = "Your IDHW timesheet for the pay period of " + ts.periodStart + 
+                                    " - " + ts.periodEnd + " has been rejected by a manager. " +
                                     "Please fix it and re-submit as soon as possible.<br /><br />Thanks!";
                     SendEmail(ts.worker, "Rejected Timesheet", body);
                     TempData["emailSentFlag"] = true;
@@ -726,7 +726,7 @@ namespace TARS.Controllers
                             select m;
             foreach (var item in searchPCA)
             {
-                bounds = tmpPca.startDate.ToShortDateString() + " - " + tmpPca.endDate.ToShortDateString();
+                bounds = tmpPca.startDate + " - " + tmpPca.endDate;
             }
             return bounds;
         }

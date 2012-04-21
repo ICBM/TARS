@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -16,9 +17,11 @@ namespace TARS.Models
         public int ID { get; set; } //DB iterator
         public int workEffortID { get; set; }
         public double hours { get; set; }
-        public DateTime timestamp { get; set; }
         public string description { get; set; } //User input
         public string creator { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime timestamp { get; set; }
     }
 
     public class HoursDBContext : DbContext

@@ -38,19 +38,19 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @item.code
+            @Html.DisplayFor(modelItem => item.code)
         </td>
         <td class="description">
-            @item.description
+            @Html.DisplayFor(modelItem => item.description)
         </td>
         <td class="description">
-            @item.division
+            @Html.DisplayFor(modelItem => item.division)
         </td>
         <td>
-            @item.startDate.ToShortDateString()
+            @Html.DisplayFor(modelItem => item.startDate)
         </td>
         <td>
-            @item.endDate.ToShortDateString()
+            @Html.DisplayFor(modelItem => item.endDate)
         </td>
     </tr>
 }

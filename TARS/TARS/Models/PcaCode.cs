@@ -16,10 +16,13 @@ namespace TARS.Models
     public class PcaCode
     {    
         public int ID { get; set; } //DB iterator
-        public DateTime startDate { get; set; }
-        public DateTime endDate { get; set; }
         public string description { get; set; }
         public string division { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime startDate { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime endDate { get; set; }
 
         [Required]
         [Range(10000, 99999, ErrorMessage = "PCA Code must be a 5 digit number")]

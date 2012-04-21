@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -12,12 +13,15 @@ namespace TARS.Models
     public class WorkEffort
     {
         public int ID { get; set; } //DB iterator
-        public DateTime startDate { get; set; }
-        public DateTime endDate { get; set; }
         public string description { get; set; }
         public string comments { get; set; }
         public int pcaCode { get; set; }
         public bool hidden { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime startDate { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime endDate { get; set; }
     }
 
     public class WorkEffortDBContext : DbContext

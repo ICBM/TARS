@@ -625,8 +625,8 @@ namespace TARS.Controllers
                     TimesheetDB.SaveChanges();
 
                     //send an email to employee to confirm timesheet submittal
-                    string body = "Your IDHW timesheet for the pay period of " + ts.periodStart.ToShortDateString() +
-                                    " - " + ts.periodEnd.ToShortDateString() + " has successfully been submitted.";
+                    string body = "Your IDHW timesheet for the pay period of " + ts.periodStart +
+                                    " - " + ts.periodEnd + " has successfully been submitted.";
                     SendEmail(ts.worker, "Timesheet Submitted", body);
 
                     return RedirectToAction("viewTimesheet", new { tsDate = ts.periodStart.AddDays(2) });
@@ -720,7 +720,7 @@ namespace TARS.Controllers
  
 
         // 
-        //Returns list of PCA codes for the specified work effort
+        //Returns list of PCA codes associated with the specified work effort
         public virtual List<int> getWePcaCodesList(WorkEffort we)
         {
             List<int> pcaList = new List<int>();
@@ -739,7 +739,7 @@ namespace TARS.Controllers
 
 
         // 
-        //Returns string with PCA codes, separated by commas, for the specified work effort
+        //Returns PCA codes associated with the specified work effort as a string
         public virtual string getWePcaCodesString(string weDesc)
         {
             PcaCode tmpPca = new PcaCode();
@@ -868,7 +868,7 @@ namespace TARS.Controllers
         public string getWeTimeBoundsString(int id)
         {
             WorkEffort we = WorkEffortDB.WorkEffortList.Find(id);
-            string bounds = we.startDate.ToShortDateString() + " - " + we.endDate.ToShortDateString();
+            string bounds = we.startDate + " - " + we.endDate;
             return bounds;
         }
 
@@ -974,7 +974,6 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
-
                 return null;
             }
             else
@@ -1007,10 +1006,5 @@ string toAddress = "zeke_long@hotmail.com";
             }
         }
 
-
-        public ActionResult modalTest()
-        {
-            return View();
-        }
     }
 }

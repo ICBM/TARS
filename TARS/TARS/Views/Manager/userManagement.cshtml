@@ -20,7 +20,7 @@
 <!-- Show the pay period and navigation options to view previous/next/current -->
 <b>Pay Period: [@ViewBag.refPayPeriod] </b>
 @Html.ActionLink(" Previous ", "userManagement", new {refDate=ViewBag.refDate.AddDays(-7), division = ViewBag.division})
-@if (ViewBag.refDate.ToShortDateString() != DateTime.Now.ToShortDateString())
+@if (ViewBag.refDate != DateTime.Now)
 {
     <html> | </html>
     @Html.ActionLink(" Next ", "userManagement", new { refDate = ViewBag.refDate.AddDays(7), division = ViewBag.division })

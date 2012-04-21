@@ -29,7 +29,7 @@ namespace TARS.Controllers
         }
 
 
-        public ActionResult maintainPCA()
+        public ActionResult maintainPCA(string division = null)
         {
             Authentication auth = new Authentication();
             if(auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
@@ -38,7 +38,21 @@ namespace TARS.Controllers
                 {
                     ViewBag.failedPcaDelete = true;
                 }
-                return View(PcaCodeDB.PcaCodeList.ToList());
+
+                ViewBag.divisionList = getDivisionSelectList();
+                if ((division == null) || (division.CompareTo("All") == 0))
+                {
+                    ViewBag.division = "All";
+                    return View(PcaCodeDB.PcaCodeList.ToList());
+                }
+                else
+                {
+                    ViewBag.division = division;
+                    var pcaList = from p in PcaCodeDB.PcaCodeList
+                                  where (p.division.CompareTo(division) == 0)
+                                  select p;
+                    return View(pcaList.ToList());
+                }   
             }
             else
             {
