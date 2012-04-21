@@ -43,7 +43,7 @@ namespace TARS.Controllers
         //
         // GET: /User/addHours
         //Adds hours to a work effort
-        public virtual ActionResult addHours(int userKeyID = 0, string hrsDate=null, string we=null, string wt=null)
+        public virtual ActionResult addHours(DateTime hrsDate, int userKeyID = 0, string we = null, string wt = null)
         {
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)

@@ -37,7 +37,7 @@ namespace TARS.Controllers
         {
             var user = new UserController();
             ViewBag.userIndex              = user.Index()              != null;
-            ViewBag.userAddHours           = user.addHours()           != null;
+            ViewBag.userAddHours           = user.addHours(DateTime.Now)           != null;
             ViewBag.userSearchWorkEffort   = user.searchWorkEffort()   != null;
             ViewBag.userViewWorkEffort     = user.viewWorkEffort(0)     != null;
             ViewBag.userViewTimesheet      = user.viewTimesheet(DateTime.Now)      != null;

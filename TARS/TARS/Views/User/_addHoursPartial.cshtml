@@ -53,8 +53,8 @@
 
             @if (ViewBag.date != null) {
                 <div class="editor-label"><b>Date</b></div>
-                @ViewBag.date
-                @Html.Hidden("timestamp", (string)ViewBag.date)
+                @ViewBag.date.ToShortDateString()
+                @Html.Hidden("timestamp", (DateTime)ViewBag.date)
             }
             else
             {          

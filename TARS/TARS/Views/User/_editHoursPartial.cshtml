@@ -34,7 +34,7 @@
             <p>
             <div><b>Date</b></div>
             <div>
-                @Model.timestamp
+                @Html.DisplayFor(model => model.timestamp)
             </div>
             </p>
             @Html.HiddenFor(model => model.timestamp)
