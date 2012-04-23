@@ -48,7 +48,7 @@ namespace TARS.Models
                         hist.type = "modified";
                         break;
                 }
-                hist.dbtable = "Timesheet";
+                hist.dbtable = "Timesheets";
                 hist.change = "worker: " + entry.Property(u => u.worker).CurrentValue +
                               "; periodStart: " + entry.Property(u => u.periodStart).CurrentValue.ToShortDateString() +
                               "; periodEnd: " + entry.Property(u => u.periodEnd).CurrentValue.ToShortDateString() +

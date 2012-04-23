@@ -4,24 +4,72 @@
     ViewBag.Title = "viewHistory";
 }
 
-<h2>View History</h2>
+<h2>History <font size="2">(@ViewBag.start - @ViewBag.end)</font></h2>
+
+<!-- Sorting Options -->
+@using (Html.BeginForm())
+{
+    <fieldset>
+        <table>
+            <tr>
+                <td>
+                    <div class="editor-label"><b>From</b></div>
+                    <div class="editor-field"> 
+                        @Html.TextBox("start")
+                    </div>     
+                </td>
+                <td>
+                    <div class="editor-label"><b>To</b></div>
+                    <div class="editor-field"> 
+                        @Html.TextBox("end")
+                    </div>     
+                </td>
+                <td>
+                    <div class="editor-label"><b>Database Table</b></div>
+                    <div class="editor-field"> 
+                        @Html.DropDownList("dbtable", (List<SelectListItem>)ViewBag.dbtableList, "--- All ---", null)          
+                    </div>     
+                </td>
+            </tr>
+        </table>
+        <br />
+        <table>
+            <tr>
+                <td>
+                    <div class="editor-label"><b>Division</b></div>
+                    <div class="editor-field"> 
+                        @Html.DropDownList("division", (List<SelectListItem>)ViewBag.divisionList, "--- All ---")          
+                    </div>     
+                </td>
+                <td>
+                    <div class="editor-label"><b>Employee</b></div>
+                    <div class="editor-field"> 
+                        @Html.DropDownList("un", Enumerable.Empty<SelectListItem>())
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <input type="submit" value="Search" />
+    <br /><br />
+}
 
 
 <table class="timesheet">
     <tr>
-        <th class="workEffort">
+        <th class="history">
             Date
         </th>
-        <th class="workEffort">
+        <th class="history">
             UserName
         </th>
-        <th class="workEffort">
+        <th class="hsitory">
             TypeOfChange
         </th>
-        <th class="workEffort">
+        <th class="history">
             DatabaseTable
         </th>
-        <th class="workEffort">
+        <th class="history">
             Details
         </th>
         <th class="options">
@@ -29,11 +77,11 @@
     </tr>
 
     @if (Model != null)
-    {        
+    {
         foreach (var item in Model.Reverse())
         {
             <tr>
-                <td class="description">
+                <td>
                     @Html.DisplayFor(modelItem => item.timestamp)
                 </td>
                 <td>
@@ -45,7 +93,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.dbtable)
                 </td>
-                <td>
+                <td class="historyDescription">
                     @Html.DisplayFor(modelItem => item.change)
                 </td>
                 <td class="options">
@@ -54,3 +102,30 @@
         }
     }
 </table>
+
+
+
+<!-- Populates employee select list when a division is selected -->
+<script type="text/javascript">
+    $('#division').click(function () {
+        var selected = $(this).val();
+
+        $.getJSON('@Url.Action("jsonDivisionEmployeeSelectList")', { division: selected }, function (names) {
+            var employeeSelect = $('#un');
+            employeeSelect.empty();
+            $.each(names, function (index, username) {
+                employeeSelect.append($('<option/>', {
+                    value: username.value,
+                    text: username.text
+                }));
+            });
+        });
+    });
+</script>
+
+
+<!-- Enables pop-up calendars -->
+<script type="text/javascript">
+    $('#start').datepicker();
+    $('#end').datepicker();
+</script>

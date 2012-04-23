@@ -43,8 +43,13 @@ body {
 
 	padding-left: 5px;
 	padding-right: 5px;
-
 }
+
+fieldset
+{
+    display: inline-block;
+}
+
 
 table 
 {
@@ -67,6 +72,15 @@ table.timesheet th
 }
 
 table.timesheet th.workEffort 
+{
+    padding: 5px;
+    width: 90px;
+    text-align: center;
+    background-color: #1E90FF; 
+    color: Black;
+}
+
+table.timesheet th.history 
 {
     padding: 5px;
     width: 90px;
@@ -103,6 +117,12 @@ table.timesheet td.days
     padding: 1px;
     width: 50px; 
     text-align: center;
+}
+
+table.timesheet td.historyDescription
+{
+    text-align: left;
+    width: 80%;
 }
 
 table.timesheet td.effortDescription

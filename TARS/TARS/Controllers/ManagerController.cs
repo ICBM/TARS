@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -79,7 +80,7 @@ namespace TARS.Controllers
                 {
                     division = getUserDivision();
                 }
-                IEnumerable<TARSUser> divEmployees = getDivisionEmployeeList(division);
+                IEnumerable<TARSUser> divEmployees = getDivisionEmployeeObjList(division);
                 ViewBag.division = division;
                 ViewBag.divisionList = getDivisionSelectList();
                 ViewBag.refDate = refDate;
@@ -670,7 +671,7 @@ namespace TARS.Controllers
         // 
         //Returns list of employees that work for specified division
         //If division is null, it returns all employees
-        public virtual List<TARSUser> getDivisionEmployeeList(string division = null)
+        public virtual List<TARSUser> getDivisionEmployeeObjList(string division = null)
         {
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
@@ -694,6 +695,57 @@ namespace TARS.Controllers
             {
                 return null;
             }
+        }
+
+
+        // 
+        //Returns list of employee names that work for specified division
+        //If division is null, it returns all employees
+        public virtual List<SelectListItem> getDivisionEmployeeSelectList(string division = null)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                List<SelectListItem> employeeNames = new List<SelectListItem>();
+                var searchUsers = from m in TARSUserDB.TARSUserList
+                                  select m;
+                if ((division != null) && (division.CompareTo("All") != 0))
+                {
+                    searchUsers = from m in searchUsers
+                                  where (m.company.CompareTo(division) == 0)
+                                  select m;
+                }
+
+                employeeNames.Add(new SelectListItem { Text = "All", Value = "All" });
+
+                foreach (var item in searchUsers)
+                {
+                    employeeNames.Add(new SelectListItem
+                    {
+                        Text = item.userName,
+                        Value = item.userName
+                    });
+                }
+                return employeeNames;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+
+        public ActionResult jsonDivisionEmployeeSelectList(string division)
+        {
+            List<SelectListItem> employeeSelectList = getDivisionEmployeeSelectList(division);
+            List<string> nameList = new List<string>();
+            foreach (var item in employeeSelectList)
+            {
+                nameList.Add(item.Value);
+            }
+            return Json(nameList.Select(x => new { value = x, text = x }),
+                        JsonRequestBehavior.AllowGet
+                        );
         }
 
 
@@ -733,17 +785,118 @@ namespace TARS.Controllers
         }
 
 
+        // 
+        //Returns all database tables as a list of strings
+        public virtual List<SelectListItem> getDbTableSelectList()
+        {
+            Authentication auth = new Authentication();
+            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
+            {
+                List<SelectListItem> tableSelectList = new List<SelectListItem>();
+                var tableList = new List<string>();
+                tableList.Add("Timesheets");
+                tableList.Add("Hours");
+                tableList.Add("WorkEfforts");
+                tableList.Add("PcaCodes");
+                tableList.Add("PCA_WE");
+                tableList.Add("TARSUsers");
+                tableList.Add("EarningsCodes");
+                tableList.Add("Divisions");
+
+                tableSelectList.Add(new SelectListItem { Text = "All", Value = "All" });  
+ 
+                foreach (var item in tableList)
+                {
+                    tableSelectList.Add(new SelectListItem
+                    {
+                        Text = item,
+                        Value = item
+                    });
+                }
+                return tableSelectList;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+
         //
+        // GET: Manager/viewHistory
         //
-        public override ActionResult viewHistory()
+        public ActionResult viewHistory(DateTime start, DateTime end)
         {
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
-                DateTime dateRef = DateTime.Now.AddDays(-7);
                 var searchHist = from h in HistoryDB.HistoryList
-                                 where h.timestamp > dateRef
+                                 where h.timestamp >= start
+                                 where h.timestamp <= end
                                  select h;
+
+                ViewBag.start = start.ToShortDateString();
+                ViewBag.end = end.ToShortDateString();
+                ViewBag.divisionList = getDivisionSelectList();
+                ViewBag.dbtableList = getDbTableSelectList();
+                return View(searchHist.ToList());
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+
+        //
+        // POST: Manager/viewHistory
+        //
+        [HttpPost]
+        public ActionResult viewHistory(DateTime start, DateTime end, string division = null, string un = null, string dbtable = null)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
+            {
+                IEnumerable<History> searchHist = from h in HistoryDB.HistoryList
+                                                  where h.timestamp >= start
+                                                  where h.timestamp <= end
+                                                  select h;
+
+                if ( (division != null)&&(division.CompareTo("All") != 0) )
+                {
+                    IEnumerable<SelectListItem> names = getDivisionEmployeeSelectList(division);
+                    List<History> tmpList = new List<History>();
+                    foreach (var item in names)
+                    {
+                        var name = from h in searchHist
+                                   where (h.username.CompareTo(item.Value) == 0)
+                                   select h;
+                        foreach (var nameObj in name)
+                        {
+                            tmpList.Add(nameObj);
+                        }
+                    }
+                    searchHist = (IEnumerable<History>)tmpList;
+                }
+
+                if ((un != null) && (un.CompareTo("All") != 0))
+                {
+                    searchHist = from h in searchHist
+                                 where (h.username.CompareTo(un) == 0)
+                                 select h;
+                }
+
+                if ( (dbtable != null)&&(dbtable.CompareTo("All") != 0) )
+                {
+                    searchHist = from h in searchHist
+                                 where (h.dbtable.CompareTo(dbtable) == 0)
+                                 select h;
+                }
+
+                ViewBag.start = start.ToShortDateString();
+                ViewBag.end = end.ToShortDateString();
+                ViewBag.divisionList = getDivisionSelectList();
+                ViewBag.dbtableList = getDbTableSelectList();
                 return View(searchHist.ToList());
             }
             else

@@ -59,7 +59,7 @@ namespace TARS.Models
                         hist.type = "modified";
                         break;
                 }
-                hist.dbtable = "PcaCode";
+                hist.dbtable = "PcaCodes";
                 hist.change = "pcaCode: " + entry.Property(u => u.code).CurrentValue +
                               "; description: " + entry.Property(u => u.description).CurrentValue +
                               "; division: " + entry.Property(u => u.division).CurrentValue +

@@ -458,7 +458,7 @@ namespace TARS.Controllers
                 foreach (var copiedHours in resultHours)
                 {
                     copiedHours.hours = 0;
-                    copiedHours.timestamp = DateTime.Now;
+                    copiedHours.timestamp = DateTime.Now.StartOfWeek(DayOfWeek.Sunday);
                     addHours(copiedHours);
                 }
                 return RedirectToAction("viewTimesheet", new { tsDate = DateTime.Now });
@@ -698,11 +698,8 @@ namespace TARS.Controllers
                 var searchDivisions = from m in DivisionsDB.DivisionsList
                                       select m;
 
-                divList.Add(new SelectListItem
-                {
-                    Text = "All",
-                    Value = "All"
-                });
+                divList.Add(new SelectListItem { Text = "All", Value = "All" });
+
                 foreach (var item in searchDivisions)
                 {
                     divList.Add(new SelectListItem
@@ -979,23 +976,6 @@ namespace TARS.Controllers
         // GET: /User/storeFile
         //Unimplemented
         public virtual ActionResult storeFile()
-        {
-            Authentication auth = new Authentication();
-            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
-            {
-                return null;
-            }
-            else
-            {
-                return View("notLoggedOn");
-            }
-        }
-
-
-        //
-        // GET: /User/viewHistory
-        //Unimplemented
-        public virtual ActionResult viewHistory()
         {
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
