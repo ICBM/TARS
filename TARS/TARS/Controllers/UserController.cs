@@ -741,12 +741,16 @@ namespace TARS.Controllers
         public virtual string getWePcaCodesString(string weDesc)
         {
             PcaCode tmpPca = new PcaCode();
+            WorkEffort we = new WorkEffort();
             string pcaString = "";
 
             var searchWe = from w in WorkEffortDB.WorkEffortList
                            where (w.description.CompareTo(weDesc) == 0)
                            select w;
-            WorkEffort we = searchWe.First();
+            foreach (var item in searchWe)
+            {
+                we = item;
+            }
             var searchPcaWe = from m in PCA_WEDB.PCA_WEList
                               where m.WE == we.ID
                               select m;

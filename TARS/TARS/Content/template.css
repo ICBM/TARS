@@ -48,6 +48,8 @@ body {
 fieldset
 {
     display: inline-block;
+    zoom:1; 
+    *display: inline; 
 }
 
 

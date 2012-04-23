@@ -838,6 +838,7 @@ namespace TARS.Controllers
                 ViewBag.start = start.ToShortDateString();
                 ViewBag.end = end.ToShortDateString();
                 ViewBag.divisionList = getDivisionSelectList();
+                ViewBag.employeeList = getDivisionEmployeeSelectList();
                 ViewBag.dbtableList = getDbTableSelectList();
                 return View(searchHist.ToList());
             }
@@ -896,6 +897,7 @@ namespace TARS.Controllers
                 ViewBag.start = start.ToShortDateString();
                 ViewBag.end = end.ToShortDateString();
                 ViewBag.divisionList = getDivisionSelectList();
+                ViewBag.employeeList = getDivisionEmployeeSelectList(division);
                 ViewBag.dbtableList = getDbTableSelectList();
                 return View(searchHist.ToList());
             }

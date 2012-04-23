@@ -27,7 +27,7 @@
                 <td>
                     <div class="editor-label"><b>Database Table</b></div>
                     <div class="editor-field"> 
-                        @Html.DropDownList("dbtable", (List<SelectListItem>)ViewBag.dbtableList, "--- All ---", null)          
+                        @Html.DropDownList("dbtable", (List<SelectListItem>)ViewBag.dbtableList)          
                     </div>     
                 </td>
             </tr>
@@ -38,13 +38,13 @@
                 <td>
                     <div class="editor-label"><b>Division</b></div>
                     <div class="editor-field"> 
-                        @Html.DropDownList("division", (List<SelectListItem>)ViewBag.divisionList, "--- All ---")          
+                        @Html.DropDownList("division", (List<SelectListItem>)ViewBag.divisionList)          
                     </div>     
                 </td>
                 <td>
                     <div class="editor-label"><b>Employee</b></div>
                     <div class="editor-field"> 
-                        @Html.DropDownList("un", Enumerable.Empty<SelectListItem>())
+                        @Html.DropDownList("un", (List<SelectListItem>)ViewBag.employeeList)
                     </div>
                 </td>
             </tr>
