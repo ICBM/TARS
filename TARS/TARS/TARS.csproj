@@ -156,6 +156,7 @@
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\DatePickerReady.js" />
+    <Content Include="Scripts\Modal.js" />
     <Content Include="Scripts\modernizr-1.7.js" />
     <Content Include="Scripts\modernizr-1.7.min.js" />
     <Content Include="Web.config">
@@ -263,6 +264,7 @@
     <Content Include="Views\Shared\_viewTimesheetPartial.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Date.cshtml" />
     <Content Include="Views\Manager\viewHistory.cshtml" />
+    <Content Include="Views\User\_showWorkOnWorkEffort.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

@@ -1,0 +1,54 @@
+﻿@model IEnumerable<TARS.Models.Hours>
+
+<fieldset>
+<table class="timesheet">
+    <tr>
+        <th>
+            WorkEffort
+        </th>
+        <th>
+            WorkType            
+        </th>
+        <th>
+            Date
+        </th>
+        <th>
+            Hours
+        </th>
+    </tr>
+
+    @if (Model != null)
+    {
+        double total = 0;
+        foreach (var item in Model)
+        {
+            if (item.hours > 0)
+            {
+                <tr>
+                    <td class="description">
+                        @Html.Action("getWeDescription", "User", new { id = item.workEffortID })
+                    </td>
+                    <td class="description">
+                        @item.description
+                    </td>
+                    <td>
+                        @item.timestamp.ToShortDateString()
+                    </td>
+                    <td>
+                        @{total += item.hours;}
+                        @item.hours
+                    </td>
+                </tr>
+            }
+        }
+        <tr>
+            <td class="empty"></td>
+            <td class="empty"></td>
+            <td class="empty"></td>
+            <td class="weekTotal">
+                @total
+            </td>
+        </tr>
+    }
+</table>
+</fieldset>

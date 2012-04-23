@@ -609,6 +609,24 @@ namespace TARS.Controllers
 
 
         //
+        //Shows the hours logged to a specific work effort over specific date range
+        public virtual ActionResult showWorkOnWorkEffort(int we, DateTime start, DateTime end, string userName)
+        {
+            if (Request.IsAjaxRequest())
+            {
+                var hrsList = from h in HoursDB.HoursList
+                                      where (h.creator.CompareTo(userName) == 0)
+                                      where h.workEffortID == we
+                                      where h.timestamp >= start
+                                      where h.timestamp <= end
+                                      select h;
+                return PartialView("_showWorkOnWorkEffort", hrsList.ToList());
+            }
+            return null;
+        }
+
+
+        //
         // GET: /User/submitTimesheet
         //changes timesheet submitted status to true
         public virtual ActionResult submitTimesheet(int id)

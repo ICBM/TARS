@@ -182,11 +182,34 @@
         <tr>
             <td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td>
             <td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td>
-            <td class="empty"></td><td class="weekTotal">@combinedTotal</td>
+            <td class="empty"></td>
+            <td class="weekTotal">@combinedTotal</td>
         </tr>            
     }
 </table>
+<br />
+<br />
+<br />
+View my work on @Html.DropDownList("viewEffort", (List<SelectListItem>)ViewBag.workEffortList, "--- Work Effort ---", null) from @Html.TextBox("start") to @Html.TextBox("end")
+<button id="viewWorkButton">View</button>
 
+
+
+
+<!-- pop-up calendars -->
+<script type="text/javascript">
+    $('#start').datepicker({
+        changeMonth: true,
+        changeYear: true,
+        yearRange: 'c-10:c+20'
+    });
+
+    $('#end').datepicker({
+        changeMonth: true,
+        changeYear: true,
+        yearRange: 'c-10:c+20'
+    });
+</script>
 
 
 <!-- Populates Work Type dropdown according to Work Effort that was selected -->
@@ -269,15 +292,24 @@
                 e.preventDefault();
             });
 
+            //Show work on work effort over specified date range using a modal popup
+            $("#viewWorkButton").click(function () {
+                var link = '@Url.Action("showWorkOnWorkEffort", "User")';
+                var wEffort = $('#viewEffort').val();
+                var startDate = $('#start').val();
+                var endDate = $('#end').val();
+                var uName = '@ViewBag.timesheet.worker';
+                $.get(link, { we: wEffort, start: startDate, end: endDate, userName: uName }, function (result) {
+                    modal.open({ content: result });
+                });
+                e.preventDefault();
+            });
+
             /*******************************************************************
             **       The rest of this script is for the Modal Popup           **
             *******************************************************************/
             var modal = (function () {
-                var method = {},
-            $overlay,
-            $modal,
-            $modalContent,
-            $modalClose;
+                var method = {}, $overlay, $modal, $modalContent, $modalClose;
 
                 // Center the modal in the viewport
                 method.center = function () {
