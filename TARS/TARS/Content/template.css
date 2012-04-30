@@ -48,6 +48,7 @@ body {
 fieldset
 {
     display: inline-block;
+    /* the next two lines make it work in IE7 */
     zoom:1; 
     *display: inline; 
 }

@@ -97,9 +97,9 @@ namespace TARS.Controllers
                         ViewBag.timesheetLockedFlag = tsLockedFlag;
                         ViewBag.adminFlag = adminFlag;
                         ViewBag.userName = User.Identity.Name;
-                        ViewBag.divisionList = getDivisionSelectList();
                         return View(newhours);
                     }
+
                     //make sure that only Admin can add hours to locked timesheets
                     if ((tsLockedFlag == true) && (adminFlag == false))
                     {

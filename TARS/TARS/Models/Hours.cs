@@ -16,9 +16,12 @@ namespace TARS.Models
     {
         public int ID { get; set; } //DB iterator
         public int workEffortID { get; set; }
-        public double hours { get; set; }
-        public string description { get; set; } //User input
+        public string description { get; set; } 
         public string creator { get; set; }
+
+        [Required]
+        [Range(0, 24, ErrorMessage = "Must be 24 hours or less")]
+        public double hours { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime timestamp { get; set; }
