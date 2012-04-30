@@ -27,16 +27,16 @@
                 </p>            
             }
 
-            @if (ViewBag.workType != null){
+            @if (ViewBag.timeCode != null){
                 <p>
-                <div class="editor-label"><b>Work Type</b></div>
-                @ViewBag.workType
-                @Html.Hidden("description", (string)ViewBag.workType) 
+                <div class="editor-label"><b>Time Code</b></div>
+                @ViewBag.timeCode
+                @Html.Hidden("description", (string)ViewBag.timeCode) 
                 </p> 
             }
             else{                   
                 <p>
-                <div class="editor-label"><b>Choose Work Type</b></div>
+                <div class="editor-label"><b>Choose Time Code</b></div>
                 <div class="editor-field">
                     @Html.DropDownListFor(model => model.description, Enumerable.Empty<SelectListItem>(), "--Select--")
                 </div>
@@ -95,13 +95,13 @@ else
 <script type="text/javascript">
     $('#workEffortID').change(function () {
         var selectedWorkEffort = $(this).val();
-        $.getJSON('@Url.Action("jsonWorkTypeSelectList")', { weID: selectedWorkEffort }, function (worktypes) {
-            var workTypeSelect = $('#description');
-            workTypeSelect.empty();
-            $.each(worktypes, function (index, wType) {
-                workTypeSelect.append($('<option/>', {
-                    value: wType.value,
-                    text: wType.text
+        $.getJSON('@Url.Action("jsonTimeCodeSelectList")', { weID: selectedWorkEffort }, function (timecodes) {
+            var timeCodeSelect = $('#description');
+            timeCodeSelect.empty();
+            $.each(timecodes, function (index, tCode) {
+                timeCodeSelect.append($('<option/>', {
+                    value: tCode.value,
+                    text: tCode.text
                 }));
             });
         });

@@ -55,7 +55,7 @@ namespace TARS.Models
                 }
                 hist.dbtable = "Hours";
                 hist.change = "workEffortID: " + entry.Property(u => u.workEffortID).CurrentValue +
-                              "; workType: " + entry.Property(u => u.description).CurrentValue +
+                              "; timeCode: " + entry.Property(u => u.description).CurrentValue +
                               "; hours: " + entry.Property(u => u.hours).CurrentValue +
                               "; date: " + entry.Property(u => u.timestamp).CurrentValue.ToShortDateString() +
                               "; creator: " + entry.Property(u => u.creator).CurrentValue;

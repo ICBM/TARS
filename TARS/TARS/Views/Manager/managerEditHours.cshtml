@@ -26,9 +26,9 @@
             @Html.HiddenFor(model => model.workEffortID)
 
             <p>
-            <div class="editor-label"><b>Work Type</b></div>
+            <div class="editor-label"><b>Time Code</b></div>
             <div class="editor-field">
-                @Html.DropDownListFor(model => model.description, new SelectList(ViewBag.workTypeList, Model))
+                @Html.DropDownListFor(model => model.description, new SelectList(ViewBag.timeCodeList, Model))
             </div>
             </p>
 

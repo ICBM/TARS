@@ -7,7 +7,7 @@
             WorkEffort
         </th>
         <th>
-            WorkType            
+            TimeCode            
         </th>
         <th>
             SUN
@@ -40,7 +40,7 @@
     {
         foreach (var item in Model)
         {
-            double total = 0;    <!-- for displaying hours on a workEffort/workType for the week -->  
+            double total = 0;    <!-- for displaying hours on a workEffort/timeCode for the week -->  
            
             <tr class="timesheetRow">
                 <td class="effortDescription" title="PCA code(s): @Html.Action("getWePcaCodesString", "User", new {weDesc = item.workeffort})">
@@ -48,8 +48,8 @@
                     @Html.DisplayFor(modelItem => item.workeffort)
                 </td>
                 <td class="description">
-                    @Html.HiddenFor(modelItem => item.worktype)
-                    @Html.DisplayFor(modelItem => item.worktype)
+                    @Html.HiddenFor(modelItem => item.timecode)
+                    @Html.DisplayFor(modelItem => item.timecode)
                 </td>
                 <td class="days" title="@Html.Action("getTimesheetDayCellTitle", "User", new {ts = ViewBag.timesheet})">
                     @if (item.sunHours != null)
@@ -61,7 +61,7 @@
                     else
                     {
                         @Html.Hidden("wEffort", item.workeffort)
-                        @Html.Hidden("wType", item.worktype)
+                        @Html.Hidden("wType", item.timecode)
                         @Html.Hidden("hrsDate", (DateTime)ViewBag.timesheet.periodStart)
                         <html> 0 </html>
                     }
@@ -74,7 +74,7 @@
                     }
                     else{
                         @Html.Hidden("wEffort", item.workeffort)
-                        @Html.Hidden("wType", item.worktype)
+                        @Html.Hidden("wType", item.timecode)
                         @Html.Hidden("hrsDate", (DateTime)ViewBag.timesheet.periodStart.AddDays(1))                            
                         <html> 0 </html>
                     }
@@ -87,7 +87,7 @@
                     }
                     else{
                         @Html.Hidden("wEffort", item.workeffort)
-                        @Html.Hidden("wType", item.worktype)
+                        @Html.Hidden("wType", item.timecode)
                         @Html.Hidden("hrsDate", (DateTime)ViewBag.timesheet.periodStart.AddDays(2))                             
                         <html> 0 </html>
                     }
@@ -100,7 +100,7 @@
                     }
                     else{
                         @Html.Hidden("wEffort", item.workeffort)
-                        @Html.Hidden("wType", item.worktype)
+                        @Html.Hidden("wType", item.timecode)
                         @Html.Hidden("hrsDate", (DateTime)ViewBag.timesheet.periodStart.AddDays(3))                             
                         <html> 0 </html>
                     }
@@ -113,7 +113,7 @@
                     }
                     else{
                         @Html.Hidden("wEffort", item.workeffort)
-                        @Html.Hidden("wType", item.worktype)
+                        @Html.Hidden("wType", item.timecode)
                         @Html.Hidden("hrsDate", (DateTime)ViewBag.timesheet.periodStart.AddDays(4))                             
                         <html> 0 </html>
                     }
@@ -126,7 +126,7 @@
                     }
                     else{
                         @Html.Hidden("wEffort", item.workeffort)
-                        @Html.Hidden("wType", item.worktype)
+                        @Html.Hidden("wType", item.timecode)
                         @Html.Hidden("hrsDate", (DateTime)ViewBag.timesheet.periodStart.AddDays(5))                             
                         <html> 0 </html>
                     }
@@ -139,7 +139,7 @@
                     }
                     else{
                         @Html.Hidden("wEffort", item.workeffort)
-                        @Html.Hidden("wType", item.worktype)
+                        @Html.Hidden("wType", item.timecode)
                         @Html.Hidden("hrsDate", (DateTime)ViewBag.timesheet.periodStart.AddDays(6))                             
                         <html> 0 </html>
                     }
@@ -168,9 +168,9 @@
             <td>
                 @Html.DropDownList("workEffortID", (List<SelectListItem>)ViewBag.workEffortList, "--- Add a Work Effort ---")
             </td>
-            <!-- Display a dropdown list to add a work type -->
+            <!-- Display a dropdown list to add a time code -->
             <td>
-                @Html.DropDownList("workType", Enumerable.Empty<SelectListItem>(), "--- Work Type ---")
+                @Html.DropDownList("timeCode", Enumerable.Empty<SelectListItem>(), "--- Time Code ---")
             </td>
             <td class="empty"></td><td class="empty"></td><td class="empty"></td>
             <td class="empty"></td><td class="empty"></td><td class="empty"></td>
@@ -187,43 +187,21 @@
         </tr>            
     }
 </table>
-<br />
-<br />
-<br />
-View my work on @Html.DropDownList("viewEffort", (List<SelectListItem>)ViewBag.workEffortList, "--- Work Effort ---", null) from @Html.TextBox("start") to @Html.TextBox("end")
-<button id="viewWorkButton">View</button>
 
 
 
-
-<!-- pop-up calendars -->
-<script type="text/javascript">
-    $('#start').datepicker({
-        changeMonth: true,
-        changeYear: true,
-        yearRange: 'c-10:c+20'
-    });
-
-    $('#end').datepicker({
-        changeMonth: true,
-        changeYear: true,
-        yearRange: 'c-10:c+20'
-    });
-</script>
-
-
-<!-- Populates Work Type dropdown according to Work Effort that was selected -->
+<!-- Populates Time Code dropdown according to Work Effort that was selected -->
 <script type="text/javascript">
     $(document).ready(function () {
         $('#workEffortID').change(function () {
             var selectedWorkEffort = $(this).val();
-            $.getJSON('@Url.Action("jsonWorkTypeSelectList")', { weID: selectedWorkEffort }, function (worktypes) {
-                var workTypeSelect = $('#workType');
-                workTypeSelect.empty();
-                $.each(worktypes, function (index, wType) {
-                    workTypeSelect.append($('<option/>', {
-                        value: wType.value,
-                        text: wType.text
+            $.getJSON('@Url.Action("jsonTimeCodeSelectList")', { weID: selectedWorkEffort }, function (timecodes) {
+                var timeCodeSelect = $('#timeCode');
+                timeCodeSelect.empty();
+                $.each(timecodes, function (index, tCode) {
+                    timeCodeSelect.append($('<option/>', {
+                        value: tCode.value,
+                        text: tCode.text
                     }));
                 });
             });
@@ -232,10 +210,10 @@ View my work on @Html.DropDownList("viewEffort", (List<SelectListItem>)ViewBag.w
 </script>
 
 
-<!-- Adds the specified Work Effort and Work Type to the user's timesheet when they click on a Work Type -->
+<!-- Adds the specified Work Effort and Time Code to the user's timesheet when they click on a Time Code -->
 <script type="text/javascript">
-    $('#workType').change(function () {
-        var selectedWorkType = $(this).val();
+    $('#timeCode').change(function () {
+        var selectedTimeCode = $(this).val();
         $.ajax({
             url: '@Url.Action("addHours")',
             type: "POST",
@@ -244,7 +222,7 @@ View my work on @Html.DropDownList("viewEffort", (List<SelectListItem>)ViewBag.w
 			    workEffortID: $('#workEffortID').val(),
 			    hours: 0,
 			    timestamp: '@ViewBag.timesheet.periodStart',
-			    description: selectedWorkType,
+			    description: selectedTimeCode,
 			    creator: '@ViewBag.timesheet.worker'
 			},
             success: function () {

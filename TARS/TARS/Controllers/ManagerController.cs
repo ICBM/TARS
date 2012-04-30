@@ -105,7 +105,7 @@ namespace TARS.Controllers
 
                 //create a list of lists for pca codes
                 //(each work effort will have a list of PCA codes)
-                ViewBag.pcaListOfLists = new List<List<int>>();
+                ViewBag.pcaListOfLists = new List<List<string>>();
                 foreach (var item in workEffortList)
                 {
                     ViewBag.pcaListOfLists.Add(getWePcaCodesList(item));
@@ -575,7 +575,7 @@ namespace TARS.Controllers
                 ViewBag.adminFlag = adminFlag;
                 ViewBag.userName = timesheet.worker;
                 ViewBag.workEffort = we;
-                ViewBag.workTypeList = getWorkTypeList();
+                ViewBag.timeCodeList = getTimeCodeList();
                 return View(hours);
             }
             else
@@ -649,9 +649,9 @@ namespace TARS.Controllers
 
         // 
         //Returns PCA Codes as a selection list
-        public virtual List<string> getDivisionPcaCodeList(string division)
+        public virtual List<SelectListItem> getDivisionPcaCodeList(string division)
         {
-            List<string> pcaCodesList = new List<string>();
+            List<SelectListItem> pcaCodesList = new List<SelectListItem>();
             var searchPcaCodes = from m in PcaCodeDB.PcaCodeList
                                  select m;
             if (division.CompareTo("All") != 0)
@@ -662,7 +662,11 @@ namespace TARS.Controllers
             }
             foreach (var item in searchPcaCodes)
             {
-                pcaCodesList.Add(item.code.ToString());
+                pcaCodesList.Add(new SelectListItem
+                {   
+                    Text = item.code.ToString() + " (" + item.division + ")", 
+                    Value = item.code.ToString()
+                });
             }
             return pcaCodesList;
         }
@@ -912,9 +916,9 @@ namespace TARS.Controllers
         //
         public ActionResult jsonPcaSelectList(string division)
         {
-            IEnumerable<string> pcaList = getDivisionPcaCodeList(division);
+            IEnumerable<SelectListItem> pcaList = getDivisionPcaCodeList(division);
 
-            return Json(pcaList.Select(x => new { value = x, text = x }),
+            return Json(pcaList.Select(x => new { value = x.Value, text = x.Text }),
                         JsonRequestBehavior.AllowGet
                         );
         }

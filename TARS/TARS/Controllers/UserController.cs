@@ -43,7 +43,7 @@ namespace TARS.Controllers
         //
         // GET: /User/addHours
         //Adds hours to a work effort
-        public virtual ActionResult addHours(DateTime hrsDate, int userKeyID = 0, string we = null, string wt = null)
+        public virtual ActionResult addHours(DateTime hrsDate, int userKeyID = 0, string we = null, string tc = null)
         {
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
@@ -60,7 +60,7 @@ namespace TARS.Controllers
                 {
                     ViewBag.date = hrsDate;
                     ViewBag.workEffort = we;
-                    ViewBag.workType = wt;
+                    ViewBag.timeCode = tc;
                     return PartialView("_addHoursPartial");
                 }
                 return View();
@@ -240,10 +240,10 @@ namespace TARS.Controllers
                 }
 
                 var workEffortList = WorkEffortDB.WorkEffortList.ToList();
-                //create a list of lists for pca codes and work types
-                //(each work effort will have a list of PCA codes and a list work types)
-                ViewBag.pcaListOfLists = new List<List<int>>();
-                ViewBag.workTypesListOfLists = new List<List<string>>();
+                //create a list of lists for pca codes and time codes
+                //(each work effort will have a list of PCA codes and a list of time codes)
+                ViewBag.pcaListOfLists = new List<List<string>>();
+                ViewBag.timeCodesListOfLists = new List<List<string>>();
                 foreach (var item in workEffortList)
                 {
                     ViewBag.pcaListOfLists.Add(getWePcaCodesList(item));
@@ -303,7 +303,7 @@ namespace TARS.Controllers
                 ViewBag.adminFlag = adminFlag;
                 ViewBag.timesheetLockedFlag = isTimesheetLocked(hours.creator, hours.timestamp);
                 ViewBag.workEffort = we;
-                ViewBag.workTypeList = getWorkTypeList();
+                ViewBag.timeCodeList = getTimeCodeList();
                 ViewBag.userKeyID = userKeyID;
 
                 if (Request.IsAjaxRequest())
@@ -349,8 +349,8 @@ namespace TARS.Controllers
 
 
         //
-        /* Removes all the zero hours entries for the given workEffort/workType pair for the
-         * week on the user's timesheet. This results in that workEffort/workType pair being
+        /* Removes all the zero hours entries for the given workEffort/timeCode pair for the
+         * week on the user's timesheet. This results in that workEffort/timeCode pair being
          * removed from the viewTimesheet View
         */
         [HttpPost]
@@ -513,52 +513,52 @@ namespace TARS.Controllers
 
         //
         //
-        //Returns list of objects that each contain hours for Sun-Sat for each workEffort/workType pairing
+        //Returns list of objects that each contain hours for Sun-Sat for each workEffort/timeCode pairing
         public List<TimesheetRow> convertHoursForTimesheetView()
         {
             WorkEffort effort = new WorkEffort();
             string effortDescription = "";
             IEnumerable<Hours> hoursList = (IEnumerable<Hours>)TempData["hoursList"];
             List<WorkEffort> workEffortList = new List<WorkEffort>();
-            List<string> workTypeList = new List<string>();
-            List<string> effortTypeConcat = new List<string>();
+            List<string> timeCodeList = new List<string>();
+            List<string> effortAndCodeConcat = new List<string>();
             List<TimesheetRow> tsRowList = new List<TimesheetRow>();
-            //create a list of workEffort/workType pairings for the pay period
+            //create a list of workEffort/timeCode pairings for the pay period
             foreach (var item in hoursList)
             {
                 effort = WorkEffortDB.WorkEffortList.Find(item.workEffortID);
                 workEffortList.Add(effort);
-                workTypeList.Add(item.description);
-                effortTypeConcat.Add(effort.description + "::::" + item.description);
+                timeCodeList.Add(item.description);
+                effortAndCodeConcat.Add(effort.description + "::::" + item.description);
             }
             //remove duplicates from the list
-            effortTypeConcat = effortTypeConcat.Distinct().ToList();
+            effortAndCodeConcat = effortAndCodeConcat.Distinct().ToList();
 
-            //for each unique workEffort/workType pairing
-            foreach (var effortAndType in effortTypeConcat)
+            //for each unique workEffort/timeCode pairing
+            foreach (var effortAndCode in effortAndCodeConcat)
             {
                 TimesheetRow tmpTsRow = new TimesheetRow();
 
-                /* save the work effort description and type, then remove from the front of the list.
-                 * In the process, any duplicate pairs are ignored and removed by comparing to effortTypeConcat
+                /* save the work effort description and time code, then remove from the front of the list.
+                 * In the process, any duplicate pairs are ignored and removed by comparing to effortAndCodeConcat
                  */
                 for (int count = 0; count < 100; count++)
                 {
                     try
                     {
-                        if ((effortAndType.Contains(workEffortList.First().description)) &&
-                             (effortAndType.Contains(workTypeList.First())))
+                        if ((effortAndCode.Contains(workEffortList.First().description)) &&
+                             (effortAndCode.Contains(timeCodeList.First())))
                         {
                             tmpTsRow.workeffort = workEffortList.First().description;
-                            tmpTsRow.worktype = workTypeList.First();
+                            tmpTsRow.timecode = timeCodeList.First();
                             workEffortList.RemoveAt(0);
-                            workTypeList.RemoveAt(0);
+                            timeCodeList.RemoveAt(0);
                             break;
                         }
                         else
                         {
                             workEffortList.RemoveAt(0);
-                            workTypeList.RemoveAt(0);
+                            timeCodeList.RemoveAt(0);
                         }
                     }
                     catch
@@ -570,8 +570,8 @@ namespace TARS.Controllers
                 foreach (var tmpVal in hoursList)
                 {
                     effortDescription = getWeDescription(tmpVal.workEffortID);
-                    //if the hours entry belongs to the unique workEffort/workType pairing
-                    if ((effortAndType.CompareTo(effortDescription + "::::" + tmpVal.description) == 0))
+                    //if the hours entry belongs to the unique workEffort/timeCode pairing
+                    if ((effortAndCode.CompareTo(effortDescription + "::::" + tmpVal.description) == 0))
                     {
                         switch (tmpVal.timestamp.DayOfWeek.ToString())
                         {
@@ -737,9 +737,9 @@ namespace TARS.Controllers
 
         // 
         //Returns list of PCA codes associated with the specified work effort
-        public virtual List<int> getWePcaCodesList(WorkEffort we)
+        public virtual List<string> getWePcaCodesList(WorkEffort we)
         {
-            List<int> pcaList = new List<int>();
+            List<string> pcaList = new List<string>();
             PcaCode tmpPca = new PcaCode();
 
             var searchPcaWe = from m in PCA_WEDB.PCA_WEList
@@ -748,7 +748,7 @@ namespace TARS.Controllers
             foreach (var item in searchPcaWe)
             {
                 tmpPca = PcaCodeDB.PcaCodeList.Find(item.PCA);
-                pcaList.Add(tmpPca.code);
+                pcaList.Add(tmpPca.code + " (" + tmpPca.division + ")");
             }
             return pcaList;
         }
@@ -784,17 +784,17 @@ namespace TARS.Controllers
 
         // 
         //Returns a list of all Earnings Code Descriptions
-        public virtual List<string> getWorkTypeList()
+        public virtual List<string> getTimeCodeList()
         {
-            List<string> workTypesList = new List<string>();
+            List<string> timeCodesList = new List<string>();
             var searchEarnCodes = from m in EarningsCodesDB.EarningsCodesList
                                   select m;
-            workTypesList.Add("--- Choose a Work Type ---");
+            timeCodesList.Add("--- Choose a Time Code ---");
             foreach (var item in searchEarnCodes)
             {
-                workTypesList.Add(item.earningsCode + " " + item.description);
+                timeCodesList.Add(item.earningsCode + " " + item.description);
             }
-            return workTypesList;
+            return timeCodesList;
         }
 
 
@@ -984,9 +984,9 @@ namespace TARS.Controllers
 
         //
         //
-        public ActionResult jsonWorkTypeSelectList()
+        public ActionResult jsonTimeCodeSelectList()
         {
-            IEnumerable<string> weSelectList = getWorkTypeList();
+            IEnumerable<string> weSelectList = getTimeCodeList();
 
             return Json(weSelectList.Select(x => new { value = x, text = x }),
                         JsonRequestBehavior.AllowGet

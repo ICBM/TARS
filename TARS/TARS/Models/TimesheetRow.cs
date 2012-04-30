@@ -8,7 +8,7 @@ namespace TARS.Models
     public class TimesheetRow
     {
         public string workeffort { get; set; }
-        public string worktype { get; set; }
+        public string timecode { get; set; }
         public Hours sunHours { get; set; }
         public Hours monHours { get; set; }
         public Hours tueHours { get; set; }
@@ -21,6 +21,6 @@ namespace TARS.Models
     public class wEffort_wType
     {
         public string workeffort { get; set; }
-        public string worktype { get; set; }
+        public string timecode { get; set; }
     }
 }
