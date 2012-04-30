@@ -50,6 +50,10 @@
         <div class="editor-field">
             @Html.EditorFor(model => model.endDate)
             @Html.ValidationMessageFor(model => model.endDate)
+            @if (ViewBag.endBeforeStartFlag == true)
+            {
+                <html>End date can't be before start date</html>
+            }
         </div>
         </p>
 

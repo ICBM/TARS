@@ -88,6 +88,14 @@ namespace TARS.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    //make sure the start date is before the end date
+                    if (pcacode.startDate > pcacode.endDate)
+                    {
+                        ViewBag.endBeforeStartFlag = true;
+                        ViewBag.divisionList = getDivisionSelectList();
+                        return View(pcacode);
+                    }                    
+
                     //make sure the pca code doesn't already exist in the same division
                     if (pcaCheckIfDuplicate(pcacode) == false)
                     {
@@ -119,8 +127,7 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
             {
-                PcaCode pcacode = new PcaCode();
-                pcacode = PcaCodeDB.PcaCodeList.Find(id);
+                PcaCode pcacode = PcaCodeDB.PcaCodeList.Find(id);
                 ViewBag.divisionList = getDivisionSelectList();
                 return View(pcacode);
             }
@@ -140,9 +147,11 @@ namespace TARS.Controllers
             if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
             {
                 //make sure startDate is prior to endDate 
-                if (pcacode.startDate.CompareTo(pcacode.endDate) > 0)
+                if (pcacode.startDate > pcacode.endDate)
                 {
-                    return View("error");
+                    ViewBag.endBeforeStartFlag = true;
+                    ViewBag.divisionList = getDivisionSelectList();
+                    return View(pcacode);
                 }
                 TempData["tmpPcaCode"] = pcacode;
                 return RedirectToAction("confirmEditPCA");

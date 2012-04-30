@@ -61,7 +61,7 @@
         {
             if (ViewBag.timesheet.submitted == false)
             {
-                <div style="text-align:center;">
+                <div style="float:right;">
                 @Html.ActionLink("SAVE ", "saveTimesheet", new { id = (int)ViewBag.timesheet.ID })
                 <html> | </html>                
                 @Html.ActionLink(" SUBMIT ", "submitTimesheet", new { id = (int)ViewBag.timesheet.ID })

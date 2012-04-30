@@ -166,6 +166,14 @@ namespace TARS.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    //make sure the start date is before the end date
+                    if (workeffort.startDate > workeffort.endDate)
+                    {
+                        ViewBag.divisionList = getDivisionSelectList();
+                        ViewBag.endBeforeStartFlag = true;
+                        return View(workeffort);
+                    }
+
                     //make sure it falls within it's associated PCA code's time boundaries
                     if (verifyWeTimeBounds(workeffort, workeffort.pcaCode) == true)
                     {
@@ -208,8 +216,6 @@ namespace TARS.Controllers
             {
                 WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
                 ViewBag.pcaList = getWePcaCodesList(workeffort);
-                string division = getUserDivision();
-                ViewBag.divisionName = division;
 
                 Authentication newAuth = new Authentication();
                 if (newAuth.isAdmin(this))
@@ -235,6 +241,19 @@ namespace TARS.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    //make sure the start date is before the end date
+                    if (workeffort.startDate > workeffort.endDate)
+                    {
+                        ViewBag.endBeforeStartFlag = true;
+                        ViewBag.pcaList = getWePcaCodesList(workeffort);
+                        Authentication newAuth = new Authentication();
+                        if (newAuth.isAdmin(this))
+                        {
+                            ViewBag.adminFlag = true;
+                        }
+                        return View(workeffort);
+                    }
+
                     //make sure it falls within it's associated PCA code's time boundaries
                     if (verifyWeTimeBounds(workeffort, workeffort.pcaCode) == true)
                     {
@@ -247,7 +266,6 @@ namespace TARS.Controllers
                     {
                         ViewBag.notWithinTimeBounds = true;
                         ViewBag.pcaList = getWePcaCodesList(workeffort);
-
                         Authentication newAuth = new Authentication();
                         if (newAuth.isAdmin(this))
                         {

@@ -51,6 +51,10 @@
             {
                 <html>Not within the PCA code's time bounds: <b>@Html.Action("getPcaTimeBoundsString", Model.pcaCode) </b></html>
             } 
+            @if (ViewBag.endBeforeStartFlag == true)
+            {
+                <html>End date can't be before start date</html>
+            } 
         </div>
         </p>
 
