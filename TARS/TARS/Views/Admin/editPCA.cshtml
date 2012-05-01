@@ -54,6 +54,10 @@
             {
                 <html>End date can't be before start date</html>
             }
+            @if (ViewBag.duplicatePcaFlag == true)
+            {
+                <html>Dates overlap an existing PCA with the same code in @Model.division</html>
+            }
         </div>
         </p>
 

@@ -166,6 +166,12 @@ namespace TARS.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    //make sure there is an end date
+                    if (workeffort.endDate == null)
+                    {
+                        workeffort.endDate = DateTime.MaxValue;
+                    }
+
                     //make sure the start date is before the end date
                     if (workeffort.startDate > workeffort.endDate)
                     {
@@ -843,7 +849,7 @@ namespace TARS.Controllers
                             select m;
             foreach (var item in searchPCA)
             {
-                bounds = item.startDate.ToShortDateString() + " - " + item.endDate.ToShortDateString();
+                bounds = item.startDate + " - " + item.endDate;
             }
             return bounds;
         }

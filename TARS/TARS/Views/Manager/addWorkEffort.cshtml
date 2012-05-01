@@ -35,16 +35,16 @@
         <p>
         <div class="editor-label"><b>Start Date</b></div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.startDate)
-            @Html.ValidationMessageFor(model => model.startDate)
+            @Html.TextBox("startDate", Model.startDate.HasValue && Model.startDate.Value != DateTime.MinValue ? 
+                    Model.startDate.Value.ToShortDateString() : string.Empty, new { @class = "datefield" })
         </div>
         </p>
 
         <p>
         <div class="editor-label"><b>End Date</b></div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.endDate)
-            @Html.ValidationMessageFor(model => model.endDate)
+            @Html.TextBox("endDate", Model.endDate.HasValue && Model.endDate.Value != DateTime.MaxValue ? 
+                    Model.endDate.Value.ToShortDateString() : string.Empty, new { @class = "datefield" })
             @if (ViewBag.notWithinTimeBounds == true)
             {
                 <html>Not within the PCA code's time bounds: <b>@Html.Action("getPcaTimeBoundsString", Model.pcaCode) </b></html>

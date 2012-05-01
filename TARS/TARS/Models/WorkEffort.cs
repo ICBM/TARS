@@ -19,13 +19,14 @@ namespace TARS.Models
         public bool hidden { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime startDate { get; set; }
+        public DateTime? startDate { get; set; }
         [DataType(DataType.Date)]
-        public DateTime endDate { get; set; }
+        public DateTime? endDate { get; set; }
+
         public WorkEffort()
         {
-            startDate = DateTime.Now;
-            endDate = DateTime.Now;
+            startDate = DateTime.MinValue;
+            endDate = DateTime.MaxValue;
         }
     }
 
@@ -54,12 +55,13 @@ namespace TARS.Models
                         hist.type = "modified";
                         break;
                 }
+
                 hist.dbtable = "WorkEfforts";
                 hist.change = "description: " + entry.Property(u => u.description).CurrentValue +
                               "; comments: " + entry.Property(u => u.comments).CurrentValue +
                               "; pcaCode: " + entry.Property(u => u.pcaCode).CurrentValue +
-                              "; startDate: " + entry.Property(u => u.startDate).CurrentValue.ToShortDateString() +
-                              "; endDate: " + entry.Property(u => u.endDate).CurrentValue.ToShortDateString() +
+                              "; startDate: " + entry.Property(u => u.startDate).CurrentValue +
+                              "; endDate: " + entry.Property(u => u.endDate).CurrentValue +
                               "; hidden: " + entry.Property(u => u.hidden).CurrentValue;
             }
 

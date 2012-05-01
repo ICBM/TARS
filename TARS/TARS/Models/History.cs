@@ -16,8 +16,7 @@ namespace TARS.Models
         public string type { get; set; }
         public string change { get; set; }
         public string dbtable { get; set; }
-
-        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime timestamp { get; set; }
     }
 

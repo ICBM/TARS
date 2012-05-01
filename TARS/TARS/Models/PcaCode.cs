@@ -20,18 +20,19 @@ namespace TARS.Models
         public string division { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime startDate { get; set; }
+        public DateTime? startDate { get; set; }
         [DataType(DataType.Date)]
-        public DateTime endDate { get; set; }
-        public PcaCode()
-        {
-            startDate = DateTime.Now;
-            endDate = DateTime.Now;
-        }
+        public DateTime? endDate { get; set; }
 
         [Required]
-        [Range(10000, 99999, ErrorMessage = "PCA Code must be a 5 digit number")]
+        [Range(10000, 99999, ErrorMessage = "PCA Code must be a 5 digit number beginning with a non-zero")]
         public int code { get; set; }
+
+        public PcaCode()
+        {
+            startDate = DateTime.MinValue;
+            endDate = DateTime.MaxValue;
+        }
     }
 
     public class PcaCodeDBContext : DbContext
@@ -59,12 +60,19 @@ namespace TARS.Models
                         hist.type = "modified";
                         break;
                 }
+
+                //If user didn't enter anything for the endDate
+                if (entry.Property(u => u.endDate).CurrentValue == null)
+                {
+                    entry.Property(u => u.endDate).CurrentValue = DateTime.MaxValue.Date;
+                }
+
                 hist.dbtable = "PcaCodes";
                 hist.change = "pcaCode: " + entry.Property(u => u.code).CurrentValue +
                               "; description: " + entry.Property(u => u.description).CurrentValue +
                               "; division: " + entry.Property(u => u.division).CurrentValue +
-                              "; startDate: " + entry.Property(u => u.startDate).CurrentValue.ToShortDateString() +
-                              "; endDate: " + entry.Property(u => u.endDate).CurrentValue.ToShortDateString();
+                              "; startDate: " + entry.Property(u => u.startDate).CurrentValue +
+                              "; endDate: " + entry.Property(u => u.endDate).CurrentValue;
             }
 
             hist.username = System.Web.HttpContext.Current.User.Identity.Name;

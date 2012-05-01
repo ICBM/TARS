@@ -88,20 +88,26 @@ namespace TARS.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    if (pcacode.endDate == null)
+                    {
+                        pcacode.endDate = DateTime.MaxValue;
+                    }
                     //make sure the start date is before the end date
                     if (pcacode.startDate > pcacode.endDate)
                     {
                         ViewBag.endBeforeStartFlag = true;
                         ViewBag.divisionList = getDivisionSelectList();
                         return View(pcacode);
-                    }                    
+                    }
 
-                    //make sure the pca code doesn't already exist in the same division
+                    /* Make sure that the dates don't overlap if there is another PCA with the same
+                     * code in the same division
+                     */
                     if (pcaCheckIfDuplicate(pcacode) == false)
                     {
                         PcaCodeDB.PcaCodeList.Add(pcacode);
                         PcaCodeDB.SaveChanges();
-                        return RedirectToAction("maintainPCA/");
+                        return RedirectToAction("maintainPCA");
                     }
                     else
                     {
@@ -153,6 +159,17 @@ namespace TARS.Controllers
                     ViewBag.divisionList = getDivisionSelectList();
                     return View(pcacode);
                 }
+                
+                /* Make sure that the dates don't overlap if there is another PCA with the same
+                 * code in the same division
+                 */
+                if (pcaCheckIfDuplicate(pcacode) == true)
+                {
+                    ViewBag.duplicatePcaFlag = true;
+                    ViewBag.divisionList = getDivisionSelectList();
+                    return View(pcacode);
+                }
+
                 TempData["tmpPcaCode"] = pcacode;
                 return RedirectToAction("confirmEditPCA");
             }
@@ -336,13 +353,14 @@ namespace TARS.Controllers
         {
             bool existsFlag = false;
             var searchPca = from p in PcaCodeDB.PcaCodeList
+                            where p.ID != pca.ID
                             where p.code == pca.code
                             where (p.division.CompareTo(pca.division) == 0) 
                             select p;
             foreach (var item in searchPca)
             {
-                //make sure the dates don't overlap
-                if ( (pca.endDate > item.startDate)||(pca.startDate < item.endDate) )
+                //if the date ranges overlap, then set flag to TRUE
+                if ( (pca.startDate <= item.endDate)&&(item.startDate <= pca.endDate) )
                 {
                     existsFlag = true;
                 }

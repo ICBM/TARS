@@ -888,7 +888,7 @@ namespace TARS.Controllers
         public string getWeTimeBoundsString(int id)
         {
             WorkEffort we = WorkEffortDB.WorkEffortList.Find(id);
-            string bounds = we.startDate.ToShortDateString() + " - " + we.endDate.ToShortDateString();
+            string bounds = we.startDate + " - " + we.endDate;
             return bounds;
         }
 

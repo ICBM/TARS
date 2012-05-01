@@ -17,9 +17,9 @@ namespace TARS.Models
         public bool approved { get; set; }
         public bool locked { get; set; }   //can be locked with or without being approved
 
-        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime periodStart { get; set; }
-        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime periodEnd { get; set; }
     }
 
