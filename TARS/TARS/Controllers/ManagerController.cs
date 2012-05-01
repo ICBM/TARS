@@ -63,9 +63,11 @@ namespace TARS.Controllers
 
 
         //
-        //Displays all the employees that work for the specified division, and a link to their timesheets
-        //If division is null, it displays employees in the same division as the manager
-        public virtual ActionResult userManagement(DateTime refDate, string division = null)
+        /* Displays all the employees that work for the specified departement within the Information 
+         * Technology division (as per client request), along with a link to their timesheets. If 
+         * department is null, it displays all employees in the division
+         */
+        public virtual ActionResult userManagement(DateTime refDate, string department = null)
         {
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
@@ -76,16 +78,14 @@ namespace TARS.Controllers
                     ViewBag.emailSentFlag = true;
                     ViewBag.messageRecipient = TempData["recipient"];
                 }
-                if (division == null)
-                {
-                    division = getUserDivision();
-                }
-                IEnumerable<TARSUser> divEmployees = getDivisionEmployeeObjList(division);
+
+                string division = getUserDivision();
+                IEnumerable<TARSUser> employees = getDivisionEmployeeObjList(division, department);
                 ViewBag.division = division;
-                ViewBag.divisionList = getDivisionSelectList();
+                ViewBag.departmentList = getDepartmentSelectList(division);
                 ViewBag.refDate = refDate;
                 ViewBag.refPayPeriod = getPayPeriod(refDate);
-                return View(divEmployees);
+                return View(employees);
             }
             else
             {
@@ -691,9 +691,9 @@ namespace TARS.Controllers
 
 
         // 
-        //Returns list of employees that work for specified division
+        //Returns list of employees that work for specified division and department
         //If division is null, it returns all employees
-        public virtual List<TARSUser> getDivisionEmployeeObjList(string division = null)
+        public virtual List<TARSUser> getDivisionEmployeeObjList(string division = null, string department = null)
         {
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
@@ -703,9 +703,19 @@ namespace TARS.Controllers
                                   select m;
                 if ( (division != null)&&(division.CompareTo("All") != 0) )
                 {
-                    searchUsers = from m in searchUsers
-                                  where (m.company.CompareTo(division) == 0)
-                                  select m;
+                    if ( (department != null)&&(department.CompareTo("All") != 0) )
+                    {
+                        searchUsers = from m in searchUsers
+                                      where (m.company.CompareTo(division) == 0)
+                                      where (m.department.CompareTo(department) == 0)
+                                      select m;
+                    }
+                    else
+                    {
+                        searchUsers = from m in searchUsers
+                                      where (m.company.CompareTo(division) == 0)
+                                      select m;
+                    }
                 }
                 foreach (var item in searchUsers)
                 {
@@ -757,6 +767,38 @@ namespace TARS.Controllers
         }
 
 
+        //
+        //Returns a list of departments in the division that have at least one employee
+        public List<SelectListItem> getDepartmentSelectList(string division)
+        {
+            List<SelectListItem> deptSelectList = new List<SelectListItem>();
+            List<string> deptList = new List<string>();
+            var searchUsers = from u in TARSUserDB.TARSUserList
+                           where (u.company.CompareTo(division) == 0)
+                           select u;
+            //store list of departments in the division (with duplicates)
+            foreach (var item in searchUsers)
+            {
+                deptList.Add(item.department);
+            }
+            //remove duplicates
+            deptList = deptList.Distinct().ToList();
+
+            deptSelectList.Add(new SelectListItem { Text = "All", Value = "All" });
+            foreach (var item in deptList)
+            {
+                deptSelectList.Add(new SelectListItem
+                {
+                    Text = item,
+                    Value = item
+                });
+            }
+            return deptSelectList;
+        }
+
+
+        //
+        //
         public ActionResult jsonDivisionEmployeeSelectList(string division)
         {
             List<SelectListItem> employeeSelectList = getDivisionEmployeeSelectList(division);

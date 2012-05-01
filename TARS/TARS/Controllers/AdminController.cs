@@ -329,16 +329,20 @@ namespace TARS.Controllers
 
 
         //
-        //Returns true if the PCA code already exists for the division 
+        /* Returns true if the PCA code already exists for the division and has 
+         * overlapping start and end dates with the new pca code
+         */
         public bool pcaCheckIfDuplicate(PcaCode pca)
         {
             bool existsFlag = false;
             var searchPca = from p in PcaCodeDB.PcaCodeList
                             where p.code == pca.code
+                            where (p.division.CompareTo(pca.division) == 0) 
                             select p;
             foreach (var item in searchPca)
             {
-                if (item.code > 0)
+                //make sure the dates don't overlap
+                if ( (pca.endDate > item.startDate)||(pca.startDate < item.endDate) )
                 {
                     existsFlag = true;
                 }

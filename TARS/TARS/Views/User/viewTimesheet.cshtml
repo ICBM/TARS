@@ -32,48 +32,52 @@
     <h3><i>(Not Logged In)</i></h3>
 }
 
-<!-- User Options -->
 <div id="content" style="float:left;">
+
+    <!-- Option to change date (handled by jQuery) -->
     <div class="editor-label"><b>View Different Timesheet</b></div> 
     @Html.TextBox("differentTimesheet") 
-    
+
     <!-- If the user isn't viewing their current timesheet -->
     @if ((DateTime.Now < ViewBag.timesheet.periodStart) || (DateTime.Now > ViewBag.timesheet.periodEnd))
     {
-        if (ViewBag.noPreviousTimesheet != true)
-        {
-            <html> | </html>
-        }
-        @Html.ActionLink("Back to Current Timesheet", "viewTimesheet", new { tsDate = DateTime.Now }, null)
+        @Html.ActionLink("Back to Current", "viewTimesheet", new { tsDate = DateTime.Now }, null)
     }   
     <br /><br />
-
+ 
+    <div style="text-align:center;">
+        <!-- More options -->
+        @if (ViewBag.timesheet.locked == false)
+        {
+            if (ViewBag.timesheet.approved == false)
+            {
+                if (ViewBag.timesheet.submitted == false)
+                {              
+                    @Html.ActionLink(" SUBMIT ", "submitTimesheet", new { id = (int)ViewBag.timesheet.ID })
+                    <html> | </html>
+                    @Html.ActionLink(" Copy Previous ", "copyTimesheet")
+                    <br /><br />
+                }
+            }
+        } 
+    </div>
 
     <!-- Render the timesheet table -->
     @Html.Partial("_viewTimesheetPartial")
-
-    <!-- More options -->
-
-    @if (ViewBag.timesheet.locked == false)
-    {
-        <br /><br />
-        if (ViewBag.timesheet.approved == false)
-        {
-            if (ViewBag.timesheet.submitted == false)
-            {
-                <div style="float:right;">
-                @Html.ActionLink("SAVE ", "saveTimesheet", new { id = (int)ViewBag.timesheet.ID })
-                <html> | </html>                
-                @Html.ActionLink(" SUBMIT ", "submitTimesheet", new { id = (int)ViewBag.timesheet.ID })
-                <html> | </html>
-                @Html.ActionLink(" Copy Previous ", "copyTimesheet")
-                </div>
-            }
-        }
-    }  
-    <br /><br /> 
-
+ 
+ 
+    <br /><br />
     View my work on @Html.DropDownList("viewEffort", (List<SelectListItem>)ViewBag.workEffortList, "--- Work Effort ---", null) from @Html.TextBox("start") to @Html.TextBox("end")
     <button id="viewWorkButton">View</button>
 </div>
 
+
+
+<!-- pop-up calendars -->
+<script type="text/javascript">
+    $('#start, #end, #differentTimesheet').datepicker({
+        changeMonth: true,
+        changeYear: true,
+        yearRange: 'c-10:c+20'
+    });
+</script>

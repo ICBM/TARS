@@ -9,8 +9,8 @@
 <!-- Allow Manager/Approver to select a different division -->
 @using (Html.BeginForm())
 {
-    <b>Select Different Division: </b>
-    @Html.DropDownList("division", (List<SelectListItem>)ViewBag.divisionList, new { @onchange = "this.form.submit();"})     
+    <b>Department: </b>
+    @Html.DropDownList("department", (List<SelectListItem>)ViewBag.departmentList, new { @onchange = "this.form.submit();"})     
     <br /><br />
 }
 
@@ -18,8 +18,8 @@
 <b>Pay Period: @ViewBag.refPayPeriod </b>
 <br />
 <b>Change: </b> 
-@Html.TextBox("differentPayPeriod") |
-@Html.ActionLink(" Current ", "userManagement", new { refDate = DateTime.Now, division = ViewBag.division })
+@Html.TextBox("differentPayPeriod")
+@Html.ActionLink(" Go To Current ", "userManagement", new { refDate = DateTime.Now, division = ViewBag.division })
 <br /><br />
 
 
