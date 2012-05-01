@@ -61,7 +61,7 @@
                     else
                     {
                         @Html.Hidden("wEffort", item.workeffort)
-                        @Html.Hidden("wType", item.timecode)
+                        @Html.Hidden("tCode", item.timecode)
                         @Html.Hidden("hrsDate", (DateTime)ViewBag.timesheet.periodStart)
                         <html> 0 </html>
                     }
@@ -74,7 +74,7 @@
                     }
                     else{
                         @Html.Hidden("wEffort", item.workeffort)
-                        @Html.Hidden("wType", item.timecode)
+                        @Html.Hidden("tCode", item.timecode)
                         @Html.Hidden("hrsDate", (DateTime)ViewBag.timesheet.periodStart.AddDays(1))                            
                         <html> 0 </html>
                     }
@@ -87,7 +87,7 @@
                     }
                     else{
                         @Html.Hidden("wEffort", item.workeffort)
-                        @Html.Hidden("wType", item.timecode)
+                        @Html.Hidden("tCode", item.timecode)
                         @Html.Hidden("hrsDate", (DateTime)ViewBag.timesheet.periodStart.AddDays(2))                             
                         <html> 0 </html>
                     }
@@ -100,7 +100,7 @@
                     }
                     else{
                         @Html.Hidden("wEffort", item.workeffort)
-                        @Html.Hidden("wType", item.timecode)
+                        @Html.Hidden("tCode", item.timecode)
                         @Html.Hidden("hrsDate", (DateTime)ViewBag.timesheet.periodStart.AddDays(3))                             
                         <html> 0 </html>
                     }
@@ -113,7 +113,7 @@
                     }
                     else{
                         @Html.Hidden("wEffort", item.workeffort)
-                        @Html.Hidden("wType", item.timecode)
+                        @Html.Hidden("tCode", item.timecode)
                         @Html.Hidden("hrsDate", (DateTime)ViewBag.timesheet.periodStart.AddDays(4))                             
                         <html> 0 </html>
                     }
@@ -126,7 +126,7 @@
                     }
                     else{
                         @Html.Hidden("wEffort", item.workeffort)
-                        @Html.Hidden("wType", item.timecode)
+                        @Html.Hidden("tCode", item.timecode)
                         @Html.Hidden("hrsDate", (DateTime)ViewBag.timesheet.periodStart.AddDays(5))                             
                         <html> 0 </html>
                     }
@@ -139,7 +139,7 @@
                     }
                     else{
                         @Html.Hidden("wEffort", item.workeffort)
-                        @Html.Hidden("wType", item.timecode)
+                        @Html.Hidden("tCode", item.timecode)
                         @Html.Hidden("hrsDate", (DateTime)ViewBag.timesheet.periodStart.AddDays(6))                             
                         <html> 0 </html>
                     }
@@ -277,9 +277,9 @@
                     link = '@Url.Action("addHours", "User")';
                     var hrsDate = $(this).find('#hrsDate').val();
                     var wEffort = $(this).find('#wEffort').val();
-                    var wType = $(this).find('#wType').val();
+                    var tCode = $(this).find('#tCode').val();
                     //get the html from _addHoursPartial and use it in the popup
-                    $.get(link, { we: wEffort, wt: wType, hrsDate: hrsDate, userKeyID: userKeyID}, function (result) {
+                    $.get(link, { we: wEffort, tc: tCode, hrsDate: hrsDate, userKeyID: userKeyID}, function (result) {
                         modal.open({ content: result });
                     });
                 }
