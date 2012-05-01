@@ -372,30 +372,19 @@ namespace TARS.Controllers
                 HoursDB.Entry(item).State = System.Data.EntityState.Deleted;
             }
             HoursDB.SaveChanges();
-            return RedirectToAction("viewTimesheet", new { tsDate = sunday });
+            return RedirectToAction("viewTimesheet", new { tsDate = sunday.AddDays(1) });
         }
 
 
         //
-        //Updates Locked status of timesheet that refHours is in, and returns timesheet status
+        //Returns timesheet status
         public bool isTimesheetLocked(string worker,DateTime refDate)
         {
             DateTime todaysDate = DateTime.Now;
             Timesheet tmpTimesheet = getTimesheet(worker, refDate);
-            if (tmpTimesheet != null)
+            if ( (tmpTimesheet != null)&&(tmpTimesheet.locked == true) )
             {
-                if (tmpTimesheet.locked == true)
-                {
-                    return true;
-                }
-                if (tmpTimesheet.periodEnd < todaysDate.AddDays(-2))
-                {
-                    //lock the timesheet if end date was more than two days ago
-                    tmpTimesheet.locked = true;
-                    TimesheetDB.Entry(tmpTimesheet).State = EntityState.Modified;
-                    TimesheetDB.SaveChanges();
-                    return true;
-                }
+                return true;
             }
             return false;
         }
@@ -484,8 +473,6 @@ namespace TARS.Controllers
                 Timesheet prevTimesheet = getTimesheet(userName, tsDate.AddDays(-7));
 
                 ViewBag.timesheet = timesheet;
-                //check if timesheet is locked; and if it should be, this method will lock it
-                isTimesheetLocked(userName, tsDate);
                 //The View won't provide a link to previous timesheet unless it exists
                 if (prevTimesheet == null)
                 {
@@ -518,11 +505,11 @@ namespace TARS.Controllers
         {
             WorkEffort effort = new WorkEffort();
             string effortDescription = "";
-            IEnumerable<Hours> hoursList = (IEnumerable<Hours>)TempData["hoursList"];
             List<WorkEffort> workEffortList = new List<WorkEffort>();
             List<string> timeCodeList = new List<string>();
             List<string> effortAndCodeConcat = new List<string>();
             List<TimesheetRow> tsRowList = new List<TimesheetRow>();
+            IEnumerable<Hours> hoursList = (IEnumerable<Hours>)TempData["hoursList"];
             //create a list of workEffort/timeCode pairings for the pay period
             foreach (var item in hoursList)
             {
@@ -666,8 +653,6 @@ namespace TARS.Controllers
         //Retrieves the status of an employees timesheet from the specified date
         public virtual string getTimesheetStatus(string userName, DateTime refDate)
         {
-            //check if timesheet is locked, and lock it if it should be
-            isTimesheetLocked(userName, refDate);
             Timesheet tmptimesheet = getTimesheet(userName, refDate);
             string status = "";
 

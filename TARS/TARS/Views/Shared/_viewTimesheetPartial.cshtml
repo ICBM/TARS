@@ -190,22 +190,6 @@
 
 
 
-<!-- Displays the timesheet covering the selected date -->
-<script type="text/javascript">
-    $('#differentTimesheet').change(function () {
-        var selectedDate = $(this).val();
-        $.ajax({
-            url: '@Url.Action("viewTimesheet")',
-            type: "POST",
-            data: { tsDate: selectedDate },
-            success: function () {
-                window.location.href = '@Url.Action("viewTimesheet", "User")' + "?tsDate=" + selectedDate;
-            }
-        });
-    });
-</script>
-
-
 <!-- Populates Time Code dropdown according to Work Effort that was selected -->
 <script type="text/javascript">
     $(document).ready(function () {

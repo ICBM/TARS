@@ -5,69 +5,77 @@
 }
 
 <h2>My Timesheet for @ViewBag.timesheet.periodStart.ToShortDateString() - @ViewBag.timesheet.periodEnd.ToShortDateString()</h2>
-<h3>
-    @if (ViewBag.timesheet.locked)
+
+
+@if (ViewBag.timesheet.locked)
+{
+    <h3><i>(locked)</i></h3>
+}
+else if (ViewBag.timesheet.submitted)
+{
+    if (ViewBag.timesheet.approved)
     {
-        <i>(locked)</i>
-    }
-    else if (ViewBag.timesheet.submitted)
-    {
-        if (ViewBag.timesheet.approved)
-        {
-            <i>(approved)</i> 
-        }
-        else
-        {
-            <i>(submitted)</i> 
-        }
+        <h3><i>(approved)</i></h3> 
     }
     else
     {
-        <i>(not submitted)</i>
+        <h3><i>(submitted)</i></h3> 
     }
-</h3>
+}
+else
+{
+    <h3><i>(not submitted)</i> <button id="submitTimesheetButton">Submit</button></h3>
+}
 
 @if (this.User.Identity.Name.Trim().Length == 0)
 {
     <h3><i>(Not Logged In)</i></h3>
 }
 
+
 <div id="content" style="float:left;">
-
-    <!-- Option to change date (handled by jQuery) -->
-    <div class="editor-label"><b>View Different Timesheet</b></div> 
-    @Html.TextBox("differentTimesheet") 
-
+    <!-- If a timesheet from the previous pay period exists for the user -->
+    @if (ViewBag.noPreviousTimesheet != true)
+    {
+        @Html.ActionLink("Previous Timesheet", "viewTimesheet",
+                            new { tsDate = (DateTime)ViewBag.timesheet.periodStart.AddDays(-1) }, null)
+        <html> | </html>
+    }
+    @Html.ActionLink("Next Timesheet", "viewTimesheet", 
+                            new { tsDate = (DateTime)ViewBag.timesheet.periodStart.AddDays(8) }, null)  |   
     <!-- If the user isn't viewing their current timesheet -->
     @if ((DateTime.Now < ViewBag.timesheet.periodStart) || (DateTime.Now > ViewBag.timesheet.periodEnd))
     {
-        @Html.ActionLink("Back to Current", "viewTimesheet", new { tsDate = DateTime.Now }, null)
+        @Html.ActionLink("Current Timesheet", "viewTimesheet", new { tsDate = DateTime.Now }, null)
+        <html> | </html>
     }   
+    <!-- Option to view timesheet for a specific date (handled by jQuery) -->
+    <b> Pick a Date:</b>@Html.TextBox("differentTimesheet", null, new { @style = "width: 70px;" })   
     <br /><br />
- 
-    <div style="text-align:center;">
-        <!-- More options -->
-        @if (ViewBag.timesheet.locked == false)
+
+
+    <!-- If the user is viewing their current timesheet, and it's not submitted yet -->
+    @if ((ViewBag.timesheet.periodStart <= DateTime.Now) && (DateTime.Now <= ViewBag.timesheet.periodEnd))
+    {
+        if (ViewBag.timesheet.submitted != true)
         {
-            if (ViewBag.timesheet.approved == false)
-            {
-                if (ViewBag.timesheet.submitted == false)
-                {              
-                    @Html.ActionLink(" SUBMIT ", "submitTimesheet", new { id = (int)ViewBag.timesheet.ID })
-                    <html> | </html>
-                    @Html.ActionLink(" Copy Previous ", "copyTimesheet")
-                    <br /><br />
-                }
-            }
-        } 
-    </div>
+            @Html.ActionLink(" Copy Previous Timesheet", "copyTimesheet")
+        }
+    }
+    <br /><br />
+
 
     <!-- Render the timesheet table -->
     @Html.Partial("_viewTimesheetPartial")
  
  
     <br /><br />
-    View my work on @Html.DropDownList("viewEffort", (List<SelectListItem>)ViewBag.workEffortList, "--- Work Effort ---", null) from @Html.TextBox("start") to @Html.TextBox("end")
+    <!-- Option to view work on a Work Effort over a specified date range -->
+    View my work on @Html.DropDownList("viewEffort", (List<SelectListItem>)ViewBag.workEffortList,
+            "--- Select Work Effort ---", null) from @Html.TextBox("start", null, new
+                                                {
+                                                    @style = "width: 70px;"
+                                                }) to @Html.TextBox("end", null, new { @style = "width: 70px;" })
     <button id="viewWorkButton">View</button>
 </div>
 
@@ -79,5 +87,36 @@
         changeMonth: true,
         changeYear: true,
         yearRange: 'c-10:c+20'
+    });
+</script>
+
+
+<!-- Displays timesheet that covers the selected date -->
+<script type="text/javascript">
+    $('#differentTimesheet').change(function () {
+        var selectedDate = $(this).val();
+        $.ajax({
+            url: '@Url.Action("viewTimesheet")',
+            type: "POST",
+            data: { tsDate: selectedDate },
+            success: function () {
+                window.location.href = '@Url.Action("viewTimesheet", "User")' + "?tsDate=" + selectedDate;
+            }
+        });
+    });
+</script>
+
+
+<!-- Submits the timesheet -->
+<script type="text/javascript">
+    $('#submitTimesheetButton').click(function () {
+        $.ajax({
+            url: '@Url.Action("submitTimesheet")',
+            type: "POST",
+            data: { id: '@ViewBag.timesheet.ID' },
+            success: function () {
+                location.reload();
+            }
+        });
     });
 </script>
