@@ -275,6 +275,7 @@ namespace TARS.Controllers
         {
             var searchPcaWe = from p in PCA_WEDB.PCA_WEList
                               where p.PCA == id
+                              where p.active == true
                               select p;
             foreach (var item in searchPcaWe)
             {
@@ -514,6 +515,7 @@ namespace TARS.Controllers
             var searchPcaWe = from p in PCA_WEDB.PCA_WEList
                               where p.WE == pcawe.WE
                               where p.PCA == pcawe.PCA
+                              where p.active == true
                               select p;
             foreach (var item in searchPcaWe)
             {

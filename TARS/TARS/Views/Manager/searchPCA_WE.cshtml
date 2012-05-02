@@ -30,12 +30,19 @@
 
 @foreach (var item in Model) 
 {
+    var pcaDescription = Html.Action("getPcaDescriptionFromID", "Manager", new { id = item.PCA });
     <tr>
-        <td class="description" style="text-align:center" 
-         title="@Html.Action("getPcaDescriptionFromID", "Manager", new { id = item.PCA })">
-            @Html.Action("getPcaCodeFromID", "Manager", new { id = item.PCA })
-            <br />
-            @Html.Action("getPcaDivisionFromID", "Manager", new { id = item.PCA })
+        <td class="description" style="text-align:center" title="pcaDescription">
+            @if (pcaDescription != null)
+            {
+                @Html.Action("getPcaCodeFromID", "Manager", new { id = item.PCA })
+                <br />
+                @Html.Action("getPcaDivisionFromID", "Manager", new { id = item.PCA })
+            }
+            else
+            {
+                <html>(PCA no longer exists. The Key ID was @item.PCA)</html>
+            }
         </td>
         <td class="description">
             @Html.Action("getWeDescription", "User", new { id = item.WE })

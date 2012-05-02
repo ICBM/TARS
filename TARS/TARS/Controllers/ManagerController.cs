@@ -672,8 +672,18 @@ namespace TARS.Controllers
             var searchPca = from m in PcaCodeDB.PcaCodeList
                            where m.code == pcacode
                            select m;
-            pcaCodeObj = searchPca.First();
-            return pcaCodeObj;
+            foreach (var item in searchPca)
+            {
+                pcaCodeObj = item;
+            }
+            if (pcaCodeObj != null)
+            {
+                return pcaCodeObj;
+            }
+            else
+            {
+                return null;
+            }
         }
 
 
@@ -706,7 +716,7 @@ namespace TARS.Controllers
             }
             else
             {
-                return "";
+                return null;
             }
         }
 
@@ -723,7 +733,7 @@ namespace TARS.Controllers
             }
             else
             {
-                return "";
+                return null;
             }
         }
 

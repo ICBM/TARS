@@ -730,9 +730,10 @@ namespace TARS.Controllers
             List<string> pcaList = new List<string>();
             PcaCode tmpPca = new PcaCode();
 
-            var searchPcaWe = from m in PCA_WEDB.PCA_WEList
-                              where m.WE == we.ID
-                              select m;
+            var searchPcaWe = from p in PCA_WEDB.PCA_WEList
+                              where p.WE == we.ID
+                              where p.active == true
+                              select p;
             foreach (var item in searchPcaWe)
             {
                 tmpPca = PcaCodeDB.PcaCodeList.Find(item.PCA);
@@ -757,9 +758,10 @@ namespace TARS.Controllers
             {
                 we = item;
             }
-            var searchPcaWe = from m in PCA_WEDB.PCA_WEList
-                              where m.WE == we.ID
-                              select m;
+            var searchPcaWe = from p in PCA_WEDB.PCA_WEList
+                              where p.WE == we.ID
+                              where p.active == true
+                              select p;
             foreach (var item in searchPcaWe)
             {
                 tmpPca = PcaCodeDB.PcaCodeList.Find(item.PCA);
@@ -804,6 +806,7 @@ namespace TARS.Controllers
                 {
                     var searchPcaWe = from p in PCA_WEDB.PCA_WEList
                                         where p.WE == we.ID
+                                        where p.active == true
                                         select p;
                     foreach (var pca_we in searchPcaWe)
                     {
