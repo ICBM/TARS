@@ -52,7 +52,7 @@ namespace TARS.Models
                               "; workEffortID: " + entry.Property(u => u.WE).CurrentValue +
                               "; associationStart: " + entry.Property(u => u.associationStartDate).CurrentValue +
                               "; associationEnd: " + entry.Property(u => u.associationEndDate).CurrentValue +
-                              "; active: " + entry.Property(u => u.WE).CurrentValue;
+                              "; active: " + entry.Property(u => u.active).CurrentValue;
             }
 
             hist.username = System.Web.HttpContext.Current.User.Identity.Name;
