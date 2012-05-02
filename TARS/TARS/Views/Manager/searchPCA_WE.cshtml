@@ -32,8 +32,8 @@
 {
     var pcaDescription = Html.Action("getPcaDescriptionFromID", "Manager", new { id = item.PCA });
     <tr>
-        <td class="description" style="text-align:center" title="pcaDescription">
-            @if (pcaDescription != null)
+        <td class="description" title="@pcaDescription">
+            @if (pcaDescription.ToString().Length != 0)
             {
                 @Html.Action("getPcaCodeFromID", "Manager", new { id = item.PCA })
                 <br />
@@ -41,7 +41,7 @@
             }
             else
             {
-                <html>(PCA no longer exists. The Key ID was @item.PCA)</html>
+                <html>(PCA no longer exists. The Unique ID was @item.PCA)</html>
             }
         </td>
         <td class="description">

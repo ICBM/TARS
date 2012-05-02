@@ -847,7 +847,7 @@ namespace TARS.Controllers
                 //If the Work Effort no longer exists, return the id and a message 
                 if (weDescription.Length == 0)
                 {
-                    weDescription = "(No longer exists.  Key ID was " + id + ")";
+                    weDescription = "(Work Effort no longer exists. The unique ID was " + id + ")";
                 }
                 return weDescription;
             }
