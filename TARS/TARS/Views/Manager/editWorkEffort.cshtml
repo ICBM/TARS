@@ -23,7 +23,7 @@
         <div class="editor-label"><b>PCA Code(s)</b></div>
         <div class="display-field">
             <!-- This dropdown should not allow selections, it's just for viewing -->
-            @Html.DropDownList("pcaList", new SelectList(ViewBag.pcaList))
+            @Html.DropDownList("pcaList", (List<SelectListItem>)ViewBag.pcaList)
             @Html.HiddenFor(model => model.pcaCode)
             @if (ViewBag.adminFlag == true)
             {

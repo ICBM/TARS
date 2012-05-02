@@ -15,17 +15,14 @@
 {    
     @Html.ValidationSummary(true)
     <fieldset>
-        @Html.HiddenFor(model => model.WE)
-        @Html.HiddenFor(model => model.associationStartDate)
-        @Html.Hidden("associationEndDate", DateTime.Now)
-        @Html.Hidden("active", false)
+        @Html.Hidden("WE", (int)ViewBag.workEffortID)
 
         <b>Work Effort: </b>@ViewBag.workEffortDescription
 
         <p>
         <div class="editor-label"><b>Choose a PCA to Un-Associate</b></div>
         <div class="editor-field">
-            @Html.DropDownList("PCA", new SelectList(ViewBag.pcaList, Model))
+            @Html.DropDownList("PCA", (List<SelectListItem>)ViewBag.pcaList)
         </div>
         </p>
 

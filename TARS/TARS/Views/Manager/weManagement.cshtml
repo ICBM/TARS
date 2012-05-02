@@ -52,7 +52,7 @@
                     @Html.DisplayFor(modelItem => item.description)
                 </td>
                 <td>
-                    @Html.DropDownList("pcaCode", new SelectList(ViewBag.pcaListOfLists[count], Model))
+                    @Html.DropDownList("pcaCode", (List<SelectListItem>)ViewBag.pcaListOfLists[count])
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.startDate)

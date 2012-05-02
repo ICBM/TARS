@@ -72,10 +72,8 @@ else
     <br /><br />
     <!-- Option to view work on a Work Effort over a specified date range -->
     View my work on @Html.DropDownList("viewEffort", (List<SelectListItem>)ViewBag.workEffortList,
-            "--- Select Work Effort ---", null) from @Html.TextBox("start", null, new
-                                                {
-                                                    @style = "width: 70px;"
-                                                }) to @Html.TextBox("end", null, new { @style = "width: 70px;" })
+            "--- Select Work Effort ---", null) from @Html.TextBox("start", null, new { @style = 
+            "width: 70px;"}) to @Html.TextBox("end", null, new { @style = "width: 70px;" })
     <button id="viewWorkButton">View</button>
 </div>
 

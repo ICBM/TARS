@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -14,9 +15,11 @@ namespace TARS.Models
         public int ID { get; set; } //DB iterator
         public int PCA { get; set; }
         public int WE { get; set; }
-        public DateTime associationStartDate { get; set; }
-        public DateTime associationEndDate { get; set; }
         public bool active { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? associationStartDate { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? associationEndDate { get; set; }
     }
 
     public class PCA_WEDBContext : DbContext

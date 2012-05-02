@@ -84,6 +84,7 @@ namespace TARS.Controllers
                 ViewBag.division = division;
                 ViewBag.departmentList = getDepartmentSelectList(division);
                 ViewBag.refDate = refDate;
+                ViewBag.refSunday = refDate.StartOfWeek(DayOfWeek.Sunday);
                 ViewBag.refPayPeriod = getPayPeriod(refDate);
                 return View(employees);
             }
@@ -105,10 +106,10 @@ namespace TARS.Controllers
 
                 //create a list of lists for pca codes
                 //(each work effort will have a list of PCA codes)
-                ViewBag.pcaListOfLists = new List<List<string>>();
+                ViewBag.pcaListOfLists = new List<List<SelectListItem>>();
                 foreach (var item in workEffortList)
                 {
-                    ViewBag.pcaListOfLists.Add(getWePcaCodesList(item));
+                    ViewBag.pcaListOfLists.Add(getWePcaCodesSelectList(item));
                 }
 
                 //check if an "unable to hide Work Effort error should be displayed"
@@ -224,7 +225,7 @@ namespace TARS.Controllers
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
                 WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
-                ViewBag.pcaList = getWePcaCodesList(workeffort);
+                ViewBag.pcaList = getWePcaCodesSelectList(workeffort);
 
                 Authentication newAuth = new Authentication();
                 if (newAuth.isAdmin(this))
@@ -254,7 +255,7 @@ namespace TARS.Controllers
                     if (workeffort.startDate > workeffort.endDate)
                     {
                         ViewBag.endBeforeStartFlag = true;
-                        ViewBag.pcaList = getWePcaCodesList(workeffort);
+                        ViewBag.pcaList = getWePcaCodesSelectList(workeffort);
                         Authentication newAuth = new Authentication();
                         if (newAuth.isAdmin(this))
                         {
@@ -274,7 +275,7 @@ namespace TARS.Controllers
                     else
                     {
                         ViewBag.notWithinTimeBounds = true;
-                        ViewBag.pcaList = getWePcaCodesList(workeffort);
+                        ViewBag.pcaList = getWePcaCodesSelectList(workeffort);
                         Authentication newAuth = new Authentication();
                         if (newAuth.isAdmin(this))
                         {
@@ -300,7 +301,7 @@ namespace TARS.Controllers
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
             {
                 WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
-                ViewBag.pcaList = getWePcaCodesList(workeffort);
+                ViewBag.pcaList = getWePcaCodesSelectList(workeffort);
                 return View(workeffort);
             }
             else
@@ -659,7 +660,10 @@ namespace TARS.Controllers
             var searchID = from m in PcaCodeDB.PcaCodeList
                            where m.code == pcacode
                            select m;
-            pcaID = searchID.First().ID;
+            foreach (var item in searchID)
+            {
+                pcaID = item.ID;
+            }
             return pcaID;
         }
 

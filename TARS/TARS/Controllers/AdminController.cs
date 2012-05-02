@@ -446,7 +446,7 @@ namespace TARS.Controllers
                 WorkEffort we = WorkEffortDB.WorkEffortList.Find(weID);
                 ViewBag.workEffortDescription = we.description;
                 ViewBag.workEffortId = weID;
-                ViewBag.pcaList = getWePcaCodesList(we);
+                ViewBag.pcaList = getWePcaCodesSelectList(we);
                 return View();
             }
             else
@@ -472,10 +472,11 @@ namespace TARS.Controllers
                 PCA_WE tmpPcaWe = new PCA_WE();
                 var searchPcaWe = from p in PCA_WEDB.PCA_WEList
                                   where p.WE == pca_we.WE
-                                  where p.active != true
+                                  where p.active == true
                                   select p;
                 foreach (var item in searchPcaWe)
                 {
+                    //This if-statement will only be true once
                     if (item.PCA == pca_we.PCA)
                     {
                         tmpPcaWe = PCA_WEDB.PCA_WEList.Find(item.ID);
@@ -483,13 +484,13 @@ namespace TARS.Controllers
                     count++;
                 }
 
-                //if it's not the last PCA_WE
                 if (count > 1)
                 {
-                    /* save changes in database (pca_we.active was set to FALSE, and 
-                     * pca_we.associationEndDate was set to DateTime.Now in the View)
-                     */ 
-                    PCA_WEDB.Entry(pca_we).State = System.Data.EntityState.Modified;
+                    //deactivate and set the end date for the PCA_WE entry
+                    tmpPcaWe.active = false;
+                    tmpPcaWe.associationEndDate = DateTime.Now;
+                    // save changes in database
+                    PCA_WEDB.Entry(tmpPcaWe).State = System.Data.EntityState.Modified;
                     PCA_WEDB.SaveChanges();
                     return RedirectToAction("weManagement", "Manager");
                 }
@@ -498,7 +499,7 @@ namespace TARS.Controllers
                 WorkEffort we = WorkEffortDB.WorkEffortList.Find(pca_we.WE);
                 ViewBag.workEffortDescription = we.description;
                 ViewBag.workEffortId = we.ID;
-                ViewBag.pcaList = getWePcaCodesList(we);
+                ViewBag.pcaList = getWePcaCodesSelectList(we);
                 return View();
             }
             else

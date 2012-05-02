@@ -242,11 +242,11 @@ namespace TARS.Controllers
                 var workEffortList = WorkEffortDB.WorkEffortList.ToList();
                 //create a list of lists for pca codes and time codes
                 //(each work effort will have a list of PCA codes and a list of time codes)
-                ViewBag.pcaListOfLists = new List<List<string>>();
+                ViewBag.pcaListOfLists = new List<List<SelectListItem>>();
                 ViewBag.timeCodesListOfLists = new List<List<string>>();
                 foreach (var item in workEffortList)
                 {
-                    ViewBag.pcaListOfLists.Add(getWePcaCodesList(item));
+                    ViewBag.pcaListOfLists.Add(getWePcaCodesSelectList(item));
                 }
                 
                 return View(workEffortList);
@@ -277,7 +277,7 @@ namespace TARS.Controllers
                 {
                     return HttpNotFound();
                 }
-                ViewBag.pcaList = getWePcaCodesList(workeffort);
+                ViewBag.pcaList = getWePcaCodesSelectList(workeffort);
                 ViewBag.WorkEffortID = workeffort.ID;
                 return View(workeffort);
             }
@@ -724,10 +724,10 @@ namespace TARS.Controllers
  
 
         // 
-        //Returns list of PCA codes associated with the specified work effort
-        public virtual List<string> getWePcaCodesList(WorkEffort we)
+        //Returns selection list of PCA codes associated with the specified work effort
+        public virtual List<SelectListItem> getWePcaCodesSelectList(WorkEffort we)
         {
-            List<string> pcaList = new List<string>();
+            List<SelectListItem> pcaList = new List<SelectListItem>();
             PcaCode tmpPca = new PcaCode();
 
             var searchPcaWe = from p in PCA_WEDB.PCA_WEList
@@ -737,7 +737,11 @@ namespace TARS.Controllers
             foreach (var item in searchPcaWe)
             {
                 tmpPca = PcaCodeDB.PcaCodeList.Find(item.PCA);
-                pcaList.Add(tmpPca.code + " (" + tmpPca.division + ")");
+                pcaList.Add(new SelectListItem
+                {
+                    Text = tmpPca.code + " (" + tmpPca.division + ")",
+                    Value = tmpPca.code.ToString()
+                });
             }
             return pcaList;
         }

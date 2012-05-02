@@ -17,9 +17,13 @@
 <!-- Show the pay period and navigation options to view previous/next/current -->
 <b>Pay Period: @ViewBag.refPayPeriod </b>
 <br />
-<b>Change: </b> 
-@Html.TextBox("differentPayPeriod")
-@Html.ActionLink(" Go To Current ", "userManagement", new { refDate = DateTime.Now, division = ViewBag.division })
+<b>View different pay period: </b> 
+@Html.TextBox("differentPayPeriod", null, new { @style = "width:70px;" })
+@if ((DateTime.Now < ViewBag.refSunday) || (DateTime.Now > ViewBag.refSunday.AddDays(7)))
+{
+    <html> | </html>
+    @Html.ActionLink(" Go To Current ", "userManagement", new { refDate = DateTime.Now, division = ViewBag.division })
+}
 <br /><br />
 
 
