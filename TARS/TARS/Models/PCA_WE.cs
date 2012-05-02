@@ -14,6 +14,9 @@ namespace TARS.Models
         public int ID { get; set; } //DB iterator
         public int PCA { get; set; }
         public int WE { get; set; }
+        public DateTime associationStartDate { get; set; }
+        public DateTime associationEndDate { get; set; }
+        public bool active { get; set; }
     }
 
     public class PCA_WEDBContext : DbContext
@@ -42,8 +45,11 @@ namespace TARS.Models
                         break;
                 }
                 hist.dbtable = "PCA_WE";
-                hist.change = "PCA ID: " + entry.Property(u => u.PCA).CurrentValue +
-                              "; Work Effort ID: " + entry.Property(u => u.WE).CurrentValue;
+                hist.change = "pcaID: " + entry.Property(u => u.PCA).CurrentValue +
+                              "; workEffortID: " + entry.Property(u => u.WE).CurrentValue +
+                              "; associationStart: " + entry.Property(u => u.associationStartDate).CurrentValue +
+                              "; associationEnd: " + entry.Property(u => u.associationEndDate).CurrentValue +
+                              "; active: " + entry.Property(u => u.WE).CurrentValue;
             }
 
             hist.username = System.Web.HttpContext.Current.User.Identity.Name;

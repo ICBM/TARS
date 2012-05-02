@@ -191,6 +191,9 @@ namespace TARS.Controllers
                         PCA_WE tmpPcaWe = new PCA_WE();
                         tmpPcaWe.WE = workeffort.ID;
                         tmpPcaWe.PCA = getPcaIdFromCode(workeffort.pcaCode);
+                        tmpPcaWe.associationStartDate = DateTime.Now;
+                        tmpPcaWe.associationEndDate = DateTime.MaxValue;
+                        tmpPcaWe.active = true;
                         PCA_WEDB.PCA_WEList.Add(tmpPcaWe);
                         PCA_WEDB.SaveChanges();
 
@@ -324,8 +327,8 @@ namespace TARS.Controllers
                 else
                 {
                     WorkEffort workeffort = WorkEffortDB.WorkEffortList.Find(id);
-                    //delete the PCA_WE entries for the work effort
-                    deleteAllPcaWeForWorkEffort(id);
+                    //change the active status to FALSE for all PCA_WE entries for the work effort
+                    deactivateAllPcaWeForWorkEffort(id);
                     //delete the work effort
                     WorkEffortDB.WorkEffortList.Remove(workeffort);
                     WorkEffortDB.SaveChanges();
@@ -340,8 +343,9 @@ namespace TARS.Controllers
 
 
         //
-        //Deletes all entries in PCA_WE table for specified Work Effort
-        public void deleteAllPcaWeForWorkEffort(int id)
+        // Changes active status to FALSE for all PCA_WE entries for specified Work Effort.
+        // Also changes "associationEndDate" to the current day and time
+        public void deactivateAllPcaWeForWorkEffort(int id)
         {
             List<PCA_WE> tmpPcaWe = new List<PCA_WE>();
             var searchPcaWe = from p in PCA_WEDB.PCA_WEList
@@ -350,8 +354,10 @@ namespace TARS.Controllers
             tmpPcaWe.AddRange(searchPcaWe);
             foreach (var item in tmpPcaWe)
             {
-                //delete the association from the PCA_WE table
-                PCA_WEDB.PCA_WEList.Remove(item);
+                item.active = false;
+                item.associationEndDate = DateTime.Now;
+                //save changes in the database
+                PCA_WEDB.Entry(item).State = System.Data.EntityState.Modified;
                 PCA_WEDB.SaveChanges();
             }
             return;
@@ -660,7 +666,7 @@ namespace TARS.Controllers
 
         //
         //Returns a PcaCode object with the specified PCA code
-        public PcaCode getPcaFromCode(int pcacode)
+        public PcaCode getPcaObjFromCode(int pcacode)
         {
             PcaCode pcaCodeObj = new PcaCode();
             var searchPca = from m in PcaCodeDB.PcaCodeList
@@ -668,6 +674,57 @@ namespace TARS.Controllers
                            select m;
             pcaCodeObj = searchPca.First();
             return pcaCodeObj;
+        }
+
+
+        //
+        // Returns the pcaCode of the PCA object with specified ID
+        // (note: called from searchPCA_WE View)
+        public int getPcaCodeFromID(int id)
+        {
+            PcaCode pcaCodeObj = PcaCodeDB.PcaCodeList.Find(id);
+            if (pcaCodeObj != null)
+            {
+                return pcaCodeObj.code;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+
+        //
+        //Returns the division of the PCA object with specified ID
+        // (note: called from searchPCA_WE View)
+        public string getPcaDivisionFromID(int id)
+        {
+            PcaCode pcaCodeObj = PcaCodeDB.PcaCodeList.Find(id);
+            if (pcaCodeObj != null)
+            {
+                return pcaCodeObj.division;
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+
+        //
+        //Returns the description of the PCA object with specified ID
+        // (note: called from searchPCA_WE View)
+        public string getPcaDescriptionFromID(int id)
+        {
+            PcaCode pcaCodeObj = PcaCodeDB.PcaCodeList.Find(id);
+            if (pcaCodeObj != null)
+            {
+                return pcaCodeObj.description;
+            }
+            else
+            {
+                return "";
+            }
         }
 
 

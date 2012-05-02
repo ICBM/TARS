@@ -20,6 +20,9 @@ CREATE TABLE [dbo].[PCA_WE](
 	[ID] [int] IDENTITY(1,1) NOT NULL,
 	[PCA] [int] NULL,
 	[WE] [int] NULL,
+	[associationStartDate] [datetime2](7) NULL,
+	[associationEndDate] [datetime2](7) NULL,
+	[active] [bit] NULL,
  CONSTRAINT [PK_PCA_WE] PRIMARY KEY CLUSTERED 
 (
 	[ID] ASC

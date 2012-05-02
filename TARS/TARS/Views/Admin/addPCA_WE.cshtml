@@ -16,9 +16,12 @@
 {    
     @Html.ValidationSummary(true)
     <fieldset>
-        
-        <b>Work Effort: </b>@ViewBag.workEffortDescription
         @Html.Hidden("WE", (int)ViewBag.workEffortId)
+        @Html.Hidden("associationStartDate", DateTime.Now)
+        @Html.Hidden("associationEndDate", DateTime.MaxValue)
+        @Html.Hidden("active", true)
+
+        <b>Work Effort: </b>@ViewBag.workEffortDescription
 
         <p>
         <div class="editor-label"><b>Choose PCA's Division</b></div>

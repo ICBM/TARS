@@ -4,29 +4,57 @@
     ViewBag.Title = "searchPCA_WE";
 }
 
-<h2>searchPCA_WE</h2>
+<h2>PCA/WorkEffort Associations</h2>
 
-<p>
-    @Html.ActionLink("Create New", "addPCA_WE")
-</p>
-<table>
+
+<table class="timesheet">
     <tr>
-        <th>
-            PCA Code
+        <th class="pca">
+            Pca Code
         </th>
-        <th>
+        <th class="pca">
             Work Effort
         </th>
-        <th></th>
+        <th class="pca">
+            Association Start
+        </th>
+        <th class="pca">
+            Association End
+        </th>
+        <th class="pca">
+            Active
+        </th>
+        <th class="options">
+        </th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model) 
+{
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.PCA)
+        <td class="description" style="text-align:center" 
+         title="@Html.Action("getPcaDescriptionFromID", "Manager", new { id = item.PCA })">
+            @Html.Action("getPcaCodeFromID", "Manager", new { id = item.PCA })
+            <br />
+            @Html.Action("getPcaDivisionFromID", "Manager", new { id = item.PCA })
+        </td>
+        <td class="description">
+            @Html.Action("getWeDescription", "User", new { id = item.WE })
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.WE)
+            @Html.DisplayFor(modelItem => item.associationStartDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.associationEndDate)
+        </td>
+        <td>
+            @if (item.active == true)
+            {
+                <html> YES </html>
+            }
+            else
+            {
+                <html> NO </html>
+            }
         </td>
     </tr>
 }

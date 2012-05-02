@@ -513,10 +513,13 @@ namespace TARS.Controllers
             //create a list of workEffort/timeCode pairings for the pay period
             foreach (var item in hoursList)
             {
-                effort = WorkEffortDB.WorkEffortList.Find(item.workEffortID);
-                workEffortList.Add(effort);
                 timeCodeList.Add(item.description);
-                effortAndCodeConcat.Add(effort.description + "::::" + item.description);
+                effort = WorkEffortDB.WorkEffortList.Find(item.workEffortID);
+                if (effort != null)
+                {
+                    workEffortList.Add(effort);
+                    effortAndCodeConcat.Add(effort.description + "::::" + item.description);
+                }
             }
             //remove duplicates from the list
             effortAndCodeConcat = effortAndCodeConcat.Distinct().ToList();
@@ -830,10 +833,19 @@ namespace TARS.Controllers
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
+                string weDescription = "";
                 var searchWorkEfforts = from w in WorkEffortDB.WorkEffortList
                                         where w.ID == id
                                         select w;
-                string weDescription = searchWorkEfforts.First().description;
+                foreach (var item in searchWorkEfforts)
+                {
+                    weDescription = item.description;
+                }
+                //If the Work Effort no longer exists, return the id and a message 
+                if (weDescription.Length == 0)
+                {
+                    weDescription = "(No longer exists.  Key ID was " + id + ")";
+                }
                 return weDescription;
             }
             else
@@ -976,23 +988,6 @@ namespace TARS.Controllers
             return Json(weSelectList.Select(x => new { value = x, text = x }),
                         JsonRequestBehavior.AllowGet
                         );
-        }
-
-
-        //
-        // GET: /User/storeFile
-        //Unimplemented
-        public virtual ActionResult storeFile()
-        {
-            Authentication auth = new Authentication();
-            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
-            {
-                return null;
-            }
-            else
-            {
-                return View("notLoggedOn");
-            }
         }
 
 

@@ -378,7 +378,7 @@ namespace TARS.Controllers
             if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
             {
                 WorkEffort we = WorkEffortDB.WorkEffortList.Find(weID);
-                PcaCode pca = getPcaFromCode(we.pcaCode);
+                PcaCode pca = getPcaObjFromCode(we.pcaCode);
                 ViewBag.workEffortDescription = we.description;
                 ViewBag.workEffortId = weID;
                 ViewBag.divisionList = getDivisionSelectList();
@@ -436,7 +436,7 @@ namespace TARS.Controllers
 
         //
         // GET: /Admin/deletePCA_WE
-        //  Deletes a PCA code from the given Work Effort
+        //  Deactivates a PCA_WE entry 
         public virtual ActionResult deletePCA_WE(int weID)
         {
             Authentication auth = new Authentication();
@@ -457,7 +457,7 @@ namespace TARS.Controllers
 
         //
         // POST: /Admin/deletePCA_WE
-        //  Deletes a PCA code to the given Work Effort
+        //  Deactivates the specified PCA_WE entry and changes the endDate to the current day
         [HttpPost]
         public virtual ActionResult deletePCA_WE(PCA_WE pca_we)
         {
@@ -471,6 +471,7 @@ namespace TARS.Controllers
                 PCA_WE tmpPcaWe = new PCA_WE();
                 var searchPcaWe = from p in PCA_WEDB.PCA_WEList
                                   where p.WE == pca_we.WE
+                                  where p.active != true
                                   select p;
                 foreach (var item in searchPcaWe)
                 {
@@ -481,10 +482,13 @@ namespace TARS.Controllers
                     count++;
                 }
 
-                //if it's not the last PCA_WE, then delete 
+                //if it's not the last PCA_WE
                 if (count > 1)
                 {
-                    PCA_WEDB.PCA_WEList.Remove(tmpPcaWe);
+                    /* save changes in database (pca_we.active was set to FALSE, and 
+                     * pca_we.associationEndDate was set to DateTime.Now in the View)
+                     */ 
+                    PCA_WEDB.Entry(pca_we).State = System.Data.EntityState.Modified;
                     PCA_WEDB.SaveChanges();
                     return RedirectToAction("weManagement", "Manager");
                 }
