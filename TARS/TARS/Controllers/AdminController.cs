@@ -14,7 +14,8 @@ namespace TARS.Controllers
     public class AdminController : ManagerController
     {
         //
-        // GET: /Admin/
+        //
+        [HttpGet]
         public override ActionResult Index()
         {
             Authentication auth = new Authentication();
@@ -29,6 +30,8 @@ namespace TARS.Controllers
         }
 
 
+        //
+        //
         public ActionResult maintainPCA(string division = null)
         {
             Authentication auth = new Authentication();
@@ -62,7 +65,8 @@ namespace TARS.Controllers
 
 
         //
-        // GET: /Admin/addPCA
+        // 
+        [HttpGet]
         public virtual ActionResult addPCA()
         {
             Authentication auth = new Authentication();
@@ -79,7 +83,7 @@ namespace TARS.Controllers
 
 
         //
-        // POST: /Admin/addPCA
+        //
         [HttpPost]
         public virtual ActionResult addPCA(PcaCode pcacode)
         {
@@ -126,8 +130,8 @@ namespace TARS.Controllers
 
 
         // 
-        // GET: /Admin/editPCA/
-        //  - Edits a specific PCA code.
+        // Edits a specific PCA code.
+        [HttpGet]
         public virtual ActionResult editPCA(int id)
         {
             Authentication auth = new Authentication();
@@ -145,7 +149,7 @@ namespace TARS.Controllers
 
 
         //
-        // POST: /Admin/editPCA/
+        // 
         [HttpPost]
         public virtual ActionResult editPCA(PcaCode pcacode)
         {
@@ -181,8 +185,8 @@ namespace TARS.Controllers
 
 
         // 
-        // GET: /Admin/confirmEditPCA/
-        //  - gets confirmation before editing a specific PCA code.
+        // gets confirmation before editing a specific PCA code.
+        [HttpGet]
         public virtual ActionResult confirmEditPCA()
         {
             Authentication auth = new Authentication();
@@ -199,7 +203,6 @@ namespace TARS.Controllers
 
 
         //
-        // POST: /Admin/confirmEditPCA/
         //gets confirmation before editing a specific PCA code
         [HttpPost]
         public virtual ActionResult confirmEditPCA(PcaCode pcacode)
@@ -224,7 +227,8 @@ namespace TARS.Controllers
 
 
         //
-        // GET: /Admin/deletePCA
+        //
+        [HttpGet]
         public virtual ActionResult deletePCA(int id)
         {
             Authentication auth = new Authentication();
@@ -290,6 +294,8 @@ namespace TARS.Controllers
         }
 
 
+        //
+        //
         public ActionResult userMaintanence()
         {
             Authentication auth = new Authentication();
@@ -304,6 +310,8 @@ namespace TARS.Controllers
         }
 
 
+        //
+        //
         public ActionResult addUser()
         {
             Authentication auth = new Authentication();
@@ -318,6 +326,8 @@ namespace TARS.Controllers
         }
 
 
+        //
+        //
         public ActionResult editTARSUSer()
         {
             Authentication auth = new Authentication();
@@ -332,6 +342,8 @@ namespace TARS.Controllers
         }
 
 
+        //
+        //
         public ActionResult endDateTARSUSer()
         {
             Authentication auth = new Authentication();
@@ -371,8 +383,8 @@ namespace TARS.Controllers
 
 
         //
-        // GET: /Admin/addPCA_WE
         //  Adds a PCA code to the given Work Effort
+        [HttpGet]
         public virtual ActionResult addPCA_WE(int weID)
         {
             Authentication auth = new Authentication();
@@ -394,7 +406,6 @@ namespace TARS.Controllers
 
 
         //
-        // POST: /Admin/addPCA_WE
         //  Adds a PCA code to the given Work Effort
         [HttpPost]
         public virtual ActionResult addPCA_WE(PCA_WE pca_we)
@@ -436,8 +447,8 @@ namespace TARS.Controllers
 
 
         //
-        // GET: /Admin/deletePCA_WE
         //  Deactivates a PCA_WE entry 
+        [HttpGet]
         public virtual ActionResult deletePCA_WE(int weID)
         {
             Authentication auth = new Authentication();
@@ -457,7 +468,6 @@ namespace TARS.Controllers
 
 
         //
-        // POST: /Admin/deletePCA_WE
         //  Deactivates the specified PCA_WE entry and changes the endDate to the current day
         [HttpPost]
         public virtual ActionResult deletePCA_WE(PCA_WE pca_we)
@@ -598,6 +608,25 @@ namespace TARS.Controllers
                 TimesheetDB.Entry(item).State = System.Data.EntityState.Modified;
                 TimesheetDB.SaveChanges();
             }
+        }
+
+
+        //
+        //
+        [HttpGet]
+        public ActionResult unlockUserTimesheet()
+        {
+
+            return View();
+        }
+
+
+        //
+        //
+        [HttpPost]
+        public ActionResult unlockUserTimesheet(string username, string refDate)
+        {
+            return null;
         }
     }
 }

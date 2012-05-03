@@ -25,8 +25,8 @@ namespace TARS.Controllers
         protected HolidaysDBContext HolidaysDB = new HolidaysDBContext();
         
         //
-        // GET: /User/
         //Index view, redirects to viewTimesheet function
+        [HttpGet]
         public virtual ActionResult Index()
         {
             Authentication auth = new Authentication();
@@ -42,8 +42,8 @@ namespace TARS.Controllers
 
 
         //
-        // GET: /User/addHours
         //Adds hours to a work effort
+        [HttpGet]
         public virtual ActionResult addHours(DateTime hrsDate, int userKeyID = 0, string we = null, string tc = null)
         {
             Authentication auth = new Authentication();
@@ -74,7 +74,6 @@ namespace TARS.Controllers
 
 
         //
-        // POST: /User/addHours
         /* If userKeyId isn't zero, that means a manager is adding hours for an employee, so
          * it redirects to Manager/approveTimesheet instead of User/viewTimesheet
          */
@@ -135,8 +134,8 @@ namespace TARS.Controllers
 
 
         //
-        // GET: /User/CheckForTimesheet
         //Creates a new timesheet if one doesn't exist for the period
+        [HttpGet]
         public void checkForTimesheet(string userName, DateTime tsDate)
         {
             Authentication auth = new Authentication();
@@ -227,8 +226,8 @@ namespace TARS.Controllers
 
 
         //
-        // GET: /User/searchWorkEffort
         //Lists out all workefforts in the database
+        [HttpGet]
         public virtual ActionResult searchWorkEffort()
         {
             Authentication auth = new Authentication();
@@ -260,8 +259,8 @@ namespace TARS.Controllers
 
 
         //
-        // GET: /User/viewWorkEffort
         //View the details of a workeffort
+        [HttpGet]
         public virtual ActionResult viewWorkEffort(int id)
         {
             Authentication auth = new Authentication();
@@ -290,8 +289,8 @@ namespace TARS.Controllers
 
 
         // 
-        // GET: /User/editHours
         //  - Edits a specified Hours entry for the logged in user
+        [HttpGet]
         public virtual ActionResult editHours(int hoursID = 0, int userKeyID = 0)
         {
             Authentication auth = new Authentication();
@@ -321,7 +320,7 @@ namespace TARS.Controllers
 
 
         //
-        // POST: /User/editHours
+        //
         [HttpPost]
         public virtual ActionResult editHours(Hours tmpHours, int userKeyID = 0)
         {
@@ -392,8 +391,8 @@ namespace TARS.Controllers
 
 
         // 
-        // GET: /User/deleteHours
-        //  - Deletes a specified Hours entry
+        // Deletes a specified Hours entry
+        [HttpGet]
         public virtual ActionResult deleteHours(int id)
         {
             Authentication auth = new Authentication();
@@ -412,8 +411,8 @@ namespace TARS.Controllers
 
 
         //
-        // GET: /User/copyTimesheet
         //Duplicates timesheet from previous week (but hours worked are set to zero)
+        [HttpGet]
         public virtual ActionResult copyTimesheet()
         {
             Authentication auth = new Authentication();
@@ -461,8 +460,8 @@ namespace TARS.Controllers
 
 
         //
-        // GET: /User/viewTimesheet
         //Gets the current user's hours for the time period that tsDate falls within
+        [HttpGet]
         public virtual ActionResult viewTimesheet(DateTime tsDate)
         {
             Authentication auth = new Authentication();
@@ -499,7 +498,6 @@ namespace TARS.Controllers
         }
 
 
-        //
         //
         //Returns list of objects that each contain hours for Sun-Sat for each workEffort/timeCode pairing
         public List<TimesheetRow> convertHoursForTimesheetView()
@@ -619,8 +617,8 @@ namespace TARS.Controllers
 
 
         //
-        // GET: /User/submitTimesheet
         //changes timesheet submitted status to true
+        [HttpGet]
         public virtual ActionResult submitTimesheet(int id)
         {
             if (id >= 0)
@@ -940,6 +938,7 @@ namespace TARS.Controllers
         }
 
 
+        //
         //Returns title that is shown when hovering over a day cell on timesheet
         public virtual string getTimesheetDayCellTitle(Timesheet ts)
         {

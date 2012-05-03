@@ -102,7 +102,6 @@ namespace TARS
                                                                             null,
                                                                             "remindPcaWeExpireJob",
                                                                             null,
-                                                                            //"0/21 * * ? * *"
                                                                             "0 0 0 ? * SUN"
                                                                           );
             sched.ScheduleJob(job3, remindPcaWeExpireTrigger);

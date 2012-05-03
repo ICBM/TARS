@@ -33,8 +33,8 @@ namespace TARS.Controllers
 
 
         //
-        // GET: /Manager/searchPCA
         //  - Shows a list of PCA codes for specified division
+        [HttpGet]
         public virtual ActionResult searchPCA(string division = null)
         {
             Authentication auth = new Authentication();
@@ -97,6 +97,7 @@ namespace TARS.Controllers
 
         //
         //
+        [HttpGet]
         public virtual ActionResult weManagement()
         {
             Authentication auth = new Authentication();
@@ -217,8 +218,8 @@ namespace TARS.Controllers
 
 
         //
-        // GET: /Manager/editWorkEffort
         //  - Edits a specific WorkEffort code.
+        [HttpGet]
         public virtual ActionResult editWorkEffort(int id)
         {
             Authentication auth = new Authentication();
@@ -242,7 +243,7 @@ namespace TARS.Controllers
 
 
         //
-        // POST: /Manager/editWorkEffort
+        //
         [HttpPost]
         public virtual ActionResult editWorkEffort(WorkEffort workeffort)
         {
@@ -294,7 +295,8 @@ namespace TARS.Controllers
 
 
         //
-        // GET: /Manager/deleteWorkEffort
+        //
+        [HttpGet]
         public virtual ActionResult deleteWorkEffort(int id)
         {
             Authentication auth = new Authentication();
@@ -438,8 +440,8 @@ namespace TARS.Controllers
 
 
         //
-        // GET: /Manager/searchPCA_WE
         //  - Shows a list of all PCA_WE codes.
+        [HttpGet]
         public virtual ActionResult searchPCA_WE()
         {
             Authentication auth = new Authentication();
@@ -455,8 +457,8 @@ namespace TARS.Controllers
 
 
         //
-        // GET: /Manager/viewPCA_WE
-        //  - Shows detailed information for a single PCA_WE code.
+        // Shows detailed information for a single PCA_WE code.
+        [HttpGet]
         public virtual ActionResult viewPCA_WE(int id)
         {
             Authentication auth = new Authentication();
@@ -473,8 +475,8 @@ namespace TARS.Controllers
 
 
         //
-        //GET: Manager/approveTimesheet
         //Gets hours for specified user for the time period that tsDate falls within
+        [HttpGet]
         public virtual ActionResult approveTimesheet(int userKeyID, DateTime tsDate)
         {
             Authentication auth = new Authentication();
@@ -590,8 +592,9 @@ namespace TARS.Controllers
         }
 
 
-        // GET: /Manager/managerEditHours
-        //  - Edits a specified Hours entry
+        //
+        // Edits a specified Hours entry
+        [HttpGet]
         public virtual ActionResult managerEditHours(int hrsID, int tsID)
         {
             Authentication auth = new Authentication();
@@ -617,7 +620,7 @@ namespace TARS.Controllers
 
 
         //
-        // POST: /Manager/managerEditHours
+        //
         [HttpPost]
         public virtual ActionResult managerEditHours(Hours tmpHours)
         {
@@ -964,8 +967,8 @@ namespace TARS.Controllers
 
 
         //
-        // GET: Manager/viewHistory
         //
+        [HttpGet]
         public ActionResult viewHistory(DateTime start, DateTime end)
         {
             Authentication auth = new Authentication();
@@ -991,7 +994,6 @@ namespace TARS.Controllers
 
 
         //
-        // POST: Manager/viewHistory
         //
         [HttpPost]
         public ActionResult viewHistory(DateTime start, DateTime end, string division = null, string un = null, string dbtable = null)
