@@ -43,7 +43,7 @@
             double total = 0;    <!-- for displaying hours on a workEffort/timeCode for the week -->  
            
             <tr class="timesheetRow">
-                <td class="effortDescription" title="PCA code(s): @Html.Action("getWePcaCodesString", "User", new {weDesc = item.workeffort})">
+                <td class="effortDescription" title="PCA code(s): @Html.Action("getWePcaCodesString", "User", new {weID = item.weID})">
                     @Html.HiddenFor(modelItem => item.workeffort)
                     @Html.DisplayFor(modelItem => item.workeffort)
                 </td>

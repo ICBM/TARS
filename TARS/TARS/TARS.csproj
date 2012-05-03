@@ -80,6 +80,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManagerController.cs" />
     <Compile Include="Models\Extensions.cs" />
+    <Compile Include="Models\Holidays.cs" />
     <Compile Include="ScheduledJobs\TarsScheduledJobs.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Global.asax.cs">

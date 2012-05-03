@@ -547,9 +547,19 @@ namespace TARS.Controllers
 
 
         //
-        // Checks if the pay period had a holiday
+        // Checks if the pay period contains a holiday. If so, TRUE is returned.
         public bool isHolidayWeek(DateTime refDate)
         {
+            DateTime refStart = refDate.StartOfWeek(DayOfWeek.Sunday);
+            DateTime refEnd = refStart.AddDays(7);
+            var searchHolidays = from h in HolidaysDB.HolidaysList
+                                 where h.date >= refStart
+                                 where h.date < refEnd
+                                 select h;
+            foreach (var item in searchHolidays)
+            {
+                return true;
+            }
             return false;
         }
 

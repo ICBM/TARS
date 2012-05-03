@@ -21,9 +21,11 @@ namespace TARS.ScheduledJobs
                     Debug.WriteLine("lockingTimesheets");
                     break;
                 case "remindSubmitTimesheet":
+                    reminderToSubmitTimesheet();
                     Debug.WriteLine("remindSubmitTimesheet");
                     break;
                 case "remindPcaOrWeExpires":
+                    notificationOfPcaOrWeExpiration();
                     Debug.WriteLine("remindPcaOrWeExpires");
                     break; 
             }

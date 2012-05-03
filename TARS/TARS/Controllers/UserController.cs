@@ -22,6 +22,7 @@ namespace TARS.Controllers
         protected EarningsCodesDBContext EarningsCodesDB = new EarningsCodesDBContext();
         protected PcaCodeDBContext PcaCodeDB = new PcaCodeDBContext();
         protected PCA_WEDBContext PCA_WEDB = new PCA_WEDBContext();
+        protected HolidaysDBContext HolidaysDB = new HolidaysDBContext();
         
         //
         // GET: /User/
@@ -539,6 +540,7 @@ namespace TARS.Controllers
                         if ((effortAndCode.Contains(workEffortList.First().description)) &&
                              (effortAndCode.Contains(timeCodeList.First())))
                         {
+                            tmpTsRow.weID = workEffortList.First().ID;
                             tmpTsRow.workeffort = workEffortList.First().description;
                             tmpTsRow.timecode = timeCodeList.First();
                             workEffortList.RemoveAt(0);
@@ -749,19 +751,12 @@ namespace TARS.Controllers
 
         // 
         //Returns PCA codes associated with the specified work effort as a string
-        public virtual string getWePcaCodesString(string weDesc)
+        public virtual string getWePcaCodesString(int weID)
         {
             PcaCode tmpPca = new PcaCode();
-            WorkEffort we = new WorkEffort();
             string pcaString = "";
+            WorkEffort we = WorkEffortDB.WorkEffortList.Find(weID);
 
-            var searchWe = from w in WorkEffortDB.WorkEffortList
-                           where (w.description.CompareTo(weDesc) == 0)
-                           select w;
-            foreach (var item in searchWe)
-            {
-                we = item;
-            }
             var searchPcaWe = from p in PCA_WEDB.PCA_WEList
                               where p.WE == we.ID
                               where p.active == true
@@ -995,6 +990,25 @@ namespace TARS.Controllers
             return Json(weSelectList.Select(x => new { value = x, text = x }),
                         JsonRequestBehavior.AllowGet
                         );
+        }
+
+
+        //
+        // Sends a reminder to all users who haven't submitted their timesheet by Saturday morning
+        public void reminderToSubmitTimesheet()
+        {
+            DateTime refDate = DateTime.Now;
+            string body = "Please submit your IDHW timesheet by the end of the day today.  <br /><br />Thanks!";
+            var searchTimesheets = from t in TimesheetDB.TimesheetList
+                                   where t.periodStart <= refDate
+                                   where t.periodEnd >= refDate
+                                   where t.submitted != true
+                                   select t;
+            foreach (var item in searchTimesheets)
+            {
+                SendEmail(item.worker, "Reminder to submit timesheet today", body);
+            }
+            return;
         }
 
 

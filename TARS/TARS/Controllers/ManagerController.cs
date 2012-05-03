@@ -1059,5 +1059,51 @@ namespace TARS.Controllers
                         JsonRequestBehavior.AllowGet
                         );
         }
+
+
+        //
+        // Sends notification to managers and admin if a PCA or Work Effort Expires this week
+        public void notificationOfPcaOrWeExpiration()
+        {
+            DateTime refStart = DateTime.Now.StartOfWeek(DayOfWeek.Sunday);
+            DateTime refEnd = refStart.AddDays(7);
+            DateTime tmpEndDate = DateTime.Now;
+            string body = "";
+            string pcas = "";
+            var searchPca = from p in PcaCodeDB.PcaCodeList
+                            where p.endDate >= refStart
+                            where p.endDate < refEnd
+                            select p;
+            var searchWe = from w in WorkEffortDB.WorkEffortList
+                           where w.endDate >= refStart
+                           where w.endDate < refEnd
+                           select w;
+            var searchUsers = from t in TARSUserDB.TARSUserList
+                              where t.permission > 1
+                              select t;
+            foreach (var person in searchUsers)
+            {
+                foreach (var item in searchPca)
+                {
+                    tmpEndDate = (DateTime)item.endDate;
+                    body = "Notification of PCA expiration this week. <br /><br />" +
+                           "PCA code: " + item.code + " (" + item.division + ") <br />" +
+                           "Description: \"" + item.description + "\" <br />" +
+                           "End Date: " + tmpEndDate.ToShortDateString();
+                    SendEmail(person.userName, "PCA expiration notification", body);
+                }
+                foreach (var item in searchWe)
+                {
+                    tmpEndDate = (DateTime)item.endDate;
+                    pcas = getWePcaCodesString(item.ID);
+                    body = "Notification of Work Effort expiration this week. <br /><br />" +
+                            "Work Effort description: \"" + item.description + "\" <br />" +
+                            "Associated PCA code(s): " + pcas + "<br />End Date: " + 
+                            tmpEndDate.ToShortDateString();
+                    SendEmail(person.userName, "Work Effort expiration notification", body);
+                }
+            }
+            return;
+        }
     }
 }
