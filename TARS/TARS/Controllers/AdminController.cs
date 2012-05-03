@@ -612,21 +612,53 @@ namespace TARS.Controllers
 
 
         //
-        //
-        [HttpGet]
-        public ActionResult unlockUserTimesheet()
+        /* Displays all the employees that work for the specified departement within the Information 
+         * Technology division. If department is null, it displays all employees in the division.
+         * If their timesheet is locked, there is a button to unlock it.
+         */
+        public ActionResult viewTimesheetStatuses(DateTime refDate, string department = null)
         {
-
-            return View();
+            Authentication auth = new Authentication();
+            if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
+            {
+                string division = getUserDivision();
+                IEnumerable<TARSUser> employees = getDivisionEmployeeObjList(division, department);
+                ViewBag.division = division;
+                ViewBag.departmentList = getDepartmentSelectList(division);
+                ViewBag.refDate = refDate;
+                ViewBag.refSunday = refDate.StartOfWeek(DayOfWeek.Sunday);
+                ViewBag.refPayPeriod = getPayPeriod(refDate);
+                return View(employees);
+            }
+            else
+            {
+                return View("error");
+            }
         }
 
 
         //
         //
-        [HttpPost]
-        public ActionResult unlockUserTimesheet(string username, string refDate)
+        public void adminUnlockTimesheet(string username, DateTime refDate)
         {
-            return null;
+            Timesheet tmpTs = new Timesheet();
+            var searchTs = from t in TimesheetDB.TimesheetList
+                           where (t.worker.CompareTo(username) == 0)
+                           where t.periodStart <= refDate
+                           where t.periodEnd >= refDate
+                           select t;
+            foreach (var item in searchTs)
+            {
+                tmpTs = item;
+                tmpTs.locked = false;
+                tmpTs.approved = false;
+                tmpTs.submitted = false;
+            }
+            //save changes in database
+            TimesheetDB.Entry(tmpTs).State = System.Data.EntityState.Modified;
+            TimesheetDB.SaveChanges();
+
+            return;
         }
     }
 }

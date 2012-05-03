@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<TARS.Models.TARSUser>
 
 @{
-    ViewBag.Title = "User Maintanence";
+    ViewBag.Title = "Unlock Employee Timesheet";
 }
 
-<h2>@ViewBag.division Employees</h2>
+<h2>Unlock Employee Timesheet</h2>
 
 <!-- Allow Manager/Approver to select a different department -->
 @using (Html.BeginForm())
@@ -14,7 +14,7 @@
     <br /><br />
 }
 
-<!-- Show the pay period and navigation options to view previous/next/current -->
+<!-- Show the pay period and navigation options to view different pay periods -->
 <b>Pay Period: @ViewBag.refPayPeriod </b>
 <br />
 <b>View different pay period: </b> 
@@ -22,24 +22,10 @@
 @if ((DateTime.Now < ViewBag.refSunday) || (DateTime.Now > ViewBag.refSunday.AddDays(7)))
 {
     <html> | </html>
-    @Html.ActionLink(" Go To Current ", "userManagement", new { refDate = DateTime.Now, division = ViewBag.division })
+    @Html.ActionLink(" Go To Current ", "viewTimesheetStatuses", new { refDate = DateTime.Now, division = ViewBag.division })
 }
 <br /><br />
 
-
-@if (ViewBag.emailSentFlag == true)
-{
-    <h4>
-    @if (ViewBag.emailError != null)
-    {
-        <html>Timesheet Rejected, but there was an error sending notification email to @ViewBag.messageRecipient</html>
-    }
-    else
-    {
-        <html>Timesheet Rejected:  Notification email was sent to @ViewBag.messageRecipient</html>
-    }
-    </h4>
-}
 
 <table class="timesheet">
     <tr>
@@ -47,13 +33,16 @@
             UserName
         </th>
         <th>
-            Permission
-        </th>
-        <th>
             Company
         </th>
         <th>
             Department
+        </th>
+        <th>
+            TimesheetStart
+        </th>
+        <th>
+            TimesheetEnd
         </th>
         <th>
             TimesheetStatus
@@ -69,14 +58,17 @@
             <td class="name">
                 @Html.DisplayFor(modelItem => item.userName)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.permission)
-            </td>
             <td class="description">
                 @Html.DisplayFor(modelItem => item.company)
             </td>
             <td class="description">
                 @Html.DisplayFor(modelItem => item.department)
+            </td>
+            <td class="date">
+                @ViewBag.refSunday.ToShortDateString()
+            </td>
+            <td class="date">
+                @ViewBag.refSunday.AddDays(6).ToShortDateString()
             </td>
             <td>
                 @if (tsStatus.ToString().Length == 0)
@@ -93,11 +85,8 @@
                 {
                     if (tsStatus.CompareTo("locked") == 0)
                     {
-                        @Html.ActionLink("View", "approveTimesheet", new { userKeyID = item.ID, tsDate = ViewBag.refDate })
-                    }
-                    else
-                    {
-                        @Html.ActionLink("View/Approve/Reject", "approveTimesheet", new { userKeyID = item.ID, tsDate = ViewBag.refDate })
+                        <button id="unlockTimesheet" style="font-size: 10px">Unlock</button>
+                        @Html.Hidden("empName", item.userName)
                     }
                 }
             </td>
@@ -124,16 +113,40 @@
         var selectedDate = $(this).val();
         var currentDivision = "@ViewBag.division";
         $.ajax({
-            url: '@Url.Action("userManagement")',
+            url: '@Url.Action("viewTimesheetStatuses")',
             type: "POST",
             data: {
                 refDate: selectedDate,
                 division: currentDivision
             },
             success: function () {
-                window.location.href = '@Url.Action("userManagement", "Manager")' +
+                window.location.href = '@Url.Action("viewTimesheetStatuses", "Admin")' +
                 "?refDate=" + selectedDate + "&division=" + currentDivision;
             }
+        });
+    });
+</script>
+
+
+
+<!-- Unlocks a timesheet -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('td.options #unlockTimesheet').click(function () {
+            var empName = $(this).closest('td').find('#empName').val();
+            var tsDate = '@ViewBag.refDate';
+            $.ajax({
+                url: '@Url.Action("adminUnlockTimesheet")',
+                type: "POST",
+                data:
+                {
+                    username: empName,
+                    refDate: tsDate
+                },
+                success: function () {
+                    location.reload();
+                }
+            });
         });
     });
 </script>
