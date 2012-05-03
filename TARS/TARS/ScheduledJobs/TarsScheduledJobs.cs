@@ -13,9 +13,17 @@ namespace TARS.ScheduledJobs
     {
         public void Execute(IJobExecutionContext context)
 	    {
-            if (true)
+            switch (context.JobDetail.Description)
             {
-                Debug.WriteLine("Hello at " + DateTime.Now.ToString() + " --- " + context);
+                case "lockTimesheets":
+                    Debug.WriteLine("lockTimesheets");
+                    break;
+                case "remindSubmitTimesheet":
+                    Debug.WriteLine("remindSubmitTimesheet");
+                    break;
+                case "remindPcaOrWeExpires":
+                    Debug.WriteLine("remindPcaOrWeExpires");
+                    break; 
             }
 	    }
     }

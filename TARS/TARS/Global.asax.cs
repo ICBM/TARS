@@ -73,34 +73,38 @@ namespace TARS
              * Timesheets won't be locked on Tuesday if there was a holiday, and won't be
              * locked on Wednesday if there wasn't a holiday
              */
-            JobDetailImpl job1 = new JobDetailImpl("lockTimesheets", typeof(TARS.ScheduledJobs.TarsScheduledJobs));
-            CronTriggerImpl lockTimesheets = new CronTriggerImpl("lock",
-                                                                  null,
-                                                                  "lockTimesheets",
-                                                                  null,
-                                                                  "0 0 0 ? * 'TUE,WED'"
-                                                                );
-            sched.ScheduleJob(job1, lockTimesheets);
+            JobDetailImpl job1 = new JobDetailImpl("lockTimesheetsJob", typeof(TARS.ScheduledJobs.TarsScheduledJobs));
+            job1.Description = "lockTimesheets";
+            CronTriggerImpl lockTimesheetsTrigger = new CronTriggerImpl("lockTimesheetTrigger",
+                                                                         null,
+                                                                         "lockTimesheetsJob",
+                                                                         null,
+                                                                         "0/5 * * ? * *"
+                                                                         //"0 0 0 ? * TUE,WED"
+                                                                       );
+            sched.ScheduleJob(job1, lockTimesheetsTrigger);
 
             // trigger to send reminder email to employees to submit timesheets by end of day Saturday
-            JobDetailImpl job2 = new JobDetailImpl("submitTsRemind", typeof(TARS.ScheduledJobs.TarsScheduledJobs));
-            CronTriggerImpl submitTimesheetReminder = new CronTriggerImpl("submitReminder",
-                                                                           null,
-                                                                           "submitTsRemind",
-                                                                           null,
-                                                                           "0 0 0 ? * SAT"
-                                                                         );
-            sched.ScheduleJob(job2, submitTimesheetReminder);
+            JobDetailImpl job2 = new JobDetailImpl("remindSubmitTimesheetJob", typeof(TARS.ScheduledJobs.TarsScheduledJobs));
+            job2.Description = "remindSubmitTimesheet";
+            CronTriggerImpl remindSubmitTsTrigger = new CronTriggerImpl("remindSubmitTimesheetTrigger",
+                                                                         null,
+                                                                         "remindSubmitTimesheetJob",
+                                                                         null,
+                                                                         "0 0 0 ? * SAT"
+                                                                       );
+            sched.ScheduleJob(job2, remindSubmitTsTrigger);
 
-            // trigger to send reminder email to managers and admin when a PCA or Work Effort expire that week
-            JobDetailImpl job3 = new JobDetailImpl("pcaAndWeExpRemind", typeof(TARS.ScheduledJobs.TarsScheduledJobs)); 
-            CronTriggerImpl pcaAndWeExpirationReminder = new CronTriggerImpl("pcaAndWeReminder",
-                                                                              null,
-                                                                              "pcaAndWeExpRemind",
-                                                                              null,
-                                                                              "0 0 0 ? * SUN"
-                                                                            );
-            sched.ScheduleJob(job3, pcaAndWeExpirationReminder);
+            // trigger to send reminder email to managers and admin when a PCA or Work Effort expires that week
+            JobDetailImpl job3 = new JobDetailImpl("remindPcaWeExpireJob", typeof(TARS.ScheduledJobs.TarsScheduledJobs));
+            job3.Description = "remindPcaOrWeExpires";
+            CronTriggerImpl remindPcaWeExpireTrigger = new CronTriggerImpl("remindPcaWeExpireTrigger",
+                                                                            null,
+                                                                            "remindPcaWeExpireJob",
+                                                                            null,
+                                                                            "0 0 0 ? * SUN"
+                                                                          );
+            sched.ScheduleJob(job3, remindPcaWeExpireTrigger);
 	    }
     }
 }
