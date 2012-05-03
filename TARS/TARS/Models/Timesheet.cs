@@ -57,7 +57,14 @@ namespace TARS.Models
                               "; locked: " + entry.Property(u => u.locked).CurrentValue;
             }
 
-            hist.username = System.Web.HttpContext.Current.User.Identity.Name;
+            if (System.Web.HttpContext.Current != null)
+            {
+                hist.username = System.Web.HttpContext.Current.User.Identity.Name;
+            }
+            else
+            {
+                hist.username = "TARS System";
+            }
             hist.timestamp = System.DateTime.Now;
             HistDB.HistoryList.Add(hist);
             HistDB.SaveChanges();

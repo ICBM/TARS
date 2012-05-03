@@ -7,6 +7,7 @@ using System.Web.Routing;
 
 using TARS.Controllers;
 using TARS.Models;
+using TARS.ScheduledJobs;
 
 using Quartz;   //for scheduling jobs
 using Quartz.Impl;
@@ -79,8 +80,7 @@ namespace TARS
                                                                          null,
                                                                          "lockTimesheetsJob",
                                                                          null,
-                                                                         "0/5 * * ? * *"
-                                                                         //"0 0 0 ? * TUE,WED"
+                                                                         "0 0 0 ? * TUE,WED"
                                                                        );
             sched.ScheduleJob(job1, lockTimesheetsTrigger);
 

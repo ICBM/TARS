@@ -4,19 +4,21 @@ using System.Linq;
 using System.Web;
 using System.Diagnostics;
 
+using TARS.Controllers;
 using Quartz; 
 
 
 namespace TARS.ScheduledJobs
 {
-    public class TarsScheduledJobs : IJob
+    public class TarsScheduledJobs : AdminController, IJob
     {
         public void Execute(IJobExecutionContext context)
 	    {
             switch (context.JobDetail.Description)
             {
                 case "lockTimesheets":
-                    Debug.WriteLine("lockTimesheets");
+                    lockTimesheets();
+                    Debug.WriteLine("lockingTimesheets");
                     break;
                 case "remindSubmitTimesheet":
                     Debug.WriteLine("remindSubmitTimesheet");

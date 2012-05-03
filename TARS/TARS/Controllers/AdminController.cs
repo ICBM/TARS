@@ -544,5 +544,50 @@ namespace TARS.Controllers
             }
             return pcaList;
         }
+
+
+        //
+        // Checks if the pay period had a holiday
+        public bool isHolidayWeek(DateTime refDate)
+        {
+            return false;
+        }
+
+
+        //
+        // Locks all timesheets that ended more than two days ago (
+        // (note: called from TARS/ScheduledJobs/TarsScheduledJobs)
+        public void lockTimesheets()
+        {
+            DateTime refDate = DateTime.Now.Date;
+            Timesheet tmpTimesheet = new Timesheet();
+            List<Timesheet> tsList = new List<Timesheet>();
+
+            // If there was a holiday, allow three days after periodEnd before locking
+            if (isHolidayWeek(refDate.AddDays(-7)))
+            {
+                refDate = refDate.AddDays(-1);
+            }
+            else
+            {
+                refDate = refDate.AddDays(-2);
+            }
+            var searchTimesheets = from t in TimesheetDB.TimesheetList
+                                   where t.locked != true
+                                   where t.periodEnd < refDate
+                                   select t;
+            foreach (var item in searchTimesheets)
+            {
+                tmpTimesheet = item;
+                tmpTimesheet.locked = true;
+                tsList.Add(tmpTimesheet);
+            }
+            foreach (var item in tsList)
+            {
+                //save changes in database
+                TimesheetDB.Entry(item).State = System.Data.EntityState.Modified;
+                TimesheetDB.SaveChanges();
+            }
+        }
     }
 }
