@@ -22,7 +22,7 @@
 @if ((DateTime.Now < ViewBag.refSunday) || (DateTime.Now > ViewBag.refSunday.AddDays(7)))
 {
     <html> | </html>
-    @Html.ActionLink(" Go To Current ", "unlockEmployeeTimesheets", new { refDate = DateTime.Now, division = ViewBag.division })
+    @Html.ActionLink(" Go To Current ", "viewTimesheetStatuses", new { refDate = DateTime.Now, division = ViewBag.division })
 }
 <br /><br />
 
@@ -113,14 +113,14 @@
         var selectedDate = $(this).val();
         var currentDivision = "@ViewBag.division";
         $.ajax({
-            url: '@Url.Action("unlockEmployeeTimesheets")',
+            url: '@Url.Action("viewTimesheetStatuses")',
             type: "POST",
             data: {
                 refDate: selectedDate,
                 division: currentDivision
             },
             success: function () {
-                window.location.href = '@Url.Action("unlockEmployeeTimesheets", "Admin")' +
+                window.location.href = '@Url.Action("viewTimesheetStatuses", "Admin")' +
                 "?refDate=" + selectedDate + "&division=" + currentDivision;
             }
         });

@@ -615,7 +615,7 @@ namespace TARS.Controllers
         /* Displays all the employees that work for the specified departement within the Information 
          * Technology division. If department is null, it displays all employees in the division.
          */
-        public ActionResult unlockEmployeeTimesheets(DateTime refDate, string department = null)
+        public ActionResult viewTimesheetStatuses(DateTime refDate, string department = null)
         {
             Authentication auth = new Authentication();
             if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)

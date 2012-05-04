@@ -10,7 +10,7 @@
 <p>@Html.ActionLink("User Maintanence", "userMaintanence")</p>
 <p>Add, modify, or End-Date Users in the TARS system</p>
 
-<p>@Html.ActionLink("Unlock a Timesheet", "unlockEmployeeTimesheets", new { refDate = DateTime.Now.AddDays(-7) })</p>
+<p>@Html.ActionLink("Unlock a Timesheet", "viewTimesheetStatuses", new { refDate = DateTime.Now.AddDays(-7) })</p>
 <p>Unlock an employee's timesheet for editing and re-submittal</p>
 
 <p>@Html.ActionLink("View/Add/Edit/Delete Holidays", "viewHolidays")</p>
