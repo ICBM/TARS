@@ -16,9 +16,16 @@ namespace TARS.Models
     public class Holidays
     {
         public int ID { get; set; } //DB iterator
+        [Required]
+        [StringLength(50, ErrorMessage = "Must be 50 characters or less")]
         public string holidayName { get; set; }
         [DataType (DataType.Date)]
-        public DateTime date { get; set; }
+        public DateTime? date { get; set; }
+
+        public Holidays()
+        {
+            date = DateTime.MinValue;
+        }
     }
 
     public class HolidaysDBContext : DbContext

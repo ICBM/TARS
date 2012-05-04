@@ -1,0 +1,43 @@
+﻿@model IEnumerable<TARS.Models.Holidays>
+
+@{
+    ViewBag.Title = "viewHolidays";
+}
+
+<h2>Holidays</h2>
+
+<p>
+@Html.ActionLink("Add a Holiday", "addHoliday")
+</p>
+
+<table class="timesheet">
+    <tr>
+        <th> 
+            Holiday
+        </th>
+        <th> 
+            Date
+        </th>
+        <th class="options">
+        </th>
+    </tr>
+
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td class="description">
+                    @Html.DisplayFor(modelItem => item.holidayName)
+                </td>
+                <td class="date">
+                    @Html.DisplayFor(modelItem => item.date)
+                </td>
+                <td class="options">
+                    @Html.ActionLink("Edit", "editHoliday", new { id = item.ID })   |
+                    @Html.ActionLink("Delete", "deleteHoliday", new { id = item.ID })
+                </td>
+            </tr>
+        }
+    }
+</table>

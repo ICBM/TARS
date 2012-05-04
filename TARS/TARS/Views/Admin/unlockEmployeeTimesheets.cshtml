@@ -1,0 +1,152 @@
+﻿@model IEnumerable<TARS.Models.TARSUser>
+
+@{
+    ViewBag.Title = "unlockEmployeeTimesheets";
+}
+
+<h2>Unlock Employee Timesheets</h2>
+
+<!-- Allow Manager/Approver to select a different department -->
+@using (Html.BeginForm())
+{
+    <b>Department: </b>
+    @Html.DropDownList("department", (List<SelectListItem>)ViewBag.departmentList, new { @onchange = "this.form.submit();"})     
+    <br /><br />
+}
+
+<!-- Show the pay period and navigation options to view different pay periods -->
+<b>Pay Period: @ViewBag.refPayPeriod </b>
+<br />
+<b>View different pay period: </b> 
+@Html.TextBox("differentPayPeriod", null, new { @style = "width:70px;" })
+@if ((DateTime.Now < ViewBag.refSunday) || (DateTime.Now > ViewBag.refSunday.AddDays(7)))
+{
+    <html> | </html>
+    @Html.ActionLink(" Go To Current ", "unlockEmployeeTimesheets", new { refDate = DateTime.Now, division = ViewBag.division })
+}
+<br /><br />
+
+
+<table class="timesheet">
+    <tr>
+        <th>
+            UserName
+        </th>
+        <th>
+            Company
+        </th>
+        <th>
+            Department
+        </th>
+        <th>
+            TimesheetStart
+        </th>
+        <th>
+            TimesheetEnd
+        </th>
+        <th>
+            TimesheetStatus
+        </th>
+    </tr>
+
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+        string tsStatus = Html.Action("getTimesheetStatus", "User", new { userName = item.userName, refDate = ViewBag.refdate }).ToString();
+        <tr>
+            <td class="name">
+                @Html.DisplayFor(modelItem => item.userName)
+            </td>
+            <td class="description">
+                @Html.DisplayFor(modelItem => item.company)
+            </td>
+            <td class="description">
+                @Html.DisplayFor(modelItem => item.department)
+            </td>
+            <td class="date">
+                @ViewBag.refSunday.ToShortDateString()
+            </td>
+            <td class="date">
+                @ViewBag.refSunday.AddDays(6).ToShortDateString()
+            </td>
+            <td>
+                @if (tsStatus.ToString().Length == 0)
+                {
+                    <html> none </html>
+                }
+                else
+                {
+                    @tsStatus
+                }
+            </td>
+            <td class="options">
+                @if (tsStatus.ToString().Length != 0)
+                {
+                    if (tsStatus.CompareTo("locked") == 0)
+                    {
+                        <button id="unlockTimesheet" style="font-size: 10px">Unlock</button>
+                        @Html.Hidden("empName", item.userName)
+                    }
+                }
+            </td>
+        </tr>
+    }
+}
+</table>
+
+
+
+<!-- pop-up calendars -->
+<script type="text/javascript">
+    $('#differentPayPeriod').datepicker({
+        changeMonth: true,
+        changeYear: true,
+        yearRange: 'c-10:c+20'
+    });
+</script>
+
+
+<!-- Displays the employee list covering the selected date -->
+<script type="text/javascript">
+    $('#differentPayPeriod').change(function () {
+        var selectedDate = $(this).val();
+        var currentDivision = "@ViewBag.division";
+        $.ajax({
+            url: '@Url.Action("unlockEmployeeTimesheets")',
+            type: "POST",
+            data: {
+                refDate: selectedDate,
+                division: currentDivision
+            },
+            success: function () {
+                window.location.href = '@Url.Action("unlockEmployeeTimesheets", "Admin")' +
+                "?refDate=" + selectedDate + "&division=" + currentDivision;
+            }
+        });
+    });
+</script>
+
+
+
+<!-- Unlocks a timesheet -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('td.options #unlockTimesheet').click(function () {
+            var empName = $(this).closest('td').find('#empName').val();
+            var tsDate = '@ViewBag.refDate';
+            $.ajax({
+                url: '@Url.Action("adminUnlockTimesheet")',
+                type: "POST",
+                data:
+                {
+                    username: empName,
+                    refDate: tsDate
+                },
+                success: function () {
+                    location.reload();
+                }
+            });
+        });
+    });
+</script>

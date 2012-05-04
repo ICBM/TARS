@@ -6,7 +6,7 @@
 
 <h2>Work Efforts</h2>
 
-<!-- if the user is has manager privileges, let them edit the work effort -->
+<!-- if the user has manager privileges, let them edit the work effort -->
 @if (ViewBag.managerFlag == true)
 {  
     <p>@Html.ActionLink("Manage Work Efforts", "WeManagement", "Manager")</p>
@@ -17,7 +17,7 @@
     <tr>
         <th class="description">
             Description
-        </th class="workEffort">
+        </th>
         <th class="workEffort">
             PcaCode(s)
         </th>

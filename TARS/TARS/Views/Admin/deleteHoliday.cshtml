@@ -1,0 +1,30 @@
+﻿@model TARS.Models.Holidays
+
+@{
+    ViewBag.Title = "deleteHoliday";
+}
+
+<h2>deleteHoliday</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+
+<fieldset>
+    <div class="display-label"><b>Holiday Name</b></div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.holidayName)
+    </div>
+
+    <p>
+    <div class="display-label"><b>Date</b></div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.date)
+    </div>
+    </p>
+</fieldset>
+
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> | 
+        @Html.ActionLink("Back to Holidays", "viewHolidays")
+    </p>
+}

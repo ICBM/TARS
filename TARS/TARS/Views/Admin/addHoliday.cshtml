@@ -1,0 +1,35 @@
+﻿@model TARS.Models.Holidays
+
+@{
+    ViewBag.Title = "addHoliday";
+}
+
+<h2>Add a Holiday</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <div class="editor-label"><b>Holiday Name</b></div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.holidayName)
+            @Html.ValidationMessageFor(model => model.holidayName)           
+        </div>
+
+        <p>
+        <div class="editor-label"><b>Date</b></div>
+        <div class="editor-field">
+            @Html.TextBox("date", Model.date.HasValue && Model.date.Value != DateTime.MinValue ? 
+                    Model.date.Value.ToShortDateString() : string.Empty, new { @class = "datefield" })
+        </div>
+        </p>
+
+        <p>
+            <input type="submit" value="Add" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "maintainPCA")
+</div>

@@ -614,9 +614,8 @@ namespace TARS.Controllers
         //
         /* Displays all the employees that work for the specified departement within the Information 
          * Technology division. If department is null, it displays all employees in the division.
-         * If their timesheet is locked, there is a button to unlock it.
          */
-        public ActionResult viewTimesheetStatuses(DateTime refDate, string department = null)
+        public ActionResult unlockEmployeeTimesheets(DateTime refDate, string department = null)
         {
             Authentication auth = new Authentication();
             if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
@@ -641,24 +640,157 @@ namespace TARS.Controllers
         //
         public void adminUnlockTimesheet(string username, DateTime refDate)
         {
-            Timesheet tmpTs = new Timesheet();
-            var searchTs = from t in TimesheetDB.TimesheetList
-                           where (t.worker.CompareTo(username) == 0)
-                           where t.periodStart <= refDate
-                           where t.periodEnd >= refDate
-                           select t;
-            foreach (var item in searchTs)
+            Authentication auth = new Authentication();
+            if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
             {
-                tmpTs = item;
-                tmpTs.locked = false;
-                tmpTs.approved = false;
-                tmpTs.submitted = false;
+                Timesheet tmpTs = new Timesheet();
+                var searchTs = from t in TimesheetDB.TimesheetList
+                               where (t.worker.CompareTo(username) == 0)
+                               where t.periodStart <= refDate
+                               where t.periodEnd >= refDate
+                               select t;
+                foreach (var item in searchTs)
+                {
+                    tmpTs = item;
+                    tmpTs.locked = false;
+                    tmpTs.approved = false;
+                    tmpTs.submitted = false;
+                }
+                //save changes in database
+                TimesheetDB.Entry(tmpTs).State = System.Data.EntityState.Modified;
+                TimesheetDB.SaveChanges();
             }
-            //save changes in database
-            TimesheetDB.Entry(tmpTs).State = System.Data.EntityState.Modified;
-            TimesheetDB.SaveChanges();
-
             return;
         }
+
+
+        //
+        //
+
+        public ActionResult viewHolidays()
+        {
+            Authentication auth = new Authentication();
+            if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
+            {
+                List<Holidays> holidays = HolidaysDB.HolidaysList.ToList();
+                return View(holidays);
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+
+        //
+        //
+        [HttpGet]
+        public virtual ActionResult addHoliday()
+        {
+            Authentication auth = new Authentication();
+            if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
+            {
+                return View(new Holidays());
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+
+        //
+        //
+        [HttpPost]
+        public virtual ActionResult addHoliday(Holidays holiday)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
+            {
+                HolidaysDB.HolidaysList.Add(holiday);
+                HolidaysDB.SaveChanges();
+                return RedirectToAction("viewHolidays");
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+
+        //
+        //
+        [HttpGet]
+        public virtual ActionResult editHoliday(int id)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
+            {
+                Holidays holiday = HolidaysDB.HolidaysList.Find(id);
+                return View(holiday);
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+
+        //
+        //
+        [HttpPost]
+        public virtual ActionResult editHoliday(Holidays holiday)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
+            {
+                HolidaysDB.Entry(holiday).State = System.Data.EntityState.Modified;
+                HolidaysDB.SaveChanges();
+                return RedirectToAction("viewHolidays");
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+
+        //
+        //
+        [HttpGet]
+        public virtual ActionResult deleteHoliday(int id)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
+            {
+                Holidays holiday = HolidaysDB.HolidaysList.Find(id);
+                return View(holiday);
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
+
+        //
+        // POST: /Admin/deleteHoliday
+        [HttpPost, ActionName("deleteHoliday")] //This action MUST match the above delete function.
+        public virtual ActionResult confirmDeleteHoliday(int id)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
+            {
+                Holidays holiday = HolidaysDB.HolidaysList.Find(id);
+                HolidaysDB.HolidaysList.Remove(holiday);
+                HolidaysDB.SaveChanges();
+                return RedirectToAction("viewHolidays");
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
     }
 }

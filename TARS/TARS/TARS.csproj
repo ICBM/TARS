@@ -276,7 +276,11 @@
     <Content Include="Views\Shared\EditorTemplates\Date.cshtml" />
     <Content Include="Views\Manager\viewHistory.cshtml" />
     <Content Include="Views\User\_showWorkOnWorkEffort.cshtml" />
-    <Content Include="Views\Admin\viewTimesheetStatuses.cshtml" />
+    <Content Include="Views\Admin\unlockEmployeeTimesheets.cshtml" />
+    <Content Include="Views\Admin\viewHolidays.cshtml" />
+    <Content Include="Views\Admin\deleteHoliday.cshtml" />
+    <Content Include="Views\Admin\addHoliday.cshtml" />
+    <Content Include="Views\Admin\editHoliday.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
