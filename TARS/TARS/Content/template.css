@@ -57,6 +57,7 @@ fieldset
 input[type=text].dayCell
 {
     width: 50px;
+    vertical-align: middle;
     border: 0px;
     border-color: White;
     text-align: center;
@@ -126,7 +127,7 @@ table.timesheet td
 
 table.timesheet td.days
 {
-    padding: 1px;
+    padding: 5px;
     width: 50px; 
     text-align: center;
 }
