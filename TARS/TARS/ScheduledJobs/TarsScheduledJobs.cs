@@ -5,8 +5,9 @@ using System.Web;
 using System.Diagnostics;
 
 using TARS.Controllers;
-using Quartz; 
+using Quartz;
 
+//NOTE: Scheduled jobs are specified in ConfigureQuartzJobs(), located in Global.asax
 
 namespace TARS.ScheduledJobs
 {
