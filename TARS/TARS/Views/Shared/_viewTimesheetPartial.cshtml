@@ -261,127 +261,79 @@
                 var hoursID = $(this).find('#hoursID').val();
                 var userKeyID = '@ViewBag.userKeyID';
 
+                //If existing hours are being edited
                 if (hoursID > 0) {
                     var numHours = $(this).find('#editedHours').val();
-                    //save the edited hours in the database
-                    $.ajax({
-                        url: '@Url.Action("editHours", "User")',
-                        type: "POST",
-                        data: {
-                            id: hoursID,
-                            numHours: numHours
-                        },
-                        success: function () {
-                            location.reload();
-                        }
-                    });
+                    //If the user entered a valid number
+                    if (!isNaN(parseFloat(n)) && isFinite(n))
+                    {
+                        //save the edited hours in the database
+                        $.ajax({
+                            url: '@Url.Action("editHours", "User")',
+                            type: "POST",
+                            data: {
+                                id: hoursID,
+                                numHours: numHours
+                            },
+                            success: function () {
+                                location.reload();
+                            }
+                        });
+                    }
                 }
+                //if new hours are being added
                 else {
                     var numHours = $(this).find('#addedHours').val();
-                    var hrsDate = $(this).find('#hrsDate').val();
-                    var wEffortID = $(this).find('#wEffortID').val();
-                    var timeCode = $(this).find('#timeCode').val();
-                    //save the added hours in the database
-                    $.ajax({
-                        url: '@Url.Action("addHours", "User")',
-                        type: "POST",
-                        data: {
-                            workEffortID: wEffortID,
-                            hours: numHours,
-                            timestamp: hrsDate,
-                            description: timeCode,
-                            creator: '@ViewBag.timesheet.worker'
-                        },
-                        success: function () {
-                            location.reload();
+                    //If the user entered a valid number
+                    if (!isNaN(parseFloat(n)) && isFinite(n))
+                    {
+                        var hrsDate = $(this).find('#hrsDate').val();
+                        var wEffortID = $(this).find('#wEffortID').val();
+                        var timeCode = $(this).find('#timeCode').val();
+                        //If the hours are within the Work Effort's time bounds
+                        if() {
+                            //save the added hours in the database
+                            $.ajax({
+                                url: '@Url.Action("addHours", "User")',
+                                type: "POST",
+                                data: {
+                                    workEffortID: wEffortID,
+                                    hours: numHours,
+                                    timestamp: hrsDate,
+                                    description: timeCode,
+                                    creator: '@ViewBag.timesheet.worker'
+                                },
+                                success: function () {
+                                    location.reload();
+                                }
+                            });
                         }
-                    });
+                        else {
+                            alert("Can't save: date is not within Work Effort's time bounds");
+                        }
+                    }
                 }
-                e.preventDefault();
             });
         });
     });
 </script>
 
 
+<!-- Show work on work effort over specified date range using a modal popup -->
 <script type="text/javascript">
     $(document).ready(function () {
-        //Show work on work effort over specified date range using a modal popup
         $("#viewWorkButton").click(function () {
             var link = '@Url.Action("showWorkOnWorkEffort", "User")';
             var wEffort = $('#viewEffort').val();
             var startDate = $('#start').val();
             var endDate = $('#end').val();
             var uName = '@ViewBag.timesheet.worker';
+
+            var modal = MyModalPopup();
             $.get(link, { we: wEffort, start: startDate, end: endDate, userName: uName }, function (result) {
                 modal.open({ content: result });
             });
             e.preventDefault();
-        });
-
-        /*******************************************************************
-        **       The rest of this script is for the Modal Popup           **
-        *******************************************************************/
-        var modal = (function () {
-            var method = {}, $overlay, $modal, $modalContent, $modalClose;
-
-            // Center the modal in the viewport
-            method.center = function () {
-                var top, left;
-                top = Math.max($(window).height() - $modal.outerHeight(), 0) / 2;
-                left = Math.max($(window).width() - $modal.outerWidth(), 0) / 2;
-                $modal.css({
-                    top: top + $(window).scrollTop(),
-                    left: left + $(window).scrollLeft()
-                });
-            };
-
-            // Open the modal
-            method.open = function (settings) {
-                $modalContent.append(settings.content);
-                $modal.css({
-                    width: settings.width || 'auto',
-                    height: settings.height || 'auto'
-                })
-                method.center();
-                $(window).bind('resize.modal', method.center);
-                $modal.show();
-                $overlay.show();
-            };
-
-            // Close the modal
-            method.close = function () {
-                $modal.hide();
-                $overlay.hide();
-                $modalContent.empty();
-                $(window).unbind('resize.modal');
-            };
-
-            $overlay = $('<div id="overlay"></div>');
-            $modal = $('<div id="modal"></div>');
-            $modalContent = $('<div id="modalContent"></div>');
-            $modalClose = $('<a id="modalClose" href="#">modalClose</a>');
-            $modal.hide();
-            $overlay.hide();
-            $modal.append($modalContent, $modalClose);
-
-            $(document).ready(function () {
-                $('body').append($overlay, $modal);
-            });
-
-            $modalClose.click(function (e) {
-                e.preventDefault();
-                method.close();
-            });
-
-            return method;
-        } ());
-
-        // Wait until the DOM has loaded before querying the document
-        $(document).ready(function () {
-            $.get('ajax.html', function (data) {
-                modal.open({ modalContent: data });
-            });
         });
     });
 </script>

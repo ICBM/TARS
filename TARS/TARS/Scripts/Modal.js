@@ -1,7 +1,7 @@
 ﻿/*******************************************************************************************
 **  Modal Popup that sizes to any display data passed via modal.open({ content: data })   **
 *******************************************************************************************/
-$function() {
+function MyModalPopup() {
     var method = {}, $overlay, $modal, $modalContent, $modalClose;
 
     // Center the modal in the viewport
@@ -54,11 +54,4 @@ $function() {
     });
 
     return method;
-} ());
-
-// Wait until the DOM has loaded before querying the document
-$(document).ready(function () {
-    $.get('ajax.html', function (data) {
-        modal.open({ modalContent: data });
-    });
-});
+}
