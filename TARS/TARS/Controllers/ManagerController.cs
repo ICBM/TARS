@@ -34,7 +34,6 @@ namespace TARS.Controllers
 
         //
         //  - Shows a list of PCA codes for specified division
-        [HttpGet]
         public virtual ActionResult searchPCA(string division = null)
         {
             Authentication auth = new Authentication();

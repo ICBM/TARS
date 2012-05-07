@@ -376,7 +376,6 @@ namespace TARS.Controllers
 
         //
         //Gets the current user's hours for the time period that tsDate falls within
-        [HttpGet]
         public virtual ActionResult viewTimesheet(DateTime tsDate)
         {
             Authentication auth = new Authentication();
@@ -533,7 +532,6 @@ namespace TARS.Controllers
 
         //
         //changes timesheet submitted status to true
-        [HttpGet]
         public virtual ActionResult submitTimesheet(int id)
         {
             if (id >= 0)
@@ -897,7 +895,7 @@ namespace TARS.Controllers
 
         //
         //
-        public ActionResult jsonTimeCodeSelectList()
+        public JsonResult jsonTimeCodeSelectList()
         {
             IEnumerable<string> weSelectList = getTimeCodeList();
 

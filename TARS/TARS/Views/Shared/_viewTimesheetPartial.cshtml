@@ -182,7 +182,7 @@
             </td>
             <!-- Display a dropdown list to add a time code -->
             <td>
-                @Html.DropDownList("timeCode", Enumerable.Empty<SelectListItem>(), "--- Time Code ---")
+                @Html.DropDownList("timeCodeSelect", Enumerable.Empty<SelectListItem>(), "--- Time Code ---")
             </td>
             <td class="empty"></td><td class="empty"></td><td class="empty"></td>
             <td class="empty"></td><td class="empty"></td><td class="empty"></td>
@@ -206,9 +206,8 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#workEffortID').change(function () {
-            var selectedWorkEffort = $(this).val();
-            $.getJSON('@Url.Action("jsonTimeCodeSelectList")', { weID: selectedWorkEffort }, function (timecodes) {
-                var timeCodeSelect = $('#timeCode');
+            $.getJSON('@Url.Action("jsonTimeCodeSelectList")', function (timecodes) {
+                var timeCodeSelect = $('#timeCodeSelect');
                 timeCodeSelect.empty();
                 $.each(timecodes, function (index, tCode) {
                     timeCodeSelect.append($('<option/>', {
@@ -224,7 +223,7 @@
 
 <!-- Adds the specified Work Effort and Time Code to the user's timesheet when they click on a Time Code -->
 <script type="text/javascript">
-    $('#timeCode').change(function () {
+    $('#timeCodeSelect').change(function () {
         var selectedTimeCode = $(this).val();
         $.ajax({
             url: '@Url.Action("addHours", "User")',
@@ -318,7 +317,7 @@
                             }
                             else {
                                 alert("Can't Save:  Date is not within Work Effort's time bounds");
-                                $('#addedHours').text("0");
+                                $('#addedHours').val(0);
                             }
                         });
                     }

@@ -91,15 +91,17 @@ else
 
 <!-- Displays timesheet that covers the selected date -->
 <script type="text/javascript">
-    $('#differentTimesheet').change(function () {
-        var selectedDate = $(this).val();
-        $.ajax({
-            url: '@Url.Action("viewTimesheet")',
-            type: "POST",
-            data: { tsDate: selectedDate },
-            success: function () {
-                window.location.href = '@Url.Action("viewTimesheet", "User")' + "?tsDate=" + selectedDate;
-            }
+    $(document).ready(function () {
+        $('#differentTimesheet').change(function () {
+            var selectedDate = $(this).val();
+            $.ajax({
+                url: '@Url.Action("viewTimesheet")',
+                type: "POST",
+                data: { tsDate: selectedDate },
+                success: function () {
+                    window.location.href = '@Url.Action("viewTimesheet", "User")' + "?tsDate=" + selectedDate;
+                }
+            });
         });
     });
 </script>
@@ -107,14 +109,16 @@ else
 
 <!-- Submits the timesheet -->
 <script type="text/javascript">
-    $('#submitTimesheetButton').click(function () {
-        $.ajax({
-            url: '@Url.Action("submitTimesheet")',
-            type: "POST",
-            data: { id: '@ViewBag.timesheet.ID' },
-            success: function () {
-                location.reload();
-            }
+    $(document).ready(function () {
+        $('#submitTimesheetButton').click(function () {
+            $.ajax({
+                url: '@Url.Action("submitTimesheet")',
+                type: "POST",
+                data: { id: '@ViewBag.timesheet.ID' },
+                success: function () {
+                    location.reload();
+                }
+            });
         });
     });
 </script>
