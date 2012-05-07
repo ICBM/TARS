@@ -112,6 +112,7 @@
     <Content Include="Content\themes\base\images\background_tall.png" />
     <Content Include="Content\themes\base\images\Class Diagram 1.png" />
     <Content Include="Content\themes\base\images\class_diagram_1.png" />
+    <Content Include="Content\themes\base\images\close_small.png" />
     <Content Include="Content\themes\base\images\close_button.png" />
     <Content Include="Content\themes\base\images\context_menu_hover.png" />
     <Content Include="Content\themes\base\images\logo.png" />
@@ -171,6 +172,7 @@
     <Content Include="Scripts\Modal.js" />
     <Content Include="Scripts\modernizr-1.7.js" />
     <Content Include="Scripts\modernizr-1.7.min.js" />
+    <Content Include="Scripts\Sticky.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

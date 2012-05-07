@@ -74,6 +74,19 @@ namespace TARS.Controllers
 
 
         //
+        //
+        public bool isWithinWeTimeBounds(int weID, DateTime hrsDate)
+        {
+            WorkEffort tmpWe = WorkEffortDB.WorkEffortList.Find(weID);
+            if ((hrsDate >= tmpWe.startDate) && (hrsDate <= tmpWe.endDate))
+            {
+                return (true);
+            }
+            return false;
+        }
+
+
+        //
         //Creates a new timesheet if one doesn't exist for the period
         [HttpGet]
         public void checkForTimesheet(string userName, DateTime tsDate)
