@@ -5,7 +5,7 @@
 
     $.fn.sticky = function (note, options, callback) {
         // Default settings
-        var position = 'bottom-right'; // top-left, top-right, bottom-left, or bottom-right
+        var position = 'top-right'; // top-left, top-right, bottom-left, or bottom-right
 
         var settings =
 			{

@@ -862,7 +862,7 @@ namespace TARS.Controllers
             {
                 if (auth.isAdmin(this))
                 {
-                    title = "Admin: Click to Add/Edit Hours";
+                    title = "Admin: Add/Edit Hours";
                 }
                 else
                 {
@@ -871,7 +871,7 @@ namespace TARS.Controllers
             }
             else
             {
-                title = "Click to Add/Edit Hours";
+                title = "Add/Edit Hours";
             }
             return title;
         }

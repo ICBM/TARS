@@ -202,7 +202,7 @@
 
 
 
-<!-- Populates Time Code dropdown according to Work Effort that was selected -->
+<!-- Populates Time Code dropdown after Work Effort is selected -->
 <script type="text/javascript">
     $(document).ready(function () {
         $('#workEffortID').change(function () {
@@ -328,9 +328,9 @@
             });
         });
 
-        //display success message in the bottom right corner if hours were sucessfully saved
+        //display unobtrusive success message if hours were sucessfully saved
         if (window.location.hash == '#success') {
-            $.sticky('Hours Saved');
+            $.sticky('Timesheet Saved');
         }
     });
 </script>
