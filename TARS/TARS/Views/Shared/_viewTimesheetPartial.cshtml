@@ -56,92 +56,104 @@
                     {
                         total += item.sunHours.hours;
                         @Html.Hidden("hoursID", item.sunHours.ID)
-                        @item.sunHours.hours
+                        @Html.TextBox("editedHours", item.sunHours.hours, new { @class = "dayCell" })
                     }
                     else
                     {
-                        @Html.Hidden("wEffort", item.workeffort)
-                        @Html.Hidden("tCode", item.timecode)
+                        @Html.Hidden("wEffortID", item.weID)
+                        @Html.Hidden("timeCode", item.timecode)
                         @Html.Hidden("hrsDate", (DateTime)ViewBag.timesheet.periodStart)
-                        <html> 0 </html>
+                        @Html.TextBox("addedHours", 0, new { @class = "dayCell" })
                     }
                 </td>
-                <td class="days" title="@Html.Action("getTimesheetDayCellTitle", "User", new {ts = ViewBag.timesheet})">
-                    @if (item.monHours != null){
+                <td class="days" title="@Html.Action("getTimesheetDayCellTitle", "User", new { ts = ViewBag.timesheet })">
+                    @if (item.monHours != null)
+                    {
                         total += item.monHours.hours;
                         @Html.Hidden("hoursID", item.monHours.ID)
-                        @item.monHours.hours
+                        @Html.TextBox("editedHours", item.monHours.hours, new { @class = "dayCell" })
                     }
-                    else{
-                        @Html.Hidden("wEffort", item.workeffort)
-                        @Html.Hidden("tCode", item.timecode)
+                    else
+                    {
+                        @Html.Hidden("wEffortID", item.weID)
+                        @Html.Hidden("timeCode", item.timecode)
                         @Html.Hidden("hrsDate", (DateTime)ViewBag.timesheet.periodStart.AddDays(1))                            
-                        <html> 0 </html>
+                        @Html.TextBox("addedHours", 0, new { @class = "dayCell" })
                     }
                 </td>
-                <td class="days" title="@Html.Action("getTimesheetDayCellTitle", "User", new {ts = ViewBag.timesheet})">
-                    @if (item.tueHours != null){
+                <td class="days" title="@Html.Action("getTimesheetDayCellTitle", "User", new { ts = ViewBag.timesheet })">
+                    @if (item.tueHours != null)
+                    {
                         total += item.tueHours.hours;
                         @Html.Hidden("hoursID", item.tueHours.ID)
-                        @item.tueHours.hours
+                        @Html.TextBox("editedHours", item.tueHours.hours, new { @class = "dayCell" })
                     }
-                    else{
-                        @Html.Hidden("wEffort", item.workeffort)
-                        @Html.Hidden("tCode", item.timecode)
+                    else
+                    {
+                        @Html.Hidden("wEffortID", item.weID)
+                        @Html.Hidden("timeCode", item.timecode)
                         @Html.Hidden("hrsDate", (DateTime)ViewBag.timesheet.periodStart.AddDays(2))                             
-                        <html> 0 </html>
+                        @Html.TextBox("addedHours", 0, new { @class = "dayCell" })
                     }
                 </td>
-                <td class="days" title="@Html.Action("getTimesheetDayCellTitle", "User", new {ts = ViewBag.timesheet})">
-                    @if (item.wedHours != null){
+                <td class="days" title="@Html.Action("getTimesheetDayCellTitle", "User", new { ts = ViewBag.timesheet })">
+                    @if (item.wedHours != null)
+                    {
                         total += item.wedHours.hours;
                         @Html.Hidden("hoursID", item.wedHours.ID)
-                        @item.wedHours.hours
+                        @Html.TextBox("editedHours", item.wedHours.hours, new { @class = "dayCell" })
                     }
-                    else{
-                        @Html.Hidden("wEffort", item.workeffort)
-                        @Html.Hidden("tCode", item.timecode)
+                    else
+                    {
+                        @Html.Hidden("wEffortID", item.weID)
+                        @Html.Hidden("timeCode", item.timecode)
                         @Html.Hidden("hrsDate", (DateTime)ViewBag.timesheet.periodStart.AddDays(3))                             
-                        <html> 0 </html>
+                        @Html.TextBox("addedHours", 0, new { @class = "dayCell" })
                     }
                 </td>
-                <td class="days" title="@Html.Action("getTimesheetDayCellTitle", "User", new {ts = ViewBag.timesheet})">
-                    @if (item.thuHours != null){
+                <td class="days" title="@Html.Action("getTimesheetDayCellTitle", "User", new { ts = ViewBag.timesheet })">
+                    @if (item.thuHours != null)
+                    {
                         total += item.thuHours.hours;
                         @Html.Hidden("hoursID", item.thuHours.ID)
-                        @item.thuHours.hours
+                        @Html.TextBox("editedHours", item.thuHours.hours, new { @class = "dayCell" })
                     }
-                    else{
-                        @Html.Hidden("wEffort", item.workeffort)
-                        @Html.Hidden("tCode", item.timecode)
+                    else
+                    {
+                        @Html.Hidden("wEffortID", item.weID)
+                        @Html.Hidden("timeCode", item.timecode)
                         @Html.Hidden("hrsDate", (DateTime)ViewBag.timesheet.periodStart.AddDays(4))                             
-                        <html> 0 </html>
+                        @Html.TextBox("addedHours", 0, new { @class = "dayCell" })
                     }
                 </td>
-                <td class="days" title="@Html.Action("getTimesheetDayCellTitle", "User", new {ts = ViewBag.timesheet})">
-                    @if (item.friHours != null){
+                <td class="days" title="@Html.Action("getTimesheetDayCellTitle", "User", new { ts = ViewBag.timesheet })">
+                    @if (item.friHours != null)
+                    {
                         total += item.friHours.hours;
                         @Html.Hidden("hoursID", item.friHours.ID)
-                        @item.friHours.hours
+                        @Html.TextBox("editedHours", item.friHours.hours, new { @class = "dayCell" })
                     }
-                    else{
-                        @Html.Hidden("wEffort", item.workeffort)
-                        @Html.Hidden("tCode", item.timecode)
+                    else
+                    {
+                        @Html.Hidden("wEffortID", item.weID)
+                        @Html.Hidden("timeCode", item.timecode)
                         @Html.Hidden("hrsDate", (DateTime)ViewBag.timesheet.periodStart.AddDays(5))                             
-                        <html> 0 </html>
+                        @Html.TextBox("addedHours", 0, new { @class = "dayCell" })
                     }
                 </td>
-                <td class="days" title="@Html.Action("getTimesheetDayCellTitle", "User", new {ts = ViewBag.timesheet})">
-                    @if (item.satHours != null){
+                <td class="days" title="@Html.Action("getTimesheetDayCellTitle", "User", new { ts = ViewBag.timesheet })">
+                    @if (item.satHours != null)
+                    {
                         total += item.satHours.hours;
                         @Html.Hidden("hoursID", item.satHours.ID)
-                        @item.satHours.hours
+                        @Html.TextBox("editedHours", item.satHours.hours, new { @class = "dayCell" })
                     }
-                    else{
-                        @Html.Hidden("wEffort", item.workeffort)
-                        @Html.Hidden("tCode", item.timecode)
+                    else
+                    {
+                        @Html.Hidden("wEffortID", item.weID)
+                        @Html.Hidden("timeCode", item.timecode)
                         @Html.Hidden("hrsDate", (DateTime)ViewBag.timesheet.periodStart.AddDays(6))                             
-                        <html> 0 </html>
+                        @Html.TextBox("addedHours", 0, new { @class = "dayCell" })
                     }
                 </td>
                 <td>
@@ -152,7 +164,7 @@
                     @if (total == 0)
                     {
                         //in a row with all zeros, sunday is the only guaranteed non-null hours object
-                        using( Html.BeginForm("timesheetRemoveWorkEffort", "User", new {sundayID = item.sunHours.ID}))
+                        using (Html.BeginForm("timesheetRemoveWorkEffort", "User", new { sundayID = item.sunHours.ID }))
                         {
                             <input type="submit" value="Remove Row" style="font-size: 10px"/>
                         }
@@ -215,7 +227,7 @@
     $('#timeCode').change(function () {
         var selectedTimeCode = $(this).val();
         $.ajax({
-            url: '@Url.Action("addHours")',
+            url: '@Url.Action("addHours", "User")',
             type: "POST",
             data:
 			{
@@ -233,7 +245,7 @@
 </script>
 
 
-<!-- Modal popup for adding/editing hours for day cell that is clicked on -->
+<!-- Adding/Editing hours -->
 <script type="text/javascript">
     $(document).ready(function () {
         $("td.days").each(function () {
@@ -244,108 +256,131 @@
                 $(this).css("background-color", "white");
             });
 
-            //display the dialog box if a day cell is clicked
-            $(this).click(function () {
+            //save added or edited hours when they are entered
+            $(this).change(function () {
                 var hoursID = $(this).find('#hoursID').val();
                 var userKeyID = '@ViewBag.userKeyID';
-                var link = "";
 
                 if (hoursID > 0) {
-                    link = '@Url.Action("editHours", "User")';
-                    //get the html from _editHoursPartial and use it in the popup
-                    $.get(link, {hoursID: hoursID, userKeyID: userKeyID}, function (result) {
-                        modal.open({ content: result });
+                    var numHours = $(this).find('#editedHours').val();
+                    //save the edited hours in the database
+                    $.ajax({
+                        url: '@Url.Action("editHours", "User")',
+                        type: "POST",
+                        data: {
+                            id: hoursID,
+                            numHours: numHours
+                        },
+                        success: function () {
+                            location.reload();
+                        }
                     });
                 }
                 else {
-                    link = '@Url.Action("addHours", "User")';
+                    var numHours = $(this).find('#addedHours').val();
                     var hrsDate = $(this).find('#hrsDate').val();
-                    var wEffort = $(this).find('#wEffort').val();
-                    var tCode = $(this).find('#tCode').val();
-                    //get the html from _addHoursPartial and use it in the popup
-                    $.get(link, { we: wEffort, tc: tCode, hrsDate: hrsDate, userKeyID: userKeyID}, function (result) {
-                        modal.open({ content: result });
+                    var wEffortID = $(this).find('#wEffortID').val();
+                    var timeCode = $(this).find('#timeCode').val();
+                    //save the added hours in the database
+                    $.ajax({
+                        url: '@Url.Action("addHours", "User")',
+                        type: "POST",
+                        data: {
+                            workEffortID: wEffortID,
+                            hours: numHours,
+                            timestamp: hrsDate,
+                            description: timeCode,
+                            creator: '@ViewBag.timesheet.worker'
+                        },
+                        success: function () {
+                            location.reload();
+                        }
                     });
                 }
                 e.preventDefault();
             });
+        });
+    });
+</script>
 
-            //Show work on work effort over specified date range using a modal popup
-            $("#viewWorkButton").click(function () {
-                var link = '@Url.Action("showWorkOnWorkEffort", "User")';
-                var wEffort = $('#viewEffort').val();
-                var startDate = $('#start').val();
-                var endDate = $('#end').val();
-                var uName = '@ViewBag.timesheet.worker';
-                $.get(link, { we: wEffort, start: startDate, end: endDate, userName: uName }, function (result) {
-                    modal.open({ content: result });
-                });
-                e.preventDefault();
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //Show work on work effort over specified date range using a modal popup
+        $("#viewWorkButton").click(function () {
+            var link = '@Url.Action("showWorkOnWorkEffort", "User")';
+            var wEffort = $('#viewEffort').val();
+            var startDate = $('#start').val();
+            var endDate = $('#end').val();
+            var uName = '@ViewBag.timesheet.worker';
+            $.get(link, { we: wEffort, start: startDate, end: endDate, userName: uName }, function (result) {
+                modal.open({ content: result });
             });
+            e.preventDefault();
+        });
 
-            /*******************************************************************
-            **       The rest of this script is for the Modal Popup           **
-            *******************************************************************/
-            var modal = (function () {
-                var method = {}, $overlay, $modal, $modalContent, $modalClose;
+        /*******************************************************************
+        **       The rest of this script is for the Modal Popup           **
+        *******************************************************************/
+        var modal = (function () {
+            var method = {}, $overlay, $modal, $modalContent, $modalClose;
 
-                // Center the modal in the viewport
-                method.center = function () {
-                    var top, left;
-                    top = Math.max($(window).height() - $modal.outerHeight(), 0) / 2;
-                    left = Math.max($(window).width() - $modal.outerWidth(), 0) / 2;
-                    $modal.css({
-                        top: top + $(window).scrollTop(),
-                        left: left + $(window).scrollLeft()
-                    });
-                };
+            // Center the modal in the viewport
+            method.center = function () {
+                var top, left;
+                top = Math.max($(window).height() - $modal.outerHeight(), 0) / 2;
+                left = Math.max($(window).width() - $modal.outerWidth(), 0) / 2;
+                $modal.css({
+                    top: top + $(window).scrollTop(),
+                    left: left + $(window).scrollLeft()
+                });
+            };
 
-                // Open the modal
-                method.open = function (settings) {
-                    $modalContent.append(settings.content);
-                    $modal.css({
-                        width: settings.width || 'auto',
-                        height: settings.height || 'auto'
-                    })
-                    method.center();
-                    $(window).bind('resize.modal', method.center);
-                    $modal.show();
-                    $overlay.show();
-                };
+            // Open the modal
+            method.open = function (settings) {
+                $modalContent.append(settings.content);
+                $modal.css({
+                    width: settings.width || 'auto',
+                    height: settings.height || 'auto'
+                })
+                method.center();
+                $(window).bind('resize.modal', method.center);
+                $modal.show();
+                $overlay.show();
+            };
 
-                // Close the modal
-                method.close = function () {
-                    $modal.hide();
-                    $overlay.hide();
-                    $modalContent.empty();
-                    $(window).unbind('resize.modal');
-                };
-
-                $overlay = $('<div id="overlay"></div>');
-                $modal = $('<div id="modal"></div>');
-                $modalContent = $('<div id="modalContent"></div>');
-                $modalClose = $('<a id="modalClose" href="#">modalClose</a>');
+            // Close the modal
+            method.close = function () {
                 $modal.hide();
                 $overlay.hide();
-                $modal.append($modalContent, $modalClose);
+                $modalContent.empty();
+                $(window).unbind('resize.modal');
+            };
 
-                $(document).ready(function () {
-                    $('body').append($overlay, $modal);
-                });
+            $overlay = $('<div id="overlay"></div>');
+            $modal = $('<div id="modal"></div>');
+            $modalContent = $('<div id="modalContent"></div>');
+            $modalClose = $('<a id="modalClose" href="#">modalClose</a>');
+            $modal.hide();
+            $overlay.hide();
+            $modal.append($modalContent, $modalClose);
 
-                $modalClose.click(function (e) {
-                    e.preventDefault();
-                    method.close();
-                });
-
-                return method;
-            } ());
-
-            // Wait until the DOM has loaded before querying the document
             $(document).ready(function () {
-                $.get('ajax.html', function (data) {
-                    modal.open({ modalContent: data });
-                });
+                $('body').append($overlay, $modal);
+            });
+
+            $modalClose.click(function (e) {
+                e.preventDefault();
+                method.close();
+            });
+
+            return method;
+        } ());
+
+        // Wait until the DOM has loaded before querying the document
+        $(document).ready(function () {
+            $.get('ajax.html', function (data) {
+                modal.open({ modalContent: data });
             });
         });
     });

@@ -42,93 +42,33 @@ namespace TARS.Controllers
 
 
         //
-        //Adds hours to a work effort
-        [HttpGet]
-        public virtual ActionResult addHours(DateTime hrsDate, int userKeyID = 0, string we = null, string tc = null)
-        {
-            Authentication auth = new Authentication();
-            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
-            {
-                Authentication newAuth = new Authentication();
-                bool adminFlag = newAuth.isAdmin(this);
-                ViewBag.adminFlag = adminFlag;
-                string division = getUserDivision();
-                ViewBag.workEffortList = getVisibleWorkEffortSelectList(division);
-                ViewBag.userKeyID = userKeyID;
-                ViewBag.timesheetLockedFlag = isTimesheetLocked(User.Identity.Name, hrsDate);
-
-                if (Request.IsAjaxRequest())
-                {
-                    ViewBag.date = hrsDate;
-                    ViewBag.workEffort = we;
-                    ViewBag.timeCode = tc;
-                    return PartialView("_addHoursPartial");
-                }
-                return View();
-            }
-            else
-            {
-                return View("notLoggedOn");
-            }
-        }
-
-
-        //
         /* If userKeyId isn't zero, that means a manager is adding hours for an employee, so
          * it redirects to Manager/approveTimesheet instead of User/viewTimesheet
          */
         [HttpPost]
-        public virtual ActionResult addHours(Hours newhours, int userKeyId = 0)
+        public virtual bool addHours(Hours newhours)
         {
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
-                if (ModelState.IsValid)
+                WorkEffort tmpWe = WorkEffortDB.WorkEffortList.Find(newhours.workEffortID);
+
+                //make sure that the new hours are within the work effort's time bounds 
+                if ((newhours.timestamp < tmpWe.startDate) || (newhours.timestamp > tmpWe.endDate))
                 {
-                    WorkEffort tmpWe = WorkEffortDB.WorkEffortList.Find(newhours.workEffortID);
-                    bool tsLockedFlag = isTimesheetLocked(User.Identity.Name, newhours.timestamp);
-                    Authentication newAuth = new Authentication();
-                    bool adminFlag = newAuth.isAdmin(this);
-
-                    //make sure that the new hours are within the work effort's time bounds 
-                    if ((newhours.timestamp < tmpWe.startDate) || (newhours.timestamp > tmpWe.endDate))
-                    {
-                        ViewBag.notWithinWeBounds = true;
-                        ViewBag.timesheetLockedFlag = tsLockedFlag;
-                        ViewBag.adminFlag = adminFlag;
-                        ViewBag.userName = User.Identity.Name;
-                        return View(newhours);
-                    }
-
-                    //make sure that only Admin can add hours to locked timesheets
-                    if ((tsLockedFlag == true) && (adminFlag == false))
-                    {
-                        ViewBag.timesheetLockedFlag = true;
-                        ViewBag.adminFlag = false;
-                        return View(newhours);
-                    }
-
-                    //make sure that a timesheet exists for the period hours are being added to
-                    checkForTimesheet(newhours.creator, newhours.timestamp);
- 
-                    //add and save new hours
-                    HoursDB.HoursList.Add(newhours);
-                    HoursDB.SaveChanges();
-
-                    if (userKeyId == 0)
-                    {
-                        return RedirectToAction("viewTimesheet", new { tsDate = newhours.timestamp });
-                    }
-                    else
-                    {
-                        return RedirectToAction("approveTimesheet", "Manager", new { userKeyID = userKeyId, tsDate = newhours.timestamp });
-                    }
+                    return false;
                 }
-                return View("error");
+                //make sure that a timesheet exists for the period hours are being added to
+                checkForTimesheet(newhours.creator, newhours.timestamp);
+                //add and save new hours
+                HoursDB.HoursList.Add(newhours);
+                HoursDB.SaveChanges();
+
+                return true;
             }
             else
             {
-                return View("notLoggedOn");
+                return false;
             }
         }
 
@@ -288,62 +228,24 @@ namespace TARS.Controllers
         }
 
 
-        // 
-        //  - Edits a specified Hours entry for the logged in user
-        [HttpGet]
-        public virtual ActionResult editHours(int hoursID = 0, int userKeyID = 0)
-        {
-            Authentication auth = new Authentication();
-            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
-            {
-                Authentication newAuth = new Authentication();
-                bool adminFlag = newAuth.isAdmin(this);
-                Hours hours = HoursDB.HoursList.Find(hoursID);
-                WorkEffort we = WorkEffortDB.WorkEffortList.Find(hours.workEffortID);
-                ViewBag.adminFlag = adminFlag;
-                ViewBag.timesheetLockedFlag = isTimesheetLocked(hours.creator, hours.timestamp);
-                ViewBag.workEffort = we;
-                ViewBag.timeCodeList = getTimeCodeList();
-                ViewBag.userKeyID = userKeyID;
-
-                if (Request.IsAjaxRequest())
-                {
-                    return PartialView("_editHoursPartial", hours);
-                }
-                return View(hours);
-            }
-            else
-            {
-                return View("notLoggedOn");
-            }
-        }
-
-
         //
         //
         [HttpPost]
-        public virtual ActionResult editHours(Hours tmpHours, int userKeyID = 0)
+        public virtual bool editHours(int id, int numHours)
         {
             Authentication auth = new Authentication();
             if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
             {
-                if (ModelState.IsValid)
-                {
-                    HoursDB.Entry(tmpHours).State = EntityState.Modified;
-                    HoursDB.SaveChanges();
-                }
-                if (userKeyID == 0)
-                {
-                    return RedirectToAction("viewTimesheet", new { tsDate = tmpHours.timestamp });
-                }
-                else
-                {
-                    return RedirectToAction("approveTimesheet", "Manager", new { userKeyID = userKeyID, tsDate = tmpHours.timestamp });
-                }
+                Hours tmpHours = HoursDB.HoursList.Find(id);
+                tmpHours.hours = numHours;
+                //save changes to database
+                HoursDB.Entry(tmpHours).State = EntityState.Modified;
+                HoursDB.SaveChanges();
+                return true;
             }
             else
             {
-                return View("notLoggedOn");
+                return false;
             }
         }
 

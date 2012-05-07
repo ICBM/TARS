@@ -18,9 +18,6 @@ namespace TARS.Models
         public int workEffortID { get; set; }
         public string description { get; set; } 
         public string creator { get; set; }
-
-        [Required]
-        [Range(0, 24, ErrorMessage = "Must be 24 hours or less")]
         public double hours { get; set; }
 
         [DataType(DataType.Date)]
