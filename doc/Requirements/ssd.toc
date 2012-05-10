@@ -1,65 +1,55 @@
 \select@language {english}
-\contentsline {section}{\numberline {1}\bfseries {Introduction}}{3}
-\contentsline {subsection}{\numberline {1.1}\bfseries {Identification}}{3}
-\contentsline {subsection}{\numberline {1.2}\bfseries {Document Purpose, Scope, and Intended Audience}}{3}
-\contentsline {subsubsection}{\numberline {1.2.1}Document Purpose}{3}
-\contentsline {subsubsection}{\numberline {1.2.2}Intended Audience for Document}{3}
-\contentsline {subsection}{\numberline {1.3}\bfseries {Software Purpose, Scope, and Intended Users}}{3}
-\contentsline {subsubsection}{\numberline {1.3.1}Software Purpose}{3}
-\contentsline {subsubsection}{\numberline {1.3.2}Software Scope/Context}{3}
-\contentsline {subsubsection}{\numberline {1.3.3}Intended Users for the Software}{3}
-\contentsline {subsection}{\numberline {1.4}\bfseries {Definitions, Acronyms, and Abbreviations}}{4}
-\contentsline {subsection}{\numberline {1.5}\bfseries {Document Overview}}{4}
-\contentsline {section}{\numberline {2}\bfseries {Software Requirements, Constraints, and User Characteristics}}{4}
-\contentsline {section}{\numberline {3}Software Architecture}{10}
-\contentsline {subsection}{\numberline {3.1}Server Architecture - Microsoft Internet Information Services 7}{10}
-\contentsline {subsection}{\numberline {3.2}Model-View-Controller}{10}
-\contentsline {subsubsection}{\numberline {3.2.1}Controller}{11}
-\contentsline {subsubsection}{\numberline {3.2.2}Model}{11}
-\contentsline {subsubsection}{\numberline {3.2.3}View}{11}
-\contentsline {subsection}{\numberline {3.3}SQL2008 Database}{11}
-\contentsline {subsection}{\numberline {3.4}Active Directory}{11}
-\contentsline {subsection}{\numberline {3.5}Security}{12}
-\contentsline {subsection}{\numberline {3.6}Browser Interface}{12}
-\contentsline {section}{\numberline {4}Design Descriptions}{12}
-\contentsline {subsection}{\numberline {4.1}Model-View-Controller Modules}{12}
-\contentsline {subsubsection}{\numberline {4.1.1}Global Scripts and Config Files}{12}
-\contentsline {subsubsection}{\numberline {4.1.2}Controllers}{13}
-\contentsline {subsubsection}{\numberline {4.1.3}Models}{13}
-\contentsline {subsubsection}{\numberline {4.1.4}Views}{14}
-\contentsline {subsection}{\numberline {4.2}SQL2008 Database Schema and Interface Description}{14}
-\contentsline {subsubsection}{\numberline {4.2.1}TARS Database Schema}{15}
-\contentsline {subsection}{\numberline {4.3}Naming Conventions}{15}
-\contentsline {section}{\numberline {5}Traceability Information}{16}
-\contentsline {section}{\numberline {6}Deliverables}{16}
-\contentsline {subsection}{\numberline {6.1}Deliverables Overview}{16}
-\contentsline {subsection}{\numberline {6.2}Prototype Deliverable Detail: Visual Studio Solution Architecture}{17}
-\contentsline {paragraph}{}{17}
-\contentsline {paragraph}{Web.config}{17}
-\contentsline {paragraph}{Content folder}{17}
-\contentsline {paragraph}{Controllers folder}{17}
-\contentsline {paragraph}{Helpers folder}{17}
-\contentsline {paragraph}{Models folder}{17}
-\contentsline {paragraph}{Views folder}{17}
-\contentsline {paragraph}{}{18}
-\contentsline {subsection}{\numberline {6.3}GitHub Locations of Importantance}{19}
-\contentsline {section}{\numberline {7}Appendix A: Use Cases}{19}
-\contentsline {paragraph}{Login}{19}
-\contentsline {paragraph}{Adding new PCA code.}{19}
-\contentsline {paragraph}{Deactivating PCA code}{19}
-\contentsline {paragraph}{Adding Work Effort}{20}
-\contentsline {paragraph}{Updatinging Work Effort}{20}
-\contentsline {paragraph}{Adding Hours}{20}
-\contentsline {paragraph}{Approving Hours}{20}
-\contentsline {paragraph}{Adding Tasks}{21}
-\contentsline {paragraph}{Edit/Update Employee/Contractor Data}{21}
-\contentsline {paragraph}{View History}{21}
-\contentsline {paragraph}{The system must allow for future time entry}{21}
-\contentsline {paragraph}{All data for reporting shall be extracted via external source (EDW. Excel, etc.).}{21}
-\contentsline {paragraph}{Must allow users to create a view of their I-Time timesheet.}{21}
-\contentsline {paragraph}{Must have a sort and group function that allows work effort to be grouped by application, division, manager, etc.}{22}
-\contentsline {paragraph}{The system must allow a user the ability to create a custom view of the data.}{22}
-\contentsline {paragraph}{Must allow users to easily size windows}{22}
-\contentsline {paragraph}{The system shall provide search/find functionality to locate work efforts, with minimal amount of navigation (less than 5 clicks per important action)}{22}
-\contentsline {section}{\numberline {8}Appendix B: Code Documentation}{22}
-\contentsline {section}{\numberline {9}Appendix C: Reference Links}{25}
+\contentsline {section}{\numberline {1}\bfseries {Introduction}}{4}
+\contentsline {subsection}{\numberline {1.1}\bfseries {Identification}}{4}
+\contentsline {subsection}{\numberline {1.2}\bfseries {Document Purpose, Scope, and Intended Audience}}{4}
+\contentsline {subsubsection}{\numberline {1.2.1}Document Purpose}{4}
+\contentsline {subsubsection}{\numberline {1.2.2}Intended Audience for Document}{4}
+\contentsline {subsection}{\numberline {1.3}\bfseries {Software Purpose, Scope, and Intended Users}}{4}
+\contentsline {subsubsection}{\numberline {1.3.1}Software Purpose}{4}
+\contentsline {subsubsection}{\numberline {1.3.2}Software Scope/Context}{4}
+\contentsline {subsubsection}{\numberline {1.3.3}Intended Users for the Software}{4}
+\contentsline {subsection}{\numberline {1.4}\bfseries {Definitions, Acronyms, and Abbreviations}}{5}
+\contentsline {subsection}{\numberline {1.5}\bfseries {Document Overview}}{5}
+\contentsline {section}{\numberline {2}\bfseries {Software Requirements, Constraints, and User Characteristics}}{6}
+\contentsline {section}{\numberline {3}Software Architecture}{13}
+\contentsline {subsection}{\numberline {3.1}Server Architecture - Microsoft Internet Information Services 6}{13}
+\contentsline {subsection}{\numberline {3.2}Model-View-Controller}{13}
+\contentsline {subsubsection}{\numberline {3.2.1}Controller}{14}
+\contentsline {subsubsection}{\numberline {3.2.2}Model}{14}
+\contentsline {subsubsection}{\numberline {3.2.3}View}{14}
+\contentsline {subsection}{\numberline {3.3}SQL2008 Database}{14}
+\contentsline {subsection}{\numberline {3.4}Active Directory}{14}
+\contentsline {subsection}{\numberline {3.5}Security}{15}
+\contentsline {subsection}{\numberline {3.6}Browser Interface}{15}
+\contentsline {section}{\numberline {4}Design Descriptions}{15}
+\contentsline {subsection}{\numberline {4.1}Model-View-Controller Modules}{15}
+\contentsline {subsubsection}{\numberline {4.1.1}Global Scripts and Config Files}{15}
+\contentsline {subsubsection}{\numberline {4.1.2}Controllers}{16}
+\contentsline {subsubsection}{\numberline {4.1.3}Models}{17}
+\contentsline {subsubsection}{\numberline {4.1.4}Views}{17}
+\contentsline {subsection}{\numberline {4.2}SQL2008 Database Schema and Interface Description}{17}
+\contentsline {subsubsection}{\numberline {4.2.1}TARS Database Schema}{18}
+\contentsline {subsection}{\numberline {4.3}Naming Conventions}{19}
+\contentsline {section}{\numberline {5}Traceability Information}{19}
+\contentsline {section}{\numberline {6}Deliverables}{19}
+\contentsline {subsection}{\numberline {6.1}Deliverables Overview}{19}
+\contentsline {subsection}{\numberline {6.2}Prototype Deliverable Detail: Visual Studio Solution Architecture}{21}
+\contentsline {paragraph}{}{21}
+\contentsline {paragraph}{Web.config}{21}
+\contentsline {paragraph}{Content folder}{21}
+\contentsline {paragraph}{Controllers folder}{21}
+\contentsline {paragraph}{Helpers folder}{21}
+\contentsline {paragraph}{Models folder}{21}
+\contentsline {paragraph}{Views folder}{21}
+\contentsline {paragraph}{}{21}
+\contentsline {subsection}{\numberline {6.3}GitHub Locations of Importantance}{24}
+\contentsline {section}{\numberline {7}Future Work Needed}{24}
+\contentsline {section}{\numberline {8}Appendix A: Use Cases}{24}
+\contentsline {section}{\numberline {9}Appendix B: Database Details}{28}
+\contentsline {subsection}{\numberline {9.1}Tables}{28}
+\contentsline {subsection}{\numberline {9.2}Table Associations}{33}
+\contentsline {section}{\numberline {10}Appendix C: Code Documentation}{33}
+\contentsline {subsection}{\numberline {10.1}User Controller Methods}{33}
+\contentsline {subsection}{\numberline {10.2}Manager Controller Methods}{46}
+\contentsline {subsection}{\numberline {10.3}Admin Controller Methods}{62}
+\contentsline {section}{\numberline {11}Appendix D: Reference Links}{74}

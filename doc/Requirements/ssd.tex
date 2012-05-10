@@ -223,13 +223,32 @@ The first Web.Config is present in projectBase/Views/Web.Config. This config fil
 \\
 The second Web.Config is present in projectBase/Web.Config. It handles project level configuration; most importantly including the extremely important database connection strings. \\
 \\
-The third, and by far the most important config file is projectBase/Global.aspx.
-This contains the functions that control routing for the entire MVC. This job includes determining routing to controllers, filtering requests, and registering the initial routes on a default request for idahotars.com.
+By far the most important config file is projectBase/Global.aspx.
+\\
+This contains the functions that control routing for the entire MVC. This job includes determining routing to controllers, filtering requests, and registering the initial routes on a default request for idahotars.com. \\
+\\
+We also added three scripts files in the projectBase/Scripts folder:
+\begin{enumerate}
+\item DatePickerReady.js
+	\begin{itemize}
+	\item Causes a calender to pop up for selecting a date when any editable DateTime variables with class="datefield" are clicked on
+	\end{itemize}
+\item Modal.js
+	\begin{itemize}
+	\item Makes it easy to display any content (a string, table, image, etc.) in a stylized modal popup
+	\item Example:   var modal = MyModalPopup();   modal.open(\{ content: 'enter content here' \});
+	\end{itemize}
+\item Sticky.js
+	\begin{itemize}
+	\item Makes it easy to display an unobtrusive notification
+	\item Example:   \$.sticky(''Timesheet Saved'');
+	\end{itemize}
+\end{enumerate}
 
 \subsubsection{Controllers}
-These controllers do not yet have a finalized set of associated functions and variables. When these are complete a full description will reside here.
+UserController, ManagerController, and AdminController are described in detail in Appendix C
 \begin{itemize}
-\item HomeController
+\item HomeController (only contains Index() and About() methods, which simply return a view) 
 \item UserController
 \item ManagerController
 \item AdminController
@@ -355,7 +374,7 @@ The final deliverable is the TARS GitHub Repository.  It has been the primary lo
 At the topmost level of TARS are a variety of folders as well as configuration information for the project as a whole.
 \paragraph{Web.config} contains all configuration information for the webpage. The primary use of it so far has been to specify the ''sender'' address for notification emails, and to add Connection Strings to allow for database connection.
 \paragraph{Content folder} contains the CSS data for the website.
-\paragraph{Controllers folder} contains all Controllers for the project, which are described above.
+\paragraph{Controllers folder} contains all Controllers for the project, which are described in Appendix C.
 \paragraph{Helpers folder} contains all helper classes under the namespace TARS.Helpers. Included thus far are the Authentication and LDAPConnection classes.
 \paragraph{Models folder} contains all model classes, which are described above.
 \paragraph{Views folder} contains all relevant views, which are organized into 
@@ -404,11 +423,11 @@ The root directory is present at github.com/ICBM/TARS
 \begin{itemize}
 \item Sending Emails
 	\begin{itemize}
-	\item In Web.config, "smtp from", "host", and "userName" need to be changed to local server in system.net mailSettings
+	\item In Web.config, "smtp from", "host", and "userName" need to be changed to local server for system.net mailSettings
 	\item In UserController, getEmailAddress(string username) needs to be implemented, and the call to it needs to be uncommented in SendEmail()
 	\end{itemize}
 \item Sorting tables by clicking on column headings
-\item Allowing splitting % allocation for PCA Codes when a Work Effort has multiple PCA Code associations
+\item Allowing splitting percentage allocation for PCA Codes when a Work Effort has multiple PCA Code associations
 \item Functions that rely on Active Directory  
 	\begin{itemize}
 	\item Logins
@@ -416,7 +435,6 @@ The root directory is present at github.com/ICBM/TARS
 	\item Editing a user's info, including end date, company name, etc. (an Admin function)
 	\end{itemize}
 \item Periodically cleaning database tables
-\item 
 \end{itemize}
 
 
@@ -570,22 +588,25 @@ The root directory is present at github.com/ICBM/TARS
 \end{enumerate}
 
 
-\section{Appendix B: Code Documentation}
-\begin{itemize}
-\item User Controller
-	\begin{itemize}
-	\end{itemize}
-\item Manager Controller
-	\begin{itemize}
-	\end{itemize}
-\item Admin Controller
-	\begin{itemize}
-	\end{itemize}
-\end{itemize}
+\section{Appendix B: Database Details}
+\subsection{Tables}
+\includepdf[pages={1-4}]{explanations_of_database_tables.pdf}
+\subsection{Table Associations}
+\begin{centering}
+\includegraphics[scale=0.7]{database_table_interactions.png}
+\end{centering}
 
 
+\section{Appendix C: Code Documentation}
+\subsection{User Controller}
+\includepdf[pages={1-12}]{user_controller_documentation.pdf}
+\subsection{Manager Controller}
+\includepdf[pages={1-15}]{manager_controller_documentation.pdf}
+\subsection{Admin Controller}
+\includepdf[pages={1-11}]{admin_controller_documentation.pdf}
 
-\section{Appendix C: Reference Links}
+
+\section{Appendix D: Reference Links}
 Unit Testing ASP.NET MVC\\
 \small{http://msdn.microsoft.com/en-us/magazine/dd942838.aspx}\\
 \\
