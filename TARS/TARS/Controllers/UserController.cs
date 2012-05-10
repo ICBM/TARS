@@ -42,9 +42,9 @@ namespace TARS.Controllers
 
 
         //
-        /* If userKeyId isn't zero, that means a manager is adding hours for an employee, so
-         * it redirects to Manager/approveTimesheet instead of User/viewTimesheet
-         */
+        /* Adds the newhours object to the database. Before saving, it checks to see if the hours' timestamp
+         * is within the time frame of the work effort that the hours are being logged to.
+         */ 
         [HttpPost]
         public virtual bool addHours(Hours newhours)
         {
@@ -74,7 +74,7 @@ namespace TARS.Controllers
 
 
         //
-        //
+        // Returns TRUE if the date is within the start and end dates of the the Work Effort
         public bool isWithinWeTimeBounds(int weID, DateTime hrsDate)
         {
             WorkEffort tmpWe = WorkEffortDB.WorkEffortList.Find(weID);
@@ -87,7 +87,9 @@ namespace TARS.Controllers
 
 
         //
-        //Creates a new timesheet if one doesn't exist for the period
+        /* Checks if a timesheet exists for the specified user and date.  
+         * If not, then createTimesheet() is called
+         */
         [HttpGet]
         public void checkForTimesheet(string userName, DateTime tsDate)
         {
@@ -125,7 +127,7 @@ namespace TARS.Controllers
 
 
         //
-        //Creates an empty timesheet for the specified user
+        //Creates an empty timesheet for the specified user and specified date
         public void createTimesheet(string userName, DateTime startDay)
         {
             Timesheet newTimesheet = new Timesheet();
@@ -152,14 +154,12 @@ namespace TARS.Controllers
                     TimesheetDB.SaveChanges();
                 }
             }
-            catch
-            {
-            }
+            catch{}
         }
 
 
         //
-        //Retrieves a specified user's timesheet for specified date
+        //Retrieves and returns a specified user's timesheet for the specified date
         public Timesheet getTimesheet(string user, DateTime tsDate)
         {  
             Timesheet resulttimesheet = new Timesheet();
@@ -179,7 +179,9 @@ namespace TARS.Controllers
 
 
         //
-        //Lists out all workefforts in the database
+        /* Retrieves all workefforts from the database and sends them to the view, 
+         * along with a list of PCA Codes associated with each work effort
+         */
         [HttpGet]
         public virtual ActionResult searchWorkEffort()
         {
@@ -193,10 +195,9 @@ namespace TARS.Controllers
                 }
 
                 var workEffortList = WorkEffortDB.WorkEffortList.ToList();
-                //create a list of lists for pca codes and time codes
-                //(each work effort will have a list of PCA codes and a list of time codes)
+                //create a list of lists for pca codes
+                //(each work effort will have a list of PCA codes)
                 ViewBag.pcaListOfLists = new List<List<SelectListItem>>();
-                ViewBag.timeCodesListOfLists = new List<List<string>>();
                 foreach (var item in workEffortList)
                 {
                     ViewBag.pcaListOfLists.Add(getWePcaCodesSelectList(item));
@@ -212,7 +213,9 @@ namespace TARS.Controllers
 
 
         //
-        //View the details of a workeffort
+        /* Retrieves the Work Effort object with the specified ID and sends it to the view,
+         * along with a list of associated PCA Codes.
+         */
         [HttpGet]
         public virtual ActionResult viewWorkEffort(int id)
         {
@@ -242,7 +245,9 @@ namespace TARS.Controllers
 
 
         //
-        //
+        /* Retrieves the hours object with the specified ID, changes the number of hours,
+         * and saves the changes to the database
+         */
         [HttpPost]
         public virtual bool editHours(int id, int numHours)
         {
@@ -266,7 +271,7 @@ namespace TARS.Controllers
         //
         /* Removes all the zero hours entries for the given workEffort/timeCode pair for the
          * week on the user's timesheet. This results in that workEffort/timeCode pair being
-         * removed from the viewTimesheet View
+         * removed from the viewTimesheet View. Redirects to viewTimesheet().
         */
         [HttpPost]
         public virtual ActionResult timesheetRemoveWorkEffort(int sundayID)
@@ -292,7 +297,7 @@ namespace TARS.Controllers
 
 
         //
-        //Returns timesheet status
+        //Returns TRUE if the specified timesheet is locked
         public bool isTimesheetLocked(string worker,DateTime refDate)
         {
             DateTime todaysDate = DateTime.Now;
@@ -306,7 +311,7 @@ namespace TARS.Controllers
 
 
         // 
-        // Deletes a specified Hours entry
+        // Retrieves the hours object with the specified ID and deletes it from the database
         [HttpGet]
         public virtual ActionResult deleteHours(int id)
         {
@@ -326,7 +331,9 @@ namespace TARS.Controllers
 
 
         //
-        //Duplicates timesheet from previous week (but hours worked are set to zero)
+        /* Duplicates all hours entries from previous week's timesheet and sets number of hours
+         * to zero for all of them.
+         */
         [HttpGet]
         public virtual ActionResult copyTimesheet()
         {
@@ -375,7 +382,10 @@ namespace TARS.Controllers
 
 
         //
-        //Gets the current user's hours for the time period that tsDate falls within
+        /* Retrieves a list of the current user's hours for the time period that tsDate falls within. 
+         * The list is saved in TempData[], then convertHoursForTimesheetView() is called.
+         * convertHoursForTimesheetView() returns a list of TimesheetRow objects, which is sent to the view.
+         */
         public virtual ActionResult viewTimesheet(DateTime tsDate)
         {
             Authentication auth = new Authentication();
@@ -398,10 +408,11 @@ namespace TARS.Controllers
                                     where m.timestamp >= timesheet.periodStart
                                     where m.timestamp <= timesheet.periodEnd
                                     select m;
-                TempData["hoursList"] = hoursList;
 
+                TempData["hoursList"] = hoursList;
                 //convert hoursList into a format that the view can use
                 List<TimesheetRow> tsRows = convertHoursForTimesheetView();
+
                 ViewBag.workEffortList = getVisibleWorkEffortSelectList(getUserDivision());
                 return View(tsRows);
             }
@@ -413,7 +424,10 @@ namespace TARS.Controllers
 
 
         //
-        //Returns list of objects that each contain hours for Sun-Sat for each workEffort/timeCode pairing
+        /* Uses TempData["hoursList"] (assigned by the calling function) to create a list of objects 
+         * that each contain number of hours for Sun-Sat for each workEffort/timeCode pairing.  The 
+         * list of objects is then returned to the calling function
+         */
         public List<TimesheetRow> convertHoursForTimesheetView()
         {
             WorkEffort effort = new WorkEffort();
@@ -422,7 +436,10 @@ namespace TARS.Controllers
             List<string> timeCodeList = new List<string>();
             List<string> effortAndCodeConcat = new List<string>();
             List<TimesheetRow> tsRowList = new List<TimesheetRow>();
+
+            //TempData["hoursList"] was assigned in viewTimesheet() before calling this method
             IEnumerable<Hours> hoursList = (IEnumerable<Hours>)TempData["hoursList"];
+
             //create a list of workEffort/timeCode pairings for the pay period
             foreach (var item in hoursList)
             {
@@ -513,7 +530,9 @@ namespace TARS.Controllers
 
 
         //
-        //Shows the hours logged to a specific work effort over specific date range
+        /* Retrieves and returns list of hours logged to the specified work effort during the specified 
+         * time frame by the specified user.
+         */
         public virtual ActionResult showWorkOnWorkEffort(int we, DateTime start, DateTime end, string userName)
         {
             if (Request.IsAjaxRequest())
@@ -531,7 +550,9 @@ namespace TARS.Controllers
 
 
         //
-        //changes timesheet submitted status to true
+        /* Retrieves timesheet object with specified ID and changes submitted status to TRUE.
+         * It then saves the change and redirects to viewTimesheet()
+         */
         public virtual ActionResult submitTimesheet(int id)
         {
             if (id >= 0)
@@ -566,7 +587,9 @@ namespace TARS.Controllers
 
 
         //
-        //Retrieves the status of an employees timesheet from the specified date
+        /* Retrieves the specified employee's timesheet from the specified date and returns the
+         * status as a string
+         */
         public virtual string getTimesheetStatus(string userName, DateTime refDate)
         {
             Timesheet tmptimesheet = getTimesheet(userName, refDate);
@@ -596,7 +619,7 @@ namespace TARS.Controllers
 
 
         // 
-        //Returns the pay period covering the reference date as a string
+        //Returns the pay period for the reference date as a string
         public virtual string getPayPeriod(DateTime refDate)
         {
             DateTime startDay = refDate.StartOfWeek(DayOfWeek.Sunday);
@@ -607,7 +630,7 @@ namespace TARS.Controllers
 
 
         // 
-        //Returns the IDHW Divisions as a list of strings
+        // Retrieves the IDHW Divisions and returns as a list of strings
         public virtual List<SelectListItem> getDivisionSelectList()
         {
             Authentication auth = new Authentication();
@@ -637,7 +660,9 @@ namespace TARS.Controllers
  
 
         // 
-        //Returns selection list of PCA codes associated with the specified work effort
+        /* Retrieves all PCA codes associated with the specified work effort and returns
+         * them as a selection list
+         */
         public virtual List<SelectListItem> getWePcaCodesSelectList(WorkEffort we)
         {
             List<SelectListItem> pcaList = new List<SelectListItem>();
@@ -661,7 +686,9 @@ namespace TARS.Controllers
 
 
         // 
-        //Returns PCA codes associated with the specified work effort as a string
+        /* Retrieves all PCA codes associated with the specified work effort and 
+         * returns them in a string, separated by commas
+         */
         public virtual string getWePcaCodesString(int weID)
         {
             PcaCode tmpPca = new PcaCode();
@@ -683,7 +710,9 @@ namespace TARS.Controllers
 
 
         // 
-        //Returns a list of all Earnings Code Descriptions
+        /* Retrieves all Earnings Code objects, then creates and returns them as a list of 
+         * strings, each containing a concatenated earnings code and description.
+         */ 
         public virtual List<string> getTimeCodeList()
         {
             List<string> timeCodesList = new List<string>();
@@ -699,7 +728,12 @@ namespace TARS.Controllers
 
 
         // 
-        //Returns active Work Efforts within the specified division as a selection list
+        /* Retrieves all non-hidden Work Efforts within the specified division, then returns 
+         * them as a selection list. Since the division is not stored with a Work Effort, the
+         * PCA Codes associated with each Work Effort instance must be retrieved.  If at 
+         * least one PCA Code is from the specified division, then the Work Effort is added
+         * to the selection list.
+         */
         public virtual List<SelectListItem> getVisibleWorkEffortSelectList(string division)
         {
             List<SelectListItem> effortList = new List<SelectListItem>();
@@ -709,7 +743,7 @@ namespace TARS.Controllers
             var searchEfforts = from m in WorkEffortDB.WorkEffortList
                                 select m;
             //narrow down to work efforts in the specified division
-            //(PCA codes and PCA_WE must be used to get all of the work efforts in the division)
+            //(PCA codes and PCA_WE must be used to get all work efforts in the division)
             foreach (var we in searchEfforts)
             {
                 if (we.hidden != true)
@@ -740,7 +774,10 @@ namespace TARS.Controllers
 
 
         // 
-        //Returns the description of a work effort as a string
+        /* Retrieves the Work Effort object with specified ID and returns the description of 
+         * as a string.  If the Work Effort has been deactivated, then a message is returned
+         * that shows the ID and states that the Work Effort no longer exists.
+         */
         public virtual string getWeDescription(int id)
         {
             Authentication auth = new Authentication();
@@ -768,33 +805,10 @@ namespace TARS.Controllers
         }
 
 
-        // 
-        //Returns the unique ID of the specified work effort
-        public virtual int getWeIdFromDescription(string description)
-        {
-            Authentication auth = new Authentication();
-            if (auth.isUser(this) || Authentication.DEBUG_bypassAuth)
-            {
-                int id = 0;
-                var searchWorkEfforts = from w in WorkEffortDB.WorkEffortList
-                                        where (w.description.CompareTo(description) == 0)
-                                        select w;
-                foreach (var item in searchWorkEfforts)
-                {
-                    id = item.ID;
-                }
-                return id;
-            }
-            else
-            {
-                return 0;
-            }
-        }
-
-
         //
-        //Returns work effort's time boundaries as a string
-        //(note: it's called from addHours View)
+        /* Retrieves Work Effort object with specified ID and returns it's time 
+         * boundaries as a string (note: it's called from addHours View)
+         */
         public string getWeTimeBoundsString(int id)
         {
             WorkEffort we = WorkEffortDB.WorkEffortList.Find(id);
@@ -804,7 +818,7 @@ namespace TARS.Controllers
 
 
         // 
-        //Returns the IDHW division that the user works for
+        // Retrieves the division that the logged in user works for and returns it as a string
         public virtual string getUserDivision()
         {
             Authentication auth = new Authentication();
@@ -828,7 +842,7 @@ namespace TARS.Controllers
 
 
         // 
-        //Returns the IDHW department name that the user works for
+        // Retrieves the department that the logged in user works for and returns it as a string
         public virtual string getUserDepartment()
         {
             Authentication auth = new Authentication();
@@ -852,7 +866,11 @@ namespace TARS.Controllers
 
 
         //
-        //Returns title that is shown when hovering over a day cell on timesheet
+        /* Returns title that is shown when hovering over a timesheet day cell in 
+         * viewTimesheet view. If the timesheet is submitted or locked, then the title
+         * will reflect that (unless user is an Admin).  Otherwise, it will show 
+         * "Add/Edit Hours"
+         */
         public virtual string getTimesheetDayCellTitle(Timesheet ts)
         {
             string title = "";
@@ -878,7 +896,9 @@ namespace TARS.Controllers
 
 
         //
-        //
+        /* Calls getVisibleWorkEffortSelectList(), then converts the result into a Json list
+         * and returns it
+         */
         public ActionResult jsonWorkEffortSelectList(string division)
         {
             List<SelectListItem> weSelectList = getVisibleWorkEffortSelectList(division);
@@ -894,7 +914,7 @@ namespace TARS.Controllers
 
 
         //
-        //
+        // Calls getTimeCodeListList(), then converts the result into a Json list and returns it.
         public JsonResult jsonTimeCodeSelectList()
         {
             IEnumerable<string> weSelectList = getTimeCodeList();
@@ -906,7 +926,7 @@ namespace TARS.Controllers
 
 
         //
-        // Sends a reminder to all users who haven't submitted their timesheet by Saturday morning
+        // Sends a reminder email to all users who haven't submitted their timesheet by Saturday morning
         public void reminderToSubmitTimesheet()
         {
             DateTime refDate = DateTime.Now;

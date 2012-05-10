@@ -61,4 +61,5 @@
 \contentsline {paragraph}{The system must allow a user the ability to create a custom view of the data.}{22}
 \contentsline {paragraph}{Must allow users to easily size windows}{22}
 \contentsline {paragraph}{The system shall provide search/find functionality to locate work efforts, with minimal amount of navigation (less than 5 clicks per important action)}{22}
-\contentsline {section}{\numberline {8}Appendix C: Reference Links}{22}
+\contentsline {section}{\numberline {8}Appendix B: Code Documentation}{22}
+\contentsline {section}{\numberline {9}Appendix C: Reference Links}{25}
