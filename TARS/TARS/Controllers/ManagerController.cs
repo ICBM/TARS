@@ -17,8 +17,9 @@ namespace TARS.Controllers
         protected HistoryDBContext HistoryDB = new HistoryDBContext();   
 
         //
-        // GET: /Manager/
-        public override ActionResult Index() //Overridden from User/Index, which was virtual.
+        // Returns manager Index view
+        // Overridden from User/Index, which was virtual.
+        public override ActionResult Index() 
         {
             Authentication auth = new Authentication();
             if (auth.isManager(this) || Authentication.DEBUG_bypassAuth)
@@ -33,7 +34,9 @@ namespace TARS.Controllers
 
 
         //
-        //  - Shows a list of PCA codes for specified division
+        /* Retrieves all PCA codes for the specified division and sends them to the view as
+         * a list. The division name and a division selection list are also sent to the view.
+         */
         public virtual ActionResult searchPCA(string division = null)
         {
             Authentication auth = new Authentication();
@@ -62,9 +65,9 @@ namespace TARS.Controllers
 
 
         //
-        /* Displays all the employees that work for the specified departement within the Information 
-         * Technology division (as per client request), along with a link to their timesheets. If 
-         * department is null, it displays all employees in the division
+        /* Retrieves all the employee objects of employees that work for the specified departement 
+         * within the Information Technology division (as per client request), then returns them
+         * as a list. If department is null, it displays all employees in the division
          */
         public virtual ActionResult userManagement(DateTime refDate, string department = null)
         {
@@ -95,7 +98,10 @@ namespace TARS.Controllers
 
 
         //
-        //
+        /* Retrieves all Work Efforts and sends them to the view as a list, along with a
+         * list of PCA Codes associated with each Work Effort. Also, sends variables that 
+         * the view uses to determine if error messages should be displayed
+         */
         [HttpGet]
         public virtual ActionResult weManagement()
         {
@@ -141,7 +147,9 @@ namespace TARS.Controllers
 
 
         //
-        // GET: /Manager/addWorkEffort
+        /* Creates an empty Work Effort object and sends it to the view, along with a
+         * selection list of divisions. 
+         */
         public virtual ActionResult addWorkEffort()
         {
             Authentication auth = new Authentication();
@@ -158,7 +166,11 @@ namespace TARS.Controllers
 
 
         //
-        // POST: /Manager/addWorkEffort
+        /* Receives a Work Effort object and checks to make sure that the dates are valid
+         * and that they are within the associated PCA Code's time boundaries.  If so, then 
+         * it is saved to the database.  If not, then the object is returned to the view 
+         * for editing.
+         */
         [HttpPost]
         public virtual ActionResult addWorkEffort(WorkEffort workeffort)
         {
@@ -217,7 +229,11 @@ namespace TARS.Controllers
 
 
         //
-        //  - Edits a specific WorkEffort code.
+        /* Retrieves the Work Effort object with specified ID and returns it to the view.
+         * If the user is an Admin, ViewBag.adminFlag is set to TRUE.  In the view, if
+         * ViewBag.adminFlag is TRUE, then an option to ADD or REMOVE PCA Code associations
+         * is displayed.
+         */
         [HttpGet]
         public virtual ActionResult editWorkEffort(int id)
         {
@@ -242,7 +258,11 @@ namespace TARS.Controllers
 
 
         //
-        //
+        /* Receives a Work Effort object and checks to make sure that the dates are valid
+         * and that they are within the associated PCA Code's time boundaries.  If so, then 
+         * it is saved to the database.  If not, then the object is returned to the view 
+         * for editing.
+         */
         [HttpPost]
         public virtual ActionResult editWorkEffort(WorkEffort workeffort)
         {
@@ -294,7 +314,9 @@ namespace TARS.Controllers
 
 
         //
-        //
+        /* Retrieves Work Effort object with specified ID and returns it to the view, along
+         * with a selection list of PCA Codes associated with it.
+         */
         [HttpGet]
         public virtual ActionResult deleteWorkEffort(int id)
         {
@@ -313,7 +335,12 @@ namespace TARS.Controllers
 
 
         //
-        // POST: /Manager/deleteWorkEffort
+        /* Receives a Work Effort ID and calls a function to check if there are any hours billed to
+         * it.  If so, TempData["failedDelete"] is set to TRUE (so an error message will be displayed),
+         * and it redirects back to "weManagement". Otherwise, the Work Effort object is retrieved and 
+         * deleted from the database, and deactivateAllPcaWeForWorkEffort(id) is called to deactivate 
+         * all of the PCA_We associations for the Work Effort. 
+         */
         [HttpPost, ActionName("deleteWorkEffort")] //This action MUST match the above delete function.
         public virtual ActionResult confirmedDeleteWorkEffort(int id)
         {
@@ -345,7 +372,7 @@ namespace TARS.Controllers
 
 
         //
-        // Changes active status to FALSE for all PCA_WE entries for specified Work Effort.
+        // Changes active status to FALSE for all PCA_WE entries for the specified Work Effort.
         // Also changes "associationEndDate" to the current day and time
         public void deactivateAllPcaWeForWorkEffort(int id)
         {
@@ -367,7 +394,10 @@ namespace TARS.Controllers
 
 
         //
-        //Checks a work effort to see if any hours are currently billed to it. Returns TRUE if there are.
+        /* Retrieves the Work Effort object with specified ID and checks to see if any 
+         * hours are currently billed to it in timesheets that are NOT locked yet. 
+         * Returns TRUE if there are.
+         */
         public bool checkWeForBilledHours(int id)
         {
             Timesheet tmpTimesheet = new Timesheet();
@@ -390,7 +420,12 @@ namespace TARS.Controllers
 
 
         //
-        //Marks an expired work effort as hidden so it doesn't show up for employees
+        /* Retrieves Work Effort object with specified ID, and changes "hidden" to TRUE
+         * if the end date was at least one day ago.  (note: Hidden Work Efforts don't 
+         * show up for employee's when they are adding a Work Effort to their timesheet, 
+         * but they do still show up in Manager/weManagement where they can be edited and 
+         * un-hidden)
+         */
         public virtual ActionResult hideWorkEffort(int id)
         {
             Authentication auth = new Authentication();
@@ -418,7 +453,9 @@ namespace TARS.Controllers
 
 
         //
-        //Marks a hidden work effort as not hidden so it shows up for employees
+        /* Retrieves Work Effort object with specified ID, and changes "hidden" to FALSE
+         * so users can log hours to it on their timesheet
+         */
         public virtual ActionResult unHideWorkEffort(int id)
         {
             Authentication auth = new Authentication();
@@ -439,7 +476,7 @@ namespace TARS.Controllers
 
 
         //
-        //  - Shows a list of all PCA_WE codes.
+        // Retrieves all PCA_WE objects and sends it to the view as a list
         [HttpGet]
         public virtual ActionResult searchPCA_WE()
         {
@@ -456,7 +493,7 @@ namespace TARS.Controllers
 
 
         //
-        // Shows detailed information for a single PCA_WE code.
+        // Retrieves PCA_WE object with specified ID and returns it to the view
         [HttpGet]
         public virtual ActionResult viewPCA_WE(int id)
         {
@@ -474,7 +511,10 @@ namespace TARS.Controllers
 
 
         //
-        //Gets hours for specified user for the time period that tsDate falls within
+        /* Retrieves a list of the specified user's hours for the time period that tsDate falls within. 
+         * The list is saved in TempData[], then convertHoursForTimesheetView() is called.
+         * convertHoursForTimesheetView() returns a list of TimesheetRow objects, which is sent to the view.
+         */
         [HttpGet]
         public virtual ActionResult approveTimesheet(int userKeyID, DateTime tsDate)
         {
@@ -499,10 +539,11 @@ namespace TARS.Controllers
                                   where m.timestamp >= timesheet.periodStart
                                   where m.timestamp <= timesheet.periodEnd
                                   select m;
-                TempData["hoursList"] = hoursList;
 
+                TempData["hoursList"] = hoursList;
                 //convert hoursList into a format that the view can use
                 List<TimesheetRow> tsRows = convertHoursForTimesheetView();
+
                 ViewBag.workEffortList = getVisibleWorkEffortSelectList(getUserDivision());
                 ViewBag.refDate = tsDate;
                 ViewBag.userKeyID = userKeyID;
@@ -516,7 +557,9 @@ namespace TARS.Controllers
 
 
         //
-        //changes timesheet status to submitted (if not already) and approved
+        /* Retrieves Timesheet object with specified ID and changes "submitted" and 
+         * "approved" statuses to TRUE.  Also sends a notification email to the employee
+         */
         public virtual ActionResult submitApproveTimesheet(int id)
         {
             if (id >= 0)
@@ -552,7 +595,9 @@ namespace TARS.Controllers
 
 
         //
-        //changes timesheet submitted status to false and sends an alert email to employee
+        /* Retrieves Timesheet object with specified ID and changes "submitted" and 
+         * "approved" statuses to FALSE.  Also sends a notification email to the employee
+         */
         public virtual ActionResult submitRejectTimesheet(int id)
         {
             if (id >= 0)
@@ -592,7 +637,11 @@ namespace TARS.Controllers
 
 
         //
-        // Edits a specified Hours entry
+        /* Retrieves Hours object with specified ID and sends it to the view, along with the 
+         * Work Effort that the hours are logged to (so description can be displayed), a 
+         * time code selection list (so the time code can be edited), and flags that let the 
+         * view know if the hours are editable.
+         */
         [HttpGet]
         public virtual ActionResult managerEditHours(int hrsID, int tsID)
         {
@@ -606,7 +655,6 @@ namespace TARS.Controllers
                 Authentication newAuth = new Authentication();
                 bool adminFlag = newAuth.isAdmin(this);
                 ViewBag.adminFlag = adminFlag;
-                ViewBag.userName = timesheet.worker;
                 ViewBag.workEffort = we;
                 ViewBag.timeCodeList = getTimeCodeList();
                 return View(hours);
@@ -619,7 +667,9 @@ namespace TARS.Controllers
 
 
         //
-        //
+        /* Receives Hours object and saves it to the database as modified, then redirects
+         * back to Manager/approveTimesheet
+         */
         [HttpPost]
         public virtual ActionResult managerEditHours(Hours tmpHours)
         {
@@ -642,7 +692,9 @@ namespace TARS.Controllers
 
 
         //
-        //Returns the unique ID of specified user
+        /* Receives an employee's userName and retrieves the TARSUser object for that
+         * userName, then returns the object's unique ID
+         */
         public int getUserKeyID(string worker)
         {
             int userID = 0;
@@ -655,7 +707,9 @@ namespace TARS.Controllers
 
 
         //
-        //Returns the unique ID of specified PCA code
+        /* Receives a 5-digit code and retrieves the PcaCode object with that code, 
+         * then returns the object's unique ID
+         */
         public int getPcaIdFromCode(int pcacode)
         {
             int pcaID = 0;
@@ -671,7 +725,7 @@ namespace TARS.Controllers
 
 
         //
-        //Returns a PcaCode object with the specified PCA code
+        // Retrieves the PcaCode object with the specified code and returns the object
         public PcaCode getPcaObjFromCode(int pcacode)
         {
             PcaCode pcaCodeObj = new PcaCode();
@@ -694,7 +748,7 @@ namespace TARS.Controllers
 
 
         //
-        // Returns the pcaCode of the PCA object with specified ID
+        // Retrieves the pcaCode object with the specified ID and returns the 5-digit code
         // (note: called from searchPCA_WE View)
         public int getPcaCodeFromID(int id)
         {
@@ -711,7 +765,7 @@ namespace TARS.Controllers
 
 
         //
-        //Returns the division of the PCA object with specified ID
+        // Retrieves the PcaCode object with specified ID and returns the division name
         // (note: called from searchPCA_WE View)
         public string getPcaDivisionFromID(int id)
         {
@@ -728,7 +782,7 @@ namespace TARS.Controllers
 
 
         //
-        //Returns the description of the PCA object with specified ID
+        // Retrieves the PcaCode object with specified ID and returns the description
         // (note: called from searchPCA_WE View)
         public string getPcaDescriptionFromID(int id)
         {
@@ -745,7 +799,9 @@ namespace TARS.Controllers
 
 
         // 
-        //Returns PCA Codes as a selection list
+        /* Retrieves all PCA Codes for the specified division and returns the result
+         * as a selection list
+         */
         public virtual List<SelectListItem> getDivisionPcaCodeList(string division)
         {
             List<SelectListItem> pcaCodesList = new List<SelectListItem>();
@@ -770,8 +826,9 @@ namespace TARS.Controllers
 
 
         // 
-        //Returns list of employees that work for specified division and department
-        //If division is null, it returns all employees
+        /* Retrieves list of employees that work for specified division and department, and returns
+         * them as a list.  If division is null, it returns a list of all employees
+         */
         public virtual List<TARSUser> getDivisionEmployeeObjList(string division = null, string department = null)
         {
             Authentication auth = new Authentication();
@@ -810,8 +867,9 @@ namespace TARS.Controllers
 
 
         // 
-        //Returns list of employee names that work for specified division
-        //If division is null, it returns all employees
+        /* Retrieves list of employee that work for specified division and department, and returns
+         * the names as a selection list.  If division is null, it returns all employee names
+         */
         public virtual List<SelectListItem> getDivisionEmployeeSelectList(string division = null)
         {
             Authentication auth = new Authentication();
@@ -847,7 +905,9 @@ namespace TARS.Controllers
 
 
         //
-        //Returns a list of departments in the division that have at least one employee
+        /* Retrieves all departments that have at least one employee in the specified division
+         * and returns them as a selection list
+         */
         public List<SelectListItem> getDepartmentSelectList(string division)
         {
             List<SelectListItem> deptSelectList = new List<SelectListItem>();
@@ -877,7 +937,9 @@ namespace TARS.Controllers
 
 
         //
-        //
+        /* Calls getDivisionEmployeeSelectList(division) to get the selection list of employees
+         * for the division, then converts it to a Json selection list and returns it
+         */
         public ActionResult jsonDivisionEmployeeSelectList(string division)
         {
             List<SelectListItem> employeeSelectList = getDivisionEmployeeSelectList(division);
@@ -893,10 +955,11 @@ namespace TARS.Controllers
 
 
         //
-        //Checks to see if the work effort falls within it's PCA code's time boundaries
+        /* Checks to see if the work effort falls within the specified PCA code's time boundaries.
+         * If so, it returns TRUE.
+         */
         public bool verifyWeTimeBounds(WorkEffort effort, int pca)
         {
-            bool dateFlag = false;
             var searchPCA = from m in PcaCodeDB.PcaCodeList
                            where (m.code.CompareTo(pca) == 0)
                            select m;
@@ -904,15 +967,15 @@ namespace TARS.Controllers
             {
                 if ((item.startDate <= effort.startDate) && (item.endDate >= effort.endDate))
                 {
-                    dateFlag = true;
+                    return true;
                 }
             }
-            return dateFlag;
+            return false;
         }
 
 
         //
-        //Returns PCA code's time boundaries as a string
+        // Retrieves PcaCode object with specified code and returns its time boundaries as a string
         //(note: it's called from addWorkEffort View)
         public string getPcaTimeBoundsString(int pcacode)
         {
@@ -929,7 +992,7 @@ namespace TARS.Controllers
 
 
         // 
-        //Returns all database tables as a list of strings
+        // Returns all database tables as a selection list
         public virtual List<SelectListItem> getDbTableSelectList()
         {
             Authentication auth = new Authentication();
@@ -943,8 +1006,7 @@ namespace TARS.Controllers
                 tableList.Add("PcaCodes");
                 tableList.Add("PCA_WE");
                 tableList.Add("TARSUsers");
-                tableList.Add("EarningsCodes");
-                tableList.Add("Divisions");
+                tableList.Add("Holidays");
 
                 tableSelectList.Add(new SelectListItem { Text = "All", Value = "All" });  
  
@@ -966,7 +1028,9 @@ namespace TARS.Controllers
 
 
         //
-        //
+        /* Retrieves all History objects within the specified time frame and sends them
+         * to the view as a list
+         */
         [HttpGet]
         public ActionResult viewHistory(DateTime start, DateTime end)
         {
@@ -993,7 +1057,9 @@ namespace TARS.Controllers
 
 
         //
-        //
+        /* Recieves parameters for refining the history results, and narrows down the list to satisfy
+         * those parameters.  Then it sends the results back to the view.
+         */
         [HttpPost]
         public ActionResult viewHistory(DateTime start, DateTime end, string division = null, string un = null, string dbtable = null)
         {
@@ -1051,7 +1117,9 @@ namespace TARS.Controllers
 
 
         //
-        //
+        /* Calls getDivisionPcaCodeList(division) to get the selection list of PCA Codes
+         * for the division, then converts it to a Json selection list and returns it
+         */
         public ActionResult jsonPcaSelectList(string division)
         {
             IEnumerable<SelectListItem> pcaList = getDivisionPcaCodeList(division);
@@ -1063,7 +1131,7 @@ namespace TARS.Controllers
 
 
         //
-        // Sends notification to managers and admin if a PCA or Work Effort Expires this week
+        // Sends notification emails to managers and admin if a PCA or Work Effort Expires this week
         public void notificationOfPcaOrWeExpiration()
         {
             DateTime refStart = DateTime.Now.StartOfWeek(DayOfWeek.Sunday);

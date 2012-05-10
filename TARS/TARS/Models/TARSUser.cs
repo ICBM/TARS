@@ -71,7 +71,7 @@ namespace TARS.Models
                     entry.Property(u => u.endDate).CurrentValue = DateTime.MaxValue;
                 }
 
-                hist.dbtable = "TARSUser";
+                hist.dbtable = "TARSUsers";
                 hist.change = "userName: " + entry.Property(u => u.userName).CurrentValue +
                                 "; startDate: " + entry.Property(u => u.startDate).CurrentValue.ToShortDateString() +
                                 "; endDate: " + entry.Property(u => u.endDate).CurrentValue.ToShortDateString() +
