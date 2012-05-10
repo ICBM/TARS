@@ -14,7 +14,7 @@ namespace TARS.Controllers
     public class AdminController : ManagerController
     {
         //
-        //
+        // Displays the default admin view
         [HttpGet]
         public override ActionResult Index()
         {
@@ -31,18 +31,21 @@ namespace TARS.Controllers
 
 
         //
-        //
+        /* Retrieves all PcaCode objects for the specified division and sends them to the
+         * view as a list, along with a division selection list (for narrowing results)
+         * and current division name.
+         */
         public ActionResult maintainPCA(string division = null)
         {
             Authentication auth = new Authentication();
             if(auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
             {
+                ViewBag.divisionList = getDivisionSelectList();
+
                 if (TempData["failedPcaDelete"] != null)
                 {
                     ViewBag.failedPcaDelete = true;
                 }
-
-                ViewBag.divisionList = getDivisionSelectList();
                 if ((division == null) || (division.CompareTo("All") == 0))
                 {
                     ViewBag.division = "All";
@@ -65,7 +68,9 @@ namespace TARS.Controllers
 
 
         //
-        // 
+        /* Creates an empty PcaCode object and sends it to the view, along with a division
+         * selection list (for specifying what division the new PCA Code will be in)
+         */
         [HttpGet]
         public virtual ActionResult addPCA()
         {
@@ -83,7 +88,11 @@ namespace TARS.Controllers
 
 
         //
-        //
+        /* Recieves a PcaCode object and saves it to the database.  If the start date is
+         * before the end date, or if the the PCA Code already exists in the division 
+         * and has dates that overlap the dates of the new PCA Code, then an error flag
+         * is set and the object is sent back to the view for editing.
+         */
         [HttpPost]
         public virtual ActionResult addPCA(PcaCode pcacode)
         {
@@ -130,7 +139,9 @@ namespace TARS.Controllers
 
 
         // 
-        // Edits a specific PCA code.
+        /* Retrieves PcaCode object with specified ID and sends it to the view, along with
+         * a division selection list (for changing the division that the PCA Code is in).
+         */
         [HttpGet]
         public virtual ActionResult editPCA(int id)
         {
@@ -149,7 +160,10 @@ namespace TARS.Controllers
 
 
         //
-        // 
+        /* Recieves a PcaCode object and saves it to the database.  If the start date is
+         * before the end date, then an error flag is set and the object is sent back to 
+         * the view for editing.
+         */
         [HttpPost]
         public virtual ActionResult editPCA(PcaCode pcacode)
         {
@@ -185,7 +199,9 @@ namespace TARS.Controllers
 
 
         // 
-        // gets confirmation before editing a specific PCA code.
+        /* Sends TempData["tmpPcaCode"] (which was assigned in editPCA() before calling this 
+         * method) to the view, along with a division selection list.
+         */
         [HttpGet]
         public virtual ActionResult confirmEditPCA()
         {
@@ -203,7 +219,7 @@ namespace TARS.Controllers
 
 
         //
-        //gets confirmation before editing a specific PCA code
+        // Receives a PcaCode object and saves it to the database as modified
         [HttpPost]
         public virtual ActionResult confirmEditPCA(PcaCode pcacode)
         {
@@ -227,7 +243,7 @@ namespace TARS.Controllers
 
 
         //
-        //
+        // Retrieves PcaCode object with specified ID and sends it to the view
         [HttpGet]
         public virtual ActionResult deletePCA(int id)
         {
@@ -245,7 +261,11 @@ namespace TARS.Controllers
 
 
         //
-        // POST: /Admin/confirmDeletePCA
+        /* Recieves a PcaCode object ID and retrieves the object, then checks to make sure
+         * that no Work Efforts are attached to it before deleting it from the database.  If
+         * there are Work Efforts attached, then a flag is set so an error message will be
+         * displayed, and the Work Effort is not deleted.
+         */
         [HttpPost, ActionName("deletePCA")] //This action MUST match the above delete function.
         public virtual ActionResult confirmDeletePCA(int id)
         {
@@ -274,7 +294,11 @@ namespace TARS.Controllers
 
 
         //
-        //Checks a PCA to see if any Work Efforts are currently attached to it. Returns TRUE if there are.
+        /* Receives a PcaCode object ID, then checks to see if any Work Efforts are currently 
+         * attached to it. It does so by retrieving all PCA_WE entries with a PCA field that 
+         * matches the ID, and an "active" field set to TRUE. Returns TRUE if any entries are
+         * found.
+         */
         public bool checkPcaForAttachedWorkEfforts(int id)
         {
             var searchPcaWe = from p in PCA_WEDB.PCA_WEList
@@ -295,7 +319,7 @@ namespace TARS.Controllers
 
 
         //
-        //
+        // Retrieves all TARSUser objects and sends them to the view as a list
         public ActionResult userMaintanence()
         {
             Authentication auth = new Authentication();
@@ -311,7 +335,7 @@ namespace TARS.Controllers
 
 
         //
-        //
+        // NOT YET IMPLEMENTED
         public ActionResult addUser()
         {
             Authentication auth = new Authentication();
@@ -327,7 +351,7 @@ namespace TARS.Controllers
 
 
         //
-        //
+        // NOT YET IMPLEMETED
         public ActionResult editTARSUSer()
         {
             Authentication auth = new Authentication();
@@ -343,7 +367,7 @@ namespace TARS.Controllers
 
 
         //
-        //
+        // NOT YET IMPLEMENTED
         public ActionResult endDateTARSUSer()
         {
             Authentication auth = new Authentication();
@@ -359,8 +383,9 @@ namespace TARS.Controllers
 
 
         //
-        /* Returns true if the PCA code already exists for the division and has 
-         * overlapping start and end dates with the new pca code
+        /* Receives a PcaCode object and checks if its 5-digit code already exists in the 
+         * division.  If so, it checks if the start and end dates overlap and returns TRUE
+         * if they do, FALSE if they don't.
          */
         public bool pcaCheckIfDuplicate(PcaCode pca)
         {
@@ -383,7 +408,11 @@ namespace TARS.Controllers
 
 
         //
-        //  Adds a PCA code to the given Work Effort
+        /* Retrieves WorkEffort object with specified ID and sends the description and
+         * ID to the view, along with a division selection list (For selecting the division
+         * that the new PCA Code will be from. There is a PCA Code dropdown list in the
+         * view that is populated via jQuery when a division is selected)
+         */
         [HttpGet]
         public virtual ActionResult addPCA_WE(int weID)
         {
@@ -391,11 +420,9 @@ namespace TARS.Controllers
             if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
             {
                 WorkEffort we = WorkEffortDB.WorkEffortList.Find(weID);
-                PcaCode pca = getPcaObjFromCode(we.pcaCode);
+                ViewBag.divisionList = getDivisionSelectList();
                 ViewBag.workEffortDescription = we.description;
                 ViewBag.workEffortId = weID;
-                ViewBag.divisionList = getDivisionSelectList();
-                ViewBag.pcaAddList = getDivisionPcaCodeList(pca.division);
                 return View();
             }
             else
@@ -406,7 +433,11 @@ namespace TARS.Controllers
 
 
         //
-        //  Adds a PCA code to the given Work Effort
+        /* Receives a PCA_WE object and saves it to the database if the Work Effort is within the 
+         * time bounds of the PCA Code.  If the Work Effort is NOT within the time PCA Code's time
+         * bounds, a flag is set to display an error message, and the object is sent back to the 
+         * view for editing.
+         */
         [HttpPost]
         public virtual ActionResult addPCA_WE(PCA_WE pca_we)
         {
@@ -434,7 +465,6 @@ namespace TARS.Controllers
                     return RedirectToAction("editWorkEffort", "Manager", new { id = pca_we.WE });
                 }
                 ViewBag.divisionList = getDivisionSelectList();
-                ViewBag.pcaAddList = getAllPcaCodes();
                 ViewBag.workEffortId = effort.ID;
                 ViewBag.outOfPcaTimeBounds = true;
                 return View(pca_we);
@@ -447,7 +477,9 @@ namespace TARS.Controllers
 
 
         //
-        //  Deactivates a PCA_WE entry 
+        /* Retrieves WorkEffort object for the specified ID and sends the description and ID
+         * to the view, along with a list of PCA Codes that are associated with the Work Effort
+         */
         [HttpGet]
         public virtual ActionResult deletePCA_WE(int weID)
         {
@@ -468,7 +500,12 @@ namespace TARS.Controllers
 
 
         //
-        //  Deactivates the specified PCA_WE entry and changes the endDate to the current day
+        /* Receives a PCA_WE object and sets the "active" field to FALSE in the database if 
+         * the PCA Code is NOT the only PCA Code associated with the Work Effort.  If it is 
+         * the only remaining PCA Code associated with the Work Effort, then a flag is set to 
+         * display an error and the object is sent back to the view.
+         * Deactivates the PCA_WE object and changes the endDate to the current day
+         */
         [HttpPost]
         public virtual ActionResult deletePCA_WE(PCA_WE pca_we)
         {
@@ -520,7 +557,10 @@ namespace TARS.Controllers
 
 
         //
-        //Returns TRUE if the PCA_WE entry already exists
+        /* Receives a PCA_WE object and checks if the association already exists in the
+         * database. Returns TRUE if does. (note: Called by addPCA_WE() before saving the
+         * PCA_WE object)
+         */
         public bool checkIfDuplicatePcaWe(PCA_WE pcawe)
         {
             var searchPcaWe = from p in PCA_WEDB.PCA_WEList
@@ -540,7 +580,9 @@ namespace TARS.Controllers
 
 
         // 
-        //Returns list of all the PCA codes in TARS
+        /* Retrieves all the PCA codes in TARS and returns their 5-digit codes
+         * as a list of strings.
+         */
         public virtual List<string> getAllPcaCodes()
         {
             List<string> pcaList = new List<string>();
@@ -557,7 +599,10 @@ namespace TARS.Controllers
 
 
         //
-        // Checks if the pay period contains a holiday. If so, TRUE is returned.
+        /* Retrieves all holidays that are within the same pay period as the specified
+         * reference date. If the search results in an empty list, then FALSE is returned.
+         * If there is at least one holiday in the list, then TRUE is returned.
+         */
         public bool isHolidayWeek(DateTime refDate)
         {
             DateTime refStart = refDate.StartOfWeek(DayOfWeek.Sunday);
@@ -575,26 +620,29 @@ namespace TARS.Controllers
 
 
         //
-        // Locks all timesheets that ended more than two days ago (
-        // (note: called from TARS/ScheduledJobs/TarsScheduledJobs)
+        /* Locks all timesheets that ended more than two days ago.  If there was a holiday during
+         * the previous pay period, lockDate will have an extra day added to it.
+         * (note: called from /ScheduledJobs/TarsScheduledJobs every Tuesday and Wednesday at 12am)
+         */
         public void lockTimesheets()
         {
             DateTime refDate = DateTime.Now.Date;
+            DateTime lockDate = DateTime.Now.Date;
             Timesheet tmpTimesheet = new Timesheet();
             List<Timesheet> tsList = new List<Timesheet>();
 
             // If there was a holiday, allow three days after periodEnd before locking
             if (isHolidayWeek(refDate.AddDays(-7)))
             {
-                refDate = refDate.AddDays(-1);
+                lockDate = refDate.AddDays(-1);
             }
             else
             {
-                refDate = refDate.AddDays(-2);
+                lockDate = refDate.AddDays(-2);
             }
             var searchTimesheets = from t in TimesheetDB.TimesheetList
                                    where t.locked != true
-                                   where t.periodEnd < refDate
+                                   where t.periodEnd < lockDate
                                    select t;
             foreach (var item in searchTimesheets)
             {
@@ -612,8 +660,9 @@ namespace TARS.Controllers
 
 
         //
-        /* Displays all the employees that work for the specified departement within the Information 
-         * Technology division. If department is null, it displays all employees in the division.
+        /* Retrieves all TARSUser objects of employees that work for the specified departement 
+         * within the Information Technology division and sends them to the view as a list. If 
+         * department is null, it retrieves all employees in the division.
          */
         public ActionResult viewTimesheetStatuses(DateTime refDate, string department = null)
         {
@@ -637,7 +686,10 @@ namespace TARS.Controllers
 
 
         //
-        //
+        /* Retrieves the Timesheet object for the specified employee and reference date,
+         * changes "locked", "approved", and "submitted" fields to FALSE, and saves the
+         * changes in the database.
+         */
         public void adminUnlockTimesheet(string username, DateTime refDate)
         {
             Authentication auth = new Authentication();
@@ -665,8 +717,7 @@ namespace TARS.Controllers
 
 
         //
-        //
-
+        // Retrieves all of the Holidays objects and sends them to the view.
         public ActionResult viewHolidays()
         {
             Authentication auth = new Authentication();
@@ -683,7 +734,7 @@ namespace TARS.Controllers
 
 
         //
-        //
+        // Creates an empty Holidays object and sends it to the view.
         [HttpGet]
         public virtual ActionResult addHoliday()
         {
@@ -700,7 +751,7 @@ namespace TARS.Controllers
 
 
         //
-        //
+        // Receives a Holidays object and saves it to the database
         [HttpPost]
         public virtual ActionResult addHoliday(Holidays holiday)
         {
@@ -719,7 +770,7 @@ namespace TARS.Controllers
 
 
         //
-        //
+        // Retrieves the Holidays object with specified ID and sends it to the view
         [HttpGet]
         public virtual ActionResult editHoliday(int id)
         {
@@ -737,7 +788,7 @@ namespace TARS.Controllers
 
 
         //
-        //
+        // Receives a Holidays object and saves it to the database as modified
         [HttpPost]
         public virtual ActionResult editHoliday(Holidays holiday)
         {
@@ -756,7 +807,7 @@ namespace TARS.Controllers
 
 
         //
-        //
+        // Retrieves the Holidays object with specified ID and sends it to the view
         [HttpGet]
         public virtual ActionResult deleteHoliday(int id)
         {
@@ -774,7 +825,9 @@ namespace TARS.Controllers
 
 
         //
-        // POST: /Admin/deleteHoliday
+        /* Retrieves the Holidays object with specified ID and deletes if from the database
+         * once the user confirms that they want to delete it
+         */
         [HttpPost, ActionName("deleteHoliday")] //This action MUST match the above delete function.
         public virtual ActionResult confirmDeleteHoliday(int id)
         {

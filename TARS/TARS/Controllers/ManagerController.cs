@@ -493,7 +493,7 @@ namespace TARS.Controllers
 
 
         //
-        // Retrieves PCA_WE object with specified ID and returns it to the view
+        // Retrieves PCA_WE object with specified ID and sends it to the view
         [HttpGet]
         public virtual ActionResult viewPCA_WE(int id)
         {
