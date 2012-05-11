@@ -18,6 +18,8 @@ namespace TARS.Models
         public int workEffortID { get; set; }
         public string description { get; set; } 
         public string creator { get; set; }
+
+        [Range(0, 24, ErrorMessage="Maximum of 24 hours in a day")]
         public double hours { get; set; }
 
         [DataType(DataType.Date)]

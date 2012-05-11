@@ -264,65 +264,86 @@
                 //If existing hours are being edited
                 if (hoursID > 0) {
                     var numHours = $(this).find('#editedHours').val();
-                    //If the user entered a valid number
-                    if (Number(numHours)) {
-                        //save the edited hours in the database
-                        $.ajax({
-                            url: '@Url.Action("editHours", "User")',
-                            type: "POST",
-                            data: {
-                                id: hoursID,
-                                numHours: numHours
-                            },
-                            success: function () {
-                                window.location = "#success";
-                                location.reload();
-                            }
-                        });
+
+                    if (numHours > 24) {
+                        alert("Maximum of 24 hours in a day");
+                        window.location.hash = "";
+                        location.reload(true);
                     }
                     else {
-                        alert("\"" + numHours + "\" is not a number");
+                        //If the user entered a valid number
+                        if (Number(numHours) || (numHours == 0)) {
+                            //save the edited hours in the database
+                            $.ajax({
+                                url: '@Url.Action("editHours", "User")',
+                                type: "POST",
+                                data: {
+                                    id: hoursID,
+                                    numHours: numHours
+                                },
+                                success: function () {
+                                    window.location = "#success";
+                                    location.reload(true);
+                                }
+                            });
+                        }
+                        else {
+                            alert("\"" + numHours + "\" is not a number");
+                            window.location.hash = "";
+                            location.reload(true);
+                        }
                     }
                 }
 
                 //if new hours are being added
                 else {
                     var numHours = $(this).find('#addedHours').val();
-                    //If the user entered a valid number
-                    if (Number(numHours)) {
-                        var hrsDate = $(this).find('#hrsDate').val();
-                        var wEffortID = $(this).find('#wEffortID').val();
-                        var timeCode = $(this).find('#timeCode').val();
-                        var path = '@Url.Action("isWithinWeTimeBounds", "User")';
 
-                        $.get(path, { weID: wEffortID, hrsDate: hrsDate }, function (result) {
-                            //If the hours are within the Work Effort's time bounds
-                            if (result == 'True') {
-                                //save the added hours in the database
-                                $.ajax({
-                                    url: '@Url.Action("addHours", "User")',
-                                    type: "POST",
-                                    data: {
-                                        workEffortID: wEffortID,
-                                        hours: numHours,
-                                        timestamp: hrsDate,
-                                        description: timeCode,
-                                        creator: '@ViewBag.timesheet.worker'
-                                    },
-                                    success: function () {
-                                        window.location = "#success";
-                                        location.reload();
-                                    }
-                                });
-                            }
-                            else {
-                                alert("Can't Save:  Date is not within Work Effort's time bounds");
-                                $('#addedHours').val(0);
-                            }
-                        });
+                    if (numHours > 24) {
+                        alert("Maximum of 24 hours in a day");
+                        window.location.hash = "";
+                        location.reload(true);
                     }
                     else {
-                        alert("\"" + numHours + "\" is not a number");
+                        //If the user entered a valid number
+                        if (Number(numHours) || (numHours == 0)) {
+                            var hrsDate = $(this).find('#hrsDate').val();
+                            var wEffortID = $(this).find('#wEffortID').val();
+                            var timeCode = $(this).find('#timeCode').val();
+                            var path = '@Url.Action("isWithinWeTimeBounds", "User")';
+
+                            $.get(path, { weID: wEffortID, hrsDate: hrsDate }, function (result) {
+                                //If the hours are within the Work Effort's time bounds
+                                if (result == 'True') {
+                                    //save the added hours in the database
+                                    $.ajax({
+                                        url: '@Url.Action("addHours", "User")',
+                                        type: "POST",
+                                        data: {
+                                            workEffortID: wEffortID,
+                                            hours: numHours,
+                                            timestamp: hrsDate,
+                                            description: timeCode,
+                                            creator: '@ViewBag.timesheet.worker'
+                                        },
+                                        success: function () {
+                                            window.location = "#success";
+                                            location.reload(true);
+                                        }
+                                    });
+                                }
+                                else {
+                                    alert("Can't Save:  Date is not within Work Effort's time bounds");
+                                    window.location.hash = "";
+                                    location.reload(true);
+                                }
+                            });
+                        }
+                        else {
+                            alert("\"" + numHours + "\" is not a number");
+                            window.location.hash = "";
+                            location.reload(true);
+                        }
                     }
                 }
             });
