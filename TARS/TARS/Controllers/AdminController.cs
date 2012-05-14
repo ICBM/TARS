@@ -6,6 +6,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+using System.Text;
+using System.DirectoryServices;
+
 using TARS.Helpers;
 using TARS.Models;
 
@@ -335,19 +338,57 @@ namespace TARS.Controllers
 
 
         //
+        //
+        [HttpGet]
+        public virtual ActionResult addUser()
         // NOT YET IMPLEMENTED
         public ActionResult addUser()
         {
             Authentication auth = new Authentication();
             if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
             {
-                return View();
+                ViewBag.divisionList = getDivisionSelectList();
+                return View(new AddUserModel());
             }
             else
             {
                 return View("error");
             }
         }
+
+
+        //
+        //
+        [HttpPost]
+        public virtual ActionResult addUser(AddUserModel user)
+        {
+            Authentication auth = new Authentication();
+            if (auth.isAdmin(this) || Authentication.DEBUG_bypassAuth)
+            {
+                if (ModelState.IsValid)
+                {
+                    LDAPConnection newConnection = new LDAPConnection();
+                    List<string> userInfo = newConnection.create(user.UserName);
+
+                    //Code here for creating TARSUser object; this will require
+                    // changing the LDAPConnection.create function to only 
+                    // return the user information that is pertinent to TARS
+                    /*
+                    var userEntry = new TARSUser();
+                    userEntry.userName = userInfo[1];
+                    TARSUserDB.TARSUserList.Add(userEntry);
+                    */
+
+                    return RedirectToAction("userMaintanence");
+                }
+                return View(user);
+            }
+            else
+            {
+                return View("error");
+            }
+        }
+
 
 
         //

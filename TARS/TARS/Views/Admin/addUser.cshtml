@@ -1,4 +1,4 @@
-﻿@model TARS.Models.TARSUser
+﻿@model List<String>
 
 @{
     ViewBag.Title = "Add User";
@@ -7,3 +7,22 @@
 <h2>Add User</h2>
 
 <p>Will require some work with LDAP</p>
+
+<table class="timesheet">
+
+    @if (Model != null)
+    {
+        for(int i = 0; i < Model.Count; i = i + 2)
+        {
+            
+            <tr>
+                <td>
+                    @Html.Display(Model[i]);
+                </td>
+                <td>
+                    @Html.Display(Model[i + 1]);
+                </td>
+            </tr>
+        }
+    }
+</table>

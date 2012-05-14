@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Text;
 using System.DirectoryServices;
+using System.DirectoryServices.AccountManagement;
 using System.DirectoryServices.Protocols;
 using System.Net;
 
@@ -10,142 +12,47 @@ namespace TARS.Helpers
 {
     public class LDAPConnection
     {
-        private int exists = 0; //if the user exists, this will be 1. ensures that requestUser() is called before requestRole()  
-        //this standard of uid=admin,ou=system IS EXTREMELY IMPORTANT. Not having this when we try to Bind() will throw "Syntax Error" exceptions
-        //would have been nice if someone told me that before I spent WAY too much time on Google trying to figure this out
-        private static string user = "uid=admin,ou=system"; //we'll re-use these within the class. make it easily modifiable for the users who come after us
-        private static string pw = "secret";
-        private static string domain = "tars.com"; //built for local server. change to whatever is relevent
-        private static string port = ":389"; //default port for ActiveDirectory LDAP is 389. ApacheDS uses 10389
-        private static string targetOU = "O=system,DC=example,DC=com"; //default
-
-        private NetworkCredential credential; //one credential to go with the one connection; built using user + pw + domain
-        private LdapDirectoryIdentifier identifier; //built using domain + port
-        private LdapConnection connection; //one connection to each LDAPConnection class instance; built using identifier
-
-        private string dn;
-
-
-        public LDAPConnection()
+        public List<string> create(string addUser)
         {
-            //connection = new LdapConnection(domain);
-            credential = new NetworkCredential(user, pw);
-            identifier = new LdapDirectoryIdentifier(domain + port);
+            var properties = new List<string>();
 
-        }
+            //Create LDAP Connection object
+            DirectoryEntry myLdapConnection = createDirectoryEntry();
 
-        //if you really want to, go ahead and specify your specific information
-        public LDAPConnection(string specifiedUser, string specifiedPw, string specifiedDomain, string specifiedPort)
-        {
-            user = specifiedUser;
-            pw = specifiedPw;
-            domain = specifiedDomain;
-            port = specifiedPort;
+            //Create search object which operates on LDAP connection object
+            // and set search object to only find the user specified
+            DirectorySearcher search = new DirectorySearcher(myLdapConnection);
+            search.Filter = "(cn=" + addUser + ")";
 
-            //connection = new LdapConnection(domain);
-            credential = new NetworkCredential(user, pw, domain); //extremely important, must follow this exact pattern to work with apacheDS
-            identifier = new LdapDirectoryIdentifier(domain + port, true, false);
+            // create results objects from search object
+            SearchResult result = search.FindOne();
 
-        }
-
-        //if this returns true, go ahead and add the model.user to the cookie for login
-        // - password is currently not used
-        public bool requestUser(string user, string password)
-        {
-            string ldapSearchFilters = "(objectClass=*)"; //required. else we get a compilation error and explode
-            dn = "cn=Scott Beddall"+",ou=users,o=tars";
-
-            //connection = new LdapConnection(identifier); //start up our connection
-
-            try
+            if (result != null)
             {
+                // user exists, cycle through LDAP fields; in final 
+                //  application, we will only select those that are
+                //  needed for the TARSUser model; for now, it just
+                //  pulls all of them
+                ResultPropertyCollection fields = result.Properties;
 
-                connection = new LdapConnection(identifier, credential); //start up our connection
-                
-                connection.Credential = credential; //not sure if this is necessary, not changing it
-                connection.AuthType = AuthType.Basic; //absolutely necessary, otherwise we can't Bind()
-                connection.SessionOptions.ProtocolVersion = 3; //also necessary, some wonky version problems
-                connection.Bind(); //actually bind to the server so we can make some queries!
-
-                System.Diagnostics.Debug.WriteLine("LdapConnection is created successfully.");
-               
-                SearchRequest searchRequest = new SearchRequest
-                                                (dn,
-                                                  ldapSearchFilters,
-                                                  System.DirectoryServices.Protocols.SearchScope.Subtree,
-                                                  null);
-
-                // cast the returned directory response as a SearchResponse object
-                SearchResponse searchResponse =
-                            (SearchResponse)connection.SendRequest(searchRequest);
-
-                Console.WriteLine("\r\nSearch Response Entries:{0}",
-                            searchResponse.Entries.Count);
-
-                // enumerate the entries in the search response
-                foreach (SearchResultEntry entry in searchResponse.Entries)
+                foreach (string ldapField in fields.PropertyNames)
                 {
-                    System.Diagnostics.Debug.WriteLine("{0}:{1}:{2}",
-                        searchResponse.Entries.IndexOf(entry),
-                        entry.DistinguishedName, entry.ToString());
+                    foreach (Object attr in fields[ldapField])
+                    {
+                        properties.Add(String.Format("{0,-20} : {1}", ldapField, attr.ToString()));
+                    }
                 }
-           
-            
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine("\nGeneral Exception Occurred. Handling. :\n\t{0}: {1}: {2}",
-                                   e.GetType().Name, e.Message, e.ToString());
-
-                //handle it!
-                return handleException(e);
             }
 
-
-            connection.Dispose();
-            return true;
+            return properties;
         }
 
-        //return "User", "Manager", or "Admin" depending on the role
-        public string requestRole(string user)
+        static DirectoryEntry createDirectoryEntry()
         {
-            if (exists == 1)
-            {
-                return "User";
-            }
+            DirectoryEntry ldapConnection = new DirectoryEntry("LDAP://dhw.state.id.us/dc=dhw,dc=state,dc=id,dc=us");
+            ldapConnection.AuthenticationType = AuthenticationTypes.Secure;
 
-            else return "None";
+            return ldapConnection;
         }
-
-        public bool handleException(Exception e)
-        {
-            string message = e.GetType().Name;
-            string noSuchUser = "The object does not exist";
-            string ldapException = "LdapException";
-
-            if (message.IndexOf(noSuchUser) != -1)
-            {
-                System.Diagnostics.Debug.WriteLine("\nThat username does not exist! :: {0}", e.GetType().Name);
-                //add error to viewbag?
-                return false;
-            }
-            else if (message.IndexOf(ldapException) != -1)
-            {
-                System.Diagnostics.Debug.WriteLine("\nCould not contact LDAP DSA :: {0}", e.GetType().Name);
-                //add error to viewbag?
-                return false;
-            }
-            return false;
-        }
-
-        public string[] requestTasks(string user)
-        {
-
-            return null;
-        }
-
-
-
-
     }
 }
